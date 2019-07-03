@@ -93,7 +93,9 @@
 
                 <el-col :span="8">
                   <el-form-item required prop="send_scope" label="发送范围">
-                    <org-choose width="210" title="必选" v-model="notice_form.send_scope.org_id"></org-choose>
+                    <org-choose width="210" title="必选" v-model="notice_form.send_scope.org_id"
+                                ref="orgChoose">
+                    </org-choose>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -350,8 +352,9 @@
             o.user_id = o.user_id.join();
           }
           if (index != 0) {
+            debugger
             if (o.user_id && o.sanction_type && o.money) {
-              o.user_id = parseInt(o.user_id.join());
+              o.user_id = parseInt(o.user_id);
             } else {
               isReturn = true;
             }
@@ -384,18 +387,17 @@
           .validate((valid) => {
             if (valid) {
               newForm.date = this.myUtils.formatDate(newForm.date, 'yyyy-MM-dd')
-              let {title, date, file_info, content, sanction_info} = newForm
+              let {title, date, content, sanction_info} = newForm
               let data = {
                 ...newForm,
                 more_data: [
-                  {key: '公告类型', value: ''},
+                  {key: '公告类型', value: this.$refs.dropdown1.inputContent},
                   {key: '标题', title},
-                  {key: '发送范围', value: ''},
+                  {key: '发送范围', value: this.$refs.orgChoose.org_name.join(' ')},
                   {key: '公告日期', value: date},
-                  {key: '附件', value: file_info},
-                  {key: '正文', value: content},
-                  {key: '详情', value: sanction_info},
-                ]
+                  {key: '正文', value: content}
+                ],
+                sanction_info: sanction_info
               }
               this.$http.post(this.addUrl, data)
                 .then(res => {

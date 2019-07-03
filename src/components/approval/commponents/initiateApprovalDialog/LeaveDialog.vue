@@ -27,7 +27,8 @@
                   <el-form-item required prop="handover_id" label="工作交接人">
                     <div class="items-center iconInput">
                       <user-choose width="220" num="1" :disabled="false" title="必填" :show-icon="false"
-                                   v-model="leave_form.handover_id">
+                                   v-model="leave_form.handover_id"
+                                   ref="userChoose">
                       </user-choose>
                     </div>
                   </el-form-item>
@@ -208,21 +209,20 @@
           .validate((valid) => {
             if (valid) {
               this.leave_form.enroll = this.myUtils.formatDate(this.leave_form.enroll, 'yyyy-MM-dd')
-              let {name, enroll} = this.user_info
-              let {attachment, seniority, change_date, change_reason, change_receipt} = this.leave_form
+              let {name, enroll, org, position} = this.user_info
+              let {seniority, change_date, change_reason, change_receipt} = this.leave_form
               let data = {
                 ...this.leave_form,
                 more_data: [
                   {key: '申请人', value: name},
                   {key: '入职时间', value: enroll},
-                  {key: '工作交接人', value: ''},
-                  {key: '所属部门', value: ''},
+                  {key: '工作交接人', value: this.$refs.userChoose.user_name.join(' ')},
+                  {key: '所属部门', value: org},
                   {key: '工龄', value: seniority},
-                  {key: '所属岗位', value: ''},
+                  {key: '所属岗位', value: position},
                   {key: '离职日期', value: change_date},
                   {key: '离职原因', value: change_reason},
-                  {key: '交接单', value: change_receipt},
-                  {key: '附件', value: attachment},
+                  {key: '交接单', value: change_receipt}
                 ]
               }
 

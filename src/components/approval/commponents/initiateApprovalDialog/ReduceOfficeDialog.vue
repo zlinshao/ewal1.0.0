@@ -206,12 +206,11 @@
                 ],
                 more_data: [
                   {key: '申请人', value: name},
-                  {key: '办公室/宿舍', value: this.house_type[house_type]},
                   {key: '所属部门', value: org},
+                  {key: '办公室/宿舍', value: this.house_type[house_type - 1]},
                   {key: '申请地址', value: this.house_info.house_name},
                   {key: '申请日期', value: date},
-                  {key: '申请原因', value: reason},
-                  {key: '附件', value: attachment}
+                  {key: '申请原因', value: reason}
                 ]
               }
               this.$http.post(this.addUrl, data)

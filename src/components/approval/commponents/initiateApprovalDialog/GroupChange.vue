@@ -19,7 +19,8 @@
 
                   <el-form-item required prop="now_position" label="转入岗位">
                     <post-choose width="220" num="1" :disabled="false" title="必填" :show-icon="false"
-                                 v-model="group_change_form.now_position">
+                                 v-model="group_change_form.now_position"
+                                 ref="applyPost">
                     </post-choose>
                   </el-form-item>
                 </el-col>
@@ -27,7 +28,8 @@
                   <el-form-item required prop="group_user" label="调岗组员">
                     <div class="items-center iconInput" style="width: 220px">
                       <user-choose width="220" :disabled="false" title="必填" :show-icon="false"
-                                   v-model="group_change_form.group_user">
+                                   v-model="group_change_form.group_user"
+                                   ref="uerChoose">
                       </user-choose>
                     </div>
                   </el-form-item>
@@ -41,7 +43,8 @@
                 <el-col :span="8">
                   <el-form-item required prop="now_org" label="转入部门">
                     <org-choose width="220" num="1" :disabled="false" title="必填" :show-icon="false"
-                                v-model="group_change_form.now_org">
+                                v-model="group_change_form.now_org"
+                                ref="orgChoose">
                     </org-choose>
                   </el-form-item>
                 </el-col>
@@ -203,13 +206,12 @@
                 ...this.group_change_form,
                 more_data: [
                   {key: '申请人', value: name},
-                  {key: '转入岗位', value: ''},
-                  {key: '调岗组员', value: ''},
+                  {key: '转入岗位', value: this.$refs.applyPost.post_name.join(' ')},
+                  {key: '调岗组员', value: this.$refs.uerChoose.user_name.join(' ')},
                   {key: '调岗日期', value: date},
-                  {key: '转入部门', value: ''},
+                  {key: '转入部门', value: this.$refs.orgChoose.org_name.join(' ')},
                   {key: '调岗原因', value: change_reason},
-                  {key: '交接单', value: change_receipt},
-                  {key: '附件', value: attachment},
+                  {key: '交接单', value: change_receipt}
                 ]
               }
               this.$http.post(this.addUrl, data)

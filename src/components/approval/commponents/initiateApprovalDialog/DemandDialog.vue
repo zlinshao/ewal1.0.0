@@ -16,7 +16,8 @@
                 <el-col :span="8">
                   <el-form-item required prop="org_id" label="申请部门">
                     <org-choose width="220" num="1" :disabled="false" title="请选择部门" :show-icon="false"
-                                v-model="demand_form.org_id">
+                                v-model="demand_form.org_id"
+                                ref="applyOrg">
                     </org-choose>
                   </el-form-item>
 
@@ -49,7 +50,8 @@
                 <el-col :span="8">
                   <el-form-item required prop="position_id" label="需求岗位">
                     <post-choose width="220" num="1" title="请选择岗位" :show-icon="false"
-                                 v-model="demand_form.position_id">
+                                 v-model="demand_form.position_id"
+                                 ref="applyPost">
                     </post-choose>
                   </el-form-item>
 
@@ -289,24 +291,23 @@
           .validate((valid) => {
             if (valid) {
               this.demand_form.expect_date = this.myUtils.formatDate(this.demand_form.expect_date, 'yyyy-MM-dd')
-              let {attachment, content, reason, number, salary, year, expect_date, experience, now_count, gender, education} = this.demand_form
+              let {content, reason, number, salary, year, expect_date, experience, now_count, gender, education} = this.demand_form
               let data = {
                 ...this.demand_form,
                 detail: [{...this.demand_form}],
                 more_data: [
-                  {key: '申请部门', value: ''},
-                  {key: '所需人数', value: `最小值：${number.min}-最大值：${number.max}`},
-                  {key: '薪资范围', value: `最小值：${salary.min}-最大值：${salary.max}`},
+                  {key: '申请部门', value: this.$refs.applyOrg.org_name.join('')},
+                  {key: '所需人数', value: `${number.min} —— ${number.max}`},
+                  {key: '薪资范围', value: `${salary.min} —— ${salary.max}`},
                   {key: '期望到岗日期', value: expect_date},
-                  {key: '需求岗位', value: ''},
-                  {key: '年龄范围', value: `最小值：${year.min}-最大值：${year.max}`},
-                  {key: '工作经验', value: this.experience[experience]},
+                  {key: '需求岗位', value: this.$refs.applyPost.post_name.join('')},
+                  {key: '年龄范围', value: `${year.min} —— ${year.max}`},
+                  {key: '工作经验', value: this.experience[experience - 1]},
                   {key: '现有人数', value: now_count},
-                  {key: '性别', value: this.gender[gender]},
-                  {key: '学历', value: this.education[education]},
+                  {key: '性别', value: this.gender[gender - 1]},
+                  {key: '学历', value: this.education[education - 1]},
                   {key: '申请原因', value: reason},
-                  {key: '招聘要求', value: content},
-                  {key: '附件', value: attachment},
+                  {key: '招聘要求', value: content}
                 ]
               }
               this.$http.post(`${this.url}/process/process`, data)

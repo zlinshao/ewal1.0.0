@@ -100,13 +100,48 @@
               border: 1px dotted #DFDFDF;
             }
 
+            .approval-base-info {
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: flex-start;
+
+              .base-info-text {
+                font-size: 12px;
+                font-family: 'MicrosoftYaHei';
+                color: rgba(176, 176, 176, 1);
+
+                .base-info-text-left {
+                  display: inline-block;
+                  width: 80px;
+                  text-align: justify;
+                  text-align-last: justify;
+                }
+              }
+
+              .base-info-attachment {
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-start;
+                align-items: center;
+                font-size: 12px;
+                font-family: 'MicrosoftYaHei';
+                color: rgba(176, 176, 176, 1);
+
+                .base-info-text-left {
+                  width: 80px;
+                  text-align: justify;
+                  text-align-last: justify;
+                }
+              }
+            }
 
             .approval-timeline {
               display: flex;
               flex-direction: row;
               justify-content: flex-start;
               align-items: center;
-              min-height: 60px;
+              min-height: 80px;
 
               .avatar-img {
                 width: 40px;

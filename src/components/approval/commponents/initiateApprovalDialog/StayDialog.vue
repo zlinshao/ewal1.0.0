@@ -62,19 +62,19 @@
                   </el-form-item>
                 </el-col>
               </el-row>
-            </el-form>
 
-            <el-row>
-              <el-col :span="24">
-                <el-form-item align="center" label="紧急程度">
-                  <el-radio-group v-model="stay_form.priority">
-                    <el-radio :label="50">正常</el-radio>
-                    <el-radio :label="60">重要</el-radio>
-                    <el-radio :label="70">紧急</el-radio>
-                  </el-radio-group>
-                </el-form-item>
-              </el-col>
-            </el-row>
+              <el-row>
+                <el-col :span="24">
+                  <el-form-item align="center" label="紧急程度">
+                    <el-radio-group v-model="stay_form.priority">
+                      <el-radio :label="50">正常</el-radio>
+                      <el-radio :label="60">重要</el-radio>
+                      <el-radio :label="70">紧急</el-radio>
+                    </el-radio-group>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+            </el-form>
 
             <!--          流程组件-->
             <ApprovalProcess :user_info="user_info" :type="stay_form.type"></ApprovalProcess>
@@ -187,11 +187,10 @@
                 },
                 more_data: [
                   {key: '住宿申请人', value: name},
-                  {key: '住宿地址', value: this.house_info.name},
                   {key: '所属部门', value: org},
+                  {key: '住宿地址', value: this.house_info.name},
                   {key: '入住日期', value: date},
-                  {key: '申请原因', value: reason},
-                  {key: '附件', value: attachment}
+                  {key: '申请原因', value: reason}
                 ]
               }
               this.$http.post(this.addUrl, data)
