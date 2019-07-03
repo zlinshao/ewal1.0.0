@@ -314,7 +314,7 @@
                         </div>
                         <div>
                           <span class='tit'>回访状态</span>
-                          <span class="content_tit">{{customer_info.contract_Detail.is_connect ?'已回访':'未回访'}}</span>
+                          <span class="content_tit">{{customer_info.contract_Detail.revisit_id!==null && customer_info.contract_Detail.revisit_id!=='' ?'已回访':'未回访'}}</span>
                         </div>
                         <div class='contract_img_box'>
                           <span class='tit'>其他附件</span>
