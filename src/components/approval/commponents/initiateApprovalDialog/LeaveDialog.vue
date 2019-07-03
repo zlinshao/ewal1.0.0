@@ -91,6 +91,18 @@
                   </el-form-item>
                 </el-col>
               </el-row>
+
+              <el-row>
+                <el-col :span="24">
+                  <el-form-item align="center" label="紧急程度">
+                    <el-radio-group v-model="leave_form.priority">
+                      <el-radio :label="50">正常</el-radio>
+                      <el-radio :label="60">重要</el-radio>
+                      <el-radio :label="70">紧急</el-radio>
+                    </el-radio-group>
+                  </el-form-item>
+                </el-col>
+              </el-row>
             </el-form>
 
             <!--          流程组件-->
@@ -130,7 +142,8 @@
       seniority: null,
       // 工作交接人
       handover_id: null,
-      attachment: []
+      attachment: [],
+      priority: 50
     }
   }
 

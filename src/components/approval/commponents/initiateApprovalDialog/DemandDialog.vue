@@ -124,8 +124,19 @@
                   </el-form-item>
                 </el-col>
               </el-row>
-            </el-form>
 
+              <el-row>
+                <el-col :span="24">
+                  <el-form-item align="center" label="紧急程度">
+                    <el-radio-group v-model="demand_form.priority">
+                      <el-radio :label="50">正常</el-radio>
+                      <el-radio :label="60">重要</el-radio>
+                      <el-radio :label="70">紧急</el-radio>
+                    </el-radio-group>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+            </el-form>
             <!--          流程组件-->
             <ApprovalProcess :user_info="user_info" :type="demand_form.type"></ApprovalProcess>
           </div>
@@ -184,7 +195,8 @@
       content: null,
       // 附件
       attachment: [],
-      user_info: {}
+      user_info: {},
+      priority: 50
     }
   }
 
@@ -280,6 +292,16 @@
               let data = {
                 ...this.demand_form,
                 detail: [{...this.demand_form}],
+                more_data: [
+                  {key: '申请人', value: ''},
+                  {key: '入职时间', value: ''},
+                  {key: '原部门', value: ''},
+                  {key: '转入部门', value: ''},
+                  {key: '转入岗位', value: ''},
+                  {key: '调岗原因', value: ''},
+                  {key: '交接单', value: ''},
+                  {key: '附件', value: ''}
+                ]
               }
               this.$http.post(`${this.url}/process/process`, data)
                 .then(res => {

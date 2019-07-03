@@ -64,6 +64,18 @@
               </el-row>
             </el-form>
 
+            <el-row>
+              <el-col :span="24">
+                <el-form-item align="center" label="紧急程度">
+                  <el-radio-group v-model="away_form.priority">
+                    <el-radio :label="50">正常</el-radio>
+                    <el-radio :label="60">重要</el-radio>
+                    <el-radio :label="70">紧急</el-radio>
+                  </el-radio-group>
+                </el-form-item>
+              </el-col>
+            </el-row>
+
             <!--          流程组件-->
             <ApprovalProcess :user_info="user_info" :type="away_form.type"></ApprovalProcess>
           </div>
@@ -93,7 +105,8 @@
       // 申请原因
       reason: null,
       // 附件
-      attachment: []
+      attachment: [],
+      priority: 50,
     }
   }
 

@@ -17,33 +17,33 @@
           left: 150px;
           top: -80px;
 
-          .el-tabs {
-            .el-tabs__item {
-              background: none;
-              font-size: 14px;
-              font-family: 'MicrosoftYaHei';
-              color: rgba(210, 210, 210, 1);
-              line-height: 19px;
-              margin: 0;
-              padding: 0 25px;
-            }
-
-            .el-tabs__item.is-active {
-              background: none;
-              font-size: 14px;
-              font-family: 'MicrosoftYaHei';
-              color: rgba(207, 46, 51, 1);
-              line-height: 19px;
-            }
-
-            .el-tabs__active-bar {
-              background-color: #B9292D;
-            }
-
-            .el-tabs__nav-wrap::after {
-              background-color: transparent;
-            }
-          }
+          //.el-tabs {
+          //  .el-tabs__item {
+          //    background: none;
+          //    font-size: 14px;
+          //    font-family: 'MicrosoftYaHei';
+          //    color: rgba(210, 210, 210, 1);
+          //    line-height: 19px;
+          //    margin: 0;
+          //    padding: 0 25px;
+          //  }
+          //
+          //  .el-tabs__item.is-active {
+          //    background: none;
+          //    font-size: 14px;
+          //    font-family: 'MicrosoftYaHei';
+          //    color: rgba(207, 46, 51, 1);
+          //    line-height: 19px;
+          //  }
+          //
+          //  .el-tabs__active-bar {
+          //    background-color: #B9292D;
+          //  }
+          //
+          //  .el-tabs__nav-wrap::after {
+          //    background-color: transparent;
+          //  }
+          //}
         }
 
         .right-btn {
@@ -95,12 +95,33 @@
         background: rgba(255, 255, 255, 1);
         border-radius: 10px 10px 0px 0px;
 
+        /*紧急程度*/
         .degree-item {
+          //width: 90px;
+          //height: 32px;
+          text-align: center;
           font-size: 14px;
           font-family: 'MicrosoftYaHei-Bold';
           font-weight: bold;
           color: rgba(104, 104, 116, 1);
         }
+
+        /*状态*/
+        .status-item {
+          font-size: 14px;
+          font-family: 'MicrosoftYaHei-Bold';
+          font-weight: bold;
+          color: rgba(155, 155, 155, 1);
+        }
+
+        .check-item {
+          color: rgba(255, 173, 13, 1);
+        }
+
+        .end-item {
+          color: rgba(0, 134, 90, 1);;
+        }
+
       }
     }
   }

@@ -26,9 +26,11 @@
 
     <!--    动态组件-->
     <transition appear name="approval-Switch">
-      <component ref="approvalType"
+      <component ref="approvalComponent"
                  v-if="approvalType.component"
-                 :is="approvalType.component"/>
+                 :is="approvalType.component"
+                 v-bind="approvalType.props"
+                 :tabKey="approvalType.tabKey"/>
     </transition>
 
 
@@ -50,30 +52,75 @@
     data() {
       return {
         approvalType: {
-          component: InitiateApproval
+          component: InitiateApproval,
+          props: null,
+          tabKey: null
         },
         statusTypes: [
           {
             value: 1,
             title: '发起审批',
-            component: InitiateApproval
+            component: InitiateApproval,
+            props: {}
           },
           {
             value: 2,
             title: '我审批的',
-            component: ApprovalList
+            component: ApprovalList,
+            props: {
+              tabsData: [
+                {
+                  label: '待审批',
+                  name: 'pending'
+                },
+                {
+                  label: '已审批',
+                  name: 'approved'
+                }
+              ]
+            }
           },
           {
             value: 3,
-            title: '我发起的'
+            title: '我发起的',
+            component: ApprovalList,
+            props: {
+              tabsData: [
+                {
+                  label: '未完成',
+                  name: 'undone'
+                },
+                {
+                  label: '已完成',
+                  name: 'completed'
+                }
+              ]
+            }
           },
           {
             value: 4,
-            title: '抄送我的'
+            title: '抄送我的',
+            component: ApprovalList,
+            props: {
+              tabsData: [
+                {
+                  label: '未读',
+                  name: 'unread'
+                },
+                {
+                  label: '已读',
+                  name: 'read'
+                }
+              ]
+            }
           },
           {
             value: 5,
-            title: '暂不处理'
+            title: '暂不处理',
+            component: ApprovalList,
+            props: {
+              tabsData: []
+            }
           }
         ],
         currentStatusType: 1,
@@ -92,6 +139,15 @@
         this.currentStatusType = statusItem.value
         // 动态组件
         this.approvalType.component = statusItem.component
+        this.approvalType.props = statusItem.props
+        this.approvalType.tabKey = statusItem.value
+
+        if (statusItem.value != 1) {
+          // 调用子组件的方法
+          this.$nextTick(() => {
+            this.$refs.approvalComponent.initData()
+          })
+        }
       }
     }
   }

@@ -1,0 +1,173 @@
+@import '../../common.scss';
+
+#theme_name.theme1 {
+  #approval {
+    #process_details {
+      .process-details {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        .process-top-box {
+          width: 900px;
+          height: 70px;
+          background: rgba(255, 255, 255, 1);
+          border-radius: 4px;
+          margin-bottom: 20px;
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
+
+          .process-top-left {
+            width: 100%;
+            background: rgba(255, 255, 255, 1);
+
+            .process-left-label {
+              font-size: 14px;
+              font-family: 'MicrosoftYaHei';
+              color: rgba(176, 176, 176, 1);
+              padding-right: 18px;
+            }
+
+            span:nth-child(2) {
+              font-size: 14px;
+              font-family: 'MicrosoftYaHei';
+              color: rgba(104, 104, 116, 1);
+            }
+          }
+
+          .process-top-right {
+            width: 100%;
+            background: rgba(255, 255, 255, 1);
+
+            .process-right-label {
+              font-size: 14px;
+              font-family: 'MicrosoftYaHei';
+              color: rgba(176, 176, 176, 1);
+              padding-right: 18px;
+            }
+
+            span:nth-child(2) {
+              font-size: 14px;
+              font-family: 'MicrosoftYaHei';
+              color: rgba(104, 104, 116, 1);
+            }
+          }
+        }
+
+        .process-details-box {
+          width: 900px;
+          height: 500px;
+          background: rgba(255, 255, 255, 1);
+          border-radius: 4px;
+          display: flex;
+          flex-direction: row;
+
+          /*左侧标题 */
+          .left-title {
+            width: 135px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            .top-icon {
+              width: 25px;
+              height: 55px;
+            }
+
+            .main-text {
+              margin-top: 5px;
+              width: 15px;
+              height: 57px;
+              font-size: 14px;
+              font-family: 'jingDianXingShu';
+              color: rgba(207, 46, 51, 1);
+              line-height: 14px;
+            }
+          }
+
+          /**右侧流程*/
+          .right-process {
+            flex: 1;
+            display: flex;
+            flex-direction: row;
+            //justify-content: center;
+            align-items: center;
+
+            .el-timeline-item__tail {
+              border: 1px dotted #DFDFDF;
+            }
+
+
+            .approval-timeline {
+              display: flex;
+              flex-direction: row;
+              justify-content: flex-start;
+              align-items: center;
+              min-height: 60px;
+
+              .avatar-img {
+                width: 40px;
+                height: 40px;
+
+                img {
+                  border-radius: 50%;
+                }
+              }
+
+              .timeline-info {
+                margin-left: 20px;
+
+                .timeline-top {
+                  display: flex;
+                  flex-direction: row;
+                  justify-content: flex-start;
+                  align-items: center;
+
+                  .avatar-name {
+                    height: 16px;
+                    font-size: 12px;
+                    font-family: 'MicrosoftYaHei';
+                    color: rgba(104, 104, 116, 1);
+                    line-height: 16px;
+                    margin-right: 40px;
+                  }
+
+                  .timeline-result {
+                    width: 50px;
+                    height: 25px;
+                    font-size: 12px;
+                    font-family: 'MicrosoftYaHei';
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
+                    align-items: center;
+                  }
+                }
+
+                .timeline-text {
+                  margin-top: 10px;
+                  width: 100px;
+                  font-family: 'jingDianXingShu';
+                  color: rgba(176, 176, 176, 1);
+                  line-height: 16px;
+                  text-align: left;
+                  font-size: 14px;
+                }
+              }
+
+              .timeline-time {
+                font-size: 12px;
+                font-family: 'MicrosoftYaHei';
+                color: rgba(176, 176, 176, 1);
+                margin-left: 300px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -87,8 +87,19 @@
                   </el-form-item>
                 </el-col>
               </el-row>
-            </el-form>
 
+              <el-row>
+                <el-col :span="24">
+                  <el-form-item align="center" label="紧急程度">
+                    <el-radio-group v-model="transfer_form.priority">
+                      <el-radio :label="50">正常</el-radio>
+                      <el-radio :label="60">重要</el-radio>
+                      <el-radio :label="70">紧急</el-radio>
+                    </el-radio-group>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+            </el-form>
             <!--          流程组件-->
             <ApprovalProcess :user_info="user_info" :type="transfer_form.type"></ApprovalProcess>
           </div>
@@ -124,7 +135,8 @@
       // 异动申请单以及异动交接单附件
       change_receipt: null,
       // 附件
-      attachment: []
+      attachment: [],
+      priority: 50
     }
   }
 
@@ -187,7 +199,19 @@
           .validate((valid) => {
             if (valid) {
               this.transfer_form.enroll = this.myUtils.formatDate(this.transfer_form.enroll, 'yyyy-MM-dd')
-              let data = this.transfer_form
+              let data = {
+                ...this.transfer_form,
+                more_data: [
+                  {key: '申请人', value: ''},
+                  {key: '入职时间', value: ''},
+                  {key: '原部门', value: ''},
+                  {key: '转入部门', value: ''},
+                  {key: '转入岗位', value: ''},
+                  {key: '调岗原因', value: ''},
+                  {key: '交接单', value: ''},
+                  {key: '附件', value: ''}
+                ]
+              }
               this.$http.post(this.addUrl, data)
                 .then(res => {
                   this.$LjMessageEasy(res, () => {

@@ -99,6 +99,17 @@
                 </el-col>
               </el-row>
 
+              <el-row>
+                <el-col :span="24">
+                  <el-form-item align="center" label="紧急程度">
+                    <el-radio-group v-model="promotion_form.priority">
+                      <el-radio :label="50">正常</el-radio>
+                      <el-radio :label="60">重要</el-radio>
+                      <el-radio :label="70">紧急</el-radio>
+                    </el-radio-group>
+                  </el-form-item>
+                </el-col>
+              </el-row>
             </el-form>
 
             <!--          流程组件-->
@@ -141,7 +152,8 @@
       // 晋升后薪资
       now_salary: null,
       // 附件
-      attachment: []
+      attachment: [],
+      priority: 50
     }
   }
 
