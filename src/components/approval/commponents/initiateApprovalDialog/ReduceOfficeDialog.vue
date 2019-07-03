@@ -194,7 +194,8 @@
           .validate((valid) => {
             if (valid) {
               this.reduce_office_form.date = this.myUtils.formatDate(this.reduce_office_form.date, 'yyyy-MM-dd')
-              let {house_type} = this.reduce_office_form
+              let {name, org} = this.user_info
+              let {house_type, date, reason, attachment} = this.reduce_office_form
               let data = {
                 ...this.reduce_office_form,
                 house_data: [
@@ -202,6 +203,15 @@
                     house_type: house_type,
                     house_info: this.house_info
                   }
+                ],
+                more_data: [
+                  {key: '申请人', value: name},
+                  {key: '办公室/宿舍', value: this.house_type[house_type]},
+                  {key: '所属部门', value: org},
+                  {key: '申请地址', value: this.house_info.house_name},
+                  {key: '申请日期', value: date},
+                  {key: '申请原因', value: reason},
+                  {key: '附件', value: attachment}
                 ]
               }
               this.$http.post(this.addUrl, data)

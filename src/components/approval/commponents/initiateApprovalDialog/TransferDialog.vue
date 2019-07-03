@@ -199,17 +199,20 @@
           .validate((valid) => {
             if (valid) {
               this.transfer_form.enroll = this.myUtils.formatDate(this.transfer_form.enroll, 'yyyy-MM-dd')
+              let {name, enroll, org} = this.user_info
+              let {change_reason, change_receipt, attachment} = this.transfer_form
               let data = {
                 ...this.transfer_form,
+                // TODO
                 more_data: [
-                  {key: '申请人', value: ''},
-                  {key: '入职时间', value: ''},
-                  {key: '原部门', value: ''},
+                  {key: '申请人', value: name},
+                  {key: '入职时间', value: enroll},
+                  {key: '原部门', value: org},
                   {key: '转入部门', value: ''},
                   {key: '转入岗位', value: ''},
-                  {key: '调岗原因', value: ''},
-                  {key: '交接单', value: ''},
-                  {key: '附件', value: ''}
+                  {key: '调岗原因', value: change_reason},
+                  {key: '交接单', value: change_receipt},
+                  {key: '附件', value: attachment}
                 ]
               }
               this.$http.post(this.addUrl, data)

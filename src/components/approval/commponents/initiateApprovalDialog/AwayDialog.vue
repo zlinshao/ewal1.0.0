@@ -176,11 +176,22 @@
           .validate((valid) => {
             if (valid) {
               this.away_form.date = this.myUtils.formatDate(this.away_form.date, 'yyyy-MM-dd')
+              let {name} = this.user_info
+              let {date, reason, attachment} = this.away_form
+              let {house_name} = this.house_info
               let data = {
                 ...this.away_form,
                 house_data: {
                   house_info: this.house_info
-                }
+                },
+                more_data: [
+                  {key: '离宿申请人', value: name},
+                  {key: '离宿地址', value: house_name},
+                  {key: '所属部门', value: ''},
+                  {key: '离宿日期', value: date},
+                  {key: '申请原因', value: reason},
+                  {key: '附件', value: attachment}
+                ]
               }
               this.$http.post(this.addUrl, data)
                 .then(res => {

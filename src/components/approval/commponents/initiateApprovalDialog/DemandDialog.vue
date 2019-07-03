@@ -289,18 +289,24 @@
           .validate((valid) => {
             if (valid) {
               this.demand_form.expect_date = this.myUtils.formatDate(this.demand_form.expect_date, 'yyyy-MM-dd')
+              let {attachment, content, reason, number, salary, year, expect_date, experience, now_count, gender, education} = this.demand_form
               let data = {
                 ...this.demand_form,
                 detail: [{...this.demand_form}],
                 more_data: [
-                  {key: '申请人', value: ''},
-                  {key: '入职时间', value: ''},
-                  {key: '原部门', value: ''},
-                  {key: '转入部门', value: ''},
-                  {key: '转入岗位', value: ''},
-                  {key: '调岗原因', value: ''},
-                  {key: '交接单', value: ''},
-                  {key: '附件', value: ''}
+                  {key: '申请部门', value: ''},
+                  {key: '所需人数', value: `最小值：${number.min}-最大值：${number.max}`},
+                  {key: '薪资范围', value: `最小值：${salary.min}-最大值：${salary.max}`},
+                  {key: '期望到岗日期', value: expect_date},
+                  {key: '需求岗位', value: ''},
+                  {key: '年龄范围', value: `最小值：${year.min}-最大值：${year.max}`},
+                  {key: '工作经验', value: this.experience[experience]},
+                  {key: '现有人数', value: now_count},
+                  {key: '性别', value: this.gender[gender]},
+                  {key: '学历', value: this.education[education]},
+                  {key: '申请原因', value: reason},
+                  {key: '招聘要求', value: content},
+                  {key: '附件', value: attachment},
                 ]
               }
               this.$http.post(`${this.url}/process/process`, data)

@@ -255,7 +255,8 @@
                   house_type: house_type,
                   house_info: this.house_info,
                   leader_org: this.org_leader,
-                }]
+                }],
+
               }
               this.$http.post(this.addUrl, data)
                 .then(res => {

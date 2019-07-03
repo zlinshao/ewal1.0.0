@@ -178,11 +178,21 @@
           .validate((valid) => {
             if (valid) {
               this.stay_form.date = this.myUtils.formatDate(this.stay_form.date, 'yyyy-MM-dd')
+              let {name, org} = this.user_info
+              let {date, reason, attachment} = this.stay_form
               let data = {
                 ...this.stay_form,
                 house_data: {
                   house_info: this.house_info
-                }
+                },
+                more_data: [
+                  {key: '住宿申请人', value: name},
+                  {key: '住宿地址', value: this.house_info.name},
+                  {key: '所属部门', value: org},
+                  {key: '入住日期', value: date},
+                  {key: '申请原因', value: reason},
+                  {key: '附件', value: attachment}
+                ]
               }
               this.$http.post(this.addUrl, data)
                 .then(res => {

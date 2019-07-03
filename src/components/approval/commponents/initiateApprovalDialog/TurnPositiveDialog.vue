@@ -197,7 +197,21 @@
           .validate((valid) => {
             if (valid) {
               this.turn_positive_form.enroll = this.myUtils.formatDate(this.turn_positive_form.enroll, 'yyyy-MM-dd')
-              let data = this.turn_positive_form
+              let {name, enroll} = this.user_info
+              let {positive_salary, expect_forward_time, trial_salary, forward_time, attachment} = this.turn_positive_form
+              let data = {
+                ...this.turn_positive_form,
+                more_data: [
+                  {key: '申请人', value: name},
+                  {key: '实际转正日期', value: forward_time},
+                  {key: '试用期薪资', value: trial_salary},
+                  {key: '入职时间', value: enroll},
+                  {key: '预期转正日期', value: expect_forward_time},
+                  {key: '转正后薪资', value: positive_salary},
+                  {key: '自我评价', value: reason},
+                  {key: '附件', value: attachment}
+                ]
+              }
               this.$http.post(this.addUrl, data)
                 .then(res => {
                   this.$LjMessageEasy(res, () => {

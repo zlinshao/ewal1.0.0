@@ -384,7 +384,20 @@
           .validate((valid) => {
             if (valid) {
               newForm.date = this.myUtils.formatDate(newForm.date, 'yyyy-MM-dd')
-              this.$http.post(this.addUrl, newForm)
+              let {title, date, file_info, content, sanction_info} = newForm
+              let data = {
+                ...newForm,
+                more_data: [
+                  {key: '公告类型', value: ''},
+                  {key: '标题', title},
+                  {key: '发送范围', value: ''},
+                  {key: '公告日期', value: date},
+                  {key: '附件', value: file_info},
+                  {key: '正文', value: content},
+                  {key: '详情', value: sanction_info},
+                ]
+              }
+              this.$http.post(this.addUrl, data)
                 .then(res => {
                   this.$LjMessageEasy(res, () => {
                     this.notice_dialog_visible = false;

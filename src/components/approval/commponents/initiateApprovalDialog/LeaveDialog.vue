@@ -208,7 +208,24 @@
           .validate((valid) => {
             if (valid) {
               this.leave_form.enroll = this.myUtils.formatDate(this.leave_form.enroll, 'yyyy-MM-dd')
-              let data = this.leave_form
+              let {name, enroll} = this.user_info
+              let {attachment, seniority, change_date, change_reason, change_receipt} = this.leave_form
+              let data = {
+                ...this.leave_form,
+                more_data: [
+                  {key: '申请人', value: name},
+                  {key: '入职时间', value: enroll},
+                  {key: '工作交接人', value: ''},
+                  {key: '所属部门', value: ''},
+                  {key: '工龄', value: seniority},
+                  {key: '所属岗位', value: ''},
+                  {key: '离职日期', value: change_date},
+                  {key: '离职原因', value: change_reason},
+                  {key: '交接单', value: change_receipt},
+                  {key: '附件', value: attachment},
+                ]
+              }
+
               this.$http.post(this.addUrl, data)
                 .then(res => {
                   this.$LjMessageEasy(res, () => {

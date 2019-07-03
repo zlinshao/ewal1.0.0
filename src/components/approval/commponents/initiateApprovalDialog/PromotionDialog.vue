@@ -221,7 +221,23 @@
           .validate((valid) => {
             if (valid) {
               this.promotion_form.enroll = this.myUtils.formatDate(this.promotion_form.enroll, 'yyyy-MM-dd')
-              let data = this.promotion_form
+              let {name, enroll, org, position} = this.user_info
+              let {old_salary, now_salary, change_reason, change_receipt, attachment} = this.promotion_form
+              let data = {
+                ...this.promotion_form,
+                more_data: [
+                  {key: '申请人', value: name},
+                  {key: '入职时间', value: enroll},
+                  {key: '原有薪资', value: old_salary},
+                  {key: '所属部门', value: org},
+                  {key: '晋升后部门', value: ''},
+                  {key: '晋升后薪资', value: now_salary},
+                  {key: '所属岗位', value: position},
+                  {key: '晋升原因', value: change_reason},
+                  {key: '交接单', value: change_receipt},
+                  {key: '附件', value: attachment},
+                ]
+              }
               this.$http.post(this.addUrl, data)
                 .then(res => {
                   this.$LjMessageEasy(res, () => {

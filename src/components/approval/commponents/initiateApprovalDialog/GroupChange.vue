@@ -197,7 +197,21 @@
           .validate((valid) => {
             if (valid) {
               this.group_change_form.date = this.myUtils.formatDate(this.group_change_form.date, 'yyyy-MM-dd')
-              let data = this.group_change_form
+              let {name} = this.user_info
+              let {date, change_reason, change_receipt, attachment} = this.group_change_form
+              let data = {
+                ...this.group_change_form,
+                more_data: [
+                  {key: '申请人', value: name},
+                  {key: '转入岗位', value: ''},
+                  {key: '调岗组员', value: ''},
+                  {key: '调岗日期', value: date},
+                  {key: '转入部门', value: ''},
+                  {key: '调岗原因', value: change_reason},
+                  {key: '交接单', value: change_receipt},
+                  {key: '附件', value: attachment},
+                ]
+              }
               this.$http.post(this.addUrl, data)
                 .then(res => {
                   this.$LjMessageEasy(res, () => {
