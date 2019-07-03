@@ -82,6 +82,7 @@
     <lj-dialog
       :visible.sync="publish_notice_dialog_visible"
       :size="{width: 530 + 'px',height: 650 + 'px'}"
+      @close="initForm()"
     >
       <div class="dialog_container">
         <div class="dialog_header">
@@ -609,6 +610,11 @@
       showPublishNoticeDialog() {
         this.publish_notice_dialog_title = '发布公告';
         this.publish_notice_dialog_visible = true;
+        this.initForm();
+      },
+
+      //初始化form表单
+      initForm() {
         this.publish_notice_form = {
           type_id: null,//公告类型id
           title: '',//标题
@@ -626,7 +632,6 @@
               pay_status: 1
             }
           ],
-
         };
       },
 
@@ -723,8 +728,7 @@
             /*mData.sanction_info = _.forEach(mData.sanction_info,(o)=> {
               o.user_id = [parseInt(o.user_id)];
             });*/
-            this.publish_notice_form = _.cloneDeep(mData);
-            //this.publish_notice_form.file_info = _.cloneDeep(res.data.file_info);
+            this.publish_notice_form = mData;
           }
         })
       },
