@@ -6,7 +6,7 @@ import ComingSoon from '../components/common/ComingSoon';
 import LjUpload from '../components/common/lightweightComponents/lj-upload';
 import DropdownList from '../components/common/lightweightComponents/dropdown-list';
 import { DROPDOWN_CONSTANT, GLOBAL_CONSTANT } from '@/assets/js/allConstantData';
-import HouseCommunity from '../components//common/houseCommunity'
+import HouseCommunity from '../components/common/houseCommunity'
 export default {
     install(Vue, options) {
         /*全局组件及全局常量注册*/

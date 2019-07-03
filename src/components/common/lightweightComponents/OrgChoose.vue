@@ -48,6 +48,7 @@
           num:Infinity,
         },// 组织架构配置 选择数量 num
         inputContent: '',
+        org_name:[],
         dropdownListWidth: 320
       }
     },
@@ -59,9 +60,11 @@
               org_id:val
             };
             this.$http.get(`${this.url}organization/organization`,params).then(res=> {
-              this.inputContent = _.map(res.data.data,'name').join(',');
+              this.org_name = _.map(res.data.data,'name');
+              this.inputContent = this.org_name.join(',');
             });
           }else {
+            this.org_name = [];
             this.inputContent = '';
           }
         },
