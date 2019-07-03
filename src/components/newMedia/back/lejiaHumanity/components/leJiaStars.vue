@@ -58,7 +58,7 @@
               <el-input width='700' v-model="form.title"></el-input>
             </el-form-item>
             <el-form-item label="封面图">
-              <lj-upload size="50" v-model="form.file_info"></lj-upload>
+              <lj-upload size="50"  v-model="form.file_info"></lj-upload>
             </el-form-item>
             <el-form-item label="文章内容">
               <div class="item_content">
@@ -166,38 +166,35 @@ export default {
     //发布
 
     postReceivable_tag(){
+      console.log('this.form.', this.form)
       let param = {
         star_id: this.form.userid[0],
         title: this.form.title,
         content: this.form.content,
         cover: this.form.file_info[0]
       }
-      if(param.star_id == undefined|| this.form.userid.length>0){
+      if(param.star_id == undefined|| this.form.userid.length<0){
         console.log(this.form.userid.length>0)
         this.$LjNotify('error', {
             title: '失败',
             message: '人员不能为空且只能选一个',
           });
-      }
-      else if(param.title == ''){
+      }else if(param.title == ''){
         this.$LjNotify('error', {
             title: '失败',
             message: '标题不能为空',
           });
-      }
-      else if(param.cover == undefined|| this.form.file_info.length>0){
+      }else if(param.cover == undefined || this.form.file_info.length<1 ||this.form.file_info.length >1){
         this.$LjNotify('error', {
             title: '失败',
             message: '封面图不能为空且只能选一个',
           });
-      }
-      else if(param.content == ''){
+      }else if(param.content == ''){
         this.$LjNotify('error', {
             title: '失败',
             message: '内容不能为空',
           });
-      }
-      else{
+      } else{
         this.$http.post(globalConfig.newMedia_sever + '/api/humanity/star',param).then(res => {
           if (res.status === 200) {
             this.add_visible = false
@@ -211,6 +208,7 @@ export default {
     getLeJiaStarList(){
       this.starList = []
       this.$http.post(globalConfig.newMedia_sever + '/api/humanity/star/history',this.params).then(res => {
+        console.log('res', res);
         if (res.status === 200) {
           this.total = res.data.total
           for(let i = 0;i<res.data.data.length;i++){

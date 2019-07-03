@@ -478,7 +478,7 @@ export default {
           });
       }
       else{
-        this.$http.post(globalConfig.newMedia_sever + '/api/article/hot', paramsForm).then(res => {
+        this.$http.post(globalConfig.newMedia_sever + '/api/article/'+this.type, paramsForm).then(res => {
           if(res.status == 200){
             this.add_visible = false;
             // this.callbackSuccess(res);
