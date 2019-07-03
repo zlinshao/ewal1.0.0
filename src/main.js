@@ -35,12 +35,12 @@ import 'video.js/dist/video-js.css'
 import './assets/js/approval/dictionary.js'
 import './assets/js/approval/approval.js'
 
-Vue.prototype.$echarts = echarts
+Vue.prototype.$echarts = echarts;
 Vue.use(Boss)
 Vue.use(Vuex)
 Vue.use(fun)
 Vue.use(ElementUI)
-Vue.prototype.$echarts = echarts
+// Vue.prototype.$echarts = echarts
 Vue.prototype.myUtils = myUtils
 
 Vue.config.productionTip = false
@@ -56,7 +56,7 @@ axios.defaults.headers.common['Authorization'] = storage.get('Authorization');//
 
 
 
-Vue.prototype.$echarts = echarts;
+// Vue.prototype.$echarts = echarts;
 Vue.use(Boss);
 Vue.use(_);
 Vue.use(Vuex);

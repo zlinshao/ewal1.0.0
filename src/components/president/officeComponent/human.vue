@@ -1,6 +1,6 @@
 <template>
   <div id="human">
-<!--    <DatePicker @confirmDate="comfirm"></DatePicker>-->
+    <DatePicker @confirmDate="comfirm"></DatePicker>
    2、人力资源
   </div>
 </template>

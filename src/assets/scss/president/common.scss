@@ -1,0 +1,103 @@
+
+//城市选择的地址
+.location{
+  padding-left: 50px;
+  margin: auto;
+  img{
+    width: 17px;
+    height: 21px;
+    vertical-align: middle;
+  }
+  span{
+    font-size: 14px;
+    color: #fff;
+  }
+}
+
+//单位(蓝色)
+.unit_blue{
+  font-size: 12px;
+  color: #33C8FF;
+  padding-left: 5px;
+}
+//单位(白色)
+.unit_white{
+  font-size: 12px;
+  color: #fff;
+  padding-left: 5px;
+}
+//边框设置
+.border_bg {
+  border: 2px solid;
+  border-radius: 10px;
+  border-image: linear-gradient(270deg, rgba(0, 255, 255, 0.3), rgba(0, 255, 255, 1), rgba(0, 255, 255, 0.3)) 2 2;
+  background: rgba(51, 123, 255, 0.15);
+}
+//去除li标签的点
+li{
+  list-style-type:none;
+}
+
+//卡片
+.red_card, .yellow_card , .green_card , .blue_card{
+  border-radius:5px;
+  color:#fff;
+}
+.red_card{
+  background:linear-gradient(228deg,rgba(243,93,134,1) 0%,rgba(255,165,130,1) 100%);
+}
+.yellow_card{
+  background:linear-gradient(228deg,rgba(255,158,29,1) 0%,rgba(255,222,128,1) 100%);
+}
+.green_card{
+  background:linear-gradient(51deg,rgba(143,189,91,1) 0%,rgba(17,154,139,1) 100%);
+}
+.blue_card{
+  background:linear-gradient(51deg,rgba(118,255,246,1) 0%,rgba(41,138,193,1) 100%);
+}
+
+//圆点图例
+.title_legend{
+  .legend_icon{
+    display: inline-block;
+    width:16px;
+    height:16px;
+    border-radius: 16px;
+    margin-right: 10px;
+  }
+  .legend_name{
+    font-size:16px;
+    color: #fff;
+  }
+}
+
+//方点图例
+.warning_legend{
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  li{
+    color: #6B7298;
+    font-size:10px;
+    margin: 0 20px 5px 0;
+    .square_iocn1, .square_iocn2,  .square_iocn3, .square_iocn4 {
+      display: inline-block;
+      width:11px;
+      height:11px;
+      margin-right: 3px;
+    }
+    .square_iocn1{
+      background:#00CE28;
+    }
+    .square_iocn2{
+      background:#FDC322;
+    }
+    .square_iocn3{
+      background:#EF600C;
+    }
+    .square_iocn4{
+      background:#F90505;
+    }
+  }
+}
+
