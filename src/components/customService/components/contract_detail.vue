@@ -184,7 +184,7 @@
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="备注条款">
-                    <span>{{ontractDetail.remark_clause || '--'}}</span>
+                    <span>{{contractDetail.remark_clause || '--'}}</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
