@@ -119,7 +119,12 @@
             title: '暂不处理',
             component: ApprovalList,
             props: {
-              tabsData: []
+              tabsData: [
+                {
+                  label: '暂缓',
+                  name: 'temporarily'
+                },
+              ]
             }
           }
         ],

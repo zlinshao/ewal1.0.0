@@ -3,7 +3,15 @@
     <lj-dialog :visible.sync="process_details_dialog_visible"
                :size="size"
                @close="cancelProcess">
-      <div class="dialog_container">
+      <!--      拼命加载中-->
+      <div v-if="isLoading"
+           style="width: 90%;height: 100%;"
+           v-loading="loading"
+           element-loading-text="拼命加载中"
+           element-loading-spinner="el-icon-loading"
+           element-loading-background="rgba(255, 255, 255, 0)">
+      </div>
+      <div v-if="!isLoading" class="dialog_container">
         <div class="dialog_header">
           <h3>{{base_info.title}}</h3>
         </div>
@@ -31,11 +39,7 @@
               </div>
 
               <!--      右侧流程-->
-              <div class="right-process"
-                   v-loading="loading"
-                   element-loading-text="拼命加载中"
-                   element-loading-spinner="el-icon-loading"
-                   element-loading-background="rgba(0, 0, 0, 0.1)">
+              <div class="right-process">
                 <el-timeline>
                   <!--                  基础信息-->
                   <el-timeline-item placement="top"
@@ -168,7 +172,7 @@
           width: '1000px',
           height: '800px'
         },
-        loading: false,
+        loading: true,
         process_details_dialog_visible: false,
         operateBtn: [
           {
@@ -216,7 +220,19 @@
             org_name: ''
           }
         ],
-        url
+        url,
+        /**拼命加载中 */
+        load_user: true,
+        load_info: true,
+        load_record: true,
+      }
+    },
+    computed: {
+      isLoading() {
+        if (this.load_user && this.load_info && this.load_record) {
+          return true
+        }
+        return false
       }
     },
     methods: {
@@ -229,10 +245,24 @@
       },
       /**获取流程详情 */
       getProcessDetails(url) {
-        this.showLoading(true)
+        // this.showLoading(true)
+        this.base_info = {
+          attachment: [],
+          data: {
+            more_data: []
+          },
+          user: {
+            avatar: "",
+            name: "",
+            result: "",
+            time: "",
+          }
+        },
+          this.load_info = true
         this.$http.get(url)
           .then(res => {
-            this.showLoading(false)
+            this.load_info = false
+            // this.showLoading(false)
             if (res.code === '20020') {
               this.base_info = res.data
             }
@@ -240,10 +270,20 @@
       },
       /**获取审批记录 */
       getApprovalRecord(url) {
-        this.showLoading(true)
+        // this.showLoading(true)
+        this.activities = [
+          {
+            user: {
+              avatar: '',
+              name: '',
+            }
+          }
+        ]
+        this.load_record = true
         this.$http.get(url)
           .then(res => {
-            this.showLoading(false)
+            this.load_record = false
+            // this.showLoading(false)
             if (res.httpCode === 200) {
               delete res.httpCode
               this.activities = res
@@ -252,8 +292,10 @@
       },
       /**获取个人信息 */
       getLoginUser(assignee_id) {
+        this.load_user = true
         this.$http.get(`${this.url}staff/user/${assignee_id}?staff=0`)
           .then(res => {
+            this.load_user = false
             if (res.code == 20020) {
               let {name, org} = res.data
               let assigneeObj = {

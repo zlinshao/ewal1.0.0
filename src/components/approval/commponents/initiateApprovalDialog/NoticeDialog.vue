@@ -79,7 +79,7 @@
                 <el-col :span="8">
                   <el-form-item required prop="type_id" label="公告类型">
                     <dropdown-list ref="dropdown1" title="必选" :url="`${this.url}announcement/announcement_type`"
-                                   width="220px"
+                                   width="220"
                                    v-model="notice_form.type_id">
                     </dropdown-list>
                   </el-form-item>
@@ -131,7 +131,7 @@
                   <el-form-item label="类型">
                     <dropdown-list :json-arr="DROPDOWN_CONSTANT.NOTICEQUESTIONNAIRE.PUBLISHNOTICE.TYPE"
                                    title="请选择类型"
-                                   width="220px"
+                                   width="220"
                                    v-model="notice_form.sanction_info[index].sanction_type">
                     </dropdown-list>
                   </el-form-item>
@@ -352,7 +352,6 @@
             o.user_id = o.user_id.join();
           }
           if (index != 0) {
-            debugger
             if (o.user_id && o.sanction_type && o.money) {
               o.user_id = parseInt(o.user_id);
             } else {
