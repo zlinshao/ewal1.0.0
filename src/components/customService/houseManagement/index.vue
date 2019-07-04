@@ -73,7 +73,7 @@
                     <span v-if="house_detail.floor">{{ house_detail.floor.this }}/{{ house_detail.floor.all }}</span>
                   </div>
                   <div class="le_text">
-                    <span>空置{{ current_house.warning_current_days }}天 / 剩余 {{ current_house.month }}月 建议{{ current_house.suggest_price }}/月 {{ current_house.month }}月付</span>
+                    <span>空置{{ current_house.day }}天 / 剩余 {{ current_house.month }}月 建议{{ current_house.suggest_price }}/月 {{ current_house.month }}月付</span>
                   </div>
                 </div>
               </div>
