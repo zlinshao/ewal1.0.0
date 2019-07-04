@@ -1,8 +1,8 @@
 <template>
     <div id="videoLearning">
         <div class="video-lists">
-            <div class="video-list-info" v-for="(item,index) in dataLists"  @click.stop="detail(item)">
-                <div class="video-box" @mouseleave="onMousteOut()" @mouseenter="onMousteIn(index)"
+            <div class="video-list-info" v-for="(item,index) in dataList"  @click.stop="detail(item)">
+                <div class="video-box" @mouseleave="onMouseOut()" @mouseenter="onMouseIn(index)"
                     >
                     <div class="video-box-top justify-end items-bet" v-show="is_show&&index===current">
                         <span><i @click.stop="edit(item)">编辑</i><i
@@ -66,7 +66,7 @@
                    @close="visible = false">
             <div class="dialog_container borderNone">
                 <div class="dialog_header">
-                    <h3>{{flag===1?'编辑视频':flag===2?'新增视频':flag===3?'讲师详情':''}}</h3>
+                    <h3>{{flag===1?'编辑视频':flag===2?'新增视频':flag===3?'视频详情':''}}</h3>
                 </div>
                 <div class="dialog_main">
                     <el-form ref="form" :model="form" label-width="80px" size="small">
@@ -74,12 +74,11 @@
                             <el-input v-model="form.name" size="small" :disabled="flag===3"></el-input>
                         </el-form-item>
                         <el-form-item label="可见岗位">
-                            <el-input v-model="form.position_name" size="small" @focus="postModule=true"
-                                      :disabled="flag===3"></el-input>
+                          <post-choose width="260" v-model="form.position" :disabled="flag===3"></post-choose>
                         </el-form-item>
 
                         <el-form-item label="上传视频" v-if="flag===2||flag===1">
-                            <lj-upload v-model="form.file_info" size="40"
+                            <lj-upload :limit-easy="['video']" v-model="form.file_info" :max-size="1" size="40"
                                        style="position: absolute; top: -12px;"></lj-upload>
                         </el-form-item>
                         <el-form-item label="视频附件" v-if="flag===3">
@@ -99,26 +98,18 @@
             </div>
         </lj-dialog>
 
-        <PostOrgan :module="postModule" @close="hiddenPost"></PostOrgan>
-
 
     </div>
 </template>
 
 <script>
     import {leJiaCollegeMenu} from '../../../assets/js/allModuleList.js';
-    import LjDialog from '../../common/lj-dialog.vue';
-    import PostOrgan from '../../common/postOrgan.vue';
-    import Upload from '../../common/upload';
     import ImgSlider from '@/components/common/lightweightComponents/ImgSlider.vue';
     import LjUpload from '../../common/lightweightComponents/lj-upload';
 
     export default {
         name: "videoLearning",
         components: {
-            LjDialog,
-            PostOrgan,
-            Upload,
             LjUpload,
             ImgSlider
         },
@@ -128,7 +119,6 @@
                 count: 0,
                 flag: 1,
                 showFinMenuList: false,
-                postModule: false,
                 is_show: true,
                 delete_visible: false,
                 visible: false,
@@ -139,7 +129,6 @@
                     name: '',
                     file_info:[],//视频的七牛云文件数组
                     position: '',//岗位id数组
-                    position_name:'',//岗位名称
                     file_id:'',//视频的七牛云文件id
                 },
                 params: {//查询参数
@@ -152,11 +141,11 @@
                     export: '',
                     all:1
                 },
-                dataLists: [],
+                dataList: [],
             }
         },
         mounted() {
-            this.getDataLists();
+            this.getDataList();
         },
         created() {
             this.$bus.on('add', this.getVal)
@@ -198,14 +187,6 @@
                 })
 
             },
-            //获取岗位信息
-            hiddenPost(ids, names, arr) {
-                if (ids !== 'close') {
-                    this.postModule = false;
-                    this.form.position = ids;
-                    this.form.position_name = names;
-                }
-            },
             callbackSuccess(res) {
                 if (res.status === 200) {
                     this.$LjNotify('success', {
@@ -213,7 +194,7 @@
                         message: res.msg,
                         subMessage: '',
                     });
-                    this.getDataLists();
+                    this.getDataList();
                 } else {
                     this.$LjNotify('error', {
                         title: '失败',
@@ -225,7 +206,7 @@
             //换页
             handleChangePage(page) {
                 this.params.offset = page;
-                this.getDataLists();
+                this.getDataList();
             },
             //新增弹窗
             getVal(val) {
@@ -274,7 +255,7 @@
                 console.log(this.form.file_info[0]);
                 let paramsForm={
                     name:this.form.name,
-                    file_id:this.form.file_id[0],
+                    file_id:this.form.file_info[0],
                     position:this.form.position
                 };
                 if (type === 1) {
@@ -305,27 +286,28 @@
                     this.current_item = '';
                 })
             },
-            //获取列表
-            getDataLists() {
-                // this.showLoading(true);
+            //获取视频列表
+            getDataList() {
+                this.showLoading(true);
                 this.$http.get(globalConfig.leJiaCollege_server + '/api/video/study', this.params).then(res => {
                     this.showLoading(false);
+                    debugger
                     if (res.status === 200) {
-                        this.dataLists = res.data.data;
+                        this.dataList = res.data.data;
                         this.count = res.data.total;
                     } else {
-                        this.dataLists = [];
+                        this.dataList = [];
                         this.count = 0;
                     }
                 })
             },
 
 
-            onMousteIn: function (index) {
+            onMouseIn: function (index) {
                 this.is_show = true; //鼠标移入显示
                 this.current = index;
             },
-            onMousteOut: function (index) {
+            onMouseOut: function (index) {
                 this.is_show = false; //鼠标移出隐藏
                 this.current = null;
             },

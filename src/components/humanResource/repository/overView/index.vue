@@ -1172,7 +1172,7 @@
 
       //删除物品
       async deleteGoods() {
-        this.$LjConfirm().then(async () => {
+        this.$LjConfirm({icon:'warning'}).then(async () => {
           let goodsList = this.tableSettingData['goods']?.multiSelection;
           if (goodsList && goodsList.length > 0) {
             for (let item of goodsList) {
@@ -1400,7 +1400,8 @@
 
       //删除某个category 资产目录
       handleDeleteCategory(row) {
-        this.$LjConfirm().then(res => {
+        debugger
+        this.$LjConfirm({icon:'warning'}).then(res => {
           this.$http.delete(`${this.url}eam/category/${row.id}`).then(res => {
             if (res.code.endsWith('0')) {
               this.$LjNotify('success', {

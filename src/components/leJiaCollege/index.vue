@@ -1,6 +1,5 @@
 <template>
     <div id="leJiaCollege">
-      <coming-soon></coming-soon>
         <div class="mainList" :style="{'height': this.mainListHeight(-89) + 'px'}">
             <div class="leJiaCollege-menu">
                 <div class="leJiaCollege-menu-info flex-center" v-for="(item,index) in menuType">

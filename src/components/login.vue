@@ -68,10 +68,14 @@
     mounted() {
     },
     activated() {
+      this.listenOnKeyDownEnter(true);
       let that = this;
       setTimeout(function () {
         that.loginRotate = true;
       }, 100);
+    },
+    deactivated() {
+      this.listenOnKeyDownEnter(false);
     },
     watch: {
       $route: {
@@ -220,6 +224,21 @@
         if (message) {
           this.$LjMessage('warning', {title: '警告', msg: message});
           return;
+        }
+      },
+
+      //监听keydown事件
+      listenOnKeyDownEnter(flag = false) {
+        let _this = this;
+        document.onkeydown = function(e){
+          e = window.event || e;
+          if(e.keyCode=='13'||e.keyCode=='108'){
+            if (flag) {
+              _this.login();
+            } else {
+              return false;
+            }
+          }
         }
       },
     },

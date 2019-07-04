@@ -831,7 +831,7 @@
       </div>
     </lj-dialog>
 
-    <work-info :work-info="work_info" :event-data-list="event_data_list" @change="handleChangeDate"></work-info>
+<!--    <work-info :work-info="work_info" :event-data-list="event_data_list" @change="handleChangeDate"></work-info>-->
 
     <!--模块入口-->
     <MenuList :list="humanResource" :module="visibleStatus" :backdrop="true" @close="visibleStatus = false"></MenuList>
