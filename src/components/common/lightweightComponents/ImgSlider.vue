@@ -309,12 +309,17 @@
       //获取图片
       getPictureUrl(val) {
         let params = {"id": val};
-        this.$http.post(`${this.url}public/pic`, params).then(res => {
-
+        this.$http.post(`${globalConfig.upload_sever}api/v1/get_urls`,params).then(res=> {
           if (res.code.endsWith('0')) {
             this.sliders = res.data;
           }
-        }).catch();
+        });
+        // this.$http.post(`${this.url}public/pic`, params).then(res => {
+
+        //   if (res.code.endsWith('0')) {
+        //     this.sliders = res.data;
+        //   }
+        // }).catch();
       },
 
 

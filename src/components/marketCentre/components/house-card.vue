@@ -27,7 +27,7 @@
                   </el-tooltip>
                   <div class="text">
                     <p><b class="type_icon"></b>{{ item.hk }}</p>
-                    <p><b class="info_icon"></b>空置{{ item.warning_current_days }}天 / 剩余 {{ item.month }}月</p>
+                    <p><b class="info_icon"></b>空置{{ item.day }}天 / 剩余 {{ item.month }}月</p>
                     <p><b class="price_icon"></b>建议{{ item.suggest_price }}/月 {{ item.month }}月付</p>
                   </div>
                   <div class="notice_info flex-center">
