@@ -13,25 +13,25 @@
         </h2>
       </div>
       <div class="items-center listTopRight">
-        <el-button id='active-warning' @click='changeTag_Status(1)' :class="[tag_status == 1?'el-button-active':'']">收房</el-button>
-        <el-button id='active-primary' @click='changeTag_Status(2)' :class="[tag_status==2?'el-button-active':'']">租房</el-button>
+        <el-button id='active-warning' @click='changeTag_Status(1)' :class="[contract_type == 1?'el-button-active':'']">收房</el-button>
+        <el-button id='active-primary' @click='changeTag_Status(2)' :class="[contract_type==2?'el-button-active':'']">租房</el-button>
         <div></div>
         <div class="icons search" @click="highSearch"></div>
       </div>
     </div>
     <div class="mainListTable" :style="{'height': this.mainListHeight() + 'px'}">
       <el-table :data="tableData" :height="this.mainListHeight(30) + 'px'" highlight-current-row @row-dblclick="handleGetDetail"
-        header-row-class-name="tableHeader" style="width: 100%" :key="'table'+tag_status">
+        header-row-class-name="tableHeader" style="width: 100%" :key="'table'+contract_type">
         <el-table-column align="center" label="签约时间">
           <template slot-scope="scope">
-            <i class='table_icon' v-if='!cookieArr[scope.row.contract_id] || cookieArr[scope.row.contract_id] < scope.row.update_time'></i>
+            <i class='table_icon' v-if="scope.row.read_status==2"></i>
             <span>{{scope.row.sign_at}}</span>
           </template>
         </el-table-column>
         <el-table-column key="合同编号" align="center" prop="contract_number" label="合同编号"></el-table-column>
         <el-table-column show-overflow-tooltip key="地址" align="center" prop="house_name" label="地址"></el-table-column>
         <el-table-column key="合同性质" align="center" prop="type" label="合同性质"></el-table-column>
-        <el-table-column show-overflow-tooltip key="收房价格" align="center" label="收房价格" v-if='tag_status == 1'>>
+        <el-table-column show-overflow-tooltip key="收房价格" align="center" label="收房价格" v-if='contract_type == 1'>>
           <template slot-scope="scope">
             <div v-if="scope.row.month_price && scope.row.month_price.length > 0">
               <span v-for="(item,index) in scope.row.month_price">
@@ -40,7 +40,7 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column key="租房价格" align="center" label="租房价格" v-if='tag_status == 2'>
+        <el-table-column key="租房价格" align="center" label="租房价格" v-if='contract_type == 2'>
           <template slot-scope="scope">
             <div v-if="scope.row.month_price && scope.row.month_price.length > 0">
               <span v-for="(item,index) in scope.row.month_price">
@@ -60,7 +60,7 @@
           <i class="el-icon-d-arrow-right"></i>
         </div>
         <div class="page">
-          <el-pagination @current-change="handleCurrentChange" :current-page="currentPage" :page-size="10" :total="tableDataCount"
+          <el-pagination @current-change="handleCurrentChange" :current-page="currentPage" :page-size="12" :total="tableDataCount"
             layout="total,jumper,prev,pager,next">
           </el-pagination>
         </div>
@@ -71,9 +71,8 @@
     <SearchHigh :module="showSearch" :show-data="searchData" @close="hiddenModule"></SearchHigh>
 
     <!--合同详情-->
-    <contractDetail :visible="contract_detail_visible" :moduleData='currentRow' :tagStatus='tag_status' :chooseTab='chooseTab' :showFooter='true'
-      :showRelated='false' :disabled='contract_disable' :showData='contract_showData' @close="handleCloseDetail"
-      @setCookie='cookieChange' />
+    <contractDetail :visible="contract_detail_visible" :moduleData='currentRow' :tagStatus='contract_type' :chooseTab='chooseTab' :showFooter='true'
+      :showRelated='false' :disabled='contract_disable' :showData='contract_showData' @close="handleCloseDetail"/>
 
     <!--menu-->
     <MenuList :list="customService" :module="visibleStatus" :backdrop="true" @close="visibleStatus = false"></MenuList>
@@ -116,7 +115,7 @@ export default {
         }
       ],
       chooseTab: 1,  // 待审核 跟进中 已完成
-      tag_status: 1, // 收房 租房
+      contract_type: 1, // 收房 租房
       tableData: [],  // 列表
       tableDataCount: 0,
 
@@ -130,14 +129,12 @@ export default {
       contract_detail_visible: false,
       contractDetail: null,
       currentPage: 1,
-      cookieArr: {},
       market_server: globalConfig.market_server,
       currentRow: null
     }
   },
   created () {
     this.getDateList();
-    this.cookieArr = this.getCookie('cookieArr') ? JSON.parse(this.getCookie('cookieArr')) : {};
   },
   computed: {
     contract_disable () {
@@ -153,33 +150,12 @@ export default {
       this.visibleStatus = !this.visibleStatus;
       this.$store.dispatch('route_animation');
     },
-    getCookie (cname) {
-      let name = cname + "=";
-      let ca = document.cookie.split(';');
-      for (let i = 0; i < ca.length; i++) {
-        let c = ca[i].trim();
-        if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
-      }
-      return "";
-    },
-    cookieChange () {
-      if(!this.currentRow.contract_id) return;
-      this.$set(this.cookieArr, this.currentRow.contract_id, new Date().getTime())
-      this.setCookie('cookieArr', JSON.stringify(this.cookieArr), 7)
-      this.cookieArr = this.getCookie('cookieArr') ? JSON.parse(this.getCookie('cookieArr')) : {}
-    },
-    setCookie (cname, cvalue, exdays) {
-      let d = new Date();
-      d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-      let expires = "expires=" + d.toGMTString();
-      document.cookie = cname + "=" + cvalue + "; " + expires;
-    },
     //获取资料审核列表
     getDateList () {
       if(!this.validatePermission('Data-Audit-Read')) return;
       this.showLoading(true);
       let params = {
-        contract_type: this.tag_status, // 收房 租房
+        contract_type: this.contract_type, // 收房 租房
         doc_Status: this.chooseTab == 1 ? "review" : (this.chooseTab == 2 ? "flowing" : "published"), // 待审核 跟进中 已完成
         sign_date_min: this.searchParams.dateTime[0] || '',
         sign_date_max: this.searchParams.dateTime[1] || '',
@@ -187,7 +163,8 @@ export default {
         signer: this.searchParams.signer || '',
         org: this.searchParams.org || '', // 部门
         search: this.searchParams.search || '',
-        limit: 10,
+        is_read: this.searchParams.is_read || '',//是否已读
+        limit: 12,
         page: this.currentPage
       }
 
@@ -212,15 +189,15 @@ export default {
     },
     // 切换 租房 收房
     changeTag_Status (id) {
-      if (this.tag_status !== id) {
-        this.tag_status = id
+      if (this.contract_type !== id) {
+        this.contract_type = id
         this.getDateList()
       }
     },
     //高级搜索
     highSearch () {
       this.searchData = dataAuditSearch;
-      if (this.tag_status == 2) {
+      if (this.contract_type == 2) {
         this.searchData.data[1].value = [
           //1-新租，2-转租，3-续租，4-未收先租，5-调租
           {
@@ -245,7 +222,7 @@ export default {
           }
         ]
       }
-      if(this.tag_status==1) {
+      if(this.contract_type==1) {
         this.searchData.data[1].value =  [{
                     id: 1,
                     title: '新收'
@@ -272,7 +249,20 @@ export default {
       this.currentRow = row;
       if(!this.validatePermission('Data-Audit-Operate')) return;
       this.contract_detail_visible = true;
+      this.changeContractAlreadyRead(row);
     },
+
+    //更改合同状态为已读
+    changeContractAlreadyRead(row) {
+      let params = {
+        contract_type:this.contract_type,
+        contract_id: row.contract_id,
+      };
+      this.$http.post(`${this.market_server}v1.0/market/contract/already-read`,params).then(res=> {
+        console.log(res.message)
+      });
+    },
+
     // 关闭详情
     handleCloseDetail () {
       this.contract_detail_visible = false

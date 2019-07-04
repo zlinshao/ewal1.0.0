@@ -383,6 +383,26 @@ export const dataAuditSearch = {
                 }
             ]
         },
+      {
+        keyType: 'radio',
+        title: '是否已读',
+        keyName: 'is_read',
+        dataType: [],
+        value: [
+          {
+            id: 0,
+            title: '不限'
+          },
+          {
+            id: 1,
+            title: '已读'
+          },
+          {
+            id: 2,
+            title: '未读'
+          }
+        ]
+      },
         {
             keyType: 'staff',
             title: '开单人',
@@ -1967,7 +1987,7 @@ export const officeHightSearch={
             value: {
                 num: 1
             }
-        },        
+        },
         {
             keyType: 'depart',
             title: '部门',
@@ -2027,7 +2047,7 @@ export const dormitoryHightSearch={
             value: {
                 num: 1
             }
-        },        
+        },
         {
             keyType: 'depart',
             title: '部门',
@@ -2048,7 +2068,7 @@ export const dormitoryHightSearch={
             value: {
                 num: 1
             }
-        }, 
+        },
         {
             keyType: 'input',
             title: '剩余床位数',
@@ -2058,7 +2078,7 @@ export const dormitoryHightSearch={
             value: {
                 num: 1
             }
-        },        
+        },
         {
             keyType: 'dateRange',
             title: '日期',

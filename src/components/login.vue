@@ -179,6 +179,8 @@
               await this.$storage.set('user_info', {
                 id: res2.data.id,
                 name: res2.data.name,
+                org:res2.data.detail?.org||[],
+                position:res2.data.detail?.position||[],
                 avatar: res2.data.detail?.avatar
               });
               this.$bus.emit('photo-url',res2.data.detail?.avatar);
