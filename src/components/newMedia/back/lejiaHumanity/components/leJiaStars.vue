@@ -5,12 +5,12 @@
         <div class="star" v-for="(item,index) in starList" :key="index">
           <div class="starTop">
             <div class="frame">
-              <img :src="item.user_id.avatar">
+              <img :src="item.cover[0].uri">
               <div class="issue" @click="issueStar(item)">{{item.is_open ==1? '发布中':'发布'}}</div>
             </div>
           </div>
           <div class="starBottom">
-            <a>{{item.user_id.org[0].name}}</a><a>{{item.user_id.name}}</a>
+            <a>{{item.star_id.org[0].name}}</a><a>{{item.star_id.name}}</a>
           </div>
         </div>
       </div>
