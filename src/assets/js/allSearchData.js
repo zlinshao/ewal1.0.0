@@ -84,6 +84,159 @@ export const companySearch = {
     placeholder: '公司名称',
     keywords: 'search',
 }
+    // 热门导读管理
+    export const HotSearch = {
+        status: 'HotSearch',
+        placeholder: '标题',
+        keywords: 'search',
+        limit: 7,
+        page: 1,
+        data: [{
+            keyType: 'depart',
+            title: '部门',
+            placeholder: '请选择部门',
+            keyName: 'org_ids',
+            dataType: [],
+            value: {
+                num: '',
+                arr: []
+            }
+        },{
+            keyType: 'radio',
+            title: '热门导读类型',
+            keyName: 'type_id',
+            dataType: '',
+            value: [{
+                    id: 1,
+                    title: '研发类'
+                },
+                {
+                    id: 2,
+                    title: '财务类'
+                },
+                {
+                    id: 3,
+                    title: '人力资源类'
+                }
+            ]
+        },{
+            keyType: 'radio',
+            title: '是否发布',
+            keyName: 'is_open',
+            dataType: '',
+            value: [{
+                    id: 0,
+                    title: '否'
+                },
+                {
+                    id: 1,
+                    title: '是'
+                }
+            ]
+        },{
+            keyType: 'radio',
+            title: '是否置顶',
+            keyName: 'is_top',
+            dataType: '',
+            value: [{
+                    id: 0,
+                    title: '否'
+                },
+                {
+                    id: 1,
+                    title: '是'
+                }
+            ]
+        },{
+            keyType: 'radio',
+            title: '是否加精',
+            keyName: 'is_great',
+            dataType: '',
+            value: [{
+                    id: 0,
+                    title: '否'
+                },
+                {
+                    id: 1,
+                    title: '是'
+                }
+            ]
+        },{
+            keyType: 'dateRange',
+            title: '发布时间',
+            keyName: 'open_time',
+            placeholder: '请选择日期',
+            dataType: []
+        }]
+    }
+     // 新闻、公告管理
+     export const NewsSearch = {
+        status: 'NewsSearch',
+        placeholder: '标题',
+        keywords: 'search',
+        limit: 7,
+        page: 1,
+        data: [{
+            keyType: 'depart',
+            title: '部门',
+            placeholder: '请选择部门',
+            keyName: 'org_ids',
+            dataType: [],
+            value: {
+                num: '',
+                arr: []
+            }
+        },{
+            keyType: 'radio',
+            title: '是否发布',
+            keyName: 'is_open',
+            dataType: '',
+            value: [{
+                    id: 0,
+                    title: '否'
+                },
+                {
+                    id: 1,
+                    title: '是'
+                }
+            ]
+        },{
+            keyType: 'radio',
+            title: '是否置顶',
+            keyName: 'is_top',
+            dataType: '',
+            value: [{
+                    id: 0,
+                    title: '否'
+                },
+                {
+                    id: 1,
+                    title: '是'
+                }
+            ]
+        },{
+            keyType: 'radio',
+            title: '是否加精',
+            keyName: 'is_great',
+            dataType: '',
+            value: [{
+                    id: 0,
+                    title: '否'
+                },
+                {
+                    id: 1,
+                    title: '是'
+                }
+            ]
+        },{
+            keyType: 'dateRange',
+            title: '发布时间',
+            keyName: 'open_time',
+            placeholder: '请选择日期',
+            dataType: []
+        }]
+    }
+    
 // 离职管理
 export const LeaveJobSearch = {
     status: 'LeaveJobSearch',
