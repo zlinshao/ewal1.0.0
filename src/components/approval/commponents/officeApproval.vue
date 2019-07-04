@@ -184,18 +184,18 @@
         }
       }
 
-      /*.approval-Switch-enter-active {
-        @include transition(all 0.6s linear);
+      .approval-Switch-enter-active {
+        @include transition(all 0.8s linear);
       }
 
       .approval-Switch-leave-active {
-        @include transition(all 0.6s linear);
+        @include transition(all 0.8s linear);
       }
 
       .approval-Switch-enter, .approval-Switch-leave-to {
         @include transform(scale(0));
         opacity: 0;
-      }*/
+      }
     }
   }
 

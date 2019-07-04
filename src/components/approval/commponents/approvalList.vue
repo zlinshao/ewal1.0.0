@@ -113,10 +113,10 @@
     props: ['tabsData', 'tabKey'],
     watch: {
       tabKey(newValue, oldValue) {
-        this.getApprovalList(newValue, this.activeName)
+        this.getApprovalList(newValue, this.activeName, 1)
       },
       activeName(newValue, oldValue) {
-        this.getApprovalList(this.tabKey, newValue)
+        this.getApprovalList(this.tabKey, newValue, 1)
       }
     },
     computed: {
@@ -284,7 +284,7 @@
         page_info: {
           page_total: null,
           page_current: 1,
-          page_size: 12
+          page_size: 9
         },
       }
     },
@@ -312,8 +312,9 @@
           this.$refs.processDetails.open()
         })
       },
-      handleChangePage() {
-
+      handleChangePage(val) {
+        this.page_info.page_current = val
+        this.getApprovalList(this.tabKey, this.activeName, this.page_info.page_current)
       },
       /**悬浮按钮操作 */
       operatePopover(row, btn) {
@@ -325,11 +326,12 @@
           })
         }
         /**其他 */
+        this.operateApiHandle(row, btn.btn_key)
         this.operateParamsHandle(row, btn.btn_key)
-        let url = this.urlConfig + this.urlApi + row.id
+        let url = this.operateApi
         let params = this.operateParams['params' + btn.btn_key]
         this.showLoading(true)
-        this.$http.get(url, params)
+        this.$http.post(url, params)
           .then(res => {
             this.showLoading(false)
             console.log(res)
@@ -369,12 +371,12 @@
         }
       },
       /**参数配置 */
-      paramsHandle(tabKey, activeName) {
+      paramsHandle(tabKey, activeName, page_current) {
         switch (tabKey) {
           case 2: //我审批的
             /**列表接口参数*/
             this.params['params' + tabKey] = {
-              page: this.page_info.page_current,
+              page: page_current,
               size: this.page_info.page_size,
               category: 'approval',
               finished: activeName === 'approved' ? true : false,
@@ -385,7 +387,7 @@
             break;
           case 3://我发起的
             this.params['params' + tabKey] = {
-              page: this.page_info.page_current,
+              page: page_current,
               size: this.page_info.page_size,
               finished: activeName === 'undone' ? false : true,
               taskCategory: 'approval',
@@ -395,7 +397,7 @@
             break;
           case 4://抄送我的
             this.params['params' + tabKey] = {
-              page: this.page_info.page_current,
+              page: page_current,
               size: this.page_info.page_size,
               finished: activeName === 'unread' ? false : true,
               category: 'cc',
@@ -405,7 +407,7 @@
             break;
           case 5://暂不处理
             this.params['params' + tabKey] = {
-              page: this.page_info.page_current,
+              page: page_current,
               size: this.page_info.page_size,
               tenantId: 'hr',
               suspended: true,
@@ -415,15 +417,15 @@
         }
       },
       /**获取审批列表 */
-      getApprovalList(tabKey, activeName) {
+      getApprovalList(tabKey, activeName, page_current) {
         this.apiHandle(tabKey, activeName)
-        this.paramsHandle(tabKey, activeName)
+        this.paramsHandle(tabKey, activeName, page_current)
         let url = this.urlConfig + this.urlApi
         let params = this.params['params' + tabKey]
-        this.showLoading(true)
+        this.showLoading2(true)
         this.$http.get(url, params)
           .then(res => {
-            this.showLoading(false)
+            this.showLoading2(false)
             if (res.httpCode === 200) {
               let {data, total} = res
               this.online_list = data
@@ -435,6 +437,7 @@
       /**列表数据操作接口配置 */
       /**参数配置 */
       operateParamsHandle(row, btnType) {
+        debugger
         let variables = _.find(row.variables, {name: 'outcome'})?.value
         switch (btnType) {
           case 'submit' || 'refuse': // 提交 或 拒绝
@@ -461,6 +464,20 @@
             break;
         }
       },
+      /**接口配置 */
+      operateApiHandle(row, btnType) {
+        switch (btnType) {
+          case 'submit' || 'refuse':
+            this.operateApi = this.urlConfig + 'runtime/tasks' + row.id
+            break;
+          case 'urgent':
+            this.operateApi = this.urlConfig + 'runtime/tasks' + row.taskInfo[0].id
+            break;
+          case 'recall':
+            this.operateApi = this.urlConfig + 'runtime/process-instances' + row.id
+            break;
+        }
+      },
 
       /**初始化数据 */
       initData() {
@@ -478,7 +495,7 @@
     },
     created() {
       this.initData()
-      this.getApprovalList(this.tabKey, this.activeName)
+      this.getApprovalList(this.tabKey, this.activeName, this.page_info.page_current)
     }
   }
 </script>

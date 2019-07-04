@@ -297,9 +297,9 @@
       }
     },
     created() {
-      this.getProcessDetails(this.detailUrl)
-      this.getApprovalRecord(this.processUrl)
-      this.getHandleUser(this.row)
+      //this.getProcessDetails(this.detailUrl)
+      // this.getApprovalRecord(this.processUrl)
+      // this.getHandleUser(this.row)
     }
   }
 </script>
