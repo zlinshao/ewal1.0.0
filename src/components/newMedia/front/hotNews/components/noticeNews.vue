@@ -9,7 +9,7 @@
                         <p class="card-status">
                             <span><i></i>{{item.collect_number}}</span>
                             <span><i></i>{{item.thumbs_up_number}}</span>
-                            <span><i></i>{{item.comment.length}}</span>
+                            <span><i></i>{{item.comment_number}}</span>
                         </p>
                         <p class="card-desc">{{item.content}}</p>
                     </div>
@@ -36,7 +36,7 @@
                         <p class="card-status">
                             <span><i></i>{{item.collect_number}}</span>
                             <span><i></i>{{item.thumbs_up_number}}</span>
-                            <span><i></i>{{item.comment.length}}</span>
+                            <span><i></i>{{item.comment_number}}</span>
                         </p>
                         <p class="card-desc">{{item.content}}</p>
                     </div>
@@ -63,7 +63,7 @@
                         <p class="card-status">
                             <span><i></i>{{item.collect_number}}</span>
                             <span><i></i>{{item.thumbs_up_number}}</span>
-                            <span><i></i>{{item.comment.length}}</span>
+                            <span><i></i>{{item.comment_number}}</span>
                         </p>
                         <p class="card-desc">{{item.content}}</p>
                     </div>
@@ -90,7 +90,7 @@
                         <p class="card-status">
                             <span><i></i>{{item.collect_number}}</span>
                             <span><i></i>{{item.thumbs_up_number}}</span>
-                            <span><i></i>{{item.comment.length}}</span>
+                            <span><i></i>{{item.comment_number}}</span>
                         </p>
                         <p class="card-desc">{{item.content}}</p>
                     </div>

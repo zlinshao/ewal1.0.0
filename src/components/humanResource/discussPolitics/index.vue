@@ -1106,7 +1106,7 @@
     methods: {
       //添加评论
       publishComment(meetingId) {
-        debugger
+        // debugger
         if (this.comment_content) {
           let params = {
             "content": this.comment_content,
@@ -1208,7 +1208,7 @@
             let id = this.add_meeting_form.id;
             delete this.add_meeting_form['id'];
             this.add_meeting_form.status = 0;
-            debugger
+            // debugger
             this.$http.put(`${this.url}/meeting/meeting/${id}`, this.add_meeting_form).then(res => {
               this.$LjMessageEasy(res, () => {
                 this.add_meeting_dialog_visible = false;
@@ -1361,7 +1361,7 @@
       //保存会议类型相关
       saveMeetingRoomOrType(type) {
         let name;
-        debugger
+        // debugger
         if (type == 1) {//会议室
           this.add_meeting_room_dialog_visible = true;
           name = this.add_meeting_room_form.meetingRoom;

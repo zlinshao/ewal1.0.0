@@ -38,7 +38,7 @@
             let url = _.find(item.variables, {name: 'detail_request_url'})?.value || null;
             if (!url) return;
             this.$http.get(url).then(res => {
-              debugger
+              // debugger
               if (res.code.endsWith('0')) {
                 if (res.data && res.data.question_set) {
                   this.examId = res.data.id;//考试id  传到AnswerTestPaper组件中 用来提交考试
@@ -55,12 +55,12 @@
                   msg: res.msg,
                 });
                 this.$store.dispatch('change_humanResource_answer_test_paper_visible');
-                debugger
+                // debugger
                 let params = {
                   id: task_id,
                 };
                 this.$http.post(`${this.url}train/exam/task`).then(res => {
-                  debugger
+                  // debugger
                   this.$store.dispatch('change_refresh_todo_list');
                 });
                 return;

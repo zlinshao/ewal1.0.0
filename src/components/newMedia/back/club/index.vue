@@ -57,7 +57,7 @@
 
     <media-list :module="showFinMenuList" @close="showFinMenuList = false"></media-list>
     <!--详情-->
-    <lj-dialog :visible="detail_visible" :size="{width:1200 + 'px',height: '620' + 'px'}" @close="detail_visible = false">
+    <lj-dialog :visible="detail_visible" :size="{width:1200 + 'px',height: '720' + 'px'}" @close="detail_visible = false">
       <div class="action_info">
         <h3 class="justify-start">活动详情</h3>
         <div>
@@ -80,8 +80,7 @@
           </div>
           <div class="action_name" style="border-bottom: 0">
             <div class="action_left" style="width: 70px;float: left">活动内容</div>
-            <div class="action_right action_address" style="width: 860px;text-align: left;float: left;height: 100px">{{showData.content}}
-            </div>
+            <div style="width: 860px;height: 300px;overflow: scroll;" v-html="showData.content"></div>
           </div>
 
         </div>
@@ -306,9 +305,9 @@ export default {
       this.showData = itemInfo;
       let arr = [item.start_time, item.over_time];
       this.showData.actionTime = arr;
-      this.$http.get(globalConfig.newMedia_sever + '/api/club/event/' + item.id).then(res => {
-        this.getDataLists()
-      })
+      // this.$http.get(globalConfig.newMedia_sever + '/api/club/event/' + item.id).then(res => {
+      //   // this.getDataLists()
+      // })
     },
 
     handleOkOver () {//提前结束

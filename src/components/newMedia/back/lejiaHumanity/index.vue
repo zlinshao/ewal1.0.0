@@ -66,8 +66,14 @@ export default {
       this.add_visible = val;
     },
     add () {
-      this.add_visible = true;
-      // alert(this.chooseTab)
+      //  switch (this.chooseTab) {
+          // case 1:
+           this.add_visible = true;
+      //       break;
+      //     case 2:
+      //       this.add_exvisible = true;
+      //       break;
+      //  }
     }
   }
 }

@@ -9,9 +9,10 @@
                         <p class="card-status">
                             <span><i></i>{{item.collect_number}}</span>
                             <span><i></i>{{item.thumbs_up_number}}</span>
-                            <span><i></i>{{item.comment.length}}</span>
+                            <span><i></i>{{item.comment_number}}</span>
                         </p>
-                        <p class="card-desc">{{item.content}}</p>
+                        <div style="overflow: hidden;text-overflow: ellipsis; -o-text-overflow: ellipsis;white-space:nowrap;" v-html="item.content"></div>
+                        <!-- <p >{{}}</p> -->
                     </div>
                     <div class="card-bottom">
                         <div class="avatar">
@@ -36,9 +37,9 @@
                         <p class="card-status">
                             <span><i></i>{{item.collect_number}}</span>
                             <span><i></i>{{item.thumbs_up_number}}</span>
-                            <span><i></i>{{item.comment.length}}</span>
+                            <span><i></i>{{item.comment_number}}</span>
                         </p>
-                        <p class="card-desc">{{item.content}}</p>
+                        <div style="overflow: hidden;text-overflow: ellipsis; -o-text-overflow: ellipsis;white-space:nowrap;" v-html="item.content"></div>
                     </div>
                     <div class="card-bottom">
                         <div class="avatar">
@@ -63,7 +64,7 @@
                         <p class="card-status">
                             <span><i></i>{{item.collect_number}}</span>
                             <span><i></i>{{item.thumbs_up_number}}</span>
-                            <span><i></i>{{item.comment.length}}</span>
+                            <span><i></i>{{item.comment_number}}</span>
                         </p>
                         <p class="card-desc">{{item.content}}</p>
                     </div>
@@ -90,9 +91,9 @@
                         <p class="card-status">
                             <span><i></i>{{item.collect_number}}</span>
                             <span><i></i>{{item.thumbs_up_number}}</span>
-                            <span><i></i>{{item.comment.length}}</span>
+                            <span><i></i>{{item.comment_number}}</span>
                         </p>
-                        <p class="card-desc">{{item.content}}</p>
+                        <div style="overflow: hidden;text-overflow: ellipsis; -o-text-overflow: ellipsis;white-space:nowrap;" v-html="item.content"></div>
                     </div>
                     <div class="card-bottom">
                         <div class="avatar">
