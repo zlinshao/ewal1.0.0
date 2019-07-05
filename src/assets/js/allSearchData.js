@@ -84,6 +84,159 @@ export const companySearch = {
     placeholder: '公司名称',
     keywords: 'search',
 }
+    // 热门导读管理
+    export const HotSearch = {
+        status: 'HotSearch',
+        placeholder: '标题',
+        keywords: 'search',
+        limit: 7,
+        page: 1,
+        data: [{
+            keyType: 'depart',
+            title: '部门',
+            placeholder: '请选择部门',
+            keyName: 'org_ids',
+            dataType: [],
+            value: {
+                num: '',
+                arr: []
+            }
+        },{
+            keyType: 'radio',
+            title: '热门导读类型',
+            keyName: 'type_id',
+            dataType: '',
+            value: [{
+                    id: 1,
+                    title: '研发类'
+                },
+                {
+                    id: 2,
+                    title: '财务类'
+                },
+                {
+                    id: 3,
+                    title: '人力资源类'
+                }
+            ]
+        },{
+            keyType: 'radio',
+            title: '是否发布',
+            keyName: 'is_open',
+            dataType: '',
+            value: [{
+                    id: 0,
+                    title: '否'
+                },
+                {
+                    id: 1,
+                    title: '是'
+                }
+            ]
+        },{
+            keyType: 'radio',
+            title: '是否置顶',
+            keyName: 'is_top',
+            dataType: '',
+            value: [{
+                    id: 0,
+                    title: '否'
+                },
+                {
+                    id: 1,
+                    title: '是'
+                }
+            ]
+        },{
+            keyType: 'radio',
+            title: '是否加精',
+            keyName: 'is_great',
+            dataType: '',
+            value: [{
+                    id: 0,
+                    title: '否'
+                },
+                {
+                    id: 1,
+                    title: '是'
+                }
+            ]
+        },{
+            keyType: 'dateRange',
+            title: '发布时间',
+            keyName: 'open_time',
+            placeholder: '请选择日期',
+            dataType: []
+        }]
+    }
+     // 新闻、公告管理
+     export const NewsSearch = {
+        status: 'NewsSearch',
+        placeholder: '标题',
+        keywords: 'search',
+        limit: 7,
+        page: 1,
+        data: [{
+            keyType: 'depart',
+            title: '部门',
+            placeholder: '请选择部门',
+            keyName: 'org_ids',
+            dataType: [],
+            value: {
+                num: '',
+                arr: []
+            }
+        },{
+            keyType: 'radio',
+            title: '是否发布',
+            keyName: 'is_open',
+            dataType: '',
+            value: [{
+                    id: 0,
+                    title: '否'
+                },
+                {
+                    id: 1,
+                    title: '是'
+                }
+            ]
+        },{
+            keyType: 'radio',
+            title: '是否置顶',
+            keyName: 'is_top',
+            dataType: '',
+            value: [{
+                    id: 0,
+                    title: '否'
+                },
+                {
+                    id: 1,
+                    title: '是'
+                }
+            ]
+        },{
+            keyType: 'radio',
+            title: '是否加精',
+            keyName: 'is_great',
+            dataType: '',
+            value: [{
+                    id: 0,
+                    title: '否'
+                },
+                {
+                    id: 1,
+                    title: '是'
+                }
+            ]
+        },{
+            keyType: 'dateRange',
+            title: '发布时间',
+            keyName: 'open_time',
+            placeholder: '请选择日期',
+            dataType: []
+        }]
+    }
+    
 // 离职管理
 export const LeaveJobSearch = {
     status: 'LeaveJobSearch',
@@ -383,6 +536,26 @@ export const dataAuditSearch = {
                 }
             ]
         },
+      {
+        keyType: 'radio',
+        title: '是否已读',
+        keyName: 'is_read',
+        dataType: [],
+        value: [
+          {
+            id: 0,
+            title: '不限'
+          },
+          {
+            id: 1,
+            title: '已读'
+          },
+          {
+            id: 2,
+            title: '未读'
+          }
+        ]
+      },
         {
             keyType: 'staff',
             title: '开单人',
@@ -1967,7 +2140,7 @@ export const officeHightSearch={
             value: {
                 num: 1
             }
-        },        
+        },
         {
             keyType: 'depart',
             title: '部门',
@@ -2027,7 +2200,7 @@ export const dormitoryHightSearch={
             value: {
                 num: 1
             }
-        },        
+        },
         {
             keyType: 'depart',
             title: '部门',
@@ -2048,7 +2221,7 @@ export const dormitoryHightSearch={
             value: {
                 num: 1
             }
-        }, 
+        },
         {
             keyType: 'input',
             title: '剩余床位数',
@@ -2058,7 +2231,7 @@ export const dormitoryHightSearch={
             value: {
                 num: 1
             }
-        },        
+        },
         {
             keyType: 'dateRange',
             title: '日期',
@@ -2077,6 +2250,127 @@ export const dormitoryHightSearch={
             keyType: 'input',
             title: '',
             placeholder: '最高价格',
+            keyName: 'price_max',
+            dataType: '',
+        },
+    ]
+}
+
+// 片区异动交接单的高级搜索
+export const areaChangeOrderHighSearch={
+    status: 'areaChangeOrderHighSearch',
+    keywords: 'keyWord',
+    placeholder: '人员部门资料名称',
+    data: [
+        {
+            keyType: 'depart',
+            title: '部门',
+            placeholder: '请选择部门',
+            keyName: 'depart_id',
+            dataType: [],
+            value: {
+                num: 1,
+                arr: []
+            }
+        },
+        {
+            keyType: 'date',
+            title: '日期',
+            placeholder: '请选择上传时间',
+            keyName: 'start_at',
+            dataType: "",
+        },
+        {
+            keyType: 'radio',
+            title: '资料类型',
+            keyName: 'type',
+            dataType: '',
+            value: [
+                { id: 1, title: '异动工作交接清单' },
+                { id: 2, title: '房屋交接单' },
+                { id: 3, title: '合同交接单' },
+                { id: 4, title: '片区固定资产盘点表' },
+                { id: 5, title: '采购合同' },
+            ]
+        },
+    ]
+}
+
+// 合同编号的高级搜索
+export const contractNumberHighSearch={
+    status: 'contractNumberHighSearch',
+    keywords: 'keyWord',
+    placeholder: '请输入搜索内容',
+    data: [
+        {
+            keyType: 'staff',
+            title: '员工',
+            placeholder: '请选择员工',
+            keyName: 'staff',
+            dataType: [],
+            value: {
+                num: 1
+            }
+        },        
+        {
+            keyType: 'depart',
+            title: '部门',
+            placeholder: '请选择部门',
+            keyName: 'depart_id',
+            dataType: [],
+            value: {
+                num: 1,
+                arr: []
+            }
+        },
+        {
+            keyType: 'dateRange',
+            title: '选择时间范围',
+            placeholder: '请选择日期',
+            keyName: 'date',
+            dataType: [],
+        },
+    ]
+}
+
+// 合同编号管理的高级搜索
+export const contractNumberEditHighSearch={
+    status: 'contractNumberEditHighSearch',
+    keywords: 'keyWord',
+    placeholder: '请输入搜索内容',
+    data: [
+        {
+            keyType: 'staff',
+            title: '操作对象',
+            placeholder: '请选择人员',
+            keyName: 'staff',
+            dataType: [],
+            value: {
+                num: 1
+            }
+        },        
+        {
+            keyType: 'depart',
+            title: '操作对象部门',
+            placeholder: '请选择部门',
+            keyName: 'depart_id',
+            dataType: [],
+            value: {
+                num: 1,
+                arr: []
+            }
+        },
+        {
+            keyType: 'input',
+            title: '领取上限范围',
+            placeholder: '最小值',
+            keyName: 'price_min',
+            dataType: '',
+        },
+        {
+            keyType: 'input',
+            title: '',
+            placeholder: '最大值',
             keyName: 'price_max',
             dataType: '',
         },

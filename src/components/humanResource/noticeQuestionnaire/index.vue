@@ -114,6 +114,8 @@
             this.chooseTab = 1;
           }else if(val=='/noticeQuestionnaire/questionnaire') {
             this.chooseTab = 2;
+          }else if (val=='/noticeQuestionnaire') {
+            this.chooseTab = null;
           }
         },
         deep:true,

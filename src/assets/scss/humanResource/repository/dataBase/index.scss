@@ -4,6 +4,9 @@
   }
 #theme_name.theme1 {
   #dataBase {
+    height: 100%;
+    overflow: auto;
+    margin:0 50px;
     .addAll{
       width: 30px;
       height: 30px;
@@ -30,7 +33,7 @@
       right: 40px;
     }
     .main-nav {
-      margin-left: 50px;
+      // margin-left: 50px;
       padding: 15px 0;
       display: flex;
       justify-content: space-between;
@@ -61,21 +64,15 @@
     }
     .dataBase-container {
       .contractNumber{
-        width: 1799px;
-        height: 100%;
-        margin: 0 60px 0 61px;
+        width:100%;
         .contractNumberTop{
-          width: 1799px;
-          height: 489px;
-        }
-        .page{
-          .el-pagination{
-            padding: 0 0 0 1200px;
-          } 
+          width: 100%;
+          // height: 489px;
         }
         .contractNumberBottom{
-          width: 1799px;
-          margin-top: 39px;
+          width: 100%;
+          // height: 257px;
+          overflow: auto;
         }
       }
       .contractNumberEdit{
@@ -1771,6 +1768,55 @@
             color:black;
             line-height:50px;
           }
+        }
+      }
+    }
+    .photo-img{
+      width: 40px;
+      height: 40px;
+      margin:0 auto;
+      cursor: pointer;
+    }
+    // 电子资料的模态框
+    .dianziziliao{
+      .dialog_header{
+        h3{
+          font-size: 24px;
+          color: #686874;
+        }
+        margin-bottom: 30px;
+      }
+      .dialog_body{
+        ul{
+          text-align: left;
+          li{
+            margin-bottom: 10px;
+            overflow: hidden;
+            .type{
+              float: left;
+              width: 130px;
+              line-height: 50px;
+              text-align: right;
+              color: #B8B8BD;
+            }
+            .img{
+              float: left;
+              width: 50px;
+              height: 50px;
+              margin:0 auto;
+              cursor: pointer;
+              // background-color:#B8B8BD;
+            }
+          }
+        }
+      }
+      .dialog_footer{
+        margin-top:65px;
+        button{
+          padding:8px 36px;
+          border-radius: 5px;
+          font-size: 18px;
+          letter-spacing: 2px;
         }
       }
     }

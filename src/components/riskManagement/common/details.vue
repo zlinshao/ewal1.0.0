@@ -288,7 +288,9 @@ export default {
         })
         .then(res => {
           if (res.status === 200) {
-            this.classify_document = res.data.data;
+            if(Object.keys(res.data).length!=0){
+              this.classify_document = res.data.data;
+            }
           }
         });
     },

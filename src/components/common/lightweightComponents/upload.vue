@@ -389,6 +389,7 @@
                   let status = that.ids.length === that.showFile.length;
                   let s = that.ids;
                   that.$emit('success', [that.file.keyName, _.uniq(that.ids), status]);
+                  that.$emit('uploaded', status);//是否上传完
                 }
               })
             }

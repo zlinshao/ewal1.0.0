@@ -1,7 +1,7 @@
 <template>
   <div id="dataBase">
-    <div class="addAll" @click="add()" v-if="activeIndex == 1 || (activeIndex == 2 && contractNumberChoosed !== 0) || (activeIndex == 3 && contractNumberEditChoosed == 1)"><b>+</b></div>
-    <div class="icons search" @click="search()" v-if="(activeIndex == 2 && contractNumberChoosed == 0) || (activeIndex ==3 && contractNumberEditChoosed ==1)"></div>
+    <div class="addAll" @click="add" v-if="activeIndex == 1 || (activeIndex == 2 && contractNumberChoosed !== 0) || (activeIndex == 3 && contractNumberEditChoosed == 1)"><b>+</b></div>
+    <div class="icons search" @click="search" v-if="(activeIndex == 2 && contractNumberChoosed == 0) || (activeIndex ==3 && contractNumberEditChoosed ==1||activeIndex==0||activeIndex==3)"></div>
     <div class="main-nav">
       <div class="dataBase-left">
         <span
@@ -32,26 +32,82 @@
       <!-- 片区异动交接单 -->
       <el-table :data="areaChangeOrder" v-if="activeIndex === 0" highlight-current-row header-row-class-name="tableHeader"
         style="width: 100%">
-        <el-table-column label="审批编号" align="center"></el-table-column>
-        <el-table-column label="审批名称" align="center"></el-table-column>
-        <el-table-column label="上传时间" align="center"></el-table-column>
-        <el-table-column label="申请人" align="center"></el-table-column>
-        <el-table-column label="所属部门" align="center"></el-table-column>
-        <el-table-column label="接收人" align="center"></el-table-column>
-        <el-table-column label="证明人" align="center"></el-table-column>
-        <el-table-column label="电子资料" align="center"></el-table-column>
+        <el-table-column prop="process_id" label="审批编号" align="center"></el-table-column>
+        <el-table-column prop="title" label="审批名称" align="center"></el-table-column>
+        <el-table-column prop="start_time" label="上传时间" align="center"></el-table-column>
+        <el-table-column prop="user" label="申请人" align="center"></el-table-column>
+        <el-table-column prop="" label="所属部门" align="center"></el-table-column>
+        <el-table-column prop="" label="接收人" align="center"></el-table-column>
+        <el-table-column prop="" label="证明人" align="center"></el-table-column>
+        <el-table-column label="电子资料" align="center">
+          <template>
+            <div class="photo-img" @click="getPhotoList"></div>
+          </template>
+        </el-table-column>
       </el-table>
+
+      <!-- 片区异动交接单的高级搜索 -->
+      <searchHigh
+      class="searchAreaChangeOrder"
+      :module="searchAreaChangeOrder_visiable"
+      :show-data="searchAreaChangeOrder_data"
+      @close="closeSearchAreaChangeOrder"
+    ></searchHigh>
+
+      <!-- 电子资料 -->
+       <lj-dialog :visible="dianziziliao_visible" :size="{width: 570 + 'px',height: 616 + 'px'}" @close="dianziziliao_visible = false" class="dianziziliao">
+         <div class="dialog_header" align="left">
+           <h3>电子资料</h3>
+         </div>
+         <div class="dialog_body">
+           <ul>
+             <li>
+               <div class="type">异动工作交接清单</div>
+               <div class="img"></div>
+             </li>
+              <li>
+               <div class="type">房屋交接表</div>
+               <div class="img"></div>
+             </li>
+              <li>
+               <div class="type">合同交接表</div>
+               <div class="img"></div>
+             </li>
+              <li>
+               <div class="type">片区固定资产表</div>
+               <div class="img"></div>
+             </li>
+              <li>
+               <div class="type">乐伽公寓检查表</div>
+               <div class="img"></div>
+             </li>
+              <li>
+               <div class="type">承诺书</div>
+               <div class="img"></div>
+             </li>
+           </ul>
+         </div>
+        <div class="dialog_footer">
+          <el-button type="danger" size="small" @click="dianziziliao_visible=false">确定</el-button>
+          <el-button type="info" size="small" @click="dianziziliao_visible=false">取消</el-button>
+        </div>
+       </lj-dialog>
+    
       <!-- 采购合同 -->
       <el-table v-if="activeIndex === 1" highlight-current-row header-row-class-name="tableHeader" style="width: 100%"
         :data="contractList">
         <el-table-column prop="process_id" label="审批编号" align="center"></el-table-column>
         <el-table-column prop="title" label="采购申请" align="center"></el-table-column>
-        <el-table-column prop="source" label="供应商" align="center"></el-table-column>
-        <el-table-column prop="start_time" label="签订时间" align="center"></el-table-column>
-        <el-table-column prop="end_time" label="合同到期时间" align="center"></el-table-column>
+        <el-table-column prop="source" label="供应商" align="center" ></el-table-column>
+        <el-table-column prop="start_time" label="签订时间" align="center" ></el-table-column>
+        <el-table-column prop="end_time" label="合同到期时间" align="center" ></el-table-column>
         <el-table-column prop="signUser" label="签订人" align="center"></el-table-column>
         <el-table-column prop="department" label="所属部门" align="center"></el-table-column>
-        <el-table-column prop="electronicData" label="电子资料" align="center"></el-table-column>
+        <el-table-column label="电子资料" align="center">
+          <template>
+            <div class="photo-img" @click="getPhotoList"></div>
+          </template>
+        </el-table-column>
       </el-table>
       <!-- 合同编号 -->
       <div v-if="activeIndex === 2" class="contractNumber">
@@ -119,12 +175,12 @@
               </template>
             </el-table-column>
           </el-table>
-          <div class="page">
+          <div class="page" align="right">
             <el-pagination :total="250" layout="total,jumper,prev,pager,next" :current-page="1" :page-size="10"></el-pagination>
           </div>
         </div>
         <div class="contractNumberBottom" v-if="contractNumberChoosed === 0">
-          <el-table highlight-current-row header-row-class-name="tableHeader" style="width: 100%" :data="bottomTable">
+          <el-table highlight-current-row header-row-class-name="tableHeader" style="width: 100%" :data="bottomTable" height="300px">
             <el-table-column label="城市" align="center" prop="city_name"></el-table-column>
             <el-table-column label="合同总数(收)" align="center" prop="collect_sum"></el-table-column>
             <el-table-column label="电子" align="center"></el-table-column>
@@ -290,6 +346,15 @@
           </div>
         </div>
       </div>
+
+      <!-- 合同编号的高级搜索 -->
+      <searchHigh
+      class="searchContractNumber"
+      :module="searchContractNumber_visiable"
+      :show-data="searchContractNumber_data"
+      @close="closeSearchContractNumber"
+    ></searchHigh>
+
       <!-- 合同编号管理 -->
       <div v-if="activeIndex === 3" class="contractNumberEdit">
         <el-table highlight-current-row header-row-class-name="tableHeader" style="width: 100%" v-if="contractNumberEditChoosed === 0" :data="contractManageListTotal">
@@ -315,26 +380,28 @@
           <el-table-column label="操作时间" align="center"></el-table-column>
         </el-table>
       </div>
+
+      <!-- 合同编号管理的高级搜索 -->
+      <searchHigh
+      class="searchContractNumberEdit"
+      :module="searchContractNumberEdit_visiable"
+      :show-data="searchContractNumberEdit_data"
+      @close="closeSearchContractNumberEdit"
+    ></searchHigh>
     </div>
-    <footer class="flex-center bottomPage" v-if="activeIndex !==2">
-      <div class="develop flex-center">
-        <i class="el-icon-d-arrow-right"></i>
-      </div>
-      <div class="page">
-        <el-pagination :total="total" layout="total,jumper,prev,pager,next" :current-page="currentPage" :page-size="10"></el-pagination>
-      </div>
-    </footer>
-    <!-- 添加合同 -->
-    <lj-dialog :visible="addContract_visiable" :size="{width: 580 + 'px',height: 700 + 'px'}" @close="addContract_visiable = false">
+
+
+    <!-- 添加采购合同 -->
+    <lj-dialog :visible="addContract_visiable" :size="{width: 580 + 'px',height: 620 + 'px'}" @close="addContract_visiable = false">
       <div class="dialog_container">
         <div class="dialog_header">
-          添加采购合同
+          <h3>添加采购合同</h3>
         </div>
         <div class="dialog_main flex-center borderNone">
-          <el-form label-width="120px" class="depart_visible">
+          <el-form label-width="120px" class="depart_visible" :model="addContract_form">
             <el-form-item label="采购申请">
               <div class="items-center iconInput">
-                <el-select v-model="process_id" placeholder="请选择">
+                <el-select v-model="addContract_form.process_id" placeholder="请选择">
                   <el-option v-for="(item, index) in approvalDetail" :key="index" :label="item.title" :value="item.id">
                   </el-option>
                 </el-select>
@@ -342,7 +409,7 @@
             </el-form-item>
             <el-form-item label="供应商">
               <div class="items-center iconInput">
-                <el-select v-model="supplierId" placeholder="请选择">
+                <el-select v-model="addContract_form.source_id" placeholder="请选择">
                   <el-option v-for="(item, index) in supplierDetail" :key="index" :label="item.name" :value="item.id">
                   </el-option>
                 </el-select>
@@ -350,32 +417,33 @@
             </el-form-item>
             <el-form-item label="签订时间">
               <div class="items-center iconInput">
-                <el-date-picker v-model="signTime" type="date" placeholder="选择日期">
+                <el-date-picker v-model="addContract_form.start_time" type="date" placeholder="选择日期">
                 </el-date-picker>
               </div>
             </el-form-item>
             <el-form-item label="合同到期时间">
               <div class="items-center iconInput">
-                <el-date-picker v-model="expireTime" type="date" placeholder="选择日期">
+                <el-date-picker v-model="addContract_form.end_time" type="date" placeholder="选择日期">
                 </el-date-picker>
               </div>
             </el-form-item>
             <el-form-item label="签订人">
               <div class="items-center iconInput">
-                <user-choose title="请选择人员" v-model="signerId"></user-choose>
+                <user-choose num="1" title="请选择人员" v-model="addContract_form.user_id"></user-choose>
               </div>
             </el-form-item>
             <el-form-item label="合同照片">
-              <lj-upload :max-size="5" v-model="contractImg"></lj-upload>
+              <lj-upload :max-size="5" v-model="addContract_form.attachment"></lj-upload>
             </el-form-item>
           </el-form>
         </div>
         <div class="dialog_footer">
-          <el-button type="danger" size="small" @click="addContract()">确定</el-button>
+          <el-button type="danger" size="small" @click="addContract">确定</el-button>
           <el-button type="info" size="small" @click="addContract_visiable = false">取消</el-button>
         </div>
       </div>
     </lj-dialog>
+
     <!-- 汇总 -->
     <lj-dialog :visible="contractCollect_visible" :size="{width: 1700 + 'px',height: 900 + 'px'}" @close="contractCollect_visible = false" class="collectDialog">
       <div class="dialog_container">
@@ -1878,7 +1946,7 @@
               <h3>数量(租)</h3>
             </div>
             <div class="value">
-              <el-select v-model="process_id" placeholder="请选择">
+              <el-select  placeholder="请选择">
                 <el-option>
                 </el-option>
               </el-select>
@@ -1918,7 +1986,7 @@
               <h3>数量(租)</h3>
             </div>
             <div class="value">
-              <el-select v-model="process_id" placeholder="请选择">
+              <el-select  placeholder="请选择">
                 <el-option>
                 </el-option>
               </el-select>
@@ -1968,6 +2036,29 @@
         </div>
       </div>
     </lj-dialog>
+
+    <!-- 普通分页 -->
+    <footer class="flex-center bottomPage" v-if="activeIndex !==2&&!isHighSearch">
+      <div class="develop flex-center">
+        <i class="el-icon-d-arrow-right"></i>
+      </div>
+      <div class="page">
+        <el-pagination :total="commonPages.total" layout="total,jumper,prev,pager,next" :current-page="commonPages.page" :page-size="commonPages.limit"></el-pagination>
+      </div>
+    </footer>
+
+    <!-- 搜索分页 -->
+    <footer class="flex-center bottomPage" v-if="activeIndex !==2&&isHighSearch">
+      <div class="develop flex-center">
+        <i class="el-icon-d-arrow-right"></i>
+      </div>
+      <div class="page">
+        <el-pagination :total="searchPages.total" layout="total,jumper,prev,pager,next" :current-page="searchPages.page" :page-size="searchPages.limit"></el-pagination>
+      </div>
+    </footer>
+
+
+
   </div>
 </template>
 
@@ -1976,6 +2067,8 @@ import LjDialog from '../../../common/lj-dialog.vue';
 import LjUpload from '../../../common/lightweightComponents/lj-upload.vue';
 import UserChoose from '../../../common/lightweightComponents/UserChoose';
 import OrgChoose from '../../../common/lightweightComponents/OrgChoose';
+import searchHigh from "../../../common/searchHigh.vue";
+import {areaChangeOrderHighSearch,contractNumberHighSearch,contractNumberEditHighSearch} from "../../../../assets/js/allSearchData.js";
 export default {
   name: "index",
   components: {
@@ -1983,6 +2076,7 @@ export default {
     LjUpload,
     UserChoose,
     OrgChoose,
+    searchHigh
   },
   data() {
     return {
@@ -2001,8 +2095,8 @@ export default {
       active: [
         {id: 0, val: '片区异动交接单'},
         {id: 1, val: '采购合同'},
-        // {id: 2, val: '合同编号'},
-        // {id: 3, val: '合同编号管理'},
+        {id: 2, val: '合同编号'},
+        {id: 3, val: '合同编号管理'},
       ],
       contractNumberChoose: [
         {id: 0, val: '汇总'},
@@ -2015,10 +2109,47 @@ export default {
         {id: 0, val: '总合同数'},
         {id: 1, val: '总合同领取上限'},
       ],
+      // 片区异动交接单的高级搜索显示
+      searchAreaChangeOrder_visiable:false,
+      // 片区异动交接单的数据
+      searchAreaChangeOrder_data:areaChangeOrderHighSearch,
+      // 添加采购合同的表单
+      addContract_form:{
+        process_id:"",//采购的审批id，调接口
+        title:"",//采购审批标题，调接口
+        source_id:"",//供应商id，调接口
+        start_time:"",//签订时间
+        end_time:"",//合同结束日期
+        user_id:"",//签订人id
+        attachment:[]//合同照片
+      },
+      //添加采购合同调接口的数据
+      supplierDetail: [],//供应商
+      approvalDetail:[],//合同审批
+      // 非搜索分页
+      commonPages:{
+        limit:10,
+        page:1,
+        total:0
+      },
+      searchPages:{
+        limit:10,
+        page:1,
+        total:0
+      },
+      // 是否是高级搜索
+      isHighSearch:false,
+      // 合同编号的高级搜索模态框
+      searchContractNumber_visiable:false,
+      searchContractNumber_data:contractNumberHighSearch,
+      // 合同编号管理的高级搜索
+      searchContractNumberEdit_visiable:false,
+      searchContractNumberEdit_data:contractNumberEditHighSearch,
       total: 0,
       currentPage: 1,
       cityList: [],
-      addContract_visiable: false,//添加合同
+      addContract_visiable: false,//添加采购合同
+      dianziziliao_visible:false,//电子资料显示
       contractCollect_visible: false,//汇总
       distribute_visible: false,//分配
       contractReceive_visible: false,//领取
@@ -2060,25 +2191,101 @@ export default {
       receiveModifyParam: {},
       contractNumberEditChoosed: 0,
       contractNumberChoosed: 0,
-      areaChangeOrder: [],
-      contractList: [],
-      contractRequisition: '',
+      //片区异动交接单数据
+      areaChangeOrder: [{
+        "id": 1,
+        "user_id": 289,
+        "start_time": "2019-01-01",
+        "end_time": "2019-01-02",
+        "source_id": 1,
+        "attachment": [
+          1233,
+          12321,
+          12343
+        ],
+        "process_id": 65,
+        "title": "膜蛤于2019-04-17发起采购申请",
+        "created_at": "2019-04-23 11:20:36",
+        "user": {
+          "id": 289,
+          "name": "膜蛤",
+          "avatar": "http:\/\/p.qpic.cn\/wwhead\/duc2TvpEgSTPk74IwG7Bs6PBiceWvGaHEO14dia6xxkrhibo5eubA7yXx8z4vWwFZETrsmTqCED7eA\/0",
+          "phone": "18914457793",
+          "email": "1@qq.com",
+          "ding_user_id": "031818063540330735",
+          "gender": 1,
+          "is_on_job": null,
+          "is_enable": null,
+          "is_leader": 0,
+          "qr_code": "",
+          "interviewee_id": null,
+          "im_id": null,
+          "employee_id": 72,
+          "fdd_user_id": "4F8F56B876B5CA67C6CFA6CEEE0F01FC",
+          "fdd_verify_result": null,
+          "fdd_verify_no": "",
+          "fdd_ca": "",
+          "created_at": "2017-07-30 18:53:53",
+          "org": [
+            {
+              "id": 1,
+              "name": "南京乐伽商业管理有限公司",
+              "is_corp": 0,
+              "company_id": 0,
+              "order": 1,
+              "is_enable": 1,
+              "parent_id": null,
+              "leader_id": 1,
+              "ding_department_id": 1,
+              "position_id": null,
+              "pivot": {
+                "user_id": 289,
+                "org_id": 1
+              }
+            },
+            {
+              "id": 10,
+              "name": "产品",
+              "is_corp": 0,
+              "company_id": 0,
+              "order": 1,
+              "is_enable": 1,
+              "parent_id": 141,
+              "leader_id": 2960,
+              "ding_department_id": 27814968,
+              "position_id": null,
+              "pivot": {
+                "user_id": 289,
+                "org_id": 10
+              }
+            }
+          ]
+        },
+        "source": {
+          "id": 1,
+          "name": "大家电"
+        }
+      }],
+      // 电子资料数据
+      dianziziliao_data:[],
+      //采购合同列表数据
+      contractList:[
+        {
+          "process_id":21,
+          "title":23,
+          "source":324,
+          "start_time":54,
+          "end_time":45,
+          "signUser":45345,
+          "department":454,
+        }
+      ],
       contractManageListTotal:[
         {city: "南京"}
       ],
       numberManageDialogTable: [
         {name: "张三"}
       ],
-      //添加合同参数
-      supplierDetail: [],
-      supplierId: 0,
-      signTime: new Date(),
-      expireTime: '',
-      signerId: [],
-      contractImg: [],
-      approvalDetail:[],
-      process_id: 0,
-      approvalTitle: '',
       contractCollectList: [],//合同汇总
       bottomTable: [],//底部列表
       contractReceiveList: [],//合同编号领取
@@ -2151,17 +2358,18 @@ export default {
     },
     //获取片区异动交接单
     getAreaChangeOrder: function () {
+
     },
-    //获取合同列表
+    //获取采购合同列表
     getContractList: function () {
-      this.contractList = []
+      // this.contractList = []
       let param = {
-        page: this.currentPage,
-        limit: 10
+        page: this.commonPages.page,
+        limit: this.commonPages.limit
       }
       this.$http.get(`${this.url}eam/contract`, param).then(res => {
         if (res.code === '20000') {
-          this.total = res.data.count
+          this.commonPages.total = res.data.count
           for (var i = 0; i < res.data.data.length; i++) {
             let department = ''
             for (var j = 0; j < res.data.data[i].user.org.length; j++) {
@@ -2184,17 +2392,21 @@ export default {
     },
     //获取添加合同参数
     getApprovalDetail: function () {
+      // 获取采购审批列表
       this.$http.get(`${this.url}eam/storage/process`).then(res => {
         if (res.code == "20000") {
           for (let i = 0; i < res.data.data.length; i++) {
             let obj = {
+              // 采购审批id
               id: res.data.data[i].id,
+              // 采购审批的标题
               title: res.data.data[i].title
             }
             this.approvalDetail.push(obj)
           }
         }
       })
+      // 获取供应商列表的数据
       this.$http.get(`${this.url}eam/category`).then(res => {
         if (res.code == "20000") {
           for (let i = 0; i < res.data.data.length; i++) {
@@ -2210,57 +2422,57 @@ export default {
       })
     },
     //添加合同
-    addContract: function (chooseTab) {
+    addContract: function () {
+      // 根据选择的采购申请获取采购审批标题
       for (let i = 0; i < this.approvalDetail.length; i++) {
-        if (this.process_id == this.approvalDetail[i].id) {
-          this.approvalTitle = this.approvalDetail[i].title
+        if (this.addContract_form.process_id == this.approvalDetail[i].id) {
+          this.addContract_form.title = this.approvalDetail[i].title
         }
       }
-      let param = {
-        process_id: this.process_id,
-        start_time: this.signTime,
-        end_time: this.expireTime,
-        source_id: this.supplierId,
-        user_id: this.signerId[0],
-        attachment: this.contractImg,
-        title: this.approvalTitle
-      }
-      if (param.process_id == -1) {
+      if (this.addContract_form.process_id == "") {
         this.$LjNotify('error', {
           title: '失败',
           message: '请选择采购申请',
         });
       }
-      if (param.source_id == -1) {
+      if (this.addContract_form.source_id == "") {
         this.$LjNotify('error', {
           title: '失败',
           message: '请选择供应商',
         });
       }
-      if (param.start_time == '') {
+      if (this.addContract_form.start_time == "") {
         this.$LjNotify('error', {
           title: '失败',
           message: '请选择签订时间',
         });
       }
-      if (param.user_id == -1) {
+      if (this.addContract_form.user_id == "") {
         this.$LjNotify('error', {
           title: '失败',
           message: '请选择签订人',
         });
       }
       else {
-        this.$http.post(`${this.url}eam/contract`, param).then(res => {
-          this.$LjMessageEasy(res, () => {
+        this.$http.post(`${this.url}eam/contract`, this.addContract_form).then(res => {
+          switch (res.code) {
+          case "20010":
+            this.$LjNotify('succsee', {
+              title: '成功',
+              message: res.msg,
+            });
+            // 更新列表
             this.getContractList();
-            this.addContract_visiable = false
-          });
-          this.contractRequisition = ''
-          this.supplierId = 0
-          this.signTime = new Date()
-          this.expireTime = ''
-          this.signerId = 0
-          this.contractImg = []
+            // 关闭添加采购合同模态框
+            this.addContract_visiable = false;
+              break;
+            default:
+            this.$LjNotify('error', {
+              title: '失败',
+              message: res.msg,
+            });
+              break;
+          }
         })
       }
     },
@@ -2520,33 +2732,89 @@ export default {
     loseAdd: function() {
 
     },
-    //添加按钮
+    //点击添加按钮处理函数
     add: function() {
-      if(this.activeIndex == 1) {
-        this.addContract_visiable = true
+      switch (this.activeIndex) {
+        // 采后合同下
+        case 1:
+        // 添加采购合同显示
+        this.addContract_visiable = true;
+        break;
+        // 合同编号下
+        case 2:
+          if(this.contractNumberChoosed == 1){
+            this.receiveMission_visible = true
+          }
+          else if(this.contractNumberChoosed == 2){
+            this.cancelMission_visible = true
+          }
+          else if(this.contractNumberChoosed == 3){
+            this.handinMission_visible = true
+          }
+          else if(this.contractNumberChoosed == 4){
+            this.loseMission_visible = true
+          }
+          break;
+          // 合同编号管理下
+          case 3:
+          if(this.contractNumberEditChoosed == 1){
+            this.numberManageAddS_visible = true
+          }
+          break;
       }
-      else if(this.activeIndex == 2){
-        if(this.contractNumberChoosed == 1){
-          this.receiveMission_visible = true
-        }
-        else if(this.contractNumberChoosed == 2){
-          this.cancelMission_visible = true
-        }
-        else if(this.contractNumberChoosed == 3){
-          this.handinMission_visible = true
-        }
-        else if(this.contractNumberChoosed == 4){
-          this.loseMission_visible = true
-        }
-      }
-      else if(this.activeIndex ==3){
-        if(this.contractNumberEditChoosed == 1){
-          this.numberManageAddS_visible = true
-        }
-      }
+      // if(this.activeIndex == 1) {
+      //   // 添加采购合同显示
+      //   this.addContract_visiable = true;
+      // }
+      // else if(this.activeIndex == 2){
+      //   if(this.contractNumberChoosed == 1){
+      //     this.receiveMission_visible = true
+      //   }
+      //   else if(this.contractNumberChoosed == 2){
+      //     this.cancelMission_visible = true
+      //   }
+      //   else if(this.contractNumberChoosed == 3){
+      //     this.handinMission_visible = true
+      //   }
+      //   else if(this.contractNumberChoosed == 4){
+      //     this.loseMission_visible = true
+      //   }
+      // }
+      // else if(this.activeIndex ==3){
+      //   if(this.contractNumberEditChoosed == 1){
+      //     this.numberManageAddS_visible = true
+      //   }
+      // }
     },
     search: function() {
+      switch (this.activeIndex) {
+        case 0:
+          // 片区异动交接单时
+          this.searchAreaChangeOrder_visiable=true;
+        break;
+        case 2:
+            // 合同编号的时候
+          this.searchContractNumber_visiable=true;
+        break;
+        case 3:
+          this.searchContractNumberEdit_visiable=true;
+      }
     },
+    // 获取电子资料
+    getPhotoList(){
+      console.log("获取电子资料");
+      this.dianziziliao_visible=true;
+    },
+    // 片区异动交接单的开始高级搜索事件
+    closeSearchAreaChangeOrder(val){
+      this.searchAreaChangeOrder_visiable=false;
+    },
+    closeSearchContractNumber(val){
+      this.searchContractNumber_visiable=false;
+    },
+    closeSearchContractNumberEdit(){
+      this.searchContractNumberEdit_visiable=false;
+    }
   }
 }
 </script>
@@ -2563,6 +2831,11 @@ export default {
   line-height:19px;
   letter-spacing:2px;
 }
+.dianziziliao{
+  .lj_container{
+    padding: 35px 64px!important;
+  }
+}
 </style>
 
 <style scoped lang="scss">
@@ -2570,6 +2843,11 @@ export default {
 
 @mixin childrenImg($m, $n) {
   $url: "../../../../assets/image/humanResource/repository/dataBase/" + $n + "/" + $m;
+  @include bgImage($url);
+}
+@mixin childrenImg2($m, $n) {
+  $url: "../../../../assets/image/humanResource/repository/borrowReceive/" + $n +
+    "/" + $m;
   @include bgImage($url);
 }
 
@@ -2670,6 +2948,14 @@ export default {
             }
           }
         }
+      }
+    }
+    .photo-img{
+      @include childrenImg2("tp.png", "theme1");
+    }
+    .dianziziliao{
+      .img{
+         @include childrenImg2("tp.png", "theme1");
       }
     }
   }
