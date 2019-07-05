@@ -252,7 +252,7 @@
                      :disabled="!meeting_summary_editable"
                      size="small" label-width="140px">
 
-              <div v-for="(item,index) in meeting_remaining_form.list" :key="index">
+              <!--<div v-for="(item,index) in meeting_remaining_form.list" :key="index">
 
                 <el-form-item required :prop="'list.'+index+'.question'"
                               :rules="{required: true, message: '请输入遗留问题', trigger: ['blur','change']}"
@@ -276,6 +276,39 @@
 
                 <el-form-item required :prop="'list.'+index+'.result'"
                               :rules="{required: true, message: '请输入跟进情况', trigger: ['blur','change']}"
+                              label="跟进情况">
+                  <el-input style="width: 700px" v-model="meeting_remaining_form.list[index].result"
+                            title="必填"></el-input>
+                </el-form-item>
+
+                <el-form-item label="遗留问题附件">
+                  <lj-upload :disabled="!meeting_summary_editable" size="40" style="position: absolute;top: -14px;"
+                             v-model="meeting_remaining_form.list[index].attachment"></lj-upload>
+                </el-form-item>
+              </div>-->
+
+
+              <div v-for="(item,index) in meeting_remaining_form.list" :key="index">
+
+                <el-form-item label="遗留问题">
+                  <el-input style="width: 700px" placeholder="必填"
+                            v-model="meeting_remaining_form.list[index].question"></el-input>
+                  <span v-if="index==0 && meeting_summary_editable" class="btn_add"
+                        style="position: absolute;right: 60px;top: 3px;"
+                        @click="handleRemainingInfo(index)">+</span>
+                  <span v-if="index>=1 && meeting_summary_editable" class="btn_add"
+                        @click="handleRemainingInfo(index,item)"
+                        style="position: absolute;right: 60px;top: 3px;background-color: #D2D2D2;">-</span>
+                </el-form-item>
+
+                <el-form-item
+
+                              label="跟进人">
+                  <user-choose width="700" num="1" title="必选"
+                               v-model="meeting_remaining_form.list[index].follow_id"></user-choose>
+                </el-form-item>
+
+                <el-form-item
                               label="跟进情况">
                   <el-input style="width: 700px" v-model="meeting_remaining_form.list[index].result"
                             title="必填"></el-input>
@@ -762,7 +795,7 @@
         meeting_remaining_form: {//历史遗留问题form表单
           list: [
             {
-              follow_id: null,//跟进人id int类型
+              follow_id: [],//跟进人id int类型
               question: '',//遗留问题
               attachment: [],//遗留问题附件
               result: '',//跟进情况
@@ -914,12 +947,19 @@
             let id = this.add_meeting_form.id;
             delete this.add_meeting_form['id'];
             this.add_meeting_form.status = 0;
-            this.$http.put(`${this.url}/meeting/meeting/${id}`, this.add_meeting_form).then(res => {
+            this.$http.put(`${this.url}meeting/meeting/${id}`, this.add_meeting_form).then(res => {
               this.$LjMessageEasy(res, () => {
                 this.add_meeting_dialog_visible = false;
                 this.meeting_detail_dialog_visible = false;
                 this.initDaysList(this.dateValue);
               });
+              return res;
+            }).then(res => {
+              if (this.add_meeting_form.is_send) {
+                this.$http.get(`${this.url}meeting/meeting/${id}/todo`).then(res2 => {
+                  this.$LjNotifyEasy(res2);
+                });
+              }
             });
           }
         });
@@ -927,7 +967,6 @@
 
       //处理保存会议纪要及历史遗留问题
       handleSaveSummaryAndRemaining() {
-        debugger
         let return1,return2;
         this.$refs['meetingSummaryFormRef'].validate(valid => {
           if (!valid) {
@@ -939,10 +978,7 @@
             return2 = true;
           }
         });
-        if(return1 || return2) {
-          this.$LjMessage('warning',{title:'警告',msg:'请检查是否遗漏！'});
-          return;
-        }
+
         let meeting_id = this.meeting_detail_form.id;//会议id
         let params = {
           meeting_id,
@@ -960,17 +996,27 @@
           });
         }
         promises.push(promise1);
-
-        let list = _.cloneDeep(this.meeting_remaining_form.list);
-        list.forEach(function (item, index) {
+        debugger
+        let list = _.cloneDeep(this.meeting_remaining_form.list);//克隆出一份
+        list.forEach(function (item, index) {//给list中的对象赋值 及做表单验证
           item.meeting_id = meeting_id;
-          item.follow_id = item.follow_id[0] || [];
+          item.follow_id = item.follow_id.join();
+          if((item.question && !item.follow_id) || (!item.question && item.follow_id)) {
+            return2 = true;
+          }
         });
-        promise2 = this.$http.put(`${this.url}meeting/question/${meeting_id}`, list).then(res => {
-          return res;
-        });
-        promises.push(promise2);
-        Promise.all(promises).then(([res, res2]) => {
+        list = _.filter(list,(o)=> {return o.question&&o.follow_id});//过滤出有用的(即需要提交给后端的)
+        if(list.length!==0) {
+          promise2 = this.$http.put(`${this.url}meeting/question/${meeting_id}`, list).then(res => {
+            return res;
+          });
+          promises.push(promise2);
+        }
+        if(return1||return2) {
+          this.$LjMessage('warning',{title:'警告',msg:'请检查是否遗漏！'});
+          return;
+        }
+        Promise.all(promises).then(([res, res2 = {code:"200"}]) => {
           if (res.code.endsWith('0') && res2.code.endsWith('0')) {
             this.$LjMessage('success', {
               title: '成功',
@@ -1179,7 +1225,7 @@
       //删除会议
       deleteMeeting(item, index, todoListIndex) {
         this.$LjConfirm({icon: 'warning', content: '确定要删除会议吗？'}).then(res => {
-          this.$http.delete(`${this.url}/meeting/meeting/${item.id}`).then(res => {
+          this.$http.delete(`${this.url}meeting/meeting/${item.id}`).then(res => {
             if (res.code.endsWith('0')) {
               this.$LjNotify('success', {
                 title: '成功',
@@ -1202,7 +1248,7 @@
           let params = {
             status: 2
           };
-          this.$http.put(`${this.url}/meeting/meeting/${item.id}/status`, params).then(res => {
+          this.$http.put(`${this.url}meeting/meeting/${item.id}/status`, params).then(res => {
             if (res.code.endsWith('0')) {
               this.$LjNotify('success', {
                 title: '成功',
@@ -1231,7 +1277,7 @@
           },
         };
         this.comment_content = '';
-        this.$http.get(`${this.url}/meeting/meeting/${value.id}`).then(res => {
+        this.$http.get(`${this.url}meeting/meeting/${value.id}`).then(res => {
           if (res.code.endsWith('0')) {
             let item = res.data;
             //let applyPerson = _.find(item.users, {'user_id': item.user_id});//申请人
@@ -1274,7 +1320,7 @@
           this.meeting_remaining_form = {
             list: [
               {
-                follow_id: null,//跟进人id int类型
+                follow_id: [],//跟进人id int类型
                 question: '',//遗留问题
                 attachment: [],//遗留问题附件
                 result: '',//跟进情况
@@ -1323,7 +1369,7 @@
         if (idx == 0) {
           this.meeting_remaining_form.list.push(
             {
-              follow_id: null,//跟进人id int类型
+              follow_id: [],//跟进人id int类型
               question: '',//遗留问题
               attachment: [],//遗留问题附件
               result: '',//跟进情况
