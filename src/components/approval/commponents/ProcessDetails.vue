@@ -154,6 +154,7 @@
         <div class="dialog_footer">
           <!--          动态按钮-->
           <el-button size="small"
+                     v-if="!row.endTime"
                      v-for="(outcome_btn,index) in row.outcome_options" :key="index"
                      type="info"
                      @click="movePopoverClick(outcome_btn)">

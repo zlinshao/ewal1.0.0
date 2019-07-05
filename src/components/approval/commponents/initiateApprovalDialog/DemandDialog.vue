@@ -197,7 +197,6 @@
       content: null,
       // 附件
       attachment: [],
-      user_info: {},
       priority: 50
     }
   }
@@ -258,7 +257,13 @@
         // 学历下拉选项
         education: _.map(this.DROPDOWN_CONSTANT.EDUCATION_BACKGROUND, 'name'),
         processKey: 'HR-ApplyForPersonnelDemand',
-        demand_form: createEmpty()
+        demand_form: createEmpty(),
+        user_info: {
+          name: '',
+          org: '',
+          user_id: 0,
+          org_id: 0,
+        },
       }
     },
     methods: {
@@ -329,8 +334,10 @@
       }
 
     },
-    created() {
+    mounted() {
       this.getUserInfo()
+    },
+    created() {
     }
   }
 </script>
