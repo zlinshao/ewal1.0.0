@@ -13,7 +13,7 @@
       <div class='header_right'>
         <p class='ele_p gua' @click='change_receive_type'>
           <i :class='["icons",isreceive ? "receive_icons":"gua_icons"]'></i>
-          {{isreceive ? "挂起":"接收"}}
+          {{isreceive ? "接收":"挂起"}}
         </p>
         <div class="margin">
           <p :class='["ele_p",receive_check_name.length >0?"receive_span":""]' @click.stop='setReceiveType'>
@@ -381,9 +381,7 @@
               this.receive_check_name = [];
             }
             _.forEach(data, (o) => {
-              // console.log(' this.receive_check',  this.receive_check);
               this.receive_check.push(o.receiveType);
-              // console.log('this.receive_type[o.receiveType]', this.receive_type, o.receiveType);
               this.receive_check_name.push(this.receive_type[o.receiveType]);
             });
           }
@@ -400,7 +398,7 @@
             let data = res.data;
             _.forEach(data, (val, key) => {
               //console.log(val,key);
-              if (!key || !val) {
+              if (!key || !val || key=='httpCode') {
                 delete data[key];
                 return;
               }
@@ -413,6 +411,7 @@
             this.receive_type = data;
             if (this.receive_check.length == 0) {
               _.forEach(data, (value, key) => {
+                //if(key=='httpCode') {return}
                 this.receive_check.push(key);
                 this.receive_check_name.push(value);
               });
