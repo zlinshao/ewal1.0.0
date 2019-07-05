@@ -2082,3 +2082,124 @@ export const dormitoryHightSearch={
         },
     ]
 }
+
+// 片区异动交接单的高级搜索
+export const areaChangeOrderHighSearch={
+    status: 'areaChangeOrderHighSearch',
+    keywords: 'keyWord',
+    placeholder: '人员部门资料名称',
+    data: [
+        {
+            keyType: 'depart',
+            title: '部门',
+            placeholder: '请选择部门',
+            keyName: 'depart_id',
+            dataType: [],
+            value: {
+                num: 1,
+                arr: []
+            }
+        },
+        {
+            keyType: 'date',
+            title: '日期',
+            placeholder: '请选择上传时间',
+            keyName: 'start_at',
+            dataType: "",
+        },
+        {
+            keyType: 'radio',
+            title: '资料类型',
+            keyName: 'type',
+            dataType: '',
+            value: [
+                { id: 1, title: '异动工作交接清单' },
+                { id: 2, title: '房屋交接单' },
+                { id: 3, title: '合同交接单' },
+                { id: 4, title: '片区固定资产盘点表' },
+                { id: 5, title: '采购合同' },
+            ]
+        },
+    ]
+}
+
+// 合同编号的高级搜索
+export const contractNumberHighSearch={
+    status: 'contractNumberHighSearch',
+    keywords: 'keyWord',
+    placeholder: '请输入搜索内容',
+    data: [
+        {
+            keyType: 'staff',
+            title: '员工',
+            placeholder: '请选择员工',
+            keyName: 'staff',
+            dataType: [],
+            value: {
+                num: 1
+            }
+        },        
+        {
+            keyType: 'depart',
+            title: '部门',
+            placeholder: '请选择部门',
+            keyName: 'depart_id',
+            dataType: [],
+            value: {
+                num: 1,
+                arr: []
+            }
+        },
+        {
+            keyType: 'dateRange',
+            title: '选择时间范围',
+            placeholder: '请选择日期',
+            keyName: 'date',
+            dataType: [],
+        },
+    ]
+}
+
+// 合同编号管理的高级搜索
+export const contractNumberEditHighSearch={
+    status: 'contractNumberEditHighSearch',
+    keywords: 'keyWord',
+    placeholder: '请输入搜索内容',
+    data: [
+        {
+            keyType: 'staff',
+            title: '操作对象',
+            placeholder: '请选择人员',
+            keyName: 'staff',
+            dataType: [],
+            value: {
+                num: 1
+            }
+        },        
+        {
+            keyType: 'depart',
+            title: '操作对象部门',
+            placeholder: '请选择部门',
+            keyName: 'depart_id',
+            dataType: [],
+            value: {
+                num: 1,
+                arr: []
+            }
+        },
+        {
+            keyType: 'input',
+            title: '领取上限范围',
+            placeholder: '最小值',
+            keyName: 'price_min',
+            dataType: '',
+        },
+        {
+            keyType: 'input',
+            title: '',
+            placeholder: '最大值',
+            keyName: 'price_max',
+            dataType: '',
+        },
+    ]
+}
