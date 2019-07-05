@@ -194,12 +194,13 @@ export default {
     getPatentList: function () {
       let params = {
         classify_id: 1,
-        all: 1,
+        // all: 1,
         offset: this.currentPage,
         limit: 6
       }
       this.$http.get(`${this.url}/api/knowledge/classify_document`, params).then(res => {
         if (res.status === 200) {
+          console.log(res.data.data)
           this.patentList = [];
           this.total = res.data.total
           for (var i = 0; i < res.data.data.length; i++) {
@@ -215,6 +216,7 @@ export default {
             obj.shows = false
             this.patentList.push(obj);
           }
+          // console.log(this.patentList);
           if (this.patentList.length > 0) {
             this.showAllData = true;
             this.showNoneData = false;
@@ -246,6 +248,7 @@ export default {
       }
       this.$http.get(`${this.url}/api/knowledge/classify_document/${this.patentEditDetail.id}`, params).then(res => {
         if (res.status === 200) {
+          console.log(res.data)
           this.patentEditDetail.permission = res.data.permission.org_id
           this.edit_visible = true;
         }
@@ -350,6 +353,7 @@ export default {
         });
       }
       else {
+        // console.log(params)
         this.$http.put(`${this.url}/api/knowledge/classify_document/${params.id}`, params).then(res => {
           if (res.status === 200) {
             this.edit_visible = false

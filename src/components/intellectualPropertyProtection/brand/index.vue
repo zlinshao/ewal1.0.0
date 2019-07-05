@@ -42,10 +42,17 @@
       <div v-if="showNoneData" class="noneDataShow">
         <div></div>
       </div>
-      <div class="page flex-center common-page" v-if="showAllData">
+      
+      <footer class="flex-center bottomPage" v-if="showAllData">
+      <div class="develop flex-center">
+        <i class="el-icon-d-arrow-right"></i>
+        </div>
+      <div class="page flex-center common-page" >
         <el-pagination :current-page="currentPage" :page-size="6" :total="total" layout="total,jumper,prev,pager,next" @current-change="changeOffset">
         </el-pagination>
       </div>
+      </footer>
+
 
     </div>
 
@@ -197,7 +204,7 @@ export default {
     getPatentList: function () {
       let params = {
         classify_id: 4,
-        all: 1,
+        // all: 1,
         offset: this.currentPage,
         limit: 6
       }
