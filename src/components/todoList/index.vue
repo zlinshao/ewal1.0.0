@@ -144,6 +144,7 @@
         "Market-RentTakeLook": '租房带看',
         "MC-Bulletin-Renter": '报备',
         "Market-CompleteAsset": '报备-补齐物品',
+        "KPI-C":'KPI考核',
       };
 
       /*
@@ -293,6 +294,12 @@
                 break;
               /*补齐物品*/
               case 'Market-CompleteAsset':
+                break;
+              /*会议遗留问题*/
+              case 'HR-MeetingQuestion':
+                obj.project = _.find(variables,{name:'title'})?.value || '-';
+                obj.user = item.description || '-';
+                obj.date = item.createTime || '-';
                 break;
               /*人资招聘*/
               case 'HR-Recruitment':
