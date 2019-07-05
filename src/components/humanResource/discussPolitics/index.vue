@@ -36,10 +36,10 @@
                          v-for="(contentItem,contentItemIndex) in item.todoListTimeLine">
                       <div class="content-item-span">{{contentItem.content}}</div>
                       <div class="icon-list">
-                          <span v-if="contentItem.status==0" title="取消"
+                          <span v-if="contentItem.status==0 && $storage.get('VALIDATE_PERMISSION')['Meeting-Delete']" title="取消"
                                 @click.stop="cancelMeeting(contentItem,index,contentItemIndex)"
                                 class="icon15 icon-cancel"></span>
-                        <span title="删除" @click.stop="deleteMeeting(contentItem,index,contentItemIndex)"
+                        <span title="删除" v-if="$storage.get('VALIDATE_PERMISSION')['Meeting-Delete']" @click.stop="deleteMeeting(contentItem,index,contentItemIndex)"
                               class="icon15 icon-delete-red"></span>
                       </div>
                     </div>
@@ -97,7 +97,7 @@
         <div class="dialog_header">
           <h3>{{meeting_detail_form.meetingType}} {{meeting_detail_form.meetingTime}}</h3>
 
-          <div class="header_right" style="height: 30px">
+          <div class="header_right" v-if="$storage.get('VALIDATE_PERMISSION')['Meeting-Update']" style="height: 30px">
             <i title="编辑" v-show="meeting_detail_choose_id==1"
                v-if="meeting_detail_form.status!=1 && meeting_detail_form.showEditBtn" class="icon30 icon-edit"
                @click="showEditMeetingDialog"></i>
@@ -1068,6 +1068,7 @@
       },
       //新建会议打开dialog
       showAddNewMeetingDialog(item) {
+        if(!this.validatePermission('Meeting-Save')) return;
         this.add_meeting_dialog_title_type = 1;
         this.add_meeting_form = {
           currentDate: '',
@@ -1268,7 +1269,7 @@
 
       //处理会议点击事件 打开会议详情表单
       openMeetingDialog(value) {
-        console.log(value);
+        if(!this.validatePermission('Meeting-Read')) return;
         this.meeting_detail_dialog_visible = true;
         this.meeting_detail_form = {//初始化表单
           remind_data: {
@@ -1395,6 +1396,7 @@
       },
 
       initDaysList(date) {
+        if(!this.validatePermission('Meeting-Index')) return;
         if (date) {
           let daysList = [...this.getPrevMonthRestList(date), ...this.getCurrentMonthList(date), ...this.getNextMonthRestList(date)];
           daysList.forEach((item, index) => {

@@ -39,7 +39,7 @@
         </div>
         <div class="exam-control">
           <div>
-            <span class="writingMode" @click="new_question_bank_dialog_visible = true"
+            <span class="writingMode" @click="showAddQuestionBank"
                   v-if="is_exam_guide === 1">新建题库</span>
             <span class="writingMode" @click="showAddExam" v-else>新建考试</span>
           </div>
@@ -615,8 +615,15 @@
         });
       },
 
+      //打开新建题库对话框
+      showAddQuestionBank() {
+        if(!this.validatePermission('Exam-Bank-Save')) return;
+        this.new_question_bank_dialog_visible = true;
+      },
+
       //获取题库列表
       getQuestionList() {
+        if(!this.validatePermission('Exam-Bank-Index')) return;
         this.tableSettingData['question'].tableData = [];
         let params = {
           ...this.tableSettingData['question'].params
@@ -758,6 +765,7 @@
 
       //获取考试列表
       getExamList() {
+        if(!this.validatePermission('Exam-Schedule-Index')) return;
         this.tableSettingData['exam'].tableData = [];
         let params = {
           ...this.tableSettingData['exam'].params
@@ -782,6 +790,7 @@
 
       //显示新建考试dialog
       showAddExam() {
+        if(!this.validatePermission('Exam-Schedule-Save')) return;
         this.new_exam_form_dialog_visible = true;
         this.exam_form_type = 1;
         this.new_exam_form = {

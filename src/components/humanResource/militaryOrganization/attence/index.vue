@@ -6,7 +6,7 @@
         <div v-if="chooseTab==1" style="display: inline-flex;justify-content: flex-end">
           <month-choose v-model="monthValue"></month-choose>
           <!--          <el-button>导入报表</el-button>-->
-          <button-upload></button-upload>
+          <button-upload v-if="$storage.get('VALIDATE_PERMISSION')['Month-Summary-Import']"></button-upload>
         </div>
         <div v-if="chooseTab==2" style="display: inline-block;width:230px;margin-right: 0">
           <year-choose v-model="yearValue"></year-choose>
@@ -34,7 +34,7 @@
         </span>-->
         <el-checkbox v-model="tableSettingData.attence.isLeave">离职员工</el-checkbox>
         <org-choose num="1" width="200" title="请选择部门" v-model="tableSettingData.attence.departmentId"></org-choose>
-        <span @click="confirmAttence" class="colorE33">生成考勤确认表</span>
+        <span v-if="$storage.get('VALIDATE_PERMISSION')['Attendance-Confirmation-Form-Add']" @click="confirmAttence" class="colorE33">生成考勤确认表</span>
       </div>
       <div v-if="chooseTab==2" class="nav-right">
         <org-choose width="140" v-model="tableSettingData.confirm.departmentId" title="请选择部门"></org-choose>
@@ -887,6 +887,7 @@
 
       //获取考勤确认表
       getAttenceConfirmList() {
+        if(!this.validatePermission('Month-Summary')) return;
         this.showLoading(true);
         this.tableSettingData['confirm'].tableData = [];
         let params = {
@@ -917,6 +918,8 @@
 
       //发送考勤确认单
       sendAttenceResult(item) {
+        if(!this.validatePermission('Attendance-Confirmation-Sent')) return;
+
         if (item.is_send) {
           return;
         }

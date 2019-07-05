@@ -2,7 +2,7 @@
   <div id="courseTrain" class="main-container">
     <div class="listTopCss">
       <div class="search-toolbar listTopRight">
-        <div class="icons add" @click="showNewTrainDialog"><b>+</b></div>
+        <div v-if="$storage.get('VALIDATE_PERMISSION')['Training-Save']" class="icons add" @click="showNewTrainDialog"><b>+</b></div>
       </div>
     </div>
 
@@ -144,7 +144,7 @@
         <div class="dialog_container">
           <div class="dialog_header flex">
             <h3>培训类型</h3>
-            <div class="icons add" @click="showAddTrainTypeDialog"><b>+</b></div>
+            <div v-if="$storage.get('VALIDATE_PERMISSION')['Training-Type-Update']" class="icons add" @click="showAddTrainTypeDialog"><b>+</b></div>
           </div>
           <div class="dialog_main">
             <el-table
@@ -155,8 +155,8 @@
               <el-table-column prop="name" label="培训名称" align="center"></el-table-column>
               <el-table-column  width="130px" label="操作" align="center">
                 <template slot-scope="scope">
-                  <span class="edit_btn" @click="editTrainType(scope.row)">编辑</span>
-                  <span class="delete_btn" @click="deleteTrainType(scope.row)">删除</span>
+                  <span v-if="$storage.get('VALIDATE_PERMISSION')['Training-Type-Update']" class="edit_btn" @click="editTrainType(scope.row)">编辑</span>
+                  <span v-if="$storage.get('VALIDATE_PERMISSION')['Training-Type-Update']" class="delete_btn" @click="deleteTrainType(scope.row)">删除</span>
                 </template>
               </el-table-column>
             </el-table>
@@ -628,6 +628,7 @@
 
       //获取培训列表
       async getTrainList() {//meetingType为会议类型
+        if(!this.validatePermission('Training-Index')) return;
         let params = {
           type: 3
         };
@@ -654,6 +655,7 @@
 
       //显示某个培训详情
       showTrainDetail(id) {
+        if(!this.validatePermission('Training-Read')) return;
         this.isTrain = id;
         this.train_detail_dialog_visible = true;
         this.$http.get(`${this.url}meeting/meeting/${id}`).then(res => {
