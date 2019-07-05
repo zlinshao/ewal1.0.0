@@ -27,7 +27,7 @@
               <p class="timeline-text">
                 {{activity.name}}
               </p>
-              <div v-if="activity.assginees">
+              <div class="timeline-approver" v-if="activity.assginees">
                 <div class="timeline-avatar"
                      v-for="(item_act, item_index) in activity.assginees"
                      :key="item_index">
