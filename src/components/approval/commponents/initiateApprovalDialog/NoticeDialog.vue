@@ -132,6 +132,7 @@
                     <dropdown-list :json-arr="DROPDOWN_CONSTANT.NOTICEQUESTIONNAIRE.PUBLISHNOTICE.TYPE"
                                    title="请选择类型"
                                    width="220"
+                                   @name-change="notice_form.sanction_info[index].sanction_type_name = $event"
                                    v-model="notice_form.sanction_info[index].sanction_type">
                     </dropdown-list>
                   </el-form-item>
@@ -147,6 +148,7 @@
                   <el-form-item label="责任人">
                     <user-choose num="1" title="请选择责任人"
                                  width="220px"
+                                 @user-choose-name="notice_form.sanction_info[index].user_name=$event.join(' ')"
                                  v-model="notice_form.sanction_info[index].user_id">
                     </user-choose>
                     <span v-if="index==0" class="btn_add" style="position: absolute;right: -4px;top: 3px;"
@@ -387,22 +389,19 @@
             if (valid) {
               newForm.date = this.myUtils.formatDate(newForm.date, 'yyyy-MM-dd')
               let {title, date, content, sanction_info} = newForm
-
-
-              sanction_info.map((item_info) => {
-                // item_info.sanction_type
-                // item_info.user_id
-                return [
-                  {key: '奖罚金额', value: item_info.money},
-                  {key: '类型', value: item_info.money},
-                  {key: '责任人', value: item_info.money},
-                ]
-              })
-
+              sanction_info = sanction_info
+                .map((item_info) => {
+                  return [
+                    {key: '奖罚金额', value: item_info.money},
+                    {key: '类型', value: item_info.sanction_type_name},
+                    {key: '责任人', value: item_info.user_name},
+                  ]
+                })
+              debugger
               let data = {
                 ...newForm,
                 more_data: [
-                  {key: '公告类型', value: this.$refs.dropdown1.inputContent},
+                  {key: '公告类型', value: this.$refs.dropdown1.dropdown_name},
                   {key: '标题', value: title},
                   {key: '发送范围', value: this.$refs.orgChoose.org_name.join(' ')},
                   {key: '公告日期', value: date},

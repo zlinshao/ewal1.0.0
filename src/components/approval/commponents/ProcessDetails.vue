@@ -90,14 +90,19 @@
                         <span class="base-info-text-left">{{item_data.key}}</span>：
                         <span>{{item_data.value}}</span>
                       </p>
-                      <!--                      <p class="base-info-text"-->
-                      <!--                         v-for="(item_data,index) in base_info.data.sanction_info" :key="index">-->
-                      <!--                        <span class="base-info-text-left">{{item_data.key}}</span>：-->
-                      <!--                        <span>{{item_data.value}}</span>-->
-                      <!--                      </p>-->
-
+                      <div v-if="base_info.data.sanction_info && base_info.data.sanction_info.length > 0">
+                        <p class="base-info-list"
+                           v-for="(item_data,index) in base_info.data.sanction_info" :key="index">
+                        <span v-for="(item,index) in item_data" :key="index">
+                          <span v-if="item && item!=undefined">
+                            <span class="base-info-text-list">{{item.key}}</span>
+                            <span class="base-info-text-content">{{item.value}}</span>
+                          </span>
+                        </span>
+                        </p>
+                      </div>
                       <!--                      附件-->
-                      <p class="base-info-attachment">
+                      <p class="base-info-attachment" v-if="base_info.attachment && base_info.attachment.length > 0">
                         <span class="base-info-text-left">附件</span>：
                         <!--                        附件 下载                     -->
                         <lj-upload :view-file="base_info.attachment" size="40" :disabled="true"></lj-upload>
@@ -256,7 +261,6 @@
         this.process_details_dialog_visible = true
       },
       close() {
-        console.log('***')
         /**清空表单数据 */
         this.process_details_dialog_visible = false
         this.activities = [
@@ -288,7 +292,6 @@
         ]
       },
       closeDialog() {
-        console.log('---')
         this.close()
       },
       /**获取流程详情 */
