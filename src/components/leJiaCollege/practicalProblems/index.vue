@@ -19,7 +19,7 @@
                    @close="edit_visible = false">
             <div class="dialog_container">
                 <div class="dialog_header">
-                    <h3>{{current_type===1?'新增实践问题':current_type===2?'收房时应该注意哪些问题':current_type===3?'详情':''}}</h3>
+                    <h3>{{current_type===1?'新增实践问题':current_type===2?form.title:current_type===3?'详情':''}}</h3>
                 </div>
                 <div class="dialog_main borderNone">
                     <el-form  label-width="80px" v-model="form" :rules="rules" ref="form">

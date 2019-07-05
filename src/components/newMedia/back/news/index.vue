@@ -13,9 +13,9 @@
         </h2>
       </div>
       <div class="items-center listTopRight">
-        <div class="icons report" @click="report_visible = true"></div>
+        <div class="icons report" @click="clickReport"></div>
         <div class="icons add" @click="publish_visible = true"><b>+</b></div>
-        <div class="icons search" @click="highSearch"></div>
+        <div class="icons search" @click="highSearch(chooseTab)"></div>
       </div>
     </div>
     <div class="mainList">
@@ -46,11 +46,11 @@
 
           <el-table-column label="操作" align="center">
             <template slot-scope="scope">
-              <el-button type="primary" size="mini" :plain="scope.row.is_open===0?true:false" @click.stop="getStatus(scope.row,scope.$index,1)">{{scope.row.is_open===0?'发布':'已发布'}}
+              <el-button type="primary" size="mini" :plain="scope.row.is_open===0?true:false" @click.stop="getStatus(scope.row,scope.$index,1)">{{scope.row.is_open===0?'发&nbsp;&nbsp;&nbsp;&nbsp;布':'已发布'}}
               </el-button>
-              <el-button @click.stop="getStatus(scope.row,scope.$index,2)" type="warning" size="mini" :plain="scope.row.is_top===0?true:false">{{scope.row.is_top===0?'置顶':'已置顶'}}
+              <el-button @click.stop="getStatus(scope.row,scope.$index,2)" type="warning" size="mini" :plain="scope.row.is_top===0?true:false">{{scope.row.is_top===0?'置&nbsp;&nbsp;&nbsp;&nbsp;顶':'已置顶'}}
               </el-button>
-              <el-button @click.stop="getStatus(scope.row,scope.$index,3)" type="success" size="mini" :plain="scope.row.is_great===0?true:false">{{scope.row.is_great===0?'加精':'已加精'}}
+              <el-button @click.stop="getStatus(scope.row,scope.$index,3)" type="success" size="mini" :plain="scope.row.is_great===0?true:false">{{scope.row.is_great===0?'加&nbsp;&nbsp;&nbsp;&nbsp;精':'已加精'}}
               </el-button>
             </template>
           </el-table-column>
@@ -60,7 +60,7 @@
             <i class="el-icon-d-arrow-right"></i>
           </div>
           <div class="page">
-            <el-pagination :total="count" layout="total,jumper,prev,pager,next" :current-page="params.page" :page-size="params.limit"
+            <el-pagination :total="count" layout="total,jumper,prev,pager,next" :current-page="params.offset" :page-size="params.limit"
               @current-change="handleChangePage">
             </el-pagination>
           </div>
@@ -142,8 +142,24 @@
         </div>
         <div class="dialog_main borderNone">
           <el-form label-width="80px">
-            <el-form-item label="类型">
-              <el-input v-model="form.type_id"></el-input>
+            <el-form-item label="类型" v-show="chooseTab===1">
+              <el-select v-model="form.type_id" placeholder="请选择">
+                <el-option
+                  key="1"
+                  label="研发类"
+                  value="1">
+                </el-option>
+                 <el-option
+                  key="2"
+                  label="财务类"
+                  value="2">
+                </el-option>
+                 <el-option
+                  key="3"
+                  label="人力资源类"
+                  value="3">
+                </el-option>
+              </el-select>
             </el-form-item>
             <el-form-item label="标题">
               <el-input v-model="form.title"></el-input>
@@ -157,7 +173,7 @@
         </div>
         <div class="dialog_footer">
           <el-button size="small" type="warning" @click="getUEContent()">预览</el-button>
-          <el-button size="small" type="danger" @click="confirm()">发布</el-button>
+          <el-button size="small" type="danger" @click="submit">发布</el-button>
           <el-button size="small" type="info" @click="publish_visible = false">取消</el-button>
         </div>
       </div>
@@ -170,18 +186,18 @@
           <h3>举报</h3>
         </div>
         <div class="dialog_main">
-          <el-table :data="tableData" highlight-current-row header-row-class-name="tableHeader" style="width: 100%">
-            <el-table-column label="举报时间" prop="" align="center">
+          <el-table :data="reportData" highlight-current-row header-row-class-name="tableHeader" style="width: 100%">
+            <el-table-column label="举报时间" prop="created_at" align="center">
             </el-table-column>
-            <el-table-column label="举报人" prop="" align="center">
+            <el-table-column label="举报人" prop="user_id[name]" align="center">
             </el-table-column>
-            <el-table-column label="举报类型" prop="" align="center">
+            <el-table-column label="举报类型" prop="type[name]" align="center">
             </el-table-column>
             <el-table-column label="举报内容" prop="content" align="center">
             </el-table-column>
             <el-table-column label="操作" align="center">
               <template slot-scope="scope">
-                <span class="delete-icon" @click="del_visible = true;"><i></i></span>
+                <span class="delete-icon" @click="openDeletReport(scope.row)"><i></i></span>
               </template>
             </el-table-column>
           </el-table>
@@ -192,33 +208,42 @@
         </div>
       </div>
     </lj-dialog>
+    <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule"></SearchHigh>
     <media-list :module="showMenuList" @close="showMenuList = false"></media-list>
   </div>
+  
 </template>
 
 <script>
 import LjDialog from '../../../common/lj-dialog.vue';
 import LjEditor from '../../../common/lj-editor.vue';
 import mediaList from '../../components/mediaList.vue';
-
+import SearchHigh from '../../../common/searchHigh.vue';
+import {HotSearch, NewsSearch} from '../../../../assets/js/allSearchData.js';
 export default {
   name: "index",
   components: {
     LjDialog,
     LjEditor,
-    mediaList
+    mediaList,
+    SearchHigh
   },
   data () {
     return {
       params: {//查询参数
         search: '',
-        startRange: '',
-        endRange: '',
+        open_time: [],
+        is_open: '',
         offset: 1,
         limit: 12,
-        department_ids: '',
-        export: '',
-      },
+        type_id: '',
+        is_top: '',
+        is_great: '',
+        org_ids: [],
+        },
+        HotSearch,
+        NewsSearch,
+      searchData: {},//搜索项
       form: {
         type_id: '',
         title: '',
@@ -246,6 +271,7 @@ export default {
       report_visible: false,//举报
       del_visible: false,//删除
       readStatus_visible: false,
+      showSearch: false, //查询页面
       read_type: '',//阅读状态
 
       selects: [
@@ -258,11 +284,13 @@ export default {
         { id: 2, title: "未读人员" },
       ],
       tableData: [],
+      reportData: [],//举报列表
       type: 'hot',
       read_info: [],
       unread_info: [],
 
       statusParams: {
+        article_id: '',
         is_open: '',
         cancel_open: '',
         is_top: '',
@@ -270,7 +298,7 @@ export default {
         is_great: '',
         cancel_great: '',
       },
-
+      currentReport: '',
     }
   },
   watch: {},
@@ -278,6 +306,42 @@ export default {
     this.getDataLists();
   },
   methods: {
+    // 确认搜索
+      hiddenModule(val) {
+        val = _.cloneDeep(val);
+        console.log(val)
+        this.showSearch = false;
+        if (val !== 'close') {
+           this.params=val;
+           this.params.offset=1;
+           this.params.limit=12;
+         this.getDataLists();
+          }
+      },
+      //点击举报查询列表
+      clickReport(){
+        this.report_visible = true; 
+        this.getReportLists();
+      },
+      
+      // 高级搜索
+      highSearch(val) {
+        this.showSearch = true;
+        switch (val) {
+          case 1:
+            this.searchData = this.HotSearch;
+            break;
+          case 2:
+            this.searchData = this.NewsSearch;
+            break;
+          case 3:
+            this.searchData = this.NewsSearch;
+            break;
+        }
+      },
+    getContentChange (val) {
+      this.form.content = val.slice(3,val.length-4);
+    },
     getUEContent () {
       let content = this.$refs.ue.getUEContent();
       this.$notify({
@@ -305,12 +369,32 @@ export default {
     readTab (id) {
       this.read_type = id;
     },
+    
     handleChangePage (page) {
-      this.params.page = page;
+      this.params.offset = page;
       this.getDataLists();
+    },
+    openDeletReport(row){
+      this.del_visible=true;
+     this.currentReport=row;
     },
     //删除
     comfirmDelReport () {
+      this.$http.delete(globalConfig.newMedia_sever + '/api/article/report/'+this.currentReport.id, ).then(res => {
+        if (res.status === 200) {
+          this.del_visible=false;
+          this.$LjNotify('success', {
+            title: '成功',
+            message: '删除成功',
+          });
+          this.getReportLists();
+        }else {
+          this.$LjNotify('error', {
+            title: '失败',
+            message: res.message,
+          });
+        }
+      })
 
     },
     // 已读未读详情
@@ -371,6 +455,19 @@ export default {
         }
       })
     },
+    //获取举报列表
+    getReportLists () {
+      this.showLoading(true);
+      this.$http.get(globalConfig.newMedia_sever + '/api/article/report', {offset:1,limit:12}).then(res => {
+        if (res.status === 200) {
+          this.showLoading(false);
+          this.reportData = res.data.data;
+          this.count = res.data.total;
+          console.log(res.data.data)
+        }
+      })
+    },
+    
     getStatus (row, index, type) {
       for (let item of Object.keys(this.statusParams)) {
         this.statusParams[item] = '';
@@ -427,18 +524,88 @@ export default {
         }
       })
     },
-
-
-    //高级搜索
-    highSearch () {
-
+    submit () {//发布
+    // console.log('222222222222222222222222');
+      let paramsForm = {
+        title: this.form.title,
+        type_id: this.form.type_id,
+        content: this.form.content,
+        is_open: 1,
+      };
+      if(paramsForm.title == ''){
+        this.$LjNotify('error', {
+            title: '失败',
+            message: '必须指定标题',
+          });
+      }else if(this.type && paramsForm.type_id == undefined){
+        this.$LjNotify('error', {
+            title: '失败',
+            message: '必须指定导读类型',
+          });
+      }
+      // else if(paramsForm.is_open == undefined){
+      //   this.$LjNotify('error', {
+      //       title: '失败',
+      //       message: '必须指定',
+      //     });
+      // }
+      else if(paramsForm.content == ''){
+        this.$LjNotify('error', {
+            title: '失败',
+            message: '必须指定内容',
+          });
+      }
+      else{
+        this.$http.post(globalConfig.newMedia_sever + '/api/article/'+this.type, paramsForm).then(res => {
+          if(res.status == 200){
+            this.add_visible = false;
+            // this.callbackSuccess(res);
+            this.form={
+              title: '',
+              type_id: '',
+              content: '',
+              is_open: '',
+            }
+          this.publish_visible = false;
+           this.$LjNotify('success', {
+              title: '成功',
+              message: '操作成功',
+            });
+            this.getDataLists();
+            // this.callbackSuccess(res);
+          }else {
+            this.$LjNotify('error', {
+              title: '失败',
+              message: res.message,
+            });
+          }
+        })
+      }
+    },
+   
+    comfirmStatus(){
+      console.log('this.statusParams', this.statusParams);
+      this.$http.post(globalConfig.newMedia_sever + '/api/article/status', this.statusParams).then(res => {
+          console.log('this.res=====', res);
+          if(res.status == 200){
+            this.$LjNotify('success', {
+              title: '成功',
+              message: '操作成功',
+            });
+            this.showLoading(false);
+            this.getDataLists();
+            // this.callbackSuccess(res);
+          }else {
+            this.$LjNotify('error', {
+              title: '失败',
+              message: res.message,
+            });
+          }
+        })
     }
-
   }
-
 }
 </script>
-
 <style scoped lang="scss">
 @import "../../../../assets/scss/newMedia/back/news/index.scss";
 
