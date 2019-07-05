@@ -180,7 +180,7 @@
       },
       viewFile: {
         handler(val, oldVal) {
-          if (val.constructor === Array && val.length > 0) {
+          if (val && val.constructor === Array && val.length > 0) {
             this.showFile = val;
           }
         },
