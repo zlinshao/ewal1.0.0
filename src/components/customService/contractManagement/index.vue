@@ -955,7 +955,7 @@ export default {
   methods: {
     handleGetLeaseNote () {
       this.$http.get(this.url + 'v1.0/market/leaseNote', this.leaseNote_params).then(res => {
-        console.log(res);
+        // console.log(res);
         if (res.code === 200) {
           this.remeber_list = res.data.data;
           this.list_count = res.data.count;
@@ -968,7 +968,7 @@ export default {
 
     handleGetFixClearList () {
       this.$http.get(this.url + 'v1.0/csd/work_order', this.fix_clear).then(res => {
-        console.log(res);
+        // console.log(res);
         if (res.code === 200) {
           this.fix_clear_list = res.data.data;
           this.list_count = res.data.all_count;
@@ -980,7 +980,7 @@ export default {
     },
     handleGetWorkOrderList () {
       this.$http.get(this.url + 'v1.0/csd/work_order', this.work_order).then(res => {
-        console.log(res);
+        // console.log(res);
         if (res.code === 200) {
           this.work_list = res.data.data;
           this.list_count = res.data.all_count
@@ -1052,7 +1052,7 @@ export default {
     },
     handleGetCustomerInfo () {
       this.$http.get(this.url + 'v1.0/market/customer', this.list_params).then(res => {
-        console.log(res);
+        // console.log(res);
         if (res.code === 200) {
           this.customer_list = res.data.data;
           this.list_count = res.data.count;
@@ -1530,6 +1530,7 @@ export default {
         this.params.type = val.type && val.type;
         this.params.org =val.org;
         this.params.search = val.search;
+        this.params.page =1;
         this.getContractList();
       }
       // this.params=val;

@@ -440,7 +440,8 @@
           params = {
             community_id: data.community.id,	//小区id
             staff_id: data.staff_id,	//签约人
-            room: data.house_type[0],	//户型
+             room: data.house_info.room,	//户型
+            // room: data.house_type[0],	//户型
             is_collect: 1
           }
         }

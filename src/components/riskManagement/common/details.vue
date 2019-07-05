@@ -317,19 +317,23 @@ export default {
       }
     },
     checkoutConfirm() {
+      console.log(this.form);
       if (!this.form.org_id) {
         return "所属部门未选择";
       }
       if (!this.form.name) {
         return "文件名称未填写";
       }
+      if (
+        /[`~!@#$%^&*()_+<>?:"{},.\/;'[\]]/im.test(this.form.name) ||
+        /[·！#￥（——）：；“”‘、，|《。》？、【】[\]]/im.test(this.form.name)
+      ) {
+        return "文件名称不合法";
+      }
       if (this.form.file_info.length == 0) {
         return "文件未添加";
       }
-      if (
-        !this.form.permission_org_id &&
-        this.form.permission_org_id.length == 0
-      ) {
+      if (this.form.permission_org_id.length === 0) {
         return "可见范围未选择";
       }
       if (this.form.file_info.length > 1) {

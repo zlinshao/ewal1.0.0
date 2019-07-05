@@ -357,8 +357,7 @@ export default {
             title: '失败',
             message: '必须指定活动名称',
           });
-      }
-      else if(paramsForm.start_time == undefined){
+      }else if(paramsForm.start_time == undefined){
         this.$LjNotify('error', {
             title: '失败',
             message: '必须指定活动开始时间',
