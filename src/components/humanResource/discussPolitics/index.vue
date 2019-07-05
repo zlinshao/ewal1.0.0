@@ -927,16 +927,22 @@
 
       //处理保存会议纪要及历史遗留问题
       handleSaveSummaryAndRemaining() {
+        debugger
+        let return1,return2;
         this.$refs['meetingSummaryFormRef'].validate(valid => {
           if (!valid) {
-            return;
+            return1 = true;
           }
         });
         this.$refs['remainingFormRef'].validate(valid => {
           if (!valid) {
-            return;
+            return2 = true;
           }
         });
+        if(return1 || return2) {
+          this.$LjMessage('warning',{title:'警告',msg:'请检查是否遗漏！'});
+          return;
+        }
         let meeting_id = this.meeting_detail_form.id;//会议id
         let params = {
           meeting_id,
