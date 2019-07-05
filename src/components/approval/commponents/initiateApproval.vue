@@ -129,42 +129,42 @@
                 component: LeaveDialog,
                 props: {}
               },
-              {
-                itemIndex: 7,
-                itemTitle: '二次入职审批',
-                icon: 'ecrz'
-              },
-              {
-                itemIndex: 8,
-                itemTitle: '花名册使用审批',
-                icon: 'hmc'
-              },
-              {
-                itemIndex: 9,
-                itemTitle: '绝密花名册使用审批',
-                icon: 'jmhmc'
-              },
-              {
-                itemIndex: 10,
-                itemTitle: '个人信息修改审批',
-                icon: 'grxxxg'
-              }
+              // {
+              //   itemIndex: 7,
+              //   itemTitle: '二次入职审批',
+              //   icon: 'ecrz'
+              // },
+              // {
+              //   itemIndex: 8,
+              //   itemTitle: '花名册使用审批',
+              //   icon: 'hmc'
+              // },
+              // {
+              //   itemIndex: 9,
+              //   itemTitle: '绝密花名册使用审批',
+              //   icon: 'jmhmc'
+              // },
+              // {
+              //   itemIndex: 10,
+              //   itemTitle: '个人信息修改审批',
+              //   icon: 'grxxxg'
+              // }
             ]
           },
           {
             index: 2,
             module: '人事专用',
             Item: [
-              {
-                itemIndex: 1,
-                itemTitle: '人事专用',
-                icon: 'rszy'
-              },
-              {
-                itemIndex: 2,
-                itemTitle: '还车贷专用申请',
-                icon: 'hcdsp'
-              },
+              // {
+              //   itemIndex: 1,
+              //   itemTitle: '人事专用',
+              //   icon: 'rszy'
+              // },
+              // {
+              //   itemIndex: 2,
+              //   itemTitle: '还车贷专用申请',
+              //   icon: 'hcdsp'
+              // },
               {
                 itemIndex: 3,
                 itemTitle: '薪资调整申请',
@@ -191,21 +191,21 @@
             index: 4,
             module: '行政',
             Item: [
-              {
-                itemIndex: 1,
-                itemTitle: '用章申请',
-                icon: 'yzsq'
-              },
-              {
-                itemIndex: 2,
-                itemTitle: '采购申请',
-                icon: 'cgsq'
-              },
-              {
-                itemIndex: 3,
-                itemTitle: '物品领/借用',
-                icon: 'wpljy'
-              },
+              // {
+              //   itemIndex: 1,
+              //   itemTitle: '用章申请',
+              //   icon: 'yzsq'
+              // },
+              // {
+              //   itemIndex: 2,
+              //   itemTitle: '采购申请',
+              //   icon: 'cgsq'
+              // },
+              // {
+              //   itemIndex: 3,
+              //   itemTitle: '物品领/借用',
+              //   icon: 'wpljy'
+              // },
               {
                 itemIndex: 4,
                 itemTitle: '增加办公室/宿舍申请',
@@ -236,17 +236,17 @@
               }
             ]
           },
-          {
-            index: 5,
-            module: '其他',
-            Item: [
-              {
-                itemIndex: 1,
-                itemTitle: '工作指示',
-                icon: 'gzqs'
-              }
-            ]
-          }
+          // {
+          //   index: 5,
+          //   module: '其他',
+          //   Item: [
+          //     {
+          //       itemIndex: 1,
+          //       itemTitle: '工作指示',
+          //       icon: 'gzqs'
+          //     }
+          //   ]
+          // }
         ],
         // 个人信息
         user_info_all: null,
