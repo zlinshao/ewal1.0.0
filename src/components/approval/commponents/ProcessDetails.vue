@@ -2,7 +2,7 @@
   <div id="process_details">
     <lj-dialog :visible.sync="process_details_dialog_visible"
                :size="size"
-               @close="cancelProcess">
+               @close="close">
       <!--      拼命加载中-->
       <div v-if="isLoading"
            style="width: 90%;height: 100%;"
@@ -17,7 +17,19 @@
         </div>
         <div class="dialog_main borderNone">
           <div class="process-details scroll_bar">
-            <div class="process-top-box" v-for="(assignee,index) in assigneeArr" :key="index">
+
+            <div class="process-top-box" v-if="assigneeArr.length === 0">
+              <div class="process-top-left">
+                <span class="process-left-label">处理人</span>
+                <span>暂无</span>
+              </div>
+              <div class="process-top-right">
+                <span class="process-right-label">部门</span>
+                <span>暂无</span>
+              </div>
+            </div>
+
+            <div v-else class="process-top-box" v-for="(assignee,index) in assigneeArr" :key="index">
               <div class="process-top-left">
                 <span class="process-left-label">处理人</span>
                 <span>{{assignee.name}}</span>
@@ -78,6 +90,11 @@
                         <span class="base-info-text-left">{{item_data.key}}</span>：
                         <span>{{item_data.value}}</span>
                       </p>
+                      <!--                      <p class="base-info-text"-->
+                      <!--                         v-for="(item_data,index) in base_info.data.sanction_info" :key="index">-->
+                      <!--                        <span class="base-info-text-left">{{item_data.key}}</span>：-->
+                      <!--                        <span>{{item_data.value}}</span>-->
+                      <!--                      </p>-->
 
                       <!--                      附件-->
                       <p class="base-info-attachment">
@@ -130,16 +147,29 @@
           </div>
         </div>
         <div class="dialog_footer">
-          <el-button size="small" v-for="(btn,index) in operateBtn" :key="index"
-                     :type="btn.btn_key === 'agree'?'danger':'info'"
-                     @click="operateBtnClick(btn)">
-            {{btn.btn_tetx}}
+          <!--          动态按钮-->
+          <el-button size="small"
+                     v-for="(outcome_btn,index) in row.outcome_options" :key="index"
+                     type="info"
+                     @click="movePopoverClick(outcome_btn)">
+            {{outcome_btn.title}}
+          </el-button>
+          <!--          静态按钮-->
+          <el-button
+            size="small"
+            v-for="(btn,index) in operateBtnData" :key="btn.btn_key"
+            :type="btn.btn_key === 'urgent' || btn.btn_key === 'read' || btn.btn_key === 'activate'?'danger':'info'"
+            @click="operateBtnClick(btn)">
+            {{btn.btn_text}}
           </el-button>
         </div>
       </div>
     </lj-dialog>
 
-    <TransferDialog ref="transferDialog" :row="row"></TransferDialog>
+    <TransferDialog ref="transferDialog"
+                    :row="row"
+                    @close-parent-dialog="closeDialog">
+    </TransferDialog>
   </div>
 </template>
 
@@ -153,7 +183,7 @@
       LjDialog,
       TransferDialog
     },
-    props: ['detailUrl', 'processUrl', 'row'],
+    props: ['detailUrl', 'processUrl', 'row', 'popoverBtnData'],
     watch: {
       detailUrl(newValue, oldValue) {
         this.getProcessDetails(newValue)
@@ -163,6 +193,9 @@
       },
       row(newValue, oldValue) {
         this.getHandleUser(newValue)
+      },
+      popoverBtnData(newValue, oldValue) {
+        this.operateBtnData = newValue
       }
     },
     data() {
@@ -174,24 +207,6 @@
         },
         loading: true,
         process_details_dialog_visible: false,
-        operateBtn: [
-          {
-            btn_tetx: "暂缓",
-            btn_key: "suspend",
-          },
-          {
-            btn_tetx: "转交",
-            btn_key: "transfer",
-          },
-          {
-            btn_tetx: "拒绝",
-            btn_key: "refuse",
-          },
-          {
-            btn_tetx: "同意",
-            btn_key: "agree",
-          },
-        ],
         activities: [
           {
             user: {
@@ -203,7 +218,8 @@
         base_info: {
           attachment: [],
           data: {
-            more_data: []
+            more_data: [],
+            sanction_info: []
           },
           user: {
             avatar: "",
@@ -212,7 +228,6 @@
             time: "",
           }
         },
-        base_info_arr: [],
         /**处理人 */
         assigneeArr: [
           {
@@ -225,6 +240,7 @@
         load_user: true,
         load_info: true,
         load_record: true,
+        operateBtnData: []
       }
     },
     computed: {
@@ -239,17 +255,23 @@
       open() {
         this.process_details_dialog_visible = true
       },
-      /**取消 */
-      cancelProcess() {
-
-      },
-      /**获取流程详情 */
-      getProcessDetails(url) {
-        // this.showLoading(true)
+      close() {
+        console.log('***')
+        /**清空表单数据 */
+        this.process_details_dialog_visible = false
+        this.activities = [
+          {
+            user: {
+              avatar: '',
+              name: '',
+            }
+          }
+        ]
         this.base_info = {
           attachment: [],
           data: {
-            more_data: []
+            more_data: [],
+            sanction_info: []
           },
           user: {
             avatar: "",
@@ -257,8 +279,35 @@
             result: "",
             time: "",
           }
-        },
-          this.load_info = true
+        }
+        this.assigneeArr = [
+          {
+            name: '',
+            org_name: ''
+          }
+        ]
+      },
+      closeDialog() {
+        console.log('---')
+        this.close()
+      },
+      /**获取流程详情 */
+      getProcessDetails(url) {
+        // this.showLoading(true)
+        this.base_info = {
+          attachment: [],
+          data: {
+            more_data: [],
+            sanction_info: []
+          },
+          user: {
+            avatar: "",
+            name: "",
+            result: "",
+            time: "",
+          }
+        }
+        this.load_info = true
         this.$http.get(url)
           .then(res => {
             this.load_info = false
@@ -330,18 +379,28 @@
       },
       /**点击操作按钮 */
       operateBtnClick(btn) {
-        // 点击了转交
-        if (btn.btn_key === "transfer") {
-          this.$nextTick(() => {
-            this.$refs.transferDialog.open()
-          })
+        let operate_info = {
+          click_type: 'operate',
+          row: this.row,
+          btn
         }
+        this.$emit('operatePopoverClick', operate_info)
+      },
+      movePopoverClick(btn) {
+        let move_info = {
+          click_type: 'move',
+          row: this.row,
+          btn
+        }
+        this.$emit('operatePopoverClick', move_info)
+      },
+      /**初始化数据你*/
+      init() {
+        this.operateBtnData = this.popoverBtnData
       }
     },
     created() {
-      //this.getProcessDetails(this.detailUrl)
-      // this.getApprovalRecord(this.processUrl)
-      // this.getHandleUser(this.row)
+      this.init()
     }
   }
 </script>

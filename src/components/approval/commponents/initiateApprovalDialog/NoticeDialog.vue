@@ -387,17 +387,30 @@
             if (valid) {
               newForm.date = this.myUtils.formatDate(newForm.date, 'yyyy-MM-dd')
               let {title, date, content, sanction_info} = newForm
+
+
+              sanction_info.map((item_info) => {
+                // item_info.sanction_type
+                // item_info.user_id
+                return [
+                  {key: '奖罚金额', value: item_info.money},
+                  {key: '类型', value: item_info.money},
+                  {key: '责任人', value: item_info.money},
+                ]
+              })
+
               let data = {
                 ...newForm,
                 more_data: [
                   {key: '公告类型', value: this.$refs.dropdown1.inputContent},
-                  {key: '标题', title},
+                  {key: '标题', value: title},
                   {key: '发送范围', value: this.$refs.orgChoose.org_name.join(' ')},
                   {key: '公告日期', value: date},
                   {key: '正文', value: content}
                 ],
                 sanction_info: sanction_info
               }
+              console.log(data)
               this.$http.post(this.addUrl, data)
                 .then(res => {
                   this.$LjMessageEasy(res, () => {

@@ -71,6 +71,7 @@
         this.transfer_dialog_visible = false
         this.transfer_form = createEmpty()
         this.$refs.transferForm.clearValidate()
+        this.$emit('close-parent-dialog')
       },
       /**取消 */
       cancelTransfer() {

@@ -71,8 +71,13 @@
             <template slot-scope="{ row }">
               <el-tooltip placement="top-end" :visible-arrow="false">
                 <div class="flex control-btn" slot="content">
+                  <!--根据后台数据动态渲染按钮-->
                   <span class="option-btn"
-                        v-for="(popoverBtn,index) in popoverBtnData" :key="index"
+                        v-for="(outcome_btn,index) in row.outcome_options" :key="index"
+                        @click="movePopover(row,outcome_btn)">{{outcome_btn.title}}</span>
+                  <!--根据 data 数据渲染按钮-->
+                  <span class="option-btn"
+                        v-for="(popoverBtn) in popoverBtnData" :key="popoverBtn.btn_key"
                         @click="operatePopover(row,popoverBtn)">{{popoverBtn.btn_text}}</span>
                 </div>
                 <span class="table-control writingMode">···</span>
@@ -88,7 +93,7 @@
             <el-pagination layout="total,jumper,prev,pager,next"
                            :total="list_Data[tabKey + activeName + 'total']"
                            :page-size="page_info.page_size"
-                           :current-page="params['params'+tabKey].page"
+                           :current-page.sync="page_info.page_current"
                            @current-change="handleChangePage">
             </el-pagination>
           </div>
@@ -96,7 +101,13 @@
       </div>
     </div>
 
-    <ProcessDetails ref="processDetails" :detailUrl="detailUrl" :processUrl="processUrl" :row="row"></ProcessDetails>
+    <ProcessDetails ref="processDetails"
+                    :detailUrl="detailUrl"
+                    :processUrl="processUrl"
+                    :popoverBtnData="popoverBtnData"
+                    :row="row"
+                    @operatePopoverClick="operatePopoverMethod">
+    </ProcessDetails>
 
     <TransferDialog ref="transferDialog" :row="row"></TransferDialog>
   </div>
@@ -154,12 +165,7 @@
         urlConfig: globalConfig.approval_sever,
         urlApi: null,
         operateApi: null,
-        params: {
-          params2: {page:1},
-          params3: {page:1},
-          params4: {page:1},
-          params5: {page:1},
-        },
+        params: {},
         preTabKey: '',
         operateParams: {},
         user_id: null,
@@ -306,9 +312,9 @@
         popoverBtnData: [],
         /**列表数据 */
         online_list: [],
-
-        /**解决列表数据覆盖问题 */
         list_Data: {},
+        /**解决列表数据覆盖问题 */
+        // list_Data: {},
         /**分页数据 */
         page_info: {
           page_total: null,
@@ -321,6 +327,16 @@
       /**格式化列表数据 */
       table_data(data) {
         return data.map(row => {
+          let variables_outcome = null
+          let outcome_name = null
+          let outcome_options = null
+          if (row.processInstanceId && row.variables) {
+            variables_outcome = JSON.parse(_.find(row.variables, {name: 'outcome'})?.value || '{}')
+            if (!this.myUtils.isNullObject(variables_outcome)) {
+              outcome_name = variables_outcome.variableName
+              outcome_options = variables_outcome.outcomeOptions
+            }
+          }
           return {
             ...row,
             priority: row.priority === 50 ? '正常' : row.priority === 60 ? '重要' : '紧急',
@@ -329,7 +345,10 @@
             applicant: _.find(row.variables, {name: 'bulletin_staff_name'})?.value,
             dateStart: row.startTime ? row.startTime : row.createTime ? row.createTime : '',
             dateEnd: row.endTime ? row.endTime : '/',
-            status: row.status ? row.status.toString() : row.name ? row.name : ''
+            status: row.status ? row.status.toString() : row.name ? row.name : '',
+            // 是否为任务
+            outcome_name: outcome_name ? outcome_name : '',
+            outcome_options: outcome_options ? outcome_options : []
           };
         });
       },
@@ -359,7 +378,18 @@
         this.page_info.page_current = val
         this.getApprovalList(this.tabKey, this.activeName, this.page_info.page_current)
       },
-      /**悬浮按钮操作 */
+      operatePopoverMethod(btn_info) {
+        let {row, btn, click_type} = btn_info
+        switch (click_type) {
+          case 'operate':
+            this.operatePopover(row, btn)
+            break;
+          case 'move':
+            this.movePopover(row, btn)
+            break;
+        }
+      },
+      /**悬浮静态按钮操作 */
       operatePopover(row, btn) {
         this.row = row
         /**转交 */
@@ -386,8 +416,8 @@
           case 'activate':
             this.readRequest(url, params, btn.btn_text)
             break;
-          default:
-            this.operateRequest(url, params, btn.btn_text)
+          case 'urgent':
+            this.moveRequest(url, params, btn.btn_text)
             break;
         }
       },
@@ -402,6 +432,7 @@
               this.$LjNotify('success', {title: '成功', message: `撤销成功`});
               // 刷新列表
               this.getApprovalList(this.tabKey, this.activeName, this.page_info.page_current)
+              this.$refs.processDetails.close()
             } else {
               this.$LjNotify('error', {title: '失败', message: `撤销失败`});
             }
@@ -422,6 +453,7 @@
               this.$LjNotify('success', {title: '成功', message: `${btnType}成功`});
               // 刷新列表
               this.getApprovalList(this.tabKey, this.activeName, this.page_info.page_current)
+              this.$refs.processDetails.close()
             } else {
               this.$LjNotify('error', {title: '失败', message: `${btnType}失败`});
             }
@@ -429,8 +461,23 @@
           })
       },
 
-      /**提交 拒绝 */
-      operateRequest(url, params, btnType) {
+      /**悬浮动态按钮操作 */
+      movePopover(row, btn) {
+        let url = this.urlConfig + 'runtime/tasks/' + row.id
+        let params = {
+          action: 'complete',
+          variables: [
+            {
+              name: row.outcome_name,
+              value: btn.action
+            }
+          ]
+        }
+        this.moveRequest(url, params, btn.title)
+      },
+
+      /**动态按钮请求 */
+      moveRequest(url, params, btnType) {
         this.$http.post(url, params)
           .then(res => {
             this.showLoading(false)
@@ -439,6 +486,7 @@
               this.$LjNotify('success', {title: '成功', message: `${btnType}成功`});
               // 刷新列表
               this.getApprovalList(this.tabKey, this.activeName, this.page_info.page_current)
+              this.$refs.processDetails.close()
             } else {
               this.$LjNotify('error', {title: '失败', message: `${btnType}失败`});
             }
@@ -547,13 +595,8 @@
               let format_data = this.table_data(data)
               this.$set(this.list_Data, tabKey + activeName + 'table_data', format_data);
               this.$set(this.list_Data, tabKey + activeName + 'total', total);
-              this.page_info.page_current = 1
-              // Vue.observable(this.list_Data)
-
             }
           })
-
-        console.log(this.page_info.page_current);
       },
 
       /**列表数据操作接口配置 */
@@ -622,10 +665,10 @@
       /**接口配置 */
       operateApiHandle(row, btnType) {
         switch (btnType) {
-          case 'submit':
-          case 'refuse':
-            this.operateApi = this.urlConfig + 'runtime/tasks/' + row.id
-            break;
+          // case 'submit':
+          // case 'refuse':
+          //   this.operateApi = this.urlConfig + 'runtime/tasks/' + row.id
+          //   break;
           case 'urgent':
             this.operateApi = this.urlConfig + 'runtime/tasks/' + row.taskInfo[0].id
             break;
@@ -653,14 +696,6 @@
         // 当前激活页签
         this.activeName = this.tabsData[0].name
         this.clickTabs(this.tabKey, this.activeName)
-
-        // if (this.tabsData.length != 0) {
-        //   this.activeName = this.tabsData[0].name
-        //   this.clickTabs(this.tabKey, this.activeName)
-        // } else {
-        //   this.activeName = 'temporarily'
-        //   this.btnData = []
-        // }
         // 暂不处理 悬浮按钮
         if (this.tabKey === 5) {
           this.popoverBtnData = this.popoverBtnInfo['suspend']
@@ -669,7 +704,6 @@
     },
     created() {
       this.initData()
-      // this.getApprovalList(this.tabKey, this.activeName, this.page_info.page_current)
     }
   }
 </script>
