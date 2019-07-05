@@ -209,6 +209,11 @@
       ApprovalProcess
     },
     props: ['size', 'user_info_all'],
+    watch: {
+      user_info_all(newValue, oldValue) {
+        this.getUserInfo()
+      }
+    },
     data() {
       return {
         url: globalConfig.humanResource_server,
@@ -335,7 +340,6 @@
 
     },
     mounted() {
-      this.getUserInfo()
     },
     created() {
     }
