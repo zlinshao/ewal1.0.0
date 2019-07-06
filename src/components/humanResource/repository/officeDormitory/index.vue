@@ -226,6 +226,9 @@
             <el-form-item label="部门人数">
               <el-input v-model="addOffice_form.office_num" value="25"></el-input>
             </el-form-item>
+            <el-form-item label="领导">
+              <user-choose title="请选择人员" v-model="addOffice_form.leader_id" num="1"></user-choose>
+            </el-form-item>
             <el-form-item label="开始时间">
               <div class="items-center iconInput">
                 <el-date-picker
@@ -262,7 +265,7 @@
           <h3>办公室记录</h3>
           <div>
             <span>审批编号: {{rowData.id}}</span>
-            <span>申请人: {{rowData.applicant}}</span>
+            <span>申请人: {{rowData.applicant.name}}</span>
             <span>申请时间: {{rowData.created_at}}</span>
           </div>
         </div>
@@ -403,7 +406,8 @@
         <div class="dialog_main flex-center borderNone">
           <el-form label-width="110px" :model="changeOfficeInfo_form">
             <el-form-item label="请选择房屋">
-              <house-community :style="{width:100+'%'}" @getHouseIdName="getHouseId_change_office"></house-community>
+              <!-- <house-community :style="{width:100+'%'}" @getHouseIdName="getHouseId_change_office"></house-community> -->
+              <el-input v-model="changeOfficeInfo_form.house_name" readonly></el-input>
             </el-form-item>
             <el-form-item label="办公室类型">
               <div class="items-center iconInput">
@@ -417,7 +421,7 @@
               <org-choose title="请选择部门" v-model="changeOfficeInfo_form.depart_id"></org-choose>
             </el-form-item>
             <el-form-item label="部门人数">
-              <el-input v-model="changeOfficeInfo_form.office_num" value="25"></el-input>
+              <el-input v-model="changeOfficeInfo_form.office_num"></el-input>
             </el-form-item>
             <el-form-item label="开始时间">
               <div class="items-center iconInput">
@@ -464,12 +468,15 @@
                 <el-input v-model="addDormitory_form.bed_num" value="11"></el-input>
               </div>
             </el-form-item>
+            <el-form-item label="部门">
+              <org-choose title="请选择部门" v-model="addDormitory_form.depart_id"></org-choose>
+            </el-form-item>
             <el-form-item label="片区经理">
               <user-choose title="请选择人员" v-model="addDormitory_form.leader_id" num="1"></user-choose>
             </el-form-item>
             <el-form-item label="开始时间">
               <div class="items-center iconInput">
-                <el-date-picker type="date" placeholder="选择日期" v-model="addDormitory_form.start_at"></el-date-picker>
+                <el-date-picker type="date" placeholder="选择日期" v-model="addDormitory_form.start_at" value-format="yyyy-MM-dd"></el-date-picker>
               </div>
             </el-form-item>
             <el-form-item label="备注">
@@ -880,7 +887,8 @@ export default {
         depart_id: "", //部门id
         office_num: "", //部门人数
         start_at: "", //开始时间
-        remarks: "" //备注
+        remarks: "", //备注
+        leader_id:""
       },
       // 新增宿舍的表单
       addDormitory_form: {
@@ -890,7 +898,8 @@ export default {
         bed_num: "", //床位
         start_at: "",
         remarks: "",
-        operate_type: 1
+        operate_type: 1,
+        depart_id:""
       },
       // 办公室列表的数据
       officeList: [],
@@ -997,7 +1006,11 @@ export default {
       },
       isHighSearch: false,
       // 具体一行的数据
-      rowData: {},
+      rowData: {
+        applicant:{
+          name:""
+        }
+      },
       // 控制图片模态框显示
       imgSlider_visiable: false,
       // 图片的数据
@@ -1106,9 +1119,12 @@ export default {
     },
     // 新增办公室
     addOffice_fun() {
-      console.log("新增办公室", this.addOffice_form);
+      let data=JSON.parse(JSON.stringify(this.addOffice_form))
+      data.depart_id=data.depart_id[0];
+      data.leader_id=data.leader_id[0];
+      console.log("新增办公室", data);
       this.$http
-        .post(`${this.url}/v1.0/market/dormitory/add`, this.addOffice_form)
+        .post(`${this.url}/v1.0/market/dormitory/add`, data)
         .then(res => {
           switch (res.success) {
             case true:
@@ -1132,6 +1148,9 @@ export default {
       // 将宿舍leader_Id数组类型设为int类型
       if (this.addDormitory_form.leader_id.length > 0) {
         this.addDormitory_form.leader_id = this.addDormitory_form.leader_id[0];
+      }
+      if (this.addDormitory_form.depart_id.length > 0) {
+        this.addDormitory_form.depart_id = this.addDormitory_form.depart_id[0];
       }
       this.$http
         .post(`${this.url}/v1.0/market/dormitory/add`, this.addDormitory_form)
@@ -1272,11 +1291,13 @@ export default {
     },
     // 变更办公室信息
     changeOfficeInfo_fun() {
-      console.log("变更办公室信息", this.changeOfficeInfo_form);
+      let data=JSON.parse(JSON.stringify(this.changeOfficeInfo_form));
+      data.depart_id=data.depart_id[0];
+      console.log("变更办公室信息", data);
       this.$http
         .post(
           `${this.url}/v1.0/market/dormitory/houseUpdate`,
-          this.changeOfficeInfo_form
+          data
         )
         .then(res => {
           switch (res.success) {
@@ -1483,12 +1504,14 @@ export default {
       } else if (event.target.innerText === "变更信息") {
         this.changeOfficeInfo_visiable = true;
         this.changeOfficeInfo_form.house_id = row.house_id;
+        this.changeOfficeInfo_form.house_name = row.house_name;
         this.changeOfficeInfo_form.id = row.id;
         this.changeOfficeInfo_form.office_type = row.office_type.toString();
-        this.changeOfficeInfo_form.depart_id = row.depart_id;
+        this.changeOfficeInfo_form.depart_id = [row.depart_id];
         this.changeOfficeInfo_form.leader_id = row.leader_id;
         this.changeOfficeInfo_form.office_num = row.office_num;
         this.changeOfficeInfo_form.remarks = row.remarks;
+        this.changeOfficeInfo_form.start_time = row.start_at;
       }
     },
     // 办公室双击
