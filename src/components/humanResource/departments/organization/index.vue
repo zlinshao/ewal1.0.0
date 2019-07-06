@@ -75,7 +75,7 @@
         await this.$http.get(`${this.url}organization/org`).then(res=> {
           if(res.code.toString().endsWith('0')) {
             this.data = res.data;
-            this.data.user = '姜千';
+            this.data.user = '';
             this.recursionHandleData(this.data);
           }
         });

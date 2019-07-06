@@ -3,7 +3,14 @@
     <lj-dialog :visible.sync="salary_dialog_visible"
                :size="size"
                @close="cancelSalary">
-      <div class="dialog_container">
+      <div v-show="isLoading"
+           style="width: 90%;height: 100%;"
+           v-loading="isLoading"
+           element-loading-text="拼命加载中"
+           element-loading-spinner="el-icon-loading"
+           element-loading-background="rgba(255, 255, 255, 0)">
+      </div>
+      <div v-show="!isLoading" class="dialog_container">
         <div class="dialog_header">
           <h3>薪资调整申请</h3>
         </div>
@@ -76,15 +83,6 @@
                 </el-col>
               </el-row>
 
-              <!--              <el-row>-->
-              <!--                <el-col :span="24">-->
-              <!--                  <el-form-item align="center" label="附件">-->
-              <!--                    <lj-upload v-model="salary_form.attachment" size="40"-->
-              <!--                               style="position: absolute; top: -12px;"></lj-upload>-->
-              <!--                  </el-form-item>-->
-              <!--                </el-col>-->
-              <!--              </el-row>-->
-
               <el-row>
                 <el-col :span="24">
                   <el-form-item align="center" label="紧急程度">
@@ -99,7 +97,9 @@
             </el-form>
 
             <!--          流程组件-->
-            <ApprovalProcess :user_info="user_info" :type="salary_form.type"></ApprovalProcess>
+            <ApprovalProcess :user_info="user_info" :type="salary_form.type"
+                             @is-show-loading="isLoading = $event">
+            </ApprovalProcess>
           </div>
         </div>
         <div class="dialog_footer">
@@ -148,6 +148,7 @@
     props: ['user_info_all', 'size', 'addUrl'],
     data() {
       return {
+        isLoading: true,
         // 校验规则
         salary_form_rule: {
           date: [
@@ -177,6 +178,7 @@
       reset() {
         this.salary_form = createEmpty()
         this.$refs.salaryForm.clearValidate()
+        this.isLoading = true
       },
       open() {
         this.salary_dialog_visible = true
@@ -214,8 +216,10 @@
                   {key: '备注', value: remark}
                 ]
               }
+              this.showLoading2(true)
               this.$http.post(this.addUrl, data)
                 .then(res => {
+                  this.showLoading2(false)
                   this.$LjMessageEasy(res, () => {
                     this.salary_dialog_visible = false;
                     this.reset()
@@ -234,7 +238,6 @@
     },
     created() {
       this.getUserInfo()
-
     }
   }
 </script>

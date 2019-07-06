@@ -310,12 +310,12 @@
 
                 <el-form-item
                               label="跟进情况">
-                  <el-input style="width: 700px" v-model="meeting_remaining_form.list[index].result"
+                  <el-input style="width: 700px" placeholder="由跟进人获取" disabled v-model="meeting_remaining_form.list[index].result"
                             title="必填"></el-input>
                 </el-form-item>
 
                 <el-form-item label="遗留问题附件">
-                  <lj-upload :disabled="!meeting_summary_editable" size="40" style="position: absolute;top: -14px;"
+                  <lj-upload :disabled="true" size="40" class="upload-offset"
                              v-model="meeting_remaining_form.list[index].attachment"></lj-upload>
                 </el-form-item>
               </div>

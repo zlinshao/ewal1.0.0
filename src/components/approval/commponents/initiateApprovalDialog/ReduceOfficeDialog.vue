@@ -3,7 +3,14 @@
     <lj-dialog :visible.sync="reduce_office_dialog_visible"
                :size="size"
                @close="cancelReduceOffice">
-      <div class="dialog_container">
+      <div v-show="isLoading"
+           style="width: 90%;height: 100%;"
+           v-loading="isLoading"
+           element-loading-text="拼命加载中"
+           element-loading-spinner="el-icon-loading"
+           element-loading-background="rgba(255, 255, 255, 0)">
+      </div>
+      <div v-show="!isLoading" class="dialog_container">
         <div class="dialog_header">
           <h3>减少办公室/宿舍审批</h3>
         </div>
@@ -89,7 +96,10 @@
             </el-form>
 
             <!--          流程组件-->
-            <ApprovalProcess :user_info="user_info" :type="reduce_office_form.type"></ApprovalProcess>
+            <ApprovalProcess :user_info="user_info"
+                             :type="reduce_office_form.type"
+                             @is-show-loading="isLoading = $event">
+            </ApprovalProcess>
           </div>
         </div>
         <div class="dialog_footer">
@@ -135,8 +145,14 @@
       ApprovalProcess
     },
     props: ['user_info_all', 'size', 'addUrl'],
+    watch: {
+      user_info_all(newValue, oldValue) {
+        this.getUserInfo()
+      }
+    },
     data() {
       return {
+        isLoading: true,
         // 校验规则
         reduce_office_form_rule: {
           date: [
@@ -158,13 +174,19 @@
         reduce_office_form: createEmpty(),
         // 房屋信息
         house_info: {},
-        user_info: null
+        user_info: {
+          name: null,
+          org: null,
+          user_id: null,
+          org_id: null,
+        }
       }
     },
     methods: {
       reset() {
         this.reduce_office_form = createEmpty()
         this.$refs.reduceOfficeForm.clearValidate()
+        this.isLoading = true
       },
       open() {
         this.reduce_office_dialog_visible = true
@@ -213,8 +235,10 @@
                   {key: '申请原因', value: reason}
                 ]
               }
+              this.showLoading2(true)
               this.$http.post(this.addUrl, data)
                 .then(res => {
+                  this.showLoading2(false)
                   this.$LjMessageEasy(res, () => {
                     this.reduce_office_dialog_visible = false;
                     this.reset()
@@ -233,7 +257,6 @@
     },
     created() {
       this.getUserInfo()
-
     }
   }
 </script>

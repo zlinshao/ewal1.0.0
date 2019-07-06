@@ -3,165 +3,6 @@ const todo = {
     todo_list_visible: false, //待办事项显示/隐藏
     refresh_todo_list:false,//刷新todolist
     todo_list_badge_count:0,//待办 标记个数
-    // todo_list_toolbar: {
-    //   customerService: [
-    //     {
-    //       id: 0,
-    //       content: '全部',
-    //       tipCount: ''
-    //     },
-    //     {
-    //       id: 1,
-    //       content: '维修保洁',
-    //       tipCount: ''
-    //     },
-    //     {
-    //       id: 2,
-    //       content: '工单管理',
-    //       tipCount: ''
-    //     },
-    //     {
-    //       id: 3,
-    //       content: '房屋到期',
-    //       tipCount: ''
-    //     },
-    //     {
-    //       id: 4,
-    //       content: '资料审核',
-    //       tipCount: ''
-    //     },
-    //     {
-    //       id: 5,
-    //       content: '回访记录',
-    //       tipCount: ''
-    //     }
-    //   ]
-    // },
-    todo_list_toolbar: [
-      {
-        id: 1,
-        content: '全部',
-        tipCount: '13',
-      },
-      /*{
-        id: 2,
-        content: '面试',
-        tipCount: ''
-      },
-      {
-        id: 3,
-        content: '入职资料',
-        tipCount: '12'
-      },
-      {
-        id: 4,
-        content: '考勤核对',
-        tipCount: ''
-      },
-      {
-        id: 5,
-        content: '培训考核',
-        tipCount: ''
-      },
-      {
-        id: 6,
-        content: '缴纳罚款',
-        tipCount: '3'
-      },
-      {
-        id: 7,
-        content: '物品领取',
-        tipCount: '3'
-      },
-      {
-        id: 8,
-        content: '会议任务',
-        tipCount: ''
-      },
-      {
-        id: 9,
-        content: '其他',
-        tipCount: ''
-      }*/
-    ],
-    todo_list_container: [
-      {
-        id: 1,
-        name: '维修工单',
-        tip: '距离考试20分钟',
-        money: '扣款200元',
-        project: '研发中心会议',
-        onClick: 'humanResource_interview' //click事件控制lj-dialog显示隐藏
-      },
-      {
-        id: 2,
-        name: '资料补齐',
-        user: '张无忌',
-        date: '2019-03-22',
-        location: '艺术家工厂',
-        onClick: 'humanResource_interview_evaluate' //click事件控制lj-dialog显示隐藏
-      },
-      {
-        id: 3,
-        name: '资料补齐',
-        user: '张无忌',
-        money: '扣款200元',
-        project: '研发中心会议',
-        onClick: 'humanResource_attence'
-      },
-      {
-        id: 4,
-        name: '资料补齐',
-        user: '张无忌',
-        date: '2019-03-22',
-        project: '研发中心会议',
-        onClick: 'humanResource_finespayment'
-      },
-      {
-        id: 5,
-        name: '资料补齐',
-        date: '2019-03-22',
-        tip: '距离考试20分钟',
-        money: '扣款200元'
-      },
-      {
-        id: 6,
-        name: '资料补齐',
-        user: '张无忌',
-        date: '2019-03-22',
-        location: '艺术家工厂'
-      },
-      {
-        id: 7,
-        name: '资料补齐',
-        user: '张无忌',
-        money: '扣款200元',
-        project: '研发中心会议'
-      },
-      {
-        id: 8,
-        name: '资料补齐',
-        tip: '距离考试20分钟',
-        money: '扣款200元',
-        project: '研发中心会议'
-      },
-      {
-        id: 9,
-        name: '文职入职考试',
-        tip: '距离考试20分钟',
-        money: '扣款200元',
-        project: '研发中心会议'
-      },
-      {
-        id: 10,
-        name: '领取通知',
-        date: '2019-03-22',
-        user: '张无忌',
-        location: '财务部领取',
-        project: '借用审批编号10086',
-        onClick: 'humanResource_repository' //click事件控制lj-dialog显示隐藏
-      }
-    ],
 
     todo_list_current_selection: {},
 
@@ -176,6 +17,7 @@ const todo = {
     humanResource_attence_visible: false, //考勤界面显示隐藏
     humanResource_finespayment_visible: false, //罚款缴纳显示隐藏
     humanResource_answer_test_paper_visible:false,//问卷/考试页面显示隐藏
+    humanResource_meeting_question_visible:false,//遗留问题页面显示隐藏
 
     // 客服 待办模块
     customerService_createdTodo_visible: false, //客服创建待办
@@ -196,6 +38,9 @@ const todo = {
     humanResource_attence_visible: state => {//考勤代办
       return state.humanResource_attence_visible;
     },
+    humanResource_meeting_question_visible: state => {//会议遗留问题
+      return state.humanResource_meeting_question_visible;
+    }
   },
   // 函数声明
   mutations: {
@@ -242,6 +87,11 @@ const todo = {
       state.humanResource_answer_test_paper_visible = !state.humanResource_answer_test_paper_visible
     },
 
+    //会议遗留问题页面显示隐藏
+    CHANGE_HUMANRESOURCE_MEETING_QUESTION_VISIBLE(state) {
+      state.humanResource_meeting_question_visible = !state.humanResource_meeting_question_visible
+    },
+
     //稽查中心审核页面显示隐藏
     CHANGE_CUSTOMERSERVICE_AGENCY_CHECK_VISIBLE(state) {
       state.customerService_agency_check_visible = !state.customerService_agency_check_visible
@@ -266,7 +116,6 @@ const todo = {
     save_todo_list_current_selection({ commit }, status) {
       commit('SAVE_TODO_LIST_CURRENT_SELECTION', status)
     },
-
     /*人力资源中心 待办模块*/
     //改变面试待办事项显示隐藏
     change_humanResource_interview_visible({ commit }, status) {
@@ -295,6 +144,10 @@ const todo = {
     //改变稽查中心审核页面显示隐藏
     change_customerService_agency_check_visible({commit}, status) {
       commit('CHANGE_CUSTOMERSERVICE_AGENCY_CHECK_VISIBLE',status);
+    },
+    //改变会议遗留问题页面显示隐藏
+    change_humanResource_meeting_question_visible({commit}, status) {
+      commit('CHANGE_HUMANRESOURCE_MEETING_QUESTION_VISIBLE',status);
     },
   },
 }

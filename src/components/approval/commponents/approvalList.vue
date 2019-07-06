@@ -63,7 +63,7 @@
 
           <el-table-column label="状态" align="center">
             <template slot-scope="{row}">
-              <span class="status-item check-item">{{row.status}}</span>
+              <span :class="['status-item',row.status==='已通过'?'end-item':'check-item']">{{row.status}}</span>
             </template>
           </el-table-column>
 
@@ -137,23 +137,7 @@
       },
 
     },
-    computed: {
-      // table_data() {
-      //   return this.list_Data[this.tabKey + this.activeName + 'table_data']
-      //     .map(row => {
-      //       return {
-      //         ...row,
-      //         priority: row.priority === 50 ? '正常' : row.priority === 60 ? '重要' : '紧急',
-      //         title: _.find(row.variables, {name: 'title'})?.value,
-      //         code: row.processInstanceId ? row.processInstanceId : row.id ? row.id : '',
-      //         applicant: _.find(row.variables, {name: 'bulletin_staff_name'})?.value,
-      //         dateStart: row.startTime ? row.startTime : row.createTime ? row.createTime : '',
-      //         dateEnd: row.endTime ? row.endTime : '/',
-      //         status: row.status ? row.status.toString() : row.name ? row.name : ''
-      //       };
-      //     });
-      // }
-    },
+    computed: {},
     // provide() {
     //   return {
     //     row: null
@@ -312,9 +296,8 @@
         popoverBtnData: [],
         /**列表数据 */
         online_list: [],
-        list_Data: {},
         /**解决列表数据覆盖问题 */
-        // list_Data: {},
+        list_Data: {},
         /**分页数据 */
         page_info: {
           page_total: null,
@@ -404,7 +387,7 @@
         this.operateParamsHandle(row, btn.btn_key)
         let url = this.operateApi
         let params = this.operateParams['params' + btn.btn_key]
-        this.showLoading(true)
+        this.showLoading2(true)
         switch (btn.btn_key) {
           case 'recall':
             this.recallRequest(url, params)
@@ -426,7 +409,7 @@
       recallRequest(url, params) {
         this.$http.delete(url, params)
           .then(res => {
-            this.showLoading(false)
+            this.showLoading2(false)
             /**响应提示 */
             if (res.httpCode === 204) {
               this.$LjNotify('success', {title: '成功', message: `撤销成功`});
@@ -447,7 +430,7 @@
       readRequest(url, params, btnType) {
         this.$http.put(url, params)
           .then(res => {
-            this.showLoading(false)
+            this.showLoading2(false)
             /**响应提示 */
             if (res.httpCode === 200) {
               this.$LjNotify('success', {title: '成功', message: `${btnType}成功`});
@@ -473,6 +456,7 @@
             }
           ]
         }
+        this.showLoading2(true)
         this.moveRequest(url, params, btn.title)
       },
 
@@ -480,7 +464,7 @@
       moveRequest(url, params, btnType) {
         this.$http.post(url, params)
           .then(res => {
-            this.showLoading(false)
+            this.showLoading2(false)
             /**响应提示 */
             if (res.httpCode === 200) {
               this.$LjNotify('success', {title: '成功', message: `${btnType}成功`});
@@ -512,11 +496,6 @@
             }
             break;
           case 4://抄送我的
-            // if (activeName === 'unread') {
-            //   this.urlApi = 'runtime/tasks';
-            // } else {
-            //   this.urlApi = 'history/tasks';
-            // }
             this.urlApi = 'history/process-instances';
             break;
           case 5://暂不处理
@@ -536,7 +515,7 @@
               finished: activeName === 'approved' ? true : false,
               active: true,
               tenantId: 'hr',
-              // assignee: this.user_id
+              assignee: this.user_id
             }
             break;
           case 3://我发起的
@@ -555,16 +534,14 @@
                 this.params['params' + tabKey] = {
                   page: page_current,
                   size: this.page_info.page_size,
-                  // cc: this.user_id
-                  cc: 60
+                  cc: this.user_id
                 }
                 break;
               case 'read':
                 this.params['params' + tabKey] = {
                   page: page_current,
                   size: this.page_info.page_size,
-                  // 'cc-read': this.user_id
-                  'cc-read': 60
+                  'cc-read': this.user_id
                 }
                 break;
             }
@@ -575,7 +552,7 @@
               size: this.page_info.page_size,
               tenantId: 'hr',
               suspended: true,
-              // taskAssignee: this.user_id
+              taskAssignee: this.user_id
             }
             break;
         }
@@ -602,21 +579,7 @@
       /**列表数据操作接口配置 */
       /**参数配置 */
       operateParamsHandle(row, btnType) {
-        let variables = JSON.parse(_.find(row.variables, {name: 'outcome'})?.value || '{}')
         switch (btnType) {
-          case 'submit': // 提交 或 拒绝
-          case 'refuse':
-            /**列表接口参数*/
-            this.operateParams['params' + btnType] = {
-              action: 'complete',
-              variables: [
-                {
-                  name: variables.variableName,
-                  value: btnType === 'submit' ? true : false
-                }
-              ]
-            }
-            break;
           case 'urgent'://催办
             this.operateParams['params' + btnType] = {
               action: 'urge',
@@ -629,8 +592,7 @@
             break;
           case 'read':
             this.operateParams['params' + btnType] = {
-              // userId: this.user_id,
-              userId: 60,
+              userId: this.user_id,
               processInstanceId: row.id,
               oldLinkType: "cc",
               newLinkType: "cc-read"
@@ -638,8 +600,7 @@
             break;
           case 'unread_delete':
             this.operateParams['params' + btnType] = {
-              // userId: this.user_id,
-              userId: 60,
+              userId: this.user_id,
               processInstanceId: row.id,
               oldLinkType: "cc",
               newLinkType: "cc-deleted"
@@ -647,8 +608,7 @@
             break;
           case 'read_delete':
             this.operateParams['params' + btnType] = {
-              // userId: this.user_id,
-              userId: 60,
+              userId: this.user_id,
               processInstanceId: row.id,
               oldLinkType: "cc-read",
               newLinkType: "cc-deleted"
@@ -665,10 +625,6 @@
       /**接口配置 */
       operateApiHandle(row, btnType) {
         switch (btnType) {
-          // case 'submit':
-          // case 'refuse':
-          //   this.operateApi = this.urlConfig + 'runtime/tasks/' + row.id
-          //   break;
           case 'urgent':
             this.operateApi = this.urlConfig + 'runtime/tasks/' + row.taskInfo[0].id
             break;

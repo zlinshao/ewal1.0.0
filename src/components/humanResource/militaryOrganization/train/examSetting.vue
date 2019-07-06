@@ -110,7 +110,7 @@
             </el-form-item>
             <div v-if="new_question_bank_exam_list.length==0">
               <el-form-item label="批量导入试题">
-                <lj-upload :limit="['xls']" size="40" style="position: absolute;top:-10px"
+                <lj-upload :limit="['xls','xlsx']" size="40" style="position: absolute;top:-10px"
                            v-model="new_question_bank_form.attachment"></lj-upload>
               </el-form-item>
               <el-form-item label="下载模板">
@@ -669,7 +669,8 @@
 
       //提交题库
       handleSubmitQuestionBank() {
-        if ((!this.new_question_bank_exam_list || this.new_question_bank_exam_list.length == 0) && this.new_question_bank_form.attachment.length == 0) {
+        let mQuestionBankExamList = _.cloneDeep(this.new_question_bank_exam_list);
+        if ((!mQuestionBankExamList || mQuestionBankExamList.length == 0) && this.new_question_bank_form.attachment.length == 0) {
           this.$LjMessage('warning', {
             title: '警告',
             msg: '请至少录入一道题目',
@@ -679,13 +680,13 @@
         let params = {
           ...this.new_question_bank_form
         };
-        if (this.new_question_bank_exam_list) {
+        if (mQuestionBankExamList) {
           this.$http.post(`${this.url}train/exam_question_bank`, params).then(res => {
             return res;
           }).then(res => {
             if (res.code.endsWith('0')) {
               let id = res.data.id;
-              let newExamList = this.new_question_bank_exam_list.map((item, index) => {
+              let newExamList = mQuestionBankExamList.map((item, index) => {
                 item.exam_question_bank_id = id;
                 if (item.answer.constructor !== Array) {
                   item.answer = [item.answer];
