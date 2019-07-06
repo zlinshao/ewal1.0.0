@@ -333,8 +333,10 @@
                   {key: '招聘要求', value: content}
                 ]
               }
+              this.showLoading2(true)
               this.$http.post(`${this.url}/process/process`, data)
                 .then(res => {
+                  this.showLoading2(false)
                   this.$LjMessageEasy(res, () => {
                     this.demand_dialog_visible = false;
                     this.reset()

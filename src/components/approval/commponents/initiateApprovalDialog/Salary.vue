@@ -216,8 +216,10 @@
                   {key: '备注', value: remark}
                 ]
               }
+              this.showLoading2(true)
               this.$http.post(this.addUrl, data)
                 .then(res => {
+                  this.showLoading2(false)
                   this.$LjMessageEasy(res, () => {
                     this.salary_dialog_visible = false;
                     this.reset()

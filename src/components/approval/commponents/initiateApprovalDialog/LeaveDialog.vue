@@ -237,9 +237,10 @@
                   {key: '交接单', value: change_receipt}
                 ]
               }
-
+              this.showLoading2(true)
               this.$http.post(this.addUrl, data)
                 .then(res => {
+                  this.showLoading2(false)
                   this.$LjMessageEasy(res, () => {
                     this.leave_dialog_visible = false;
                     this.reset()
