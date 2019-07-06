@@ -544,7 +544,7 @@
           <h3>宿舍记录</h3>
           <div>
             <span>审批编号: {{rowData.id}}</span>
-            <span>申请人: {{rowData.applicant}}</span>
+            <span>申请人: {{rowData.applicant.name}}</span>
             <span>申请时间: {{rowData.created_at}}</span>
           </div>
         </div>
