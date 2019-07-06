@@ -45,10 +45,7 @@
         <div class="ring border_bg">
           <div class="warning">
             <ul class="warning_legend">
-              <li><span class="square_iocn1"></span><span>1-7天</span></li>
-              <li><span class="square_iocn2"></span><span>8-14天</span></li>
-              <li><span class="square_iocn3"></span><span>14-21天</span></li>
-              <li><span class="square_iocn4"></span><span>21天以上</span></li>
+              <li v-for="item in warningList"><span  :class="'square_iocn'+item.id"></span><span>{{item.name}}</span></li>
             </ul>
             <div id="warnEcharts"></div>
           </div>
@@ -114,9 +111,15 @@
       return {
         params:{
           city: "南京市",
-          start: this.start,
-          end: this.end
+          start: '',
+          end: ''
         },
+        warningList:[
+          {name:'1-7天',id:1},
+          {name:'8-14天',id:2},
+          {name:'14-21天',id:3},
+          {name:'21天以上',id:4},
+        ],
         optionCollet:{},      //收房量
         optionRent:{},       //租房量
         optionWarn:{},        //预警状态
@@ -157,7 +160,7 @@
       //选择时间
       comfirm(val) {
         this.params.start = val.start_date;
-        this.params.end = val.end_date;     //结束时间
+        this.params.end = val.end_date;
         //调后台接口获取详情
         this.getRecvRentDetail();
         this.getWarningDetail();
@@ -224,6 +227,8 @@
         let arr=this.warningStatus(objInfo);
         let param3 = {
           type:'pie',
+          title:'预警状态',
+          name:'预警占比',
           yData1:arr
         };
         this.optionWarn = JSON.parse(JSON.stringify(optionPies));
@@ -296,7 +301,7 @@
         this.$http.post(globalConfig.president_sever + "/v1.0/market/achievement_details", this.params).then(res => {
           if(res.code === 200){
             this.achievementDetails = res.data;
-            // this.achieveTotal =  this.achievementDetails ;   //实际业绩总数
+            this.achieveTotal =  this.achievementDetails.total_achievement ;   //实际业绩总数
             this.drawEchartstAchievement();
           }
         })
@@ -332,6 +337,8 @@
         }
         //预警状态
         if(param.type === 'pie'){
+          optionCurrent.title.text = param.title;
+          optionCurrent.series[0].name = param.name;
           optionCurrent.series[0].data = param.yData1;
         }
         // 出租状态

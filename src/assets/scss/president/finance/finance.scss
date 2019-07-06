@@ -1,0 +1,34 @@
+#finance{
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  //左半部分
+  .finance_left{
+    width: 28%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    .date_location{
+      display: flex;
+      justify-content: space-between;
+    }
+    .entry_leave_trend{
+      width: 100%;
+      flex: 1;
+      padding: 12px 25px;
+    }
+  }
+  //中间部分
+  .finance_middle{
+    flex: 1;
+    height: 100%;
+  }
+  //右半部分
+  .finance_right{
+    width: 28%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+  }
+}

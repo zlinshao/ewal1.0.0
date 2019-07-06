@@ -37,7 +37,7 @@ optionColletRent ={
 optionPies = {
   title: { // 设置环形图中间部分的文字
     show: true,
-    text:"预警状态",
+    text:"",
     x: "center",
     y: "center",
     textStyle: {
@@ -49,13 +49,13 @@ optionPies = {
   tooltip: {
     trigger: 'item',
     backgroundColor:'rgba(0,255,255,0.2)',
-    formatter: "{b} <br/>{a}:{d}%"
+    formatter: "{b}<br/>{a}:{d}%"
   },
   series: [
     {
-      name:'预警占比',
+      name:'',
       type:'pie',
-      radius: ['60%', '70%'],
+      radius: ['70%', '80%'],
       label: {
         normal: {
           show: false,
@@ -138,6 +138,40 @@ optionRing = {
     }
   ]
 };
+
+
+// 性别(实心的饼图)
+optionSolidPie= {
+  tooltip: {
+    trigger: 'item',
+    backgroundColor:'rgba(0,255,255,0.2)',
+    formatter: "{b}<br/>{a}:{d}%"
+  },
+  color: [],
+  series: [
+    {
+      name:'',
+      type:'pie',
+      data:[],
+      selectedMode: 'single',
+      radius: [0, '80%'],
+      label: {
+        normal: {
+          position: 'inner',
+          formatter:"{d}%"
+        }
+      },
+      labelLine: {
+        normal: {
+          show: false
+        }
+      },
+
+    },
+  ]
+};
+
+
 
 //出租率,周转率
 optionRentChangee = {
@@ -252,7 +286,7 @@ optionHouseAchieve = {
     name:'',
     data: [],
     type: 'scatter',
-    symbolSize:20,
+    symbolSize:15,
     // symbolSize: function (data) {
     //   // return Math.sqrt(data[2]) / 5e2;
     //   // return Math.ceil(data[2] / 10);
@@ -271,3 +305,190 @@ optionHouseAchieve = {
 };
 
 
+//学历统计,南丁格尔玫瑰图
+optionRose = {
+  title : {
+    text: '',
+    x:'left',
+    textStyle:{
+      color:'#33C8FF',
+      fontSize:15,
+    }
+  },
+  tooltip : {
+    trigger: 'item',
+    formatter: "{a} <br/>{b} : {c} ({d}%)",
+    backgroundColor:'rgba(0,255,255,0.2)',
+    padding:8,
+  },
+  color: [],
+  legend: {
+    x : 'right',
+    y : 'top',
+    type:'scroll',
+    orient:'vertical',
+    icon: 'circle',
+    align: 'left',
+    textStyle: {
+      color: [],
+
+    },
+    pageTextStyle:{
+      color:'#33C8FF',
+    },
+    data:[],
+  },
+  calculable : true,
+  series : [
+    {
+      name:'',
+      type:'pie',
+      radius : [20, 70],
+      center : ['40%', '50%'],
+      roseType : 'radius', //area radius
+      label: {
+        normal: {
+          show: false
+        },
+        emphasis: {
+          show: false
+        }
+      },
+      lableLine: {
+        normal: {
+          show: false
+        },
+        emphasis: {
+          show: false
+        }
+      },
+      data:[]
+    },
+  ]
+};
+
+//入职,离职
+optionEntryLeave = {
+  tooltip: {
+    trigger: 'axis',
+    axisPointer: {
+      animation: false
+    },
+    backgroundColor:'rgba(0,255,255,0.2)',
+    padding:8,
+  },
+  axisPointer: {
+    link: {xAxisIndex: 'all'}
+  },
+  grid: [{
+    left: 0,
+    right: 0,
+    top:0,
+    height: '45%'
+  }, {
+    left: 0,
+    right: 0,
+    bottom:0,
+    top: '55%',
+    height: '45%'
+  }],
+  xAxis : [
+    {
+      type : 'category',
+      boundaryGap : false,
+      splitLine: {
+        show:false
+      },
+      axisTick: {
+        show: false
+      },
+      axisLine: {
+        show: false,
+      },
+      axisLabel: {
+        color:"#6B7298",
+        fontSize:12
+      },
+      data: []
+    },
+    {
+      gridIndex: 1,
+      type : 'category',
+      boundaryGap : false,
+      splitLine: {
+        show:false
+      },
+      axisTick: {
+        show: false
+      },
+      axisLine: {
+        show: false,
+      },
+      axisLabel: {
+        show: false,
+      },
+      data: [],
+      position: 'top'
+    }
+  ],
+  yAxis : [
+    {
+      name : '入职',
+      type : 'value',
+      axisTick: {
+        show: false
+      },
+      axisLine: {
+        show: false
+      },
+      splitLine: {
+        show: true,
+        lineStyle: {
+          type: 'dashed', //设置Y轴刻度为虚线
+          color: '#6B7298'
+        }
+      },
+    },
+    {
+      gridIndex: 1,
+      name : '离职',
+      type : 'value',
+      axisTick: {
+        show: false
+      },
+      axisLine: {
+        show: false
+      },
+      splitLine: {
+        show: true,
+        lineStyle: {
+          type: 'dashed', //设置Y轴刻度为虚线
+          color: '#6B7298'
+        }
+      },
+      inverse: true
+    }
+  ],
+  series : [
+    {
+      name:'入职',
+      type:'line',
+      areaStyle: {},
+      smooth: true,
+      symbol: 'none',  //去掉点的
+      hoverAnimation: false,
+      data: []
+    },
+    {
+      name:'离职',
+      type:'line',
+      areaStyle: {},
+      smooth: true,
+      symbol: 'none',  //去掉点的
+      xAxisIndex: 1,
+      yAxisIndex: 1,
+      hoverAnimation: false,
+      data: []
+    }
+  ]
+};

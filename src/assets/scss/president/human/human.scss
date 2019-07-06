@@ -1,0 +1,188 @@
+#human{
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  //左半部分
+  .human_left{
+    width: 28%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    .date_location{
+      display: flex;
+      justify-content: space-between;
+    }
+    .entry_leave_trend{
+      width: 100%;
+      flex: 1;
+      padding: 12px 25px;
+      .entry_leave_ring{
+        width: 100%;
+        height: 27%;
+        display: flex;
+        flex-direction: column;
+        border-bottom: 1px dashed #00FFFF;
+        p{
+          font-size: 18px;
+        }
+        ul{
+          width: 100%;
+          flex: 1;
+          display: flex;
+          justify-content: space-between;
+          margin: 20px 0;
+          li{
+            width: 30%;
+            height: 100%;
+          }
+          .onjob{
+            display: flex;
+            align-items: center;
+            .uint{
+              font-size: 12px;
+            }
+            .job_num{
+              font-size:50px;
+              color: #fff;
+            }
+          }
+        }
+      }
+      .entry_leave_line{
+        width: 100%;
+        height: 72%;
+        display: flex;
+        flex-direction: column;
+        .title_legend{
+          display: block;
+          text-align: right;
+          padding: 25px 0 20px 0;
+          .legend_icon1{
+            background:linear-gradient(228deg,rgba(255,158,29,1) 0%,rgba(255,222,128,1) 100%);
+          }
+          .legend_icon2{
+            margin-left: 60px;
+            background:linear-gradient(49deg,rgba(118,255,246,1) 0%,rgba(41,138,193,1) 100%);
+          }
+        }
+        #entryLeaveEcharts{
+          flex: 1;
+        }
+      }
+
+    }
+  }
+  //中间部分
+  .human_middle{
+    flex: 1;
+    height: 100%;
+  }
+  //右半部分
+ .human_right{
+   width: 28%;
+   height: 100%;
+   display: flex;
+   flex-direction: column;
+   //7天留存率
+   .retention_rates{
+     width: 100%;
+     height: 22%;
+     margin-bottom: 18px;
+     display: flex;
+     flex-direction: column;
+     padding: 10px 0;
+     .label{
+       display: block;
+       padding: 0 0 8px 20px;
+       font-size:16px;
+       color: #33C8FF;
+     }
+     .echarts{
+       width: 100%;
+       flex: 1;
+       display: flex;
+       justify-content:space-around;
+       #civilianEcharts{
+         width: 50%;
+         height: 100%;
+       }
+       .line{
+         display: inline-block;
+         height: 60%;
+         border-right: 1px dashed #00FFFF;
+         margin: auto;
+       }
+       #marketingEcharts{
+         width: 50%;
+         height: 100%;
+       }
+     }
+   }
+   //学历统计,年龄结构,饼图
+   .degree_year_agesex{
+     width: 100%;
+     flex: 1;
+     display: flex;
+     flex-direction: column;
+     padding: 20px 20px 0 20px;
+     .degree{
+       width: 100%;
+       height: 33%;
+       border-bottom: 1px dashed #00FFFF;
+     }
+     .year{
+       width: 100%;
+       height: 25%;
+       border-bottom: 1px dashed #00FFFF;
+       .label{
+         font-size:16px;
+         color: #33C8FF;
+         margin: 10px 0  15px 0;
+       }
+       .info{
+         display: flex;
+         justify-content: space-between;
+         li{
+           span{
+             display: block;
+             font-size:12px;
+             color: #00FFFF;
+           }
+           .year_value{
+             font-size: 34px;
+             color: #fff;
+           }
+         }
+       }
+     }
+     .age_sex{
+       width: 100%;
+       flex: 1;
+       display: flex;
+       justify-content: space-between;
+       .age, .sex{
+         width: 50%;
+         margin-top: 12px;
+         .warning_legend{
+           height: 20%;
+         }
+         #workLimitEcharts , #sexEcharts{
+           height: 80%;
+         }
+       }
+       .sex{
+         .warning_legend{
+           justify-content: flex-end;
+         }
+         .square_iocn1{
+           background:#6224FF;
+         }
+         .square_iocn2{
+           background:#008EFF;
+         }
+       }
+     }
+
+   }
+ }
+}

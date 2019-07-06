@@ -180,161 +180,9 @@
           {key:'Stopping',name:'停止中'},
           {key:'Stopped',name:'已停止'},
         ],
-        option : {
-          grid: { //距离容器边界间距
-            top: "20px",
-            left: "20px",
-            right: "20px",
-            bottom: "50px",
-            containLabel: true,
-          },
-          xAxis: [{
-            type: 'category',
-            boundaryGap: false,
-            data: [],
-            axisLabel: {  // X轴字体颜色设置
-              textStyle: {
-                color: '#6B7298',
-                fontSize: 12,
-              },
-            },
-            axisLine: {
-              show: false,
-            },
-            axisTick: {
-              show: false
-            },
-          }],
-          yAxis: [{
-            type: 'value',
-            axisTick: {show: false},
-            min: 0,
-            max: 100,
-            interval: 20,
-            axisLabel: {
-              formatter: '{value}',
-              textStyle: {
-                color: '#6B7298',  // Y轴字体颜色设置
-                fontSize: 12,
-              }
-            },
-            axisLine: {
-              show: false
-            },
-            splitLine: {
-              show: true,
-              lineStyle: {
-                type: 'dashed', //设置Y轴刻度为虚线
-                color: '#6B7298'
-              }
-            },
-          }],
-          dataZoom: [{
-            type: 'slider',
-            height: 15,
-            start: 0,
-            end: 20
-          }],
-          series: [{
-            data: [],
-            type: 'line',
-            areaStyle: {},
-            smooth: true,
-            symbol: 'none',  //去掉点的
-            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-              offset: 0,
-              color: '#76FFC1'
-            }, {
-              offset: 1,
-              color: '#2997C1'
-            }])
-          }
-          ]
-        },
-        option2 : {
-          grid: { //距离容器边界间距
-            top: "20px",
-            left: "20px",
-            right: "20px",
-            bottom: "50px",
-            containLabel: true,
-          },
-          xAxis: [{
-            type: 'category',
-            boundaryGap: false,
-            data: [],
-            axisLabel: {  // X轴字体颜色设置
-              textStyle: {
-                color: '#6B7298',
-                fontSize: 12,
-              },
-            },
-            axisLine: {
-              show: false,
-            },
-            axisTick: {
-              show: false
-            },
-          }],
-          yAxis: [{
-            type: 'value',
-            axisTick: {show: false},
-            min: 0,
-            axisLabel: {
-              formatter: '{value}',
-              textStyle: {
-                color: '#6B7298',  // Y轴字体颜色设置
-                fontSize: 12,
-              }
-            },
-            axisLine: {
-              show: false
-            },
-            splitLine: {
-              show: true,
-              lineStyle: {
-                type: 'dashed', //设置Y轴刻度为虚线
-                color: '#6B7298'
-              }
-            },
-          }],
-          dataZoom: [{
-            type: 'slider',
-            height: 15,
-            start: 0,
-            end: 20
-          }],
-          series: [
-            {
-              data: [],
-              type: 'line',
-              areaStyle: {},
-              smooth: true,
-              symbol: 'none',  //去掉点的
-              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                offset: 0,
-                color: '#FDA158'
-              }, {
-                offset: 1,
-                color: '#FE5757'
-              }])
-            },
-            {
-              data: [],
-              type: 'line',
-              areaStyle: {},
-              smooth: true,
-              symbol: 'none',  //去掉点的
-              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                offset: 0,
-                color: '#FFC359'
-              }, {
-                offset: 1,
-                color: '#FFFF80'
-              }])
-            }
-          ]
-        },
+        optionCPU:{},         //cpu图表
+        optionInternet:{},    //外网图表
+        optionIntranet:{},     //内网图表
       };
     },
 
@@ -405,6 +253,7 @@
       },
 
       // 获取实例监控状态信息
+      // optionCpu  optionInter
       getMonitorDetail(){
         let params = {
           InstanceId: this.selectValue,
@@ -438,43 +287,92 @@
               IntranetRX:IntranetRX,
               IntranetTX:IntranetTX,
             };
-            this.drawEcharts(objParam);
+            this.drawEchartsMonitor(objParam)
           }
         })
       },
 
       //绘制图表
-      drawEcharts(obj) {
-        //获取图表的dom元素
-        let cpuEcharts = this.$echarts.init(document.getElementById('cpuEcharts'));
-        let outcharts = this.$echarts.init(document.getElementById('outcharts'));
-        let innercharts = this.$echarts.init(document.getElementById('innercharts'));
-        //给对应的option赋值
-        this.option.xAxis[0].data=obj.X;      //横轴
-        this.option2.xAxis[0].data=obj.X;      //横轴
-        let optionCpu=JSON.parse(JSON.stringify(this.option));  //cpu
-        let optionOut=JSON.parse(JSON.stringify(this.option2));  //外网
-        let optionInner=JSON.parse(JSON.stringify(this.option2));   //内网
-        //cpuY轴
-        optionCpu.series[0].data=obj.CPU;
-        optionOut.series[0].data=obj.InternetRX;
-        optionOut.series[1].data=obj.InternetTX;
-        optionInner.series[0].data=obj.IntranetRX;
-        optionInner.series[1].data=obj.IntranetTX;
+      drawEchartsMonitor(objParam) {
+        //1.cpu
+        let param1 = {
+          type: 'linecpu',
+          color: ['#76FFC1','#2997C1'],
+          xData: objParam.X,
+          yData: objParam.CPU,
+        };
+        this.optionCPU = JSON.parse(JSON.stringify(optionCpu));
+        this.setOptionsFun(this.optionCPU, param1, 'cpuEcharts');
 
-       //刷新图表
-        cpuEcharts.setOption(optionCpu);
-        outcharts.setOption(optionOut);
-        innercharts.setOption(optionInner);
-        //自适应窗口大小
+        //2.内网
+        let param2 = {
+          type: 'lineInter',
+          color1: ['#FDA158','#FE5757'],
+          color2: ['#FFC359','#FFFF80'],
+          xData: objParam.X,
+          yData1: objParam.InternetRX,
+          yData2: objParam.InternetTX,
+        };
+        this.optionInternet = JSON.parse(JSON.stringify(optionInter));
+        this.setOptionsFun(this.optionInternet, param2, 'outcharts');
+
+        //3.外网
+        let param3 = {
+          type: 'lineInter',
+          color1: ['#FDA158','#FE5757'],
+          color2: ['#FFC359','#FFFF80'],
+          xData: objParam.X,
+          yData1: objParam.IntranetRX,
+          yData2: objParam.IntranetTX,
+        };
+        this.optionIntranet = JSON.parse(JSON.stringify(optionInter));
+        this.setOptionsFun(this.optionIntranet, param3, 'innercharts');
+      },
+
+      //设置图表的属性
+      setOptionsFun(optionCurrent, param, id) {
+        //获取图表的dom元素
+        let myCharts = this.$echarts.init(document.getElementById(id));
+        //cpu
+        if (param.type === 'linecpu') {
+          optionCurrent.series[0].color = new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+            offset: 0,
+            color: param.color[0]
+          }, {
+            offset: 1,
+            color: param.color[1]
+          }]);
+          optionCurrent.xAxis[0].data = param.xData;
+          optionCurrent.series[0].data = param.yData;
+        }
+
+        //外网,内网
+        if (param.type === 'lineInter') {
+          optionCurrent.series[0].color = new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+            offset: 0,
+            color: param.color1[0]
+          }, {
+            offset: 1,
+            color: param.color1[1]
+          }]);
+          optionCurrent.series[1].color = new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+            offset: 0,
+            color: param.color2[0]
+          }, {
+            offset: 1,
+            color: param.color2[1]
+          }]);
+          optionCurrent.xAxis[0].data = param.xData;
+          optionCurrent.series[0].data = param.yData1;
+          optionCurrent.series[1].data = param.yData2;
+        }
+        myCharts.setOption(optionCurrent);
         window.addEventListener("resize", () => {
-          cpuEcharts.resize();
-          outcharts.resize();
-          innercharts.resize();
+          myCharts.resize();
         });
       },
 
-      //遍历数据赋值
+        //遍历数据赋值
       getVal(arr,obj){
         let keyArr= Object.keys(obj);
         arr.forEach((item,index)=>{
