@@ -398,7 +398,7 @@
             let data = res.data;
             _.forEach(data, (val, key) => {
               //console.log(val,key);
-              if (!key || !val || key=='httpCode') {
+              if (!key || !val || key === 'httpCode') {
                 delete data[key];
                 return;
               }
@@ -409,7 +409,7 @@
               this.approval_type_list.push(obj);
             });
             this.receive_type = data;
-            if (this.receive_check.length == 0) {
+            if (this.receive_check.length === 0) {
               _.forEach(data, (value, key) => {
                 //if(key=='httpCode') {return}
                 this.receive_check.push(key);
@@ -431,13 +431,6 @@
               title: '开始时间',
               placeholder: '请选择日期',
               keyName: 'start_time',
-              dataType: []
-            },
-            {
-              keyType: 'dateRange',
-              title: '结束时间',
-              placeholder: '请选择日期',
-              keyName: 'end_time',
               dataType: []
             },
             {
@@ -464,24 +457,23 @@
       },
       // 高级搜索 确定
       hiddenModule(val) {
-        if (val.orgId && val.orgId.length == 1) {//部门高级搜索
+        if (val.orgId && val.orgId.length === 1) {//部门高级搜索
           val.orgId = val.orgId[0];
         }
-        if (val.start_time && val.start_time.length == 2) {//开始时间区间
+        if (val.start_time && val.start_time.length === 2) {//开始时间区间
           val.startedAfter = val.start_time[0];
           val.startedBefore = val.start_time[1];
         }
         delete val['start_time'];
 
-        if (val.end_time && val.end_time.length == 2) {//结束时间区间
+        if (val.end_time && val.end_time.length === 2) {//结束时间区间
           val.finishedAfter = val.end_time[0];
           val.finishedBefore = val.end_time[1];
         }
         delete val['end_time'];
 
-        this.showSearch = false
-        if (val != 'close') {
-          this.params['param' + this.status_type] = val
+        this.showSearch = false;
+        if (val !== 'close') {
           this.handleCurrentChange(1)
         }
       },
@@ -536,7 +528,7 @@
       }
     },
     created() {
-      let messageVisible = this.$store.state.approval.approval_message_visible
+      let messageVisible = this.$store.state.approval.approval_message_visible;
       if (messageVisible) {
         this.getApprovalTypeList();
         this.getChoseApprovalTypeList();
