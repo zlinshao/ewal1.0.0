@@ -387,7 +387,7 @@
         this.operateParamsHandle(row, btn.btn_key)
         let url = this.operateApi
         let params = this.operateParams['params' + btn.btn_key]
-        this.showLoading(true)
+        this.showLoading2(true)
         switch (btn.btn_key) {
           case 'recall':
             this.recallRequest(url, params)
@@ -409,7 +409,7 @@
       recallRequest(url, params) {
         this.$http.delete(url, params)
           .then(res => {
-            this.showLoading(false)
+            this.showLoading2(false)
             /**响应提示 */
             if (res.httpCode === 204) {
               this.$LjNotify('success', {title: '成功', message: `撤销成功`});
@@ -430,7 +430,7 @@
       readRequest(url, params, btnType) {
         this.$http.put(url, params)
           .then(res => {
-            this.showLoading(false)
+            this.showLoading2(false)
             /**响应提示 */
             if (res.httpCode === 200) {
               this.$LjNotify('success', {title: '成功', message: `${btnType}成功`});
@@ -456,6 +456,7 @@
             }
           ]
         }
+        this.showLoading2(true)
         this.moveRequest(url, params, btn.title)
       },
 
@@ -463,7 +464,7 @@
       moveRequest(url, params, btnType) {
         this.$http.post(url, params)
           .then(res => {
-            this.showLoading(false)
+            this.showLoading2(false)
             /**响应提示 */
             if (res.httpCode === 200) {
               this.$LjNotify('success', {title: '成功', message: `${btnType}成功`});
@@ -514,7 +515,7 @@
               finished: activeName === 'approved' ? true : false,
               active: true,
               tenantId: 'hr',
-              assignee: this.user_id
+              // assignee: this.user_id
             }
             break;
           case 3://我发起的
@@ -524,7 +525,7 @@
               finished: activeName === 'undone' ? false : true,
               taskCategory: 'approval',
               tenantId: 'hr',
-              taskOwner: this.user_id
+              // taskOwner: this.user_id
             }
             break;
           case 4://抄送我的
@@ -533,14 +534,14 @@
                 this.params['params' + tabKey] = {
                   page: page_current,
                   size: this.page_info.page_size,
-                  cc: this.user_id
+                  // cc: this.user_id
                 }
                 break;
               case 'read':
                 this.params['params' + tabKey] = {
                   page: page_current,
                   size: this.page_info.page_size,
-                  'cc-read': this.user_id
+                  // 'cc-read': this.user_id
                 }
                 break;
             }
@@ -551,7 +552,7 @@
               size: this.page_info.page_size,
               tenantId: 'hr',
               suspended: true,
-              taskAssignee: this.user_id
+              // taskAssignee: this.user_id
             }
             break;
         }
