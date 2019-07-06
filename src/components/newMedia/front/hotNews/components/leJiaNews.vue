@@ -11,14 +11,15 @@
                             <span><i></i>{{item.thumbs_up_number}}</span>
                             <span><i></i>{{item.comment_number}}</span>
                         </p>
-                        <p class="card-desc">{{item.content}}</p>
+                        <!-- <div style="overflow: hidden;text-overflow: ellipsis; -o-text-overflow: ellipsis;white-space:nowrap; width:100%; height: " v-html="item.content"></div> -->
+                        <!-- <p class="card-desc">{{item.content}}</p> -->
                     </div>
                     <div class="card-bottom">
                         <div class="avatar">
                             <img :src="item.user_id.avatar" alt="">
                             <div class="avatar-name">
-                                <p>{{item.user_id.name}}</p>
-                                <p>{{item.user_id.name}}</p>
+                                <p>{{item.user_id?item.user_id.name: ''}}</p>
+                                <p>{{item.user_id? item.user_id.org[0].name: ''}}</p>
                             </div>
                         </div>
                         <div class="time">
@@ -38,14 +39,16 @@
                             <span><i></i>{{item.thumbs_up_number}}</span>
                             <span><i></i>{{item.comment_number}}</span>
                         </p>
-                        <p class="card-desc">{{item.content}}</p>
+                        <!-- <div style="overflow: hidden;text-overflow: ellipsis; -o-text-overflow: ellipsis;white-space:nowrap; width:100%; height: " v-html="item.content"></div> -->
+                        <!-- <p class="card-desc">{{item.content}}</p> -->
                     </div>
                     <div class="card-bottom">
                         <div class="avatar">
                             <img :src="item.user_id.avatar" alt="">
                             <div class="avatar-name">
                                 <p>{{item.user_id.name}}</p>
-                                <p>{{item.user_id.name}}</p>
+                                <p>{{item.user_id? item.user_id.org[0].name: ''}}</p>
+                                <!-- <p>{{item.user_id.name}}</p> -->
                             </div>
                         </div>
                         <div class="time">
@@ -65,14 +68,16 @@
                             <span><i></i>{{item.thumbs_up_number}}</span>
                             <span><i></i>{{item.comment_number}}</span>
                         </p>
-                        <p class="card-desc">{{item.content}}</p>
+                        <!-- <div style="overflow: hidden;text-overflow: ellipsis; -o-text-overflow: ellipsis;white-space:nowrap; width:100%; height: " v-html="item.content"></div> -->
+                        <!-- <p class="card-desc">{{item.content}}</p> -->
                     </div>
                     <div class="card-bottom">
                         <div class="avatar">
                             <img :src="item.user_id.avatar" alt="">
                             <div class="avatar-name">
                                 <p>{{item.user_id.name}}</p>
-                                <p>{{item.user_id.name}}</p>
+                                <p>{{item.user_id? item.user_id.org[0].name: ''}}</p>
+                                <!-- <p>{{item.user_id.name}}</p> -->
                             </div>
                         </div>
                         <div class="time">
@@ -92,14 +97,16 @@
                             <span><i></i>{{item.thumbs_up_number}}</span>
                             <span><i></i>{{item.comment_number}}</span>
                         </p>
-                        <p class="card-desc">{{item.content}}</p>
+                        <!-- <div style="overflow: hidden;text-overflow: ellipsis; -o-text-overflow: ellipsis;white-space:nowrap; width:100%; height: " v-html="item.content"></div> -->
+                        <!-- <p class="card-desc">{{item.content}}</p> -->
                     </div>
                     <div class="card-bottom">
                         <div class="avatar">
                             <img :src="item.user_id.avatar" alt="">
                             <div class="avatar-name">
                                 <p>{{item.user_id.name}}</p>
-                                <p>{{item.user_id.name}}</p>
+                                <p>{{item.user_id? item.user_id.org[0].name: ''}}</p>
+                                <!-- <p>{{item.user_id.name}}</p> -->
                             </div>
                         </div>
                         <div class="time">
@@ -146,16 +153,15 @@
             this.getDataLists();
         },
         mounted() {
-            // console.log(this.chooseTab);
+            console.log(this.chooseTab);
             // 用来监听滚轮
             window.addEventListener("scroll", this.handleScroll);
         },
         methods: {
             getDataLists() {// 请求接口方法
-                this.$http.get(globalConfig.newMedia_sever + '/api/article/hot').then(res => {
+                this.$http.get(globalConfig.newMedia_sever + '/api/article/news').then(res => {
                     if(res.status===200){
                         this.newsData = res.data.data;
-                        console.log(this.newsData);
                         this.sort(0);// 分配数据到指定管道
                     }else{
                         this.newsData = [];

@@ -164,6 +164,9 @@
             <el-form-item label="标题">
               <el-input v-model="form.title"></el-input>
             </el-form-item>
+             <!-- <el-form-item label="封面图">
+              <lj-upload size="50"  v-model="form.file_info"></lj-upload>
+            </el-form-item> -->
             <el-form-item label="文章内容">
               <div class="item_content">
                 <lj-editor :editorContent="form.content" @changeContent="getContentChange"></lj-editor>
@@ -248,6 +251,7 @@ export default {
         type_id: '',
         title: '',
         content: '',
+        file_info: [],
         is_open: '',//是否发布
 
       },
@@ -340,7 +344,7 @@ export default {
         }
       },
     getContentChange (val) {
-      this.form.content = val.slice(3,val.length-4);
+      this.form.content = val;
     },
     getUEContent () {
       let content = this.$refs.ue.getUEContent();
@@ -530,6 +534,7 @@ export default {
         title: this.form.title,
         type_id: this.form.type_id,
         content: this.form.content,
+        // cover: this.form.file_info,
         is_open: 1,
       };
       if(paramsForm.title == ''){

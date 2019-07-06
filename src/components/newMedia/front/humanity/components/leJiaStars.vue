@@ -15,33 +15,32 @@
                         <div class="detail-content-middle">
                             <div class="middle-info">
                                 <h1>{{detailData.title}}</h1>
-                                <p class="desc">{{detailData.desc}}</p>
-                                <div class="middle-img justify-bet">
+                                <!-- <p class="desc">{{detailData.desc}}</p> -->
+                                <!-- <div class="middle-img justify-bet">
                                     <img src="../../../../../assets/image/newMedia/theme1/active.png" alt="">
                                     <img src="../../../../../assets/image/newMedia/theme1/active.png" alt="">
-                                </div>
-                                <p class="content">{{detailData.content}}</p>
+                                </div> -->
+                                <div class="content" v-html="detailData.content"></div>
                             </div>
                             <div class="detail-content-right flex-center">
                                 <div class="right-info-icons">
                                     <div class="icon-list" @click="comment_visible = true">
                                         <i class="icon-bg collect-icon"></i>
+                                        <!-- <i class="person-number">{{detailData.collect_number}}</i> -->
 
                                     </div>
                                     <div class="icon-list">
                                         <i class="icon-bg point-icon"></i>
-
+                                        <!-- <i class="person-number">{{detailData.thumbs_up_number}}</i> -->
                                     </div>
                                     <div class="icon-list">
                                         <i class="icon-bg commit-icon"></i>
-
+                                        <!-- <i class="person-number">{{detailData.comment_number}}</i> -->
                                     </div>
                                     <div class="icon-list share-navbar">
                                     <span class="share-navbar-box flex-center justify-around"
                                           v-if="share_navbar_visible"
-                                          id="div1"
-
-                                    >
+                                          id="div1">
                                         <i class="sina-icon"></i>
                                         <i class="wechat-icon"></i>
                                         <i class="link-icon"></i>
@@ -267,6 +266,13 @@
                 },
             }
         },
+         created() {
+            // 获取第一页数据
+            this.getData();
+        },
+        //  watch:{
+        //     '$route':'getPath'
+        // },
         mounted(){
           this.getData();
         },
@@ -279,13 +285,14 @@
             },
             getData(){
                 this.$http.get(globalConfig.newMedia_sever+'/api/humanity/star',).then(res=>{
+                    //  console.log(res);
                     if(res.status===200){
-                        console.log(res.data);
+                        // console.log(res.data);
                         this.detailData = res.data;
-                        if(res.data.user_id){
-                            this.userInfo.avatar = res.data.user_id.avatar;
-                            this.userInfo.name = res.data.user_id.name;
-                            this.userInfo.department = res.data.user_id.org[0].name;
+                        if(res.data.star_id){
+                            this.userInfo.avatar = res.data.star_id.avatar;
+                            this.userInfo.name = res.data.star_id.name;
+                            this.userInfo.department = res.data.star_id.org[0].name;
 
                         }
 

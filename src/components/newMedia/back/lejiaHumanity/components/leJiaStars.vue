@@ -55,6 +55,12 @@
             <el-form-item label="姓名">
               <user-choose width='1060' v-model="form.userid"></user-choose>
             </el-form-item>
+             <!-- <el-form-item label="标题">
+              <el-input width='700' v-model="form.title"></el-input>
+            </el-form-item>
+            <el-form-item label="封面图">
+              <lj-upload size="50"  v-model="form.file_info"></lj-upload>
+            </el-form-item> -->
             <el-form-item label="文章内容">
               <div class="item_content">
                 <lj-editor :editorContent="form.content" @changeContent="getContentChange"></lj-editor>
@@ -112,6 +118,8 @@ export default {
       form: {
         userid: [],
         content: '',
+        title: '',
+        file_info: []
       },
       params: {
         offset: 1,
@@ -149,6 +157,8 @@ export default {
       this.starInfo.name = item && item.star_id ? item.star_id.name : '';
       this.starInfo.org = item && item.star_id ? item.star_id.org : '';
       this.starInfo.content =item.content;
+       this.starInfo.title =item.title;
+        // this.starInfo.content =item.cover;
       this.detail_visible = true;
       this.form.content=item.content;
       this.form.userid=[item.userid];
@@ -190,9 +200,10 @@ export default {
       let param = {
         star_id: this.form.userid[0],
         content: this.form.content,
+        title: this.form.title,
+        cover: this.form.file_info
       }
       if(param.star_id == undefined|| this.form.userid.length<0){
-        console.log(this.form.userid.length>0)
         this.$LjNotify('error', {
             title: '失败',
             message: '人员不能为空且只能选一个',
@@ -203,7 +214,6 @@ export default {
             message: '内容不能为空',
           });
       } else{
-         console.log('this.form.----------------------------------', this.form)
         this.$http.post(globalConfig.newMedia_sever + '/api/humanity/star',param).then(res => {
           if (res.status === 200) {
             this.add_visible = false
@@ -217,7 +227,6 @@ export default {
     getLeJiaStarList(){
       this.starList = []
       this.$http.post(globalConfig.newMedia_sever + '/api/humanity/star/history',this.params).then(res => {
-        console.log('res', res);
         if (res.status === 200) {
           this.total = res.data.total
           for(let i = 0;i<res.data.data.length;i++){
