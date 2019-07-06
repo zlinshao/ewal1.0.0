@@ -15,7 +15,7 @@
           :key="item.id"
           class="flex-center left-block"
           :class="{'is-choose-guide': left_guide_choose === item.id}"
-          @click="left_guide_choose = item.id"
+          @click="left_guide_choose = item.id;current_type_name = item.name"
           :title="item.name"
         >
           <span>{{ item.name.slice(0,4) }}</span>
@@ -207,7 +207,7 @@
     >
       <div class="dialog_container">
         <div class="dialog_header">
-          <h3>入职培训列表</h3>
+          <h3>{{current_type_name}}</h3>
         </div>
         <div class="dialog_main">
           <el-table
@@ -408,12 +408,14 @@
         //培训类型列表对话框
         train_list_dialog_visible: false,
 
+        //当前培训类型名称
+        current_type_name:'',
+
 
         //新建培训
         new_train_dialog_visible: false,
         //新建培训表单字段
         new_train_form: {
-
           name: '',//名称
           room_id: '',//地点id
           meeting_type: '',//培训类型id
@@ -455,9 +457,10 @@
         },
       }
     },
-    mounted() {
+    async mounted() {
       //this.getTrainList();
-      this.getTrainTypeList();
+      await this.getTrainTypeList();
+      this.current_type_name = this.left_guide_all_list[0]?.name;
     },
     watch: {
       left_guide_all_list: {
@@ -498,11 +501,6 @@
             this.left_guide = this.left_guide_all_list.slice(this.left_guide_index, this.left_guide_index + 2);
             this.left_guide_choose = this.left_guide[0].id;
           }
-
-          /*console.log('***');
-          console.log(this.left_guide_all_list.length);
-          console.log(this.left_guide_index);
-          console.log('***');*/
         }
         else {//往下
           if(this.left_guide_all_list.length<this.left_guide_index+2) {
@@ -520,13 +518,7 @@
             this.left_guide_choose = this.left_guide[1].id;
           }
           this.left_guide_index++;
-          /*console.log('***');
-          console.log(this.left_guide_all_list.length);
-          console.log(this.left_guide_index);
-          console.log('***');*/
         }
-
-        //this.getTrainList();
       },
 
       //显示新增培训对话框
@@ -549,10 +541,33 @@
               this.$LjMessageEasy(res, () => {
                 this.new_train_dialog_visible = false;
                 this.getTrainList();
+                this.resetForm();
               });
             });
           }
         });
+      },
+
+      //重置表单
+      resetForm() {
+        this.new_train_form = {
+          name: '',//名称
+          room_id: '',//地点id
+          meeting_type: '',//培训类型id
+          train_time: '',//培训时间
+          start_time: '',//开始时间
+          end_time: '',//结束时间
+          presenter_id: [],//主持人id数组
+          //counts:'',//应到人数
+          //meetingTips:{},//会议提醒
+          remind_data: {
+            minute: 0,
+            hour: 1,
+          },
+          participants: [],//参会人员数组
+          attachment: [],//附件id数组
+          exam_id: '',//试卷id
+        };
       },
 
       //显示添加培训类型对话框
@@ -562,7 +577,6 @@
           name: '',
         };
         this.train_type_dialog_visible = true;
-
       },
 
       //提交添加培训类型=>
@@ -614,11 +628,11 @@
       },
 
       //获取培训类型列表
-      getTrainTypeList() {
+      async getTrainTypeList() {
         let params = {
           type: 3
         };
-        this.$http.get(`${this.url}meeting/category`, params).then(res => {
+        await this.$http.get(`${this.url}meeting/category`, params).then(res => {
           if (res.code.endsWith('0')) {
             this.train_type_list = res.data.data;
             this.left_guide_all_list = res.data.data;
@@ -649,6 +663,8 @@
               this.tableSettingData['jobTrain'].tableData.push(obj);
             }
             this.tableSettingData['jobTrain'].counts = res.data.count;
+          } else {
+            this.tableSettingData['jobTrain'].counts = 0;
           }
         });
       },

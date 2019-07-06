@@ -706,7 +706,8 @@
               let obj = {
                 id: item.id,//人id
                 name: item.name || '-',//姓名
-                department: item.org[0]?.name || '-',//部门
+                //department: item.org[0]?.name || '-',//部门
+                department: _.find(item.org,{id:this.tableSettingData.attence.departmentId[0]})?.name || item.org[0]?.name || '-',
                 post: item.position[0]?.name || '-',//岗位
                 // attRest: `${item.attendance[0]?.attendance_day || '-'}/${item.attendance[0]?.rest_day || '-'}`,
                 attendance_day: item.attendance[0]?.attendance_day || '-',//出勤天数
@@ -874,7 +875,7 @@
           });
           return;
         }
-        this.$LjConfirm({icon: 'warning', content: '月度统计表将发送至对应部门待办中'}).then(() => {
+        this.$LjConfirm({icon: 'warning', content: '将生成考勤确认表'}).then(() => {
           let params = {
             org_id: org_id[0],
             month: this.myUtils.formatDate(this.monthValue, 'yyyy-MM'),

@@ -54,6 +54,8 @@
       <attence-dialog></attence-dialog>
       <!--罚款缴纳相关-->
       <finespayment-dialog></finespayment-dialog>
+      <!--会议遗留问题相关-->
+      <meeting-question-dialog></meeting-question-dialog>
       <!--收租房带看-->
       <SeeHouse></SeeHouse>
       <!--问卷/考试答题-->
@@ -71,6 +73,7 @@
   import repositoryDialog from './components/humanResource/repositoryDialog';
   import attenceDialog from './components/humanResource/attenceDialog';
   import finespaymentDialog from './components/humanResource/finespaymentDialog';
+  import meetingQuestionDialog from './components/humanResource/meetingQuestionDialog';
   //市场客服
   import SeeHouse from './components/marketCentre/see-house.vue';
   import AgencyCheck from './components/customService/agencyCheck';
@@ -82,6 +85,7 @@
       repositoryDialog,
       attenceDialog,
       finespaymentDialog,
+      meetingQuestionDialog,
       SeeHouse,
       AnswerQuestionnaireOrExam,
       AgencyCheck,
@@ -250,9 +254,10 @@
           processDefinitionKeyNotIn: this.processDefinitionKeyNotIn,
         };
 
-        if (params.processDefinitionKey == 'Agency-Supervision') {
+        if (params.processDefinitionKey == 'Agency-Supervision') {//稽查中心审核
           params.taskDefinitionKey = 'jczx_approval';
         }
+        if(!params.assignee) return;
 
         this.checked = categoryChecked || (index + 1);
         this.categoryChecked = this.checked;
@@ -297,6 +302,7 @@
                 break;
               /*会议遗留问题*/
               case 'HR-MeetingQuestion':
+                obj.onClick = 'humanResource_meeting_question';
                 obj.project = _.find(variables,{name:'title'})?.value || '-';
                 obj.user = item.description || '-';
                 obj.date = item.createTime || '-';
@@ -315,7 +321,7 @@
                 obj.onClick = 'humanResource_finespayment';
                 obj.tip = _.find(variables, {name: 'title'})?.value || '-';
                 obj.date = this.myUtils.formatDate(_.find(variables, {name: 'send_at'})?.value, 'yyyy-MM-dd');
-                obj.money = (_.find(variables, {name: 'money'})?.value || 0) + '元';
+                obj.money = (_.find(variables, {name: 'money'})?.value || '-') + '元';
                 break;
               /*考勤*/
               case 'HR-Attendance':
