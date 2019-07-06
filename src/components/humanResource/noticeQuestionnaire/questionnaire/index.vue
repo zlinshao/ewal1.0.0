@@ -126,7 +126,7 @@ export default {
       rules: {
         addQuestionnaire: {
           name: [
-            { required: true, message: '请输入公告名称', trigger: 'blur' },
+            { required: true, message: '请输入问卷名称', trigger: 'blur' },
           ],
           start_time: [
             { required: true, message: '请选择开始时间', trigger: 'blur' },
