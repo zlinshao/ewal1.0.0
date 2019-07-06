@@ -137,28 +137,28 @@
           table1: {
             bulletin_name: '报备类型',
             bulletin_staff_name: '报备人',
-            house_address: '房屋地址',
+            title: '房屋地址',
           },
           table2: {
             bulletin_name: '报备类型',
             bulletin_staff_name: '报备人',
-            house_address: '房屋地址',
+            title: '房屋地址',
           },
           table3: {
             bulletin_name: '报备类型',
             bulletin_staff_name: '报备人',
-            house_address: '房屋地址',
+            title: '房屋地址',
             endTime: '完成时间',
           },
           table4: {
             bulletin_name: '报备类型',
             bulletin_staff_name: '报备人',
-            house_address: '房屋地址',
+            title: '房屋地址',
           },
           table5: {
             bulletin_name: '报备类型',
             bulletin_staff_name: '报备人',
-            house_address: '房屋地址',
+            title: '房屋地址',
           }
         },//表格显示字段
         tableData: {
@@ -308,6 +308,11 @@
                 }
               }
             }
+            if (key.name === 'due_date') {
+              let date = this.myUtils.timeDifference(key.value);
+              obj.due_date_hours = date.hours;
+              obj.due_date_minutes = date.minutes;
+            }
             if (key.name.includes('detail_request_url')) {
               if (key.name !== 'bm_detail_request_url') {
                 obj.detail_request_url = key.value || '';
@@ -319,10 +324,21 @@
               if (key.value) {
                 let contract = JSON.parse(key.value);
                 obj.contract_id = contract.v3_contract_id;
+                obj.house_id = contract.house_id;
               }
             }
-            if (key.name.includes('_approved')) {
-              obj.approvedStatus = key.value || '';
+            if (key.name === 'outcome') {
+              let outcome = '';
+              let come = JSON.parse(key.value);
+              outcome = come.variableName;
+              obj.approvedName = outcome;
+              for (let names of item.variables) {
+                if (names.name === outcome) {
+                  obj.approvedStatus = names.value;
+                }
+              }
+            } else if (key.name.includes('_approved') && !key.name.startsWith('bm_')) {
+              obj.approvedStatus = key.value;
             }
           }
           for (let key of Object.keys(item)) {
