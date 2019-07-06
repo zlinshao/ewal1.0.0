@@ -3,7 +3,14 @@
     <lj-dialog :visible.sync="turn_positive_dialog_visible"
                :size="size"
                @close="cancelTurnPositive">
-      <div class="dialog_container">
+      <div v-show="isLoading"
+           style="width: 90%;height: 100%;"
+           v-loading="isLoading"
+           element-loading-text="拼命加载中"
+           element-loading-spinner="el-icon-loading"
+           element-loading-background="rgba(255, 255, 255, 0)">
+      </div>
+      <div v-show="!isLoading" class="dialog_container">
         <div class="dialog_header">
           <h3>转正申请</h3>
         </div>
@@ -89,7 +96,8 @@
             </el-form>
 
             <!--          流程组件-->
-            <ApprovalProcess :user_info="user_info" :type="turn_positive_form.type"></ApprovalProcess>
+            <ApprovalProcess :user_info="user_info" :type="turn_positive_form.type"
+                             @is-show-loading="isLoading = $event"></ApprovalProcess>
           </div>
 
           <!--          流程组件-->
@@ -143,6 +151,7 @@
     props: ['user_info_all', 'size', 'addUrl'],
     data() {
       return {
+        isLoading: true,
         // 校验规则
         turn_positive_form_rule: {
           // 预期转正日期
@@ -176,6 +185,7 @@
       reset() {
         this.turn_positive_form = createEmpty()
         this.$refs.turnPositiveForm.clearValidate()
+        this.isLoading = true
       },
       open() {
         this.turn_positive_dialog_visible = true
@@ -233,7 +243,6 @@
     },
     created() {
       this.getUserInfo()
-
     }
   }
 </script>

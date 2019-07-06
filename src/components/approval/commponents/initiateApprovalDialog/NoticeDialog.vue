@@ -3,75 +3,19 @@
     <lj-dialog :visible.sync="notice_dialog_visible"
                :size="size"
                @close="cancelNotice">
-      <div class="dialog_container">
+      <div v-show="isLoading"
+           style="width: 90%;height: 100%;"
+           v-loading="isLoading"
+           element-loading-text="拼命加载中"
+           element-loading-spinner="el-icon-loading"
+           element-loading-background="rgba(255, 255, 255, 0)">
+      </div>
+      <div v-show="!isLoading" class="dialog_container">
         <div class="dialog_header">
           <h3>公告审核审批</h3>
         </div>
         <div class="dialog_main borderNone">
           <div class="dialog-top">
-            <!--            <el-form ref="noticeForm" :rules="notice_form_rule" :model="notice_form"-->
-            <!--                     style="text-align: left" size="small" label-width="100px">-->
-
-            <!--              <el-row>-->
-            <!--                <el-col :span="8">-->
-            <!--                  <el-form-item required prop="date" label="公告日期">-->
-            <!--                    <div class="items-center iconInput" style="width: 220px">-->
-            <!--                      <el-date-picker v-model="notice_form.date" type="date" placeholder="选择日期"></el-date-picker>-->
-            <!--                    </div>-->
-            <!--                  </el-form-item>-->
-
-            <!--                  <el-form-item required prop="announcement_sign" label="公告署名">-->
-            <!--                    <el-input v-model="notice_form.announcement_sign" placeholder="必填" style="width: 220px"></el-input>-->
-            <!--                  </el-form-item>-->
-            <!--                </el-col>-->
-            <!--                <el-col :span="8">-->
-            <!--                  <el-form-item required label="公告类型" prop="announcement_type">-->
-            <!--                    &lt;!&ndash;                    <el-select v-model="notice_form.announcement_type">&ndash;&gt;-->
-            <!--                    &lt;!&ndash;                      <el-option v-for="(item,index) in announcement_type" :key="index" :value="index + 1"&ndash;&gt;-->
-            <!--                    &lt;!&ndash;                                 :label="item"></el-option>&ndash;&gt;-->
-            <!--                    &lt;!&ndash;                    </el-select>&ndash;&gt;-->
-            <!--                    <dropdown-list ref="dropdown1" title="必选"-->
-            <!--                                   width="220px"-->
-            <!--                                   :url="`${this.url}announcement/announcement_type`"-->
-            <!--                                   v-model="notice_form.announcement_type"></dropdown-list>-->
-            <!--                  </el-form-item>-->
-            <!--                </el-col>-->
-            <!--                <el-col :span="8">-->
-            <!--                  <el-form-item required prop="announcement_title" label="公告标题">-->
-            <!--                    <el-input v-model="notice_form.announcement_title" placeholder="必填" style="width: 220px"></el-input>-->
-            <!--                  </el-form-item>-->
-            <!--                </el-col>-->
-            <!--              </el-row>-->
-
-            <!--              <el-row>-->
-            <!--                <el-col :span="24">-->
-            <!--                  <el-form-item required prop="announcement_content" label="公告内容">-->
-            <!--                    <el-input type="textarea"-->
-            <!--                              v-model="notice_form.announcement_content"-->
-            <!--                              :autosize="{ minRows: 2, maxRows: 14}"-->
-            <!--                              placeholder="必填">-->
-            <!--                    </el-input>-->
-            <!--                  </el-form-item>-->
-            <!--                </el-col>-->
-            <!--              </el-row>-->
-
-            <!--              <el-row>-->
-            <!--                <el-col :span="24">-->
-
-            <!--                </el-col>-->
-            <!--              </el-row>-->
-
-            <!--              <el-row>-->
-            <!--                <el-col :span="24">-->
-            <!--                  <el-form-item align="center" label="附件">-->
-            <!--                    <lj-upload v-model="notice_form.attachment" size="40"-->
-            <!--                               style="position: absolute; top: -12px;"></lj-upload>-->
-            <!--                  </el-form-item>-->
-            <!--                </el-col>-->
-            <!--              </el-row>-->
-            <!--            </el-form>-->
-
-
             <el-form ref="noticeForm" :rules="notice_form_rule" :model="notice_form"
                      style="text-align: left" size="small" label-width="100px">
 
@@ -179,7 +123,10 @@
 
 
             <!--          流程组件-->
-            <ApprovalProcess :user_info="user_info" :type="notice_form.type"></ApprovalProcess>
+            <ApprovalProcess :user_info="user_info"
+                             :type="notice_form.type"
+                             @is-show-loading="isLoading = $event">
+            </ApprovalProcess>
           </div>
         </div>
         <div class="dialog_footer">
@@ -206,34 +153,16 @@
       ApprovalProcess
     },
     props: ['size', 'addUrl', 'user_info_all'],
+    watch: {
+      user_info_all(newValue, oldValue) {
+        this.getUserInfo()
+      }
+    },
     data() {
       return {
+        isLoading: true,
         // 校验规则
         notice_form_rule: {
-          // // 日期
-          // date: [
-          //   {required: true, message: '请选择日期', trigger: ['blur', 'change']}
-          // ],
-          // // 公告类型
-          // announcement_type: [
-          //   {required: true, message: '请选择', trigger: ['blur', 'change']}
-          // ],
-          // // 公告标题
-          // announcement_title: [
-          //   {required: true, message: '请输入公告标题', trigger: ['blur', 'change']}
-          // ],
-          // // 公告内容
-          // // announcement_content: [
-          // //   {message: '请输入公告内容', trigger: ['blur', 'change']},
-          // //   {min: 1, max: 300, message: '长度在 1 到 300 个字符', trigger: 'blur'}
-          // // ],
-          // announcement_content: [
-          //   {required: true, message: '请输入公告内容', trigger: ['blur', 'change']}
-          // ],
-          // // 公告署名
-          // announcement_sign: [
-          //   {required: true, message: '请输入公告署名', trigger: ['blur', 'change']}
-          // ]
           date: [
             {required: true, message: '请选择公告日期', trigger: ['blur', 'change']}
           ],
@@ -314,6 +243,7 @@
           ]
         }
         this.$refs.noticeForm.clearValidate()
+        this.isLoading = true
       },
       open() {
         this.notice_dialog_visible = true
@@ -397,7 +327,6 @@
                     {key: '责任人', value: item_info.user_name},
                   ]
                 })
-              debugger
               let data = {
                 ...newForm,
                 more_data: [
@@ -409,7 +338,6 @@
                 ],
                 sanction_info: sanction_info
               }
-              console.log(data)
               this.$http.post(this.addUrl, data)
                 .then(res => {
                   this.$LjMessageEasy(res, () => {

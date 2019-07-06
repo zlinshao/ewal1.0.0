@@ -3,7 +3,15 @@
     <lj-dialog :visible.sync="group_change_dialog_visible"
                :size="size"
                @close="cancelGroupChange">
-      <div class="dialog_container">
+      <div v-show="isLoading"
+           style="width: 90%;height: 100%;"
+           v-loading="isLoading"
+           element-loading-text="拼命加载中"
+           element-loading-spinner="el-icon-loading"
+           element-loading-background="rgba(255, 255, 255, 0)">
+      </div>
+
+      <div v-show="!isLoading" class="dialog_container">
         <div class="dialog_header">
           <h3>整组异动/调岗审批</h3>
         </div>
@@ -96,7 +104,8 @@
               </el-row>
             </el-form>
 
-            <ApprovalProcess :user_info="user_info" :type="group_change_form.type"></ApprovalProcess>
+            <ApprovalProcess :user_info="user_info" :type="group_change_form.type"
+                             @is-show-loading="isLoading = $event"></ApprovalProcess>
           </div>
         </div>
         <div class="dialog_footer">
@@ -149,6 +158,7 @@
     props: ['user_info_all', 'size', 'addUrl'],
     data() {
       return {
+        isLoading: true,
         // 校验规则
         group_change_form_rule: {
           now_org: [
@@ -181,6 +191,7 @@
       reset() {
         this.group_change_form = createEmpty()
         this.$refs.groupChangeForm.clearValidate()
+        this.isLoading = true
       },
       open() {
         this.group_change_dialog_visible = true
