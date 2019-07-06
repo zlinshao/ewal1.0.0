@@ -8,6 +8,15 @@
       flex-direction: column;
       align-items: center;
       justify-content: flex-start;
+
+      .el-radio-group {
+        width: 100%;
+        text-align: left;
+
+        .el-radio {
+          display: inline-block;
+        }
+      }
     }
   }
 }

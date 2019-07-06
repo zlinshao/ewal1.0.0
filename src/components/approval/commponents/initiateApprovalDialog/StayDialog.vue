@@ -62,6 +62,18 @@
                   </el-form-item>
                 </el-col>
               </el-row>
+
+              <el-row>
+                <el-col :span="24">
+                  <el-form-item align="center" label="紧急程度">
+                    <el-radio-group v-model="stay_form.priority">
+                      <el-radio :label="50">正常</el-radio>
+                      <el-radio :label="60">重要</el-radio>
+                      <el-radio :label="70">紧急</el-radio>
+                    </el-radio-group>
+                  </el-form-item>
+                </el-col>
+              </el-row>
             </el-form>
 
             <!--          流程组件-->
@@ -94,7 +106,8 @@
       reason: null,
       // 申请地址
       // 附件
-      attachment: []
+      attachment: [],
+      priority: 50
     }
   }
 
@@ -165,11 +178,20 @@
           .validate((valid) => {
             if (valid) {
               this.stay_form.date = this.myUtils.formatDate(this.stay_form.date, 'yyyy-MM-dd')
+              let {name, org} = this.user_info
+              let {date, reason, attachment} = this.stay_form
               let data = {
                 ...this.stay_form,
                 house_data: {
                   house_info: this.house_info
-                }
+                },
+                more_data: [
+                  {key: '住宿申请人', value: name},
+                  {key: '所属部门', value: org},
+                  {key: '住宿地址', value: this.house_info.name},
+                  {key: '入住日期', value: date},
+                  {key: '申请原因', value: reason}
+                ]
               }
               this.$http.post(this.addUrl, data)
                 .then(res => {

@@ -74,6 +74,18 @@
                   </el-form-item>
                 </el-col>
               </el-row>
+
+              <el-row>
+                <el-col :span="24">
+                  <el-form-item align="center" label="紧急程度">
+                    <el-radio-group v-model="turn_positive_form.priority">
+                      <el-radio :label="50">正常</el-radio>
+                      <el-radio :label="60">重要</el-radio>
+                      <el-radio :label="70">紧急</el-radio>
+                    </el-radio-group>
+                  </el-form-item>
+                </el-col>
+              </el-row>
             </el-form>
 
             <!--          流程组件-->
@@ -116,7 +128,8 @@
       // 自我评价
       reason: null,
       // 附件
-      attachment: []
+      attachment: [],
+      priority: 50
     }
   }
 
@@ -184,7 +197,22 @@
           .validate((valid) => {
             if (valid) {
               this.turn_positive_form.enroll = this.myUtils.formatDate(this.turn_positive_form.enroll, 'yyyy-MM-dd')
-              let data = this.turn_positive_form
+              this.turn_positive_form.forward_time = this.myUtils.formatDate(this.turn_positive_form.forward_time, 'yyyy-MM-dd')
+              this.turn_positive_form.expect_forward_time = this.myUtils.formatDate(this.turn_positive_form.expect_forward_time, 'yyyy-MM-dd')
+              let {name, enroll} = this.user_info
+              let {positive_salary, expect_forward_time, trial_salary, forward_time, reason} = this.turn_positive_form
+              let data = {
+                ...this.turn_positive_form,
+                more_data: [
+                  {key: '申请人', value: name},
+                  {key: '入职时间', value: enroll},
+                  {key: '实际转正日期', value: forward_time},
+                  {key: '试用期薪资', value: trial_salary},
+                  {key: '转正后薪资', value: positive_salary},
+                  {key: '预期转正日期', value: expect_forward_time},
+                  {key: '自我评价', value: reason}
+                ]
+              }
               this.$http.post(this.addUrl, data)
                 .then(res => {
                   this.$LjMessageEasy(res, () => {

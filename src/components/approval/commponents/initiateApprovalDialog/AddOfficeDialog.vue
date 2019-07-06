@@ -28,7 +28,7 @@
 
 
                   <el-form-item label="租金">
-                    <el-input disabled disabled v-model="rent" placeholder="自动获取"
+                    <el-input disabled v-model="rent" placeholder="自动获取"
                               style="width: 220px">
                     </el-input>
                   </el-form-item>
@@ -73,6 +73,7 @@
 
                   <el-form-item required prop="user_list" label="入住人员名单">
                     <user-choose width="220" :disabled="false" title="必填" :show-icon="false"
+                                 ref="userListStay"
                                  v-model="add_office_form.user_list">
                     </user-choose>
                   </el-form-item>
@@ -96,6 +97,18 @@
                   <el-form-item align="center" label="附件">
                     <lj-upload v-model="add_office_form.attachment" size="40"
                                style="position: absolute; top: -12px;"></lj-upload>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+
+              <el-row>
+                <el-col :span="24">
+                  <el-form-item align="center" label="紧急程度">
+                    <el-radio-group v-model="add_office_form.priority">
+                      <el-radio :label="50">正常</el-radio>
+                      <el-radio :label="60">重要</el-radio>
+                      <el-radio :label="70">紧急</el-radio>
+                    </el-radio-group>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -136,7 +149,8 @@
       // 入住人员名单
       user_list: null,
       // 附件
-      attachment: []
+      attachment: [],
+      priority: 50
     }
   }
 
@@ -233,7 +247,8 @@
           .validate((valid) => {
             if (valid) {
               this.add_office_form.date = this.myUtils.formatDate(this.add_office_form.date, 'yyyy-MM-dd');
-              let {house_type} = this.add_office_form
+              let {house_type, date, reason, attachment} = this.add_office_form
+              let {name, org} = this.user_info
               let data = {
                 ...this.add_office_form,
                 // user_id: this.user_info.user_id,
@@ -242,7 +257,17 @@
                   house_type: house_type,
                   house_info: this.house_info,
                   leader_org: this.org_leader,
-                }]
+                }],
+                more_data: [
+                  {key: '申请人', value: name},
+                  {key: '所属部门', value: org},
+                  {key: '申请日期', value: date},
+                  {key: '办公室/宿舍', value: this.house_type[house_type]},
+                  {key: '租金', value: this.rent},
+                  {key: '申请地址', value: this.house_info.name},
+                  {key: '片区经理', value: this.org_leader.name},
+                  {key: '申请原因', value: reason}
+                ]
               }
               this.$http.post(this.addUrl, data)
                 .then(res => {

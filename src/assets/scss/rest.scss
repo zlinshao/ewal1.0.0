@@ -41,7 +41,21 @@ html, body {
     }
   }
 }
+.table-control {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  font-size: 34px;
+  color: #F4AF40;
+  cursor: pointer;
+  border-radius: 3px;
+  text-align: center;
 
+  &:hover {
+    background-color: #F4AF40;
+    color: white;
+  }
+}
 ol, ul {
   list-style: none;
 }

@@ -74,6 +74,18 @@
                   </el-form-item>
                 </el-col>
               </el-row>
+
+              <el-row>
+                <el-col :span="24">
+                  <el-form-item align="center" label="紧急程度">
+                    <el-radio-group v-model="reduce_office_form.priority">
+                      <el-radio :label="50">正常</el-radio>
+                      <el-radio :label="60">重要</el-radio>
+                      <el-radio :label="70">紧急</el-radio>
+                    </el-radio-group>
+                  </el-form-item>
+                </el-col>
+              </el-row>
             </el-form>
 
             <!--          流程组件-->
@@ -110,7 +122,8 @@
       // 申请地址
 
       // 附件
-      attachment: []
+      attachment: [],
+      priority: 50
     }
   }
 
@@ -181,7 +194,8 @@
           .validate((valid) => {
             if (valid) {
               this.reduce_office_form.date = this.myUtils.formatDate(this.reduce_office_form.date, 'yyyy-MM-dd')
-              let {house_type} = this.reduce_office_form
+              let {name, org} = this.user_info
+              let {house_type, date, reason, attachment} = this.reduce_office_form
               let data = {
                 ...this.reduce_office_form,
                 house_data: [
@@ -189,6 +203,14 @@
                     house_type: house_type,
                     house_info: this.house_info
                   }
+                ],
+                more_data: [
+                  {key: '申请人', value: name},
+                  {key: '所属部门', value: org},
+                  {key: '办公室/宿舍', value: this.house_type[house_type - 1]},
+                  {key: '申请地址', value: this.house_info.house_name},
+                  {key: '申请日期', value: date},
+                  {key: '申请原因', value: reason}
                 ]
               }
               this.$http.post(this.addUrl, data)

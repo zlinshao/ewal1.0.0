@@ -21,7 +21,8 @@
 
                   <el-form-item required prop="now_org" label="转入部门">
                     <org-choose width="220" num="1" :disabled="false" title="必填" :show-icon="false"
-                                v-model="transfer_form.now_org">
+                                v-model="transfer_form.now_org"
+                                ref="orgChoose">
                     </org-choose>
                   </el-form-item>
 
@@ -39,7 +40,8 @@
 
                   <el-form-item required prop="now_position" label="转入岗位">
                     <post-choose width="220" num="1" :disabled="false" title="必填" :show-icon="false"
-                                 v-model="transfer_form.now_position">
+                                 v-model="transfer_form.now_position"
+                                 ref="postChoose">
                     </post-choose>
                   </el-form-item>
 
@@ -87,8 +89,19 @@
                   </el-form-item>
                 </el-col>
               </el-row>
-            </el-form>
 
+              <el-row>
+                <el-col :span="24">
+                  <el-form-item align="center" label="紧急程度">
+                    <el-radio-group v-model="transfer_form.priority">
+                      <el-radio :label="50">正常</el-radio>
+                      <el-radio :label="60">重要</el-radio>
+                      <el-radio :label="70">紧急</el-radio>
+                    </el-radio-group>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+            </el-form>
             <!--          流程组件-->
             <ApprovalProcess :user_info="user_info" :type="transfer_form.type"></ApprovalProcess>
           </div>
@@ -124,7 +137,8 @@
       // 异动申请单以及异动交接单附件
       change_receipt: null,
       // 附件
-      attachment: []
+      attachment: [],
+      priority: 50
     }
   }
 
@@ -187,7 +201,20 @@
           .validate((valid) => {
             if (valid) {
               this.transfer_form.enroll = this.myUtils.formatDate(this.transfer_form.enroll, 'yyyy-MM-dd')
-              let data = this.transfer_form
+              let {name, enroll, org} = this.user_info
+              let {change_reason, change_receipt, attachment} = this.transfer_form
+              let data = {
+                ...this.transfer_form,
+                more_data: [
+                  {key: '申请人', value: name},
+                  {key: '入职时间', value: enroll},
+                  {key: '原部门', value: org},
+                  {key: '转入部门', value: this.$refs.orgChoose.org_name.join(' ')},
+                  {key: '转入岗位', value: this.$refs.postChoose.post_name.join(' ')},
+                  {key: '调岗原因', value: change_reason},
+                  {key: '交接单', value: change_receipt}
+                ]
+              }
               this.$http.post(this.addUrl, data)
                 .then(res => {
                   this.$LjMessageEasy(res, () => {

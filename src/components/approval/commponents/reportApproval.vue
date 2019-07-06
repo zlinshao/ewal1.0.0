@@ -244,7 +244,7 @@
               category: 'approval',
               finished: false,
               active: true,
-              assignee: this.$storage.get('user_info').id,
+              // assignee: this.$storage.get('user_info').id,
             };
             this.params['param' + val].finished = val === 3;
             this.urlApi = val === 3 ? 'history/tasks' : 'runtime/tasks';

@@ -84,6 +84,18 @@
               <!--                  </el-form-item>-->
               <!--                </el-col>-->
               <!--              </el-row>-->
+
+              <el-row>
+                <el-col :span="24">
+                  <el-form-item align="center" label="紧急程度">
+                    <el-radio-group v-model="salary_form.priority">
+                      <el-radio :label="50">正常</el-radio>
+                      <el-radio :label="60">重要</el-radio>
+                      <el-radio :label="70">紧急</el-radio>
+                    </el-radio-group>
+                  </el-form-item>
+                </el-col>
+              </el-row>
             </el-form>
 
             <!--          流程组件-->
@@ -121,7 +133,8 @@
       // 申请理由
       reason: null,
       // 备注
-      remark: null
+      remark: null,
+      priority: 50
     }
   }
 
@@ -186,7 +199,21 @@
             if (valid) {
               this.salary_form.enroll = this.myUtils.formatDate(this.salary_form.enroll, 'yyyy-MM-dd')
               this.salary_form.date = this.myUtils.formatDate(this.salary_form.date, 'yyyy-MM-dd')
-              let data = this.salary_form
+              let {name, org, enroll} = this.user_info
+              let {old_salary, salary, date, reason, remark} = this.salary_form
+              let data = {
+                ...this.salary_form,
+                more_data: [
+                  {key: '申请人', value: name},
+                  {key: '所属部门', value: org},
+                  {key: '入职日期', value: enroll},
+                  {key: '原有薪资', value: old_salary},
+                  {key: '期望调整薪资', value: salary},
+                  {key: '实施日期', value: date},
+                  {key: '申请理由', value: reason},
+                  {key: '备注', value: remark}
+                ]
+              }
               this.$http.post(this.addUrl, data)
                 .then(res => {
                   this.$LjMessageEasy(res, () => {
