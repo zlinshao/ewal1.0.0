@@ -11,6 +11,7 @@
            element-loading-spinner="el-icon-loading"
            element-loading-background="rgba(255, 255, 255, 0)">
       </div>
+
       <div v-if="!isLoading" class="dialog_container">
         <div class="dialog_header">
           <h3>{{base_info.title}}</h3>
@@ -251,10 +252,10 @@
     },
     computed: {
       isLoading() {
-        if (this.load_user && this.load_info && this.load_record) {
-          return true
+        if ((!this.load_user) && (!this.load_info) && (!this.load_record)) {
+          return false
         }
-        return false
+        return true
       }
     },
     methods: {
