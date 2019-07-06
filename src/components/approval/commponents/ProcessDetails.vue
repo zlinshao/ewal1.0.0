@@ -380,7 +380,7 @@
           })
           return
         }
-        this.$LjMessage('warning', {title: '警告', msg: '暂无处理人信息'});
+        /**暂无处理人信息 */
         this.load_user = false
       },
       /**点击操作按钮 */
