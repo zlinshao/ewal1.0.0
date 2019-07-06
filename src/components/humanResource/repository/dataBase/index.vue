@@ -856,7 +856,7 @@
     >
       <div class="dialogContainer">
         <div class="dialogHeader">
-          <p>领取合同修改</p>
+          <p>创建任务</p>
         </div>
         <div class="dialog_body scroll_bar">
           <el-form label-width="140px" :model="distribute_form" :inline="true">
@@ -887,34 +887,41 @@
               </el-form-item>
               <el-form-item label="版本号">
                 <el-radio-group>
-                  <el-radio label="线上品牌商赞助"></el-radio>
-                  <el-radio label="线下场地免费"></el-radio>
+                  <el-radio label="5345435"></el-radio>
+                  <el-radio label="76575"></el-radio>
                 </el-radio-group>
               </el-form-item>
             </div>
             <h4 align="left">操作信息</h4>
-            <div class="form_body">
-              <el-form-item>
-                <template slot="label">
-                  <b>收房合同</b>
-                  <span class="arrow"></span>
-                </template>
-                <el-checkbox-group v-model="distribute_form.checkList_sf">
-                  <el-checkbox label="LJGYSF01001656"></el-checkbox>
-                  <el-checkbox label="LJGY6546545466"></el-checkbox>
-                </el-checkbox-group>
-              </el-form-item>
-              <el-form-item>
-                <template slot="label">
-                  <b>租房合同</b>
-                  <span class="arrow"></span>
-                </template>
-                <el-checkbox-group v-model="distribute_form.checkList_zf">
-                  <el-checkbox label="LJGYSF01001656"></el-checkbox>
-                </el-checkbox-group>
-              </el-form-item>
+            <div class="form_main">
+              <div class="shou">
+                <el-form-item label="领取合同数（收）">
+                  <el-input type="input" placeholder="请输入"></el-input>
+                </el-form-item>
+                <el-form-item label="合同编号">
+                  <el-input type="input" placeholder="请输入"></el-input>
+                </el-form-item>
+                <el-form-item label="到">
+                  <el-input type="input"></el-input>
+                </el-form-item>
+                <div class="addIcon"></div>
+                <div class="reduceIcon"></div>
+              </div>
+              <div class="zu">
+                <el-form-item label="领取合同数（租）">
+                  <el-input type="input" placeholder="请输入"></el-input>
+                </el-form-item>
+                <el-form-item label="合同编号">
+                  <el-input type="input" placeholder="请输入"></el-input>
+                </el-form-item>
+                <el-form-item label="到">
+                  <el-input type="input"></el-input>
+                </el-form-item>
+                <div class="addIcon"></div>
+                <div class="reduceIcon"></div>
+              </div>
             </div>
-            <h4 align="left">剩余合同</h4>
+            <h4 align="left">其他</h4>
             <div class="form_footer" align="left">
               <el-form-item label="截图">
                 <lj-upload></lj-upload>
@@ -2533,7 +2540,11 @@ export default {
       distribute_form: {
         checkList_sf: [],
         checkList_zf: []
-      }
+      },
+      // 自选的租房合同编号数组
+      rent_extra:[],
+      // 自选的收房编号数组
+      collect_extra:[]
     };
   },
   mounted() {
@@ -3135,7 +3146,7 @@ export default {
       .el-form-item__label {
         text-align: center;
       }
-      .el-radio{
+      .el-radio {
         display: inline-block;
       }
     }
@@ -3226,16 +3237,8 @@ export default {
       }
     }
     .receiveMission {
-      .dialogBody {
-        .operateDetail {
-          .addOperate {
-            > div {
-              .addIcon {
-                @include childrenImg("tianjia.png", "theme1");
-              }
-            }
-          }
-        }
+      .addIcon {
+        @include childrenImg("tianjia.png", "theme1");
       }
     }
     .cancelMission {

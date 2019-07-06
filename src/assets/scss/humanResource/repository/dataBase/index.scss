@@ -572,34 +572,44 @@
             text-align: center;
           }
         }
-        .form_body{
-          background: white;
-          height: 495px;
-          overflow:auto;
-          margin-top:20px;
-          padding: 40px 60px;
-          .arrow{
-            display: inline-block;
-            width: 34px;
-            height: 5px;
-            margin-left:10px;
-          }
-          b{
-            display: inline-block;
-            line-height:35px;
-            font-size:16px;
-            font-family: jingdianxingshu;
-            color:rgba(207,46,51,1);
-          }
-          .el-form-item{
-            display: block;
-            text-align: left;
-            .el-checkbox{
+        .form_main{
+          .shou,.zu{
+            .addIcon,.reduceIcon{
+              width: 20px;
+              height: 20px;
               display: inline-block;
-              width: 22%;
+              vertical-align:middle;
             }
           }
         }
+        // .form_body{
+        //   background: white;
+        //   height: 495px;
+        //   overflow:auto;
+        //   margin-top:20px;
+        //   padding: 40px 60px;
+        //   .arrow{
+        //     display: inline-block;
+        //     width: 34px;
+        //     height: 5px;
+        //     margin-left:10px;
+        //   }
+        //   b{
+        //     display: inline-block;
+        //     line-height:35px;
+        //     font-size:16px;
+        //     font-family: jingdianxingshu;
+        //     color:rgba(207,46,51,1);
+        //   }
+        //   .el-form-item{
+        //     display: block;
+        //     text-align: left;
+        //     .el-checkbox{
+        //       display: inline-block;
+        //       width: 22%;
+        //     }
+        //   }
+        // }
       }
       .dialog_footer{
         text-align: right;
