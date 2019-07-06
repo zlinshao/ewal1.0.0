@@ -1,27 +1,28 @@
 /*
-Error: Invalid GBK character "\xE6"
-        on line 79 of index.scss
+Error: Invalid GBK character "\xE5"
+        on line 15 of approvalProcess.scss
 
-74:       }
-75:       .contractNumberEdit{
-76: 
-77:       }
-78:     }
-79:     //汇总弹窗
-80:     .collectDialog{
-81:       .dialog_container{
-82:         .dialog_body{
-83:           height: 639px;
-84:           padding: 0 65px 0 66px;
+10:         background: rgba(255, 255, 255, 1);
+11:         border-radius: 4px;
+12:         display: flex;
+13:         flex-direction: row;
+14: 
+15:         /*左侧标题 *\/
+16:         .left-title {
+17:           width: 135px;
+18:           display: flex;
+19:           flex-direction: column;
+20:           align-items: center;
 
 Backtrace:
-index.scss:79
+approvalProcess.scss:15
 C:/APP/ruby/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.4/lib/sass/util.rb:1090:in `rescue in block in find_encoding_error'
 C:/APP/ruby/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.4/lib/sass/util.rb:1087:in `block in find_encoding_error'
 C:/APP/ruby/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.4/lib/sass/util.rb:1086:in `each'
 C:/APP/ruby/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.4/lib/sass/util.rb:1086:in `each_with_index'
 C:/APP/ruby/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.4/lib/sass/util.rb:1086:in `find_encoding_error'
-C:/APP/ruby/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.4/lib/sass/util.rb:814:in `check_sass_encoding'
+C:/APP/ruby/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.4/lib/sass/util.rb:820:in `rescue in check_sass_encoding'
+C:/APP/ruby/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.4/lib/sass/util.rb:816:in `check_sass_encoding'
 C:/APP/ruby/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.4/lib/sass/engine.rb:444:in `check_encoding!'
 C:/APP/ruby/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.4/lib/sass/engine.rb:400:in `_to_tree'
 C:/APP/ruby/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.4/lib/sass/engine.rb:389:in `_render_with_sourcemap'
@@ -37,4 +38,4 @@ C:/APP/ruby/Ruby24-x64/bin/sass:23:in `<main>'
 body:before {
   white-space: pre;
   font-family: monospace;
-  content: "Error: Invalid GBK character \"\xE6\"\A         on line 79 of index.scss\A \A 74:       }\A 75:       .contractNumberEdit{\A 76: \A 77:       }\A 78:     }\A 79:     //汇总弹窗\A 80:     .collectDialog{\A 81:       .dialog_container{\A 82:         .dialog_body{\A 83:           height: 639px;\A 84:           padding: 0 65px 0 66px;"; }
+  content: "Error: Invalid GBK character \"\xE5\"\A         on line 15 of approvalProcess.scss\A \A 10:         background: rgba(255, 255, 255, 1);\A 11:         border-radius: 4px;\A 12:         display: flex;\A 13:         flex-direction: row;\A 14: \A 15:         /*左侧标题 */\A 16:         .left-title {\A 17:           width: 135px;\A 18:           display: flex;\A 19:           flex-direction: column;\A 20:           align-items: center;"; }
