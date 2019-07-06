@@ -515,7 +515,7 @@
               finished: activeName === 'approved' ? true : false,
               active: true,
               tenantId: 'hr',
-              // assignee: this.user_id
+              assignee: this.user_id
             }
             break;
           case 3://我发起的
@@ -525,7 +525,7 @@
               finished: activeName === 'undone' ? false : true,
               taskCategory: 'approval',
               tenantId: 'hr',
-              // taskOwner: this.user_id
+              taskOwner: this.user_id
             }
             break;
           case 4://抄送我的
@@ -534,14 +534,14 @@
                 this.params['params' + tabKey] = {
                   page: page_current,
                   size: this.page_info.page_size,
-                  // cc: this.user_id
+                  cc: this.user_id
                 }
                 break;
               case 'read':
                 this.params['params' + tabKey] = {
                   page: page_current,
                   size: this.page_info.page_size,
-                  // 'cc-read': this.user_id
+                  'cc-read': this.user_id
                 }
                 break;
             }
@@ -552,7 +552,7 @@
               size: this.page_info.page_size,
               tenantId: 'hr',
               suspended: true,
-              // taskAssignee: this.user_id
+              taskAssignee: this.user_id
             }
             break;
         }
