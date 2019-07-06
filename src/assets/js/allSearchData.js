@@ -2306,8 +2306,8 @@ export const contractNumberHighSearch={
             keyType: 'staff',
             title: '员工',
             placeholder: '请选择员工',
-            keyName: 'staff',
-            dataType: [],
+            keyName: 'staff_id',
+            dataType: "",
             value: {
                 num: 1
             }
@@ -2316,18 +2316,17 @@ export const contractNumberHighSearch={
             keyType: 'depart',
             title: '部门',
             placeholder: '请选择部门',
-            keyName: 'depart_id',
-            dataType: [],
+            keyName: 'department_id',
+            dataType: "",
             value: {
                 num: 1,
-                arr: []
             }
         },
         {
             keyType: 'dateRange',
             title: '选择时间范围',
             placeholder: '请选择日期',
-            keyName: 'date',
+            keyName: 'start',
             dataType: [],
         },
     ]
