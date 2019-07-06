@@ -338,8 +338,10 @@
                 ],
                 sanction_info: sanction_info
               }
+              this.showLoading2(true)
               this.$http.post(this.addUrl, data)
                 .then(res => {
+                  this.showLoading2(false)
                   this.$LjMessageEasy(res, () => {
                     this.notice_dialog_visible = false;
                     this.reset()
