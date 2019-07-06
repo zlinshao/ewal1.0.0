@@ -476,7 +476,12 @@
             </el-form-item>
             <el-form-item label="开始时间">
               <div class="items-center iconInput">
-                <el-date-picker type="date" placeholder="选择日期" v-model="addDormitory_form.start_at" value-format="yyyy-MM-dd"></el-date-picker>
+                <el-date-picker
+                  type="date"
+                  placeholder="选择日期"
+                  v-model="addDormitory_form.start_at"
+                  value-format="yyyy-MM-dd"
+                ></el-date-picker>
               </div>
             </el-form-item>
             <el-form-item label="备注">
@@ -888,7 +893,7 @@ export default {
         office_num: "", //部门人数
         start_at: "", //开始时间
         remarks: "", //备注
-        leader_id:""
+        leader_id: ""
       },
       // 新增宿舍的表单
       addDormitory_form: {
@@ -899,7 +904,7 @@ export default {
         start_at: "",
         remarks: "",
         operate_type: 1,
-        depart_id:""
+        depart_id: ""
       },
       // 办公室列表的数据
       officeList: [],
@@ -1007,8 +1012,8 @@ export default {
       isHighSearch: false,
       // 具体一行的数据
       rowData: {
-        applicant:{
-          name:""
+        applicant: {
+          name: ""
         }
       },
       // 控制图片模态框显示
@@ -1119,9 +1124,9 @@ export default {
     },
     // 新增办公室
     addOffice_fun() {
-      let data=JSON.parse(JSON.stringify(this.addOffice_form))
-      data.depart_id=data.depart_id[0];
-      data.leader_id=data.leader_id[0];
+      let data = JSON.parse(JSON.stringify(this.addOffice_form));
+      data.depart_id = data.depart_id[0];
+      data.leader_id = data.leader_id[0];
       console.log("新增办公室", data);
       this.$http
         .post(`${this.url}/v1.0/market/dormitory/add`, data)
@@ -1132,6 +1137,19 @@ export default {
                 title: "成功",
                 msg: res.message
               });
+              this.getOfficeList_fun();
+              this.closeOfficeVisiable();
+              this.addOffice_form = {
+                house_type: 1,
+                house_id: "",
+                office_type: "",
+                operate_type: 1,
+                depart_id: "",
+                office_num: "",
+                start_at: "",
+                remarks: "",
+                leader_id: ""
+              };
               break;
             default:
               this.$LjMessage("error", {
@@ -1146,14 +1164,15 @@ export default {
     addDormitory_fun() {
       console.log("新增宿舍", this.addDormitory_form);
       // 将宿舍leader_Id数组类型设为int类型
-      if (this.addDormitory_form.leader_id.length > 0) {
-        this.addDormitory_form.leader_id = this.addDormitory_form.leader_id[0];
+      let data = JSON.parse(JSON.stringify(this.addDormitory_form));
+      if (data.leader_id.length > 0) {
+        data.leader_id = data.leader_id[0];
       }
-      if (this.addDormitory_form.depart_id.length > 0) {
-        this.addDormitory_form.depart_id = this.addDormitory_form.depart_id[0];
+      if (data.depart_id.length > 0) {
+        data.depart_id = data.depart_id[0];
       }
       this.$http
-        .post(`${this.url}/v1.0/market/dormitory/add`, this.addDormitory_form)
+        .post(`${this.url}/v1.0/market/dormitory/add`, data)
         .then(res => {
           console.log(res);
           switch (res.success) {
@@ -1163,6 +1182,17 @@ export default {
                 msg: res.message
               });
               this.getDormitoryList_fun();
+              this.closeDomitoryVisiable();
+              this.addDormitory_form = {
+                house_type: 2,
+                house_id: "",
+                leader_id: "",
+                bed_num: "",
+                start_at: "",
+                remarks: "",
+                operate_type: 1,
+                depart_id: ""
+              };
               break;
             default:
               this.$LjMessage("error", {
@@ -1291,14 +1321,11 @@ export default {
     },
     // 变更办公室信息
     changeOfficeInfo_fun() {
-      let data=JSON.parse(JSON.stringify(this.changeOfficeInfo_form));
-      data.depart_id=data.depart_id[0];
+      let data = JSON.parse(JSON.stringify(this.changeOfficeInfo_form));
+      data.depart_id = data.depart_id[0];
       console.log("变更办公室信息", data);
       this.$http
-        .post(
-          `${this.url}/v1.0/market/dormitory/houseUpdate`,
-          data
-        )
+        .post(`${this.url}/v1.0/market/dormitory/houseUpdate`, data)
         .then(res => {
           switch (res.success) {
             case true:
@@ -1363,6 +1390,7 @@ export default {
       this.officeRecordMerge_form.end_at = operator.operate_content.end_at;
       this.officeRecordMerge_form.start_at = operator.operate_content.start_at;
       this.officeRecordMerge_form.id = id;
+      this.officeRecordMerge_form.remarks = operator.remarks;
       // console.log(this.officeRecordMerge_form);
     },
     // 办公室记录确认修改
@@ -1403,6 +1431,7 @@ export default {
       this.dormitoryRecordMerge_form.out_time =
         operator.operate_content.out_time;
       this.dormitoryRecordMerge_form.id = id;
+      this.dormitoryRecordMerge_form.remarks = operator.remarks;
       // console.log(this.dormitoryRecordMerge_form);
     },
     // 宿舍记录确认修改
