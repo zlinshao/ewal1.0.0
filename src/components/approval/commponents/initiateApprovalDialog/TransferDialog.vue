@@ -3,7 +3,15 @@
     <lj-dialog :visible.sync="transfer_dialog_visible"
                :size="size"
                @close="cancelTransfer">
-      <div class="dialog_container">
+      <div v-show="isLoading"
+           style="width: 90%;height: 100%;"
+           v-loading="isLoading"
+           element-loading-text="拼命加载中"
+           element-loading-spinner="el-icon-loading"
+           element-loading-background="rgba(255, 255, 255, 0)">
+      </div>
+
+      <div v-show="!isLoading" class="dialog_container">
         <div class="dialog_header">
           <h3>个人异动/调岗审批</h3>
         </div>
@@ -103,14 +111,15 @@
               </el-row>
             </el-form>
             <!--          流程组件-->
-            <ApprovalProcess :user_info="user_info" :type="transfer_form.type"></ApprovalProcess>
+            <ApprovalProcess :user_info="user_info"
+                             :type="transfer_form.type"
+                             @is-show-loading="isLoading = $event">
+            </ApprovalProcess>
           </div>
         </div>
         <div class="dialog_footer">
-          <el-button size="small" type="danger" @click="submitTransfer">提交
-          </el-button>
-          <el-button size="small" type="info" @click="cancelTransfer">取消
-          </el-button>
+          <el-button size="small" type="danger" @click="submitTransfer">提交</el-button>
+          <el-button size="small" type="info" @click="cancelTransfer">取消</el-button>
         </div>
       </div>
     </lj-dialog>
@@ -149,9 +158,15 @@
       LjUpload,
       ApprovalProcess
     },
+    watch: {
+      user_info_all(newValue, oldValue) {
+        this.getUserInfo()
+      }
+    },
     props: ['user_info_all', 'size', 'addUrl'],
     data() {
       return {
+        isLoading: true,
         // 校验规则
         transfer_form_rule: {
           now_org: [
@@ -173,13 +188,20 @@
         transfer_dialog_visible: false,
 
         transfer_form: createEmpty(),
-        user_info: null,
+        user_info: {
+          name: null,
+          enroll: null,
+          org: null,
+          user_id: null,
+          org_id: null,
+        },
       }
     },
     methods: {
       reset() {
         this.transfer_form = createEmpty()
         this.$refs.transferForm.clearValidate()
+        this.isLoading = true
       },
       open() {
         this.transfer_dialog_visible = true
@@ -235,7 +257,6 @@
     },
     created() {
       this.getUserInfo()
-
     }
   }
 </script>
