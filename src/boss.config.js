@@ -22,6 +22,10 @@ globalConfig = {
     approval_sever: 'http://47.101.204.100:8080/',
     message_sever: 'http://test.mcs.lejias.cn/',
     shield_server: 'http://test.shield.api.ewal.lejias.cn/', //第三方登录
+    url1:"http://test.ewal.lejias.cn/",
+    url2:"http://test.ewal.lejias.cn/",
+    url3:"http://test.ewal.lejias.cn/",
+
 
 
     user_info: {}, //用户信息

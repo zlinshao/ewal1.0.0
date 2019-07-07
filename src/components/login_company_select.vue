@@ -21,16 +21,16 @@ export default {
     return {
       companyInfo: [
         {
-          companyName: "南京励诚商业管理有限公司",
-          url: "http://test.ewal.lejias.cn/"
+          companyName: "天津励诚管理有限公司",
+          url: globalConfig.url1
         },
         {
-          companyName: "南京励勤商业管理有限公司",
-          url: "http://test.ewal.lejias.cn/"
+          companyName: "佛山励天管理有限公司",
+          url: globalConfig.url2
         },
         {
           companyName: "南京乐伽商业管理有限公司",
-          url: "http://test.ewal.lejias.cn/"
+          url: globalConfig.url3
         }
       ]
     };
