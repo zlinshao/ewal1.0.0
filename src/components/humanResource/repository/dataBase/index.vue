@@ -311,41 +311,19 @@
             style="width: 100%"
             height="660px"
             :data="contractCancelList"
+            @row-dblclick="showCancelDetail"
           >
-            <el-table-column label="作废时间" align="center" prop="report_time">
-              <template slot-scope="scope">
-                <div @click="showCancelDetail(scope.row)">{{scope.row.report_time}}</div>
-              </template>
-            </el-table-column>
-            <el-table-column label="部门" align="center" prop="department_name">
-              <template slot-scope="scope">
-                <div @click="showCancelDetail(scope.row)">{{scope.row.department_name}}</div>
-              </template>
-            </el-table-column>
-            <el-table-column label="姓名" align="center" prop="staff_name">
-              <template slot-scope="scope">
-                <div @click="showCancelDetail(scope.row)">{{scope.row.staff_name}}</div>
-              </template>
-            </el-table-column>
-            <el-table-column label="作废合同数(收)" align="center" prop="collect_contracts_count">
-              <template slot-scope="scope">
-                <div @click="showCancelDetail(scope.row)">{{scope.row.collect_contracts_count}}</div>
-              </template>
-            </el-table-column>
-            <el-table-column label="作废合同数(租)" align="center" prop="rent_contracts_count">
-              <template slot-scope="scope">
-                <div @click="showCancelDetail(scope.row)">{{scope.row.rent_contracts_count}}</div>
-              </template>
-            </el-table-column>
+            <el-table-column label="作废时间" align="center" prop="report_time"></el-table-column>
+            <el-table-column label="部门" align="center" prop="department_name"></el-table-column>
+            <el-table-column label="姓名" align="center" prop="staff_name"></el-table-column>
+            <el-table-column label="作废合同数(收)" align="center" prop="collect_contracts_count"></el-table-column>
+            <el-table-column label="作废合同数(租)" align="center" prop="rent_contracts_count"></el-table-column>
             <el-table-column label="操作" align="center">
               <template slot-scope="scope">
-                <el-button size="mini" @click="modifyCancel(scope.row)">修改</el-button>
+                <el-button type="primary" @click="modifyCancel(scope.row)" plain>修改</el-button>
               </template>
             </el-table-column>
           </el-table>
-          <!-- <div class="page flex-center">
-            <el-pagination :total="250" layout="total,jumper,prev,pager,next" :current-page="1" :page-size="10"></el-pagination>
-          </div>-->
         </div>
         <!-- 上缴 -->
         <div v-if="contractNumberChoosed === 3">
@@ -355,41 +333,24 @@
             style="width: 100%"
             height="660px"
             :data="contractHandinList"
+            @row-dblclick="showHandintDetail"
           >
             <el-table-column label="上缴时间" align="center" prop="report_time">
-              <template slot-scope="scope">
-                <div @click="showHandintDetail(scope.row)">{{scope.row.report_time}}</div>
-              </template>
             </el-table-column>
             <el-table-column label="部门" align="center" prop="department_name">
-              <template slot-scope="scope">
-                <div @click="showHandintDetail(scope.row)">{{scope.row.department_name}}</div>
-              </template>
             </el-table-column>
             <el-table-column label="姓名" align="center" prop="staff_name">
-              <template slot-scope="scope">
-                <div @click="showHandintDetail(scope.row)">{{scope.row.staff_name}}</div>
-              </template>
             </el-table-column>
             <el-table-column label="上缴合同数(收)" align="center" prop="collect_contracts_count">
-              <template slot-scope="scope">
-                <div @click="showHandintDetail(scope.row)">{{scope.row.collect_contracts_count}}</div>
-              </template>
             </el-table-column>
             <el-table-column label="上缴合同数(租)" align="center" prop="rent_contracts_count">
-              <template slot-scope="scope">
-                <div @click="showHandintDetail(scope.row)">{{scope.row.rent_contracts_count}}</div>
-              </template>
             </el-table-column>
             <el-table-column label="操作" align="center">
               <template slot-scope="scope">
-                <el-button size="mini" @click="modifyHandin(scope.row)">修改</el-button>
+                <el-button  @click="modifyHandin(scope.row)" plain type="primary">修改</el-button>
               </template>
             </el-table-column>
           </el-table>
-          <!-- <div class="page flex-center">
-            <el-pagination :total="250" layout="total,jumper,prev,pager,next" :current-page="1" :page-size="10"></el-pagination>
-          </div>-->
         </div>
         <!-- 丢失 -->
         <div v-if="contractNumberChoosed === 4">
@@ -399,41 +360,24 @@
             style="width: 100%"
             height="660px"
             :data="contractLoseList"
+            @row-dblclick="showLoseDetail"
           >
             <el-table-column label="丢失时间" align="center" prop="report_time">
-              <template slot-scope="scope">
-                <div @click="showLoseDetail(scope.row)">{{scope.row.report_time}}</div>
-              </template>
             </el-table-column>
             <el-table-column label="部门" align="center" prop="department_name">
-              <template slot-scope="scope">
-                <div @click="showLoseDetail(scope.row)">{{scope.row.department_name}}</div>
-              </template>
             </el-table-column>
             <el-table-column label="姓名" align="center" prop="staff_name">
-              <template slot-scope="scope">
-                <div @click="showLoseDetail(scope.row)">{{scope.row.staff_name}}</div>
-              </template>
             </el-table-column>
             <el-table-column label="丢失合同数(收)" align="center" prop="collect_contracts_count">
-              <template slot-scope="scope">
-                <div @click="showLoseDetail(scope.row)">{{scope.row.collect_contracts_count}}</div>
-              </template>
             </el-table-column>
             <el-table-column label="丢失合同数(租)" align="center" prop="rent_contracts_count">
-              <template slot-scope="scope">
-                <div @click="showLoseDetail(scope.row)">{{scope.row.rent_contracts_count}}</div>
-              </template>
             </el-table-column>
             <el-table-column label="操作" align="center">
               <template slot-scope="scope">
-                <el-button size="mini" @click="modifyLose(scope.row)">修改</el-button>
+                <el-button type="primary" @click="modifyLose(scope.row)" plain>修改</el-button>
               </template>
             </el-table-column>
           </el-table>
-          <!-- <div class="page flex-center">
-            <el-pagination :total="250" layout="total,jumper,prev,pager,next" :current-page="1" :page-size="10"></el-pagination>
-          </div>-->
         </div>
       </div>
 
@@ -904,8 +848,11 @@
                 <el-form-item label="到">
                   <el-input type="input"></el-input>
                 </el-form-item>
-                <div class="addIcon"></div>
-                <div class="reduceIcon"></div>
+                <el-form-item label="合同编号（自选）" v-for="(item,index) in collect_extra" :key="index">
+                  <el-input type="input" v-model="item.value"></el-input>
+                  <div class="reduceIcon el-icon-remove" @click="reduceCollect_extra(index)"></div>
+                </el-form-item>
+                <div class="addIcon" @click="collect_extra.push({value:''})"></div>
               </div>
               <div class="zu">
                 <el-form-item label="领取合同数（租）">
@@ -917,8 +864,11 @@
                 <el-form-item label="到">
                   <el-input type="input"></el-input>
                 </el-form-item>
-                <div class="addIcon"></div>
-                <div class="reduceIcon"></div>
+                <el-form-item label="合同编号（自选）" v-for="(item,index) in rent_extra" :key="index">
+                  <el-input type="input" v-model="item.value"></el-input>
+                  <div class="reduceIcon el-icon-remove" @click="reduceRent_extra(index)"></div>
+                </el-form-item>
+                <div class="addIcon" @click="rent_extra.push({value:''})"></div>
               </div>
             </div>
             <h4 align="left">其他</h4>
@@ -1029,117 +979,80 @@
       @close="cancelModify_visible = false"
       class="receiveModify"
     >
-      <div class="dialogHeader">
-        <p>作废合同修改</p>
-      </div>
-      <div class="dialogBody scroll_bar">
-        <div class="basicTitle">
-          <p>基本信息</p>
+      <div class="dialogContainer">
+        <div class="dialogHeader">
+          <p>作废合同修改</p>
         </div>
-        <div class="basicDetail">
-          <div>
-            <div class="title">
-              <h3>任务类型</h3>
-              <h3>领用人</h3>
+        <div class="dialog_body scroll_bar">
+          <el-form label-width="140px" :model="distribute_form" :inline="true">
+            <h4 align="left">基本信息</h4>
+            <div class="form_header">
+              <el-form-item label="任务类型">
+                <el-select>
+                  <el-option label value></el-option>
+                  <el-option label value></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="城市">
+                <el-select>
+                  <el-option label value></el-option>
+                  <el-option label value></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="领取日期">
+                <el-date-picker type="datetime" placeholder="选择日期时间"></el-date-picker>
+              </el-form-item>
+              <el-form-item label="领用人">
+                <div
+                  style="background:rgba(240,240,240,1);width:350px;height:40px; padding:0 20px;"
+                >权志龙</div>
+              </el-form-item>
+              <el-form-item label="所属部门">
+                <div
+                  style="background:rgba(240,240,240,1);width:350px;height:40px; padding:0 20px;"
+                >南京一区</div>
+              </el-form-item>
             </div>
-            <div class="value">
-              <el-select placeholder="请选择" v-model="misssionType" disabled></el-select>
-              <h3>{{modifyName}}</h3>
+            <h4 align="left">操作信息</h4>
+            <div class="form_body">
+              <el-form-item>
+                <template slot="label">
+                  <b>收房合同</b>
+                  <span class="arrow"></span>
+                </template>
+                <el-checkbox-group v-model="distribute_form.checkList_sf">
+                  <el-checkbox label="LJGYSF01001656"></el-checkbox>
+                  <el-checkbox label="LJGY6546545466"></el-checkbox>
+                </el-checkbox-group>
+              </el-form-item>
+              <el-form-item>
+                <template slot="label">
+                  <b>租房合同</b>
+                  <span class="arrow"></span>
+                </template>
+                <el-checkbox-group v-model="distribute_form.checkList_zf">
+                  <el-checkbox label="LJGYSF01001656"></el-checkbox>
+                </el-checkbox-group>
+              </el-form-item>
             </div>
-          </div>
-          <div>
-            <div class="title">
-              <h3>城市</h3>
-              <h3>所属部门</h3>
+            <h4 align="left">剩余合同</h4>
+            <div class="form_footer" align="left">
+              <el-form-item label="截图">
+                <lj-upload></lj-upload>
+              </el-form-item>
+              <el-form-item label="备注">
+                <el-input type="textarea" :rows="2" v-model="modifyRemark"></el-input>
+              </el-form-item>
             </div>
-            <div class="value">
-              <el-select placeholder="请选择" v-model="selectedCity" disabled></el-select>
-              <h3>{{modifyDepartment}}</h3>
-            </div>
-          </div>
-          <div>
-            <div class="title">
-              <h3>领取日期</h3>
-            </div>
-            <div class="value">
-              <el-date-picker
-                type="datetime"
-                placeholder="选择日期时间"
-                align="right"
-                v-model="timePicker"
-                disabled
-              ></el-date-picker>
-            </div>
-          </div>
+          </el-form>
         </div>
-        <div class="operateInfo">
-          <p>操作信息（取消勾选则不再选择）</p>
+        <div class="dialog_footer">
+          <el-button type="danger">确定</el-button>
+          <el-button type="info">取消</el-button>
         </div>
-        <div class="operateDetail">
-          <div class="right_title">
-            <div class="words">收房合同</div>
-            <div class="arrow"></div>
-          </div>
-          <div class="body_detail">
-            <div>
-              <div class="selector"></div>
-              <div class="content">FDSJKLFDSA</div>
-            </div>
-            <div>
-              <div class="selector"></div>
-              <div class="content">FDSJKLFDSA</div>
-            </div>
-            <div>
-              <div class="selector"></div>
-              <div class="content">FDSJKLFDSA</div>
-            </div>
-            <div>
-              <div class="selector"></div>
-              <div class="content">FDSJKLFDSA</div>
-            </div>
-          </div>
-          <div class="right_title">
-            <div class="words">租房合同</div>
-            <div class="arrow"></div>
-          </div>
-          <div class="body_detail">
-            <div>
-              <div class="selector"></div>
-              <div class="content">FDSJKLFDSA</div>
-            </div>
-            <div>
-              <div class="selector"></div>
-              <div class="content">FDSJKLFDSA</div>
-            </div>
-            <div>
-              <div class="selector"></div>
-              <div class="content">FDSJKLFDSA</div>
-            </div>
-            <div>
-              <div class="selector"></div>
-              <div class="content">FDSJKLFDSA</div>
-            </div>
-          </div>
-        </div>
-        <div class="basicTitle">
-          <p>剩余合同</p>
-        </div>
-        <div class="otherDetail">
-          <div class="otherDetailTop">
-            <p>截图</p>
-            <img src alt="sss" />
-          </div>
-          <div class="otherDetailBottom">
-            <p class="bottomTitle">备注</p>
-            <p class="bottomDetail">这里是备注文字这里是备注文字这里是备注文字</p>
-          </div>
-        </div>
-      </div>
-      <div class="dialog_footer">
-        <el-button type="danger">确定</el-button>
-        <el-button type="info">取消</el-button>
       </div>
     </lj-dialog>
+
     <!-- 作废创建任务 -->
     <lj-dialog
       :visible="cancelMission_visible"
@@ -1147,116 +1060,79 @@
       @close="cancelMission_visible = false"
       class="cancelMission"
     >
-      <div class="dialogHeader">
-        <p>创建任务</p>
-      </div>
-      <div class="dialogBody">
-        <div class="basicTitle">
-          <p>基本信息</p>
+      <div class="dialogContainer">
+        <div class="dialogHeader">
+          <p>创建任务</p>
         </div>
-        <div class="basicDetail">
-          <div>
-            <div class="title">
-              <h3>任务类型</h3>
-              <h3>领用人</h3>
+        <div class="dialog_body scroll_bar">
+          <el-form label-width="140px" :model="distribute_form" :inline="true">
+            <h4 align="left">基本信息</h4>
+            <div class="form_header">
+              <el-form-item label="任务类型">
+                <el-select>
+                  <el-option label value></el-option>
+                  <el-option label value></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="城市">
+                <el-select>
+                  <el-option label value></el-option>
+                  <el-option label value></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="报备日期">
+                <el-date-picker type="datetime" placeholder="选择日期时间"></el-date-picker>
+              </el-form-item>
+              <el-form-item label="报备人">
+                <UserChoose></UserChoose>
+              </el-form-item>
+              <el-form-item label="所属部门">
+                <div
+                  style="background:rgba(240,240,240,1);width:350px;height:40px; padding:0 20px;"
+                >南京一区</div>
+              </el-form-item>
             </div>
-            <div class="value">
-              <el-select placeholder="请选择">
-                <el-option size="mini"></el-option>
-              </el-select>
-              <h3>权志龙</h3>
+            <h4 align="left">操作信息</h4>
+            <div class="form_body">
+              <el-form-item>
+                <template slot="label">
+                  <b>收房合同</b>
+                  <span class="arrow"></span>
+                </template>
+                <el-checkbox-group v-model="distribute_form.checkList_sf">
+                  <el-checkbox label="LJGYSF01001656"></el-checkbox>
+                  <el-checkbox label="LJGY6546545466"></el-checkbox>
+                </el-checkbox-group>
+              </el-form-item>
+              <el-form-item>
+                <template slot="label">
+                  <b>租房合同</b>
+                  <span class="arrow"></span>
+                </template>
+                <el-checkbox-group v-model="distribute_form.checkList_zf">
+                  <el-checkbox label="LJGYSF01001656"></el-checkbox>
+                </el-checkbox-group>
+              </el-form-item>
             </div>
-          </div>
-          <div>
-            <div class="title">
-              <h3>城市</h3>
-              <h3>所属部门</h3>
+            <h4 align="left">其他</h4>
+            <div class="form_footer" align="left">
+              <el-form-item label="截图">
+                <lj-upload></lj-upload>
+              </el-form-item>
+              <el-form-item label="备注">
+                <el-input type="textarea" :rows="2" v-model="modifyRemark"></el-input>
+              </el-form-item>
             </div>
-            <div class="value">
-              <el-select placeholder="请选择">
-                <el-option size="mini"></el-option>
-              </el-select>
-              <h3>南京一区</h3>
-            </div>
-          </div>
-          <div>
-            <div class="title">
-              <h3>领取日期</h3>
-            </div>
-            <div class="value">
-              <el-date-picker type="datetime" placeholder="选择日期时间" align="right"></el-date-picker>
-            </div>
-          </div>
+          </el-form>
         </div>
-        <div class="basicTitle">
-          <p>操作信息</p>
+        <div class="dialog_footer">
+          <el-button type="danger">确定</el-button>
+          <el-button type="info">取消</el-button>
         </div>
-        <div class="operateDetail">
-          <div class="right_title">
-            <div class="words">收房合同</div>
-            <div class="arrow"></div>
-          </div>
-          <div class="body_detail">
-            <div>
-              <div class="selector"></div>
-              <div class="content">FDSJKLFDSA</div>
-            </div>
-            <div>
-              <div class="selector"></div>
-              <div class="content">FDSJKLFDSA</div>
-            </div>
-            <div>
-              <div class="selector"></div>
-              <div class="content">FDSJKLFDSA</div>
-            </div>
-            <div>
-              <div class="selector"></div>
-              <div class="content">FDSJKLFDSA</div>
-            </div>
-          </div>
-          <div class="right_title">
-            <div class="words">租房合同</div>
-            <div class="arrow"></div>
-          </div>
-          <div class="body_detail">
-            <div>
-              <div class="selector"></div>
-              <div class="content">FDSJKLFDSA</div>
-            </div>
-            <div>
-              <div class="selector"></div>
-              <div class="content">FDSJKLFDSA</div>
-            </div>
-            <div>
-              <div class="selector"></div>
-              <div class="content">FDSJKLFDSA</div>
-            </div>
-            <div>
-              <div class="selector"></div>
-              <div class="content">FDSJKLFDSA</div>
-            </div>
-          </div>
-        </div>
-        <div class="otherTitle">
-          <p>其他</p>
-        </div>
-        <div class="otherDetail">
-          <div class="otherDetailTop">
-            <p>截图</p>
-            <img src alt="sss" />
-          </div>
-          <div class="otherDetailBottom">
-            <p class="bottomTitle">备注</p>
-            <p class="bottomDetail">这里是备注文字这里是备注文字这里是备注文字</p>
-          </div>
-        </div>
-      </div>
-      <div class="dialog_footer">
-        <el-button type="danger">确定</el-button>
-        <el-button type="info">取消</el-button>
       </div>
     </lj-dialog>
-    <!-- 上缴 -->
+
+    <!-- 上缴详情 -->
     <lj-dialog
       :visible="contractHandin_visible"
       :size="{width: 1700 + 'px',height: 900 + 'px'}"
@@ -2542,9 +2418,17 @@ export default {
         checkList_zf: []
       },
       // 自选的租房合同编号数组
-      rent_extra:[],
+      rent_extra: [
+        {
+          value: ""
+        }
+      ],
       // 自选的收房编号数组
-      collect_extra:[]
+      collect_extra: [
+        {
+          value: ""
+        }
+      ]
     };
   },
   mounted() {
@@ -2960,7 +2844,8 @@ export default {
       // })
     },
     modifyCancel(row) {
-      this.receiveModify_visible = true;
+      // this.receiveModify_visible = true;
+      this.cancelModify_visible = true;
       this.misssionType = "作废";
       this.modifyName = row.staff_name;
       this.timePicker = row.report_time;
@@ -3113,6 +2998,20 @@ export default {
     changePages_huizong_common(val) {
       this.commonPages_huizong.page = val;
       this.getContractCollectList();
+    },
+    // 删除租房合同编号（自选）事件
+    reduceRent_extra(index) {
+      let len = this.rent_extra.length;
+      if (len > 0 && len != 1) {
+        this.rent_extra.splice(index, 1);
+      }
+    },
+    // 删除收房合同编号（自选）事件
+    reduceCollect_extra(index) {
+      let len = this.collect_extra.length;
+      if (len > 0 && len != 1) {
+        this.collect_extra.splice(index, 1);
+      }
     }
   }
 };
@@ -3238,6 +3137,9 @@ export default {
     }
     .receiveMission {
       .addIcon {
+        @include childrenImg("tianjia.png", "theme1");
+      }
+      .reduceIcon {
         @include childrenImg("tianjia.png", "theme1");
       }
     }
