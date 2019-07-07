@@ -601,24 +601,6 @@ export default {
     },
     //提交题库
     handleSubmitExam () {
-      /*_.forEach(this.exam_form_list,(o)=> {
-          switch (o.category) {
-            case 1:
-              let keys1 = Object.keys(o.choice);
-              let result = _.find(keys1,o.answer);
-              if(!result) {
-                this.$LjMessage('warning',{
-                  title:'警告',
-                  msg:'请选择正确的选项',
-                });
-              }
-              break;
-            case 2:
-              break;
-            case 3:
-              break;
-          }
-      });*/
       if (this.type == 1&&this.paper_type==1) {
         for (let item of this.exam_form_list) {
           if (isNaN(item.score)) {
@@ -637,7 +619,8 @@ export default {
           }
           if (item.category == 1 || item.category == 2) {
             let keys1 = Object.keys(item.choice);
-            let result = _.find(keys1, item.answer);
+            /*let result = _.find(keys1, item.answer);*/
+            let result = _.includes(keys1, item.answer);
             if (!result) {
               this.$LjMessage('warning', {
                 title: '警告',
@@ -648,10 +631,10 @@ export default {
           }
         }
       }
-
-      this.$emit('success', this.exam_form_list, this.params.is_edit_paper);
       this.paper_visible = false;
       this.params.is_edit_paper = false;
+      this.$emit('success', this.exam_form_list, this.params.is_edit_paper);
+
     },
 
     //取消按钮

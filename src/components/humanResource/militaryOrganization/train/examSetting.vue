@@ -39,7 +39,7 @@
         </div>
         <div class="exam-control">
           <div>
-            <span class="writingMode" @click="new_question_bank_dialog_visible = true"
+            <span class="writingMode" @click="showAddQuestionBank"
                   v-if="is_exam_guide === 1">新建题库</span>
             <span class="writingMode" @click="showAddExam" v-else>新建考试</span>
           </div>
@@ -615,8 +615,15 @@
         });
       },
 
+      //打开新建题库对话框
+      showAddQuestionBank() {
+        if(!this.validatePermission('Exam-Bank-Save')) return;
+        this.new_question_bank_dialog_visible = true;
+      },
+
       //获取题库列表
       getQuestionList() {
+        if(!this.validatePermission('Exam-Bank-Index')) return;
         this.tableSettingData['question'].tableData = [];
         let params = {
           ...this.tableSettingData['question'].params
@@ -662,7 +669,8 @@
 
       //提交题库
       handleSubmitQuestionBank() {
-        if ((!this.new_question_bank_exam_list || this.new_question_bank_exam_list.length == 0) && this.new_question_bank_form.attachment.length == 0) {
+        let mQuestionBankExamList = _.cloneDeep(this.new_question_bank_exam_list);
+        if ((!mQuestionBankExamList || mQuestionBankExamList.length == 0) && this.new_question_bank_form.attachment.length == 0) {
           this.$LjMessage('warning', {
             title: '警告',
             msg: '请至少录入一道题目',
@@ -672,13 +680,13 @@
         let params = {
           ...this.new_question_bank_form
         };
-        if (this.new_question_bank_exam_list) {
+        if (mQuestionBankExamList) {
           this.$http.post(`${this.url}train/exam_question_bank`, params).then(res => {
             return res;
           }).then(res => {
             if (res.code.endsWith('0')) {
               let id = res.data.id;
-              let newExamList = this.new_question_bank_exam_list.map((item, index) => {
+              let newExamList = mQuestionBankExamList.map((item, index) => {
                 item.exam_question_bank_id = id;
                 if (item.answer.constructor !== Array) {
                   item.answer = [item.answer];
@@ -758,6 +766,7 @@
 
       //获取考试列表
       getExamList() {
+        if(!this.validatePermission('Exam-Schedule-Index')) return;
         this.tableSettingData['exam'].tableData = [];
         let params = {
           ...this.tableSettingData['exam'].params
@@ -782,6 +791,7 @@
 
       //显示新建考试dialog
       showAddExam() {
+        if(!this.validatePermission('Exam-Schedule-Save')) return;
         this.new_exam_form_dialog_visible = true;
         this.exam_form_type = 1;
         this.new_exam_form = {
