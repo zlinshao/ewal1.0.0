@@ -2375,3 +2375,84 @@ export const contractNumberEditHighSearch={
         },
     ]
 }
+
+// 办公审批 高级搜索
+
+export const officeApprovalHighSearch = {
+  status: 'approval_office',
+  placeholder: '',
+  keywords: 'title',
+  data: [
+    {
+      keyType: 'radio',
+      title: '流程分类',
+      keyName: 'process_category',
+      dataType: '',
+      value: [
+        {
+          id: 'personnel_options',
+          title: '人事'
+        },
+        {
+          id: 'personnel_special_options',
+          title: '人事专用'
+        },
+        {
+          id: 'notice_options',
+          title: '公告'
+        },
+        {
+          id: 'administration_options',
+          title: '行政'
+        },
+        {
+          id: 'other_options',
+          title: '其他'
+        }
+      ]
+    },
+    {
+      keyType: 'select',
+      title: '流程名称',
+      placeholder: '请选择名称',
+      keyName: 'processDefinitionKey',
+      dataType: '',
+      no_option_text: '请 选 择 流 程 分 类，加 载 流 程 名 称',
+      options: [] // 动态匹配
+    },
+    {
+      keyType: 'radio',
+      title: '紧急程度',
+      keyName: 'priority',
+      dataType: '',
+      value: [
+        {
+          id: '50',
+          title: '正常'
+        },
+        {
+          id: '60',
+          title: '重要'
+        },
+        {
+          id: '70',
+          title: '紧急'
+        }
+      ]
+    },
+    {
+      keyType: 'dateRange',
+      title: '创建日期',
+      placeholder: '请选择日期',
+      keyName: 'start_time',
+      dataType: []
+    },
+    {
+      keyType: 'dateRange',
+      title: '接收日期',
+      placeholder: '请选择日期',
+      keyName: 'end_time',
+      dataType: []
+    }
+  ]
+}
