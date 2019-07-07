@@ -1029,7 +1029,10 @@
           this.current_row = '';*/
           this.$LjMessageEasy(res, () => {
             this.show_subject = false;
+            this.action_visible = false;
+            this.is_table_choose = '';
             this.current_row = '';
+
           });
         });
       },
@@ -1172,7 +1175,6 @@
         }
         if (key === "pay_visible") {
           this.pay_visible = true;
-          console.log(row)
           this.formData.amount_payable = this.current_row.amount_payable;
         }
         if (key === "payData_visible") {
