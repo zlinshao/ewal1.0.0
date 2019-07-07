@@ -12,11 +12,12 @@
         <el-tooltip content="批量入账" placement="bottom" :visible-arrow="false">
           <div class="icons allInsert" @click="openBatchEntry"></div>
         </el-tooltip>
-        <el-tooltip v-show="$storage.get('VALIDATE_PERMISSION')['Payable-Save']" content="新增应付款项" placement="bottom" :visible-arrow="false">
+        <el-tooltip v-show="$storage.get('VALIDATE_PERMISSION')['Payable-Save']" content="新增应付款项" placement="bottom"
+                    :visible-arrow="false">
           <div class="icons add" @click="openAdd"><b>+</b></div>
         </el-tooltip>
         <el-tooltip content="高级搜索" placement="bottom" :visible-arrow="false">
-        <div class="icons search" @click="highSearch"></div>
+          <div class="icons search" @click="highSearch"></div>
         </el-tooltip>
       </div>
     </div>
@@ -51,7 +52,7 @@
         @cell-click="tableClickRow"
         style="width: 100%">
         <!--<el-table-column-->
-          <!--type="selection" width="40">-->
+        <!--type="selection" width="40">-->
         <!--</el-table-column>-->
         <el-table-column width="40">
           <template slot-scope="scope">
@@ -75,7 +76,8 @@
           label="备注"
         >
           <template slot-scope="scope">
-            <div style="cursor: pointer;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;" v-html="scope.row.remarks" @click="openRemarksList(scope.row)"></div>
+            <div style="cursor: pointer;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;"
+                 v-html="scope.row.remarks" @click="openRemarksList(scope.row)"></div>
           </template>
         </el-table-column>
 
@@ -266,8 +268,6 @@
     </lj-dialog>
 
 
-
-
     <!--应收款项备注列表dialog-->
     <lj-dialog :visible.sync="remarks_dialog_visible"
                :size="'small'"
@@ -327,19 +327,6 @@
         </div>
       </div>
     </lj-dialog>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     <!--新增应付款项-->
@@ -467,8 +454,10 @@
         <div class="dialog_header justify-bet">
           <h3>批量入账</h3>
           <h3 class="batchEntry-icon">
-            <i class="" v-if="$storage.get('VALIDATE_PERMISSION')['Batch-Payable-Export']" @click="out_account_visible = true"></i>
-            <i class="" v-if="$storage.get('VALIDATE_PERMISSION')['Batch-Payable-Import']" @click="import_account_visible = true"></i>
+            <i class="" v-if="$storage.get('VALIDATE_PERMISSION')['Batch-Payable-Export']"
+               @click="out_account_visible = true"></i>
+            <i class="" v-if="$storage.get('VALIDATE_PERMISSION')['Batch-Payable-Import']"
+               @click="import_account_visible = true"></i>
           </h3>
         </div>
         <div class="dialog_main changeChoose">
@@ -524,10 +513,13 @@
               </el-select>
             </el-form-item>
             <el-form-item label="科目">
-              <el-input v-model="out_form.subject_name" @focus="subject_visible = true;which_subject = 'out_account';is_disabled = true" placeholder="请选择"></el-input>
+              <el-input v-model="out_form.subject_name"
+                        @focus="subject_visible = true;which_subject = 'out_account';is_disabled = true"
+                        placeholder="请选择"></el-input>
             </el-form-item>
             <el-form-item label="开始时间">
-              <el-date-picker v-model="out_form.start_date" value-format="yyyy-MM-dd" placeholder="请选择"></el-date-picker>
+              <el-date-picker v-model="out_form.start_date" value-format="yyyy-MM-dd"
+                              placeholder="请选择"></el-date-picker>
             </el-form-item>
             <el-form-item label="结束时间">
               <el-date-picker v-model="out_form.end_date" value-format="yyyy-MM-dd" placeholder="请选择"></el-date-picker>
@@ -541,7 +533,8 @@
       </div>
     </lj-dialog>
     <!--批量入账导入-->
-    <lj-dialog :visible="import_account_visible" @close="cancelImportAccount" :size="{width: 500 + 'px',height: 250 + 'px'}">
+    <lj-dialog :visible="import_account_visible" @close="cancelImportAccount"
+               :size="{width: 500 + 'px',height: 250 + 'px'}">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>导入转账结果</h3>
@@ -573,7 +566,7 @@
 
   export default {
     name: "index",
-    components: {SearchHigh, LjDialog, FinMenuList, LjSubject, CustomerLists, Customer,Upload},
+    components: {SearchHigh, LjDialog, FinMenuList, LjSubject, CustomerLists, Customer, Upload},
     data() {
       return {
 
@@ -648,7 +641,6 @@
         show_subject: false,//科目
         customer_visible: false,//客户列表
         is_disabled: true,
-
 
 
         remarks_dialog_visible: false,//应付款项备注列表dialog
@@ -728,12 +720,11 @@
         },
         subject_val: '',
         formData: {
-          complete_date:'' ,  //补齐时间
-          pay_date:'' ,  //应付时间
+          complete_date: '',  //补齐时间
+          pay_date: '',  //应付时间
         },
 
-        transferForm: {//应付入账
-        },
+        transferForm: {},//应付入账
         cate: [
           {title: "银行卡", value: 1,},
           {title: "支付宝", value: 2,},
@@ -772,7 +763,7 @@
             content: "科目",
             key: "show_subject",
             class: 'edit',
-            show:this.$storage.get('VALIDATE_PERMISSION')['Payable-Edit-Subject'],
+            show: this.$storage.get('VALIDATE_PERMISSION')['Payable-Edit-Subject'],
           },
           {
             label: "",
@@ -783,7 +774,7 @@
             content: "补齐时间",
             key: "complete_visible",
             class: 'edit',
-            show:this.$storage.get('VALIDATE_PERMISSION')['Payable-Complete-Date'],
+            show: this.$storage.get('VALIDATE_PERMISSION')['Payable-Complete-Date'],
           },
           {
             label: "",
@@ -794,7 +785,7 @@
             content: "应付时间",
             key: "payData_visible",
             class: 'edit',
-            show:this.$storage.get('VALIDATE_PERMISSION')['Payable-Pay-Date']
+            show: this.$storage.get('VALIDATE_PERMISSION')['Payable-Pay-Date']
           },
           {
             label: "",
@@ -805,7 +796,7 @@
             content: "应付入账",
             key: "transfer_visible",
             class: 'edit',
-            show:this.$storage.get('VALIDATE_PERMISSION')['Payable-Transfer'],
+            show: this.$storage.get('VALIDATE_PERMISSION')['Payable-Transfer'],
           },
           {
             label: "",
@@ -816,7 +807,7 @@
             content: "回滚",
             key: "recall_visible",
             class: 'edit',
-            show:this.$storage.get('VALIDATE_PERMISSION')['Payable-Revert'],
+            show: this.$storage.get('VALIDATE_PERMISSION')['Payable-Revert'],
           },
           {
             label: "",
@@ -827,7 +818,7 @@
             content: "删除",
             key: "delete_visible",
             class: 'delete',
-            show:this.$storage.get('VALIDATE_PERMISSION')['Payable-Delete'],
+            show: this.$storage.get('VALIDATE_PERMISSION')['Payable-Delete'],
           },
         ],
         accountLists: [],
@@ -845,7 +836,7 @@
 
         import_file: '',
         // 选中当前的列表的数据
-        current_row_info:{},
+        current_row_info: {},
       }
     },
     mounted() {
@@ -860,15 +851,15 @@
     computed: {},
     methods: {
       importOk() {
-        this.$http.post(globalConfig.temporary_server + 'batch_payable/import',{doc_id: this.import_file}).then(res => {
+        this.$http.post(globalConfig.temporary_server + 'batch_payable/import', {doc_id: this.import_file}).then(res => {
           if (res.code === 200) {
-            this.$LjNotify('success',{
+            this.$LjNotify('success', {
               title: '成功',
               message: res.msg
             });
             this.cancelImportAccount();
           } else {
-            this.$LjNotify('success',{
+            this.$LjNotify('success', {
               title: '失败',
               message: res.msg
             })
@@ -876,19 +867,19 @@
         })
       },
       outAccountCtrl() {
-        this.$http.get(globalConfig.temporary_server + 'batch_payable/export',this.out_form).then(res => {
+        this.$http.get(globalConfig.temporary_server + 'batch_payable/export', this.out_form).then(res => {
           if (res.code === 200) {
             window.location.href = res.data.url;
             this.cancelOutAccount();
           } else {
-            this.$LjNotify('warning',{
+            this.$LjNotify('warning', {
               title: '失败',
               message: res.msg
             })
           }
         })
       },
-      handleSuccessFile(file,name) {
+      handleSuccessFile(file, name) {
         if (file && file.length > 0) {
           this.import_file = file[0];
         }
@@ -920,7 +911,7 @@
       },
       //获取应付批量入账列表
       getBatchEntryList() {
-        if(!this.validatePermission('Batch-Payable-List')) return;
+        if (!this.validatePermission('Batch-Payable-List')) return;
         this.$http.get(globalConfig.temporary_server + "batch_payable", this.batchEntryParams).then(res => {
           if (res.code === 200) {
             this.batchEntryData = res.data.data;
@@ -958,7 +949,6 @@
         this.multipleSelection = [];
         if (this.is_table_choose === row.id) {
           this.is_table_choose = '';
-          this.action_visible = true;
           this.action_visible = false;
           this.current_row = '';
         } else {
@@ -970,7 +960,7 @@
         let ids = this.chooseRowIds;
         ids.push(row.id);
         this.chooseRowIds = this.myUtils.arrayWeight(ids);
-        this.current_row_info=row; //用于补齐和应付时间使用
+        this.current_row_info = row; //用于补齐和应付时间使用
       },
       tableChooseRow({row, rowIndex}) {// 点击过
         return this.chooseRowIds.includes(row.id) ? 'tableChooseRow' : '';
@@ -979,7 +969,7 @@
         this.params.page = page;
         this.getPaymentList();
       },
-      callbackSuccess(res,callback) {//请求回调
+      callbackSuccess(res, callback) {//请求回调
         if (res.code === 200) {
           this.$LjNotify('success', {
             title: '成功',
@@ -987,7 +977,9 @@
             subMessage: '',
           });
           this.getPaymentList();
-          callback();
+          if (callback) {
+            callback();
+          }
         } else {
           this.$LjNotify('error', {
             title: '失败',
@@ -995,7 +987,6 @@
             subMessage: '',
           });
         }
-        // callback();
       },
 
       handleOkPay(row, val) {//修改金额
@@ -1039,7 +1030,7 @@
           /*this.callbackSuccess(res);
           this.show_subject = false;
           this.current_row = '';*/
-          this.$LjMessageEasy(res,()=> {
+          this.$LjMessageEasy(res, () => {
             this.show_subject = false;
             this.current_row = '';
           });
@@ -1048,11 +1039,12 @@
 
       handleOkCompleteData(row) {//修改补齐时间
         // 时间格式转化
-        let  date = new Date(this.formData.complete_date);  
-        let  complete_date=date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();  
+        let date = new Date(this.formData.complete_date);
+        let complete_date = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
         this.$http.put(globalConfig.temporary_server + "account_payable/complete_date/" + this.current_row_info.id, {complete_date: complete_date}).then(res => {
-        // this.$http.put(globalConfig.temporary_server + "account_payable/complete_date/" + row.id, {complete_date: complete_date}).then(res => {
-          this.callbackSuccess(res,function () {});
+          // this.$http.put(globalConfig.temporary_server + "account_payable/complete_date/" + row.id, {complete_date: complete_date}).then(res => {
+          this.callbackSuccess(res, function () {
+          });
           this.complete_visible = false;
           this.current_row = '';
         }).catch(err => {
@@ -1060,12 +1052,13 @@
         })
       },
       handleOkPayDate(row) {//修改付款时间
-        let  date = new Date(this.formData.pay_date);  
-        let  pay_date=date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate(); 
+        let date = new Date(this.formData.pay_date);
+        let pay_date = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
         this.$http.put(globalConfig.temporary_server + "account_payable/pay_date/" + this.current_row_info.id, {pay_date: pay_date}).then(res => {
-        // this.$http.put(globalConfig.temporary_server + "account_payable/pay_date/" + row.id, {pay_date: pay_date}).then(res => {
+          // this.$http.put(globalConfig.temporary_server + "account_payable/pay_date/" + row.id, {pay_date: pay_date}).then(res => {
           // this.callbackSuccess(res);
-           this.callbackSuccess(res,function () {});
+          this.callbackSuccess(res, function () {
+          });
           this.payData_visible = false;
           this.current_row = '';
         }).catch(err => {
@@ -1096,11 +1089,15 @@
           remark: this.transferForm.remark,
           pay_date: this.transferForm.pay_date,
           complete_date: this.transferForm.complete_date,
-        }
+        };
         this.$http.put(globalConfig.temporary_server + "account_payable/transfer/" + row.id, paramsForm).then(res => {
           this.callbackSuccess(res);
-          this.transfer_visible = false;
-          this.current_row = '';
+          if (res.code === 200) {
+            this.is_table_choose = '';
+            this.action_visible = false;
+            this.transfer_visible = false;
+            this.current_row = '';
+          }
         }).catch(err => {
           console.log(err);
         })
@@ -1137,7 +1134,7 @@
       },
       handleOkAdd() {//新增
         this.$http.post(globalConfig.temporary_server + 'account_payable', this.ruleForm).then(res => {
-          this.callbackSuccess(res,() => {
+          this.callbackSuccess(res, () => {
             this.add_visible = false;
           });
         }).catch(err => {
@@ -1158,7 +1155,7 @@
         if (key === "complete_visible") {
           this.complete_visible = true;
           // this.formData.complete_date = this.current_row.complete_date;
-            this.formData.complete_date = this.current_row_info.complete_date;
+          this.formData.complete_date = this.current_row_info.complete_date;
         }
         if (key === "subject_visible") {//科目
           this.subject_visible = true;
@@ -1181,7 +1178,7 @@
         if (key === "payData_visible") {
           this.payData_visible = true;
           // this.formData.pay_date = this.current_row.pay_date;
-           this.formData.pay_date = this.current_row_info.pay_date;
+          this.formData.pay_date = this.current_row_info.pay_date;
         }
         if (key === "delete_visible") {
           this.delete_visible = true;
@@ -1193,11 +1190,12 @@
         }
         if (key === "transfer_visible") {//应付入账
           this.transfer_visible = true;
+          console.log(row);
           this.transferForm = row;
         }
       },
       getPaymentList() {//加载应付款项列表
-        if(!this.validatePermission('Payable-List')) return;
+        if (!this.validatePermission('Payable-List')) return;
         this.showLoading(true);
         this.$http.get(globalConfig.temporary_server + 'account_payable', this.params).then(async res => {
           this.showLoading(false);
@@ -1219,22 +1217,19 @@
             if (tags.code == 200) {
               tagsResult = tags.data.data;
 
-            }else {
-              _.forEach(resultData,(o)=> {
+            } else {
+              _.forEach(resultData, (o) => {
                 o.remarks = '暂无备注';
               });
             }
             _.forEach(tagsResult, (o) => {
               let id = Number(o.id);
-              if(o.data.count==0) {
-                _.find(resultData,{id:id}).remarks = '暂无备注';
-              }else {
-                _.find(resultData,{id:id}).remarks = _.map(o.data.data,'content').join(',');
+              if (o.data.count == 0) {
+                _.find(resultData, {id: id}).remarks = '暂无备注';
+              } else {
+                _.find(resultData, {id: id}).remarks = _.map(o.data.data, 'content').join(',');
               }
             });
-
-
-
             this.tableLists = resultData;
             this.count = res.data.count;
             this.payableSum = res.data.payableSum;
@@ -1286,14 +1281,14 @@
         };
         this.new_remark_dialog_visible = false;
         this.$http.post(`${this.url}account_should_tag/tags`, params).then(res => {
-          if(res.code==200) {
-            let list = res.data.data[0]?.data?.data||[];
+          if (res.code == 200) {
+            let list = res.data.data[0]?.data?.data || [];
             for (let item of list) {
               let obj = {
-                id:item.id,
+                id: item.id,
                 create_time: item.create_time,
-                content:item.content,
-                staff_name:item.operator.name,
+                content: item.content,
+                staff_name: item.operator.name,
               };
               this.tableSettingData.remarks.tableData.push(obj);
             }
@@ -1334,16 +1329,20 @@
       .upLoad {
         @include paymentImg('upLoad.png', 'theme1')
       }
+
       .allInsert {
         @include paymentImg('allInsert.png', 'theme1')
       }
+
       .batchEntry-icon {
         i {
 
         }
+
         i:first-child {
           @include paymentImg('output.png', 'theme1')
         }
+
         i:last-child {
           @include paymentImg('input.png', 'theme1')
         }
