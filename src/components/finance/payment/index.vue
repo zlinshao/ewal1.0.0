@@ -434,8 +434,6 @@
             </el-table-column>
             <el-table-column align="center" label="明细" prop="desc">
             </el-table-column>
-
-
           </el-table>
         </div>
         <div class="dialog_footer">
@@ -948,15 +946,14 @@
       tableClickRow(row) {
         this.multipleSelection = [];
         if (this.is_table_choose === row.id) {
-          this.is_table_choose = '';
           this.action_visible = false;
-          this.current_row = '';
+          this.is_table_choose = '';
         } else {
           this.is_table_choose = row.id;
           this.multipleSelection.push(row);
-          this.current_row = row;
           this.action_visible = true;
         }
+        this.current_row = row;
         let ids = this.chooseRowIds;
         ids.push(row.id);
         this.chooseRowIds = this.myUtils.arrayWeight(ids);
@@ -1112,7 +1109,6 @@
 
       handleOkRecall() {//确认回滚
         this.$http.put(globalConfig.temporary_server + 'account_payable/revert/' + this.current_row.id, {running_account_ids: this.ra_ids}).then(res => {
-
           if (res.code === 200) {
             this.$LjNotify('success', {
               title: '成功',
@@ -1120,7 +1116,10 @@
               subMessage: '',
             });
             this.recall_visible = false;
-
+            this.action_visible = false;
+            this.is_table_choose = '';
+            this.current_row = '';
+            this.getPaymentList();
           } else {
             this.$LjNotify('error', {
               title: '失败',
@@ -1173,6 +1172,7 @@
         }
         if (key === "pay_visible") {
           this.pay_visible = true;
+          console.log(row)
           this.formData.amount_payable = this.current_row.amount_payable;
         }
         if (key === "payData_visible") {
