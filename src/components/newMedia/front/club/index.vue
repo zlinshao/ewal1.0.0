@@ -197,7 +197,6 @@
             getReportedUsers(){//获取参加活动的所有用户列表
                 this.person_visible=true;
                 this.$http.get(globalConfig.newMedia_sever+'/api/club/event/user/'+this.showData.id,).then(res => {
-                    console.log('res', res);
                     if(res.status===200){
                         this.allPerson = res.data;
                     }

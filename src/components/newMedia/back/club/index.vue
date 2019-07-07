@@ -212,14 +212,9 @@ export default {
   },
   mounted () {
     this.getDataLists();
-    // this.$refs.viewBox.addEventListener('scroll', this.throttle(this.setpage, 200), false);
   },
 
   methods: {
-    // change(val) {
-    //     console.log(val);
-    //     this.showData.content = val
-    // },
     getContentChange (val) {
       this.showData.content = val.slice(3,val.length-4);
     },
@@ -297,17 +292,11 @@ export default {
       }
     },
     detail (item) {//详情
-      // for (let item of Object.keys(this.showData)) {
-      //     this.showData[item] = '';
-      // }
       let itemInfo = item;
       this.detail_visible = true;
       this.showData = itemInfo;
       let arr = [item.start_time, item.over_time];
       this.showData.actionTime = arr;
-      // this.$http.get(globalConfig.newMedia_sever + '/api/club/event/' + item.id).then(res => {
-      //   // this.getDataLists()
-      // })
     },
 
     handleOkOver () {//提前结束
@@ -409,13 +398,11 @@ export default {
       this.showData.start_time = this.actionTime[0];
       this.showData.over_time = this.actionTime[1];
       this.showData.content = content;
-      console.log(content)
     },
 
     getDataLists () {//获取列表
       this.showLoading(true);
       this.$http.get(globalConfig.newMedia_sever + '/api/club/event', this.params).then(res => {
-        console.log(res)
         this.showLoading(false);
         if (res.status === 200) {
 
@@ -425,7 +412,6 @@ export default {
             }
           );
           this.count = res.data.total;
-            console.log(this.dataLists)
           for (let item of res.data.data) {
             // this.endTimes.push({over_time:item.over_time});
             var yourtime = item.over_time.replace("-", "/");

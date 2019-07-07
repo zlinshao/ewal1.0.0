@@ -147,7 +147,6 @@
             this.getDataLists();
         },
         mounted() {
-            // console.log(this.chooseTab);
             // 用来监听滚轮
             window.addEventListener("scroll", this.handleScroll);
         },
@@ -156,7 +155,6 @@
                 this.$http.get(globalConfig.newMedia_sever + '/api/article/hot',{is_open:1}).then(res => {
                     if(res.status===200){
                         this.newsData = res.data.data;
-                        // console.log(this.newsData);
                         // this.sort(0);// 分配数据到指定管道
                     }else{
                         this.newsData = [];

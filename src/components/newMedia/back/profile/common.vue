@@ -236,7 +236,6 @@ export default {
       this.form.type_id = this.chooseTab;
     },
     openFile (val) {//打开文档
-      console.log(val);
       window.open(val);
     },
     changeTabs (id) {//切换tab
