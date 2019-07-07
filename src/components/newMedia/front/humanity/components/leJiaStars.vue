@@ -687,7 +687,128 @@
 
                 }
             }
-        }
+            .comment-lists {
+                width: 800px;
+                padding-left: 20px;
+                padding-right: 20px;
+                display: flex;
+                flex-direction: row;
+                align-items: flex-start;
+                justify-content: space-between;
+                margin-bottom: 60px;
+        
+                .comment-left {
+                width: 50px;
+                height: 50px;
+        
+                }
+            }
+        
+            .comment-right {
+                width: 730px;
+                margin-left: 20px;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+        
+                > h3 {
+                text-align: left;
+                font-size: 18px;
+                color: #202020;
+                margin-bottom: 10px;
+                }
+        
+                .desc {
+                text-align: left;
+                margin-bottom: 10px;
+                line-height: 26px;
+        
+                }
+        
+                .bottom-operate {
+        
+                text-align: left;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+        
+                .check-info {
+                    flex: 1;
+                    cursor: pointer;
+                }
+        
+                .operate-btn {
+                    flex: 1;
+                    text-align: right;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    justify-content: flex-end;
+        
+                    .btn-icon {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    margin-left: 30px;
+                    cursor: pointer;
+        
+                    i {
+                        display: inline-block;
+                        width: 24px;
+                        height: 22px;
+                        margin-right: 4px;
+                    }
+                    }
+                }
+        
+                }
+            }
+        
+            .is_show_comment {
+                width: 100%;
+                display: flex;
+                flex-direction: row;
+                align-items: flex-start;
+                margin-top: 50px;
+        
+                .comment_left {
+                img {
+                    width: 50px;
+                    height: 50px;
+                }
+            }
+        
+            .comment_right {
+                margin-left: 20px;
+        
+                > h3 {
+                    text-align: left;
+                }
+        
+                .bottom_operate {
+                    .operate_btn {
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+                        justify-content: flex-end;
+            
+                        .btn_icon {
+                            margin-left: 30px;
+                            display: flex;
+                            flex-direction: row;
+                            align-items: center;
+            
+                            i {
+                            display: inline-block;
+                            width: 24px;
+                            height: 22px;
+                            margin-right: 4px;
+                            }
+                        }
+                    }
+                }
+            }
+        }       
     }
-
+}
 </style>

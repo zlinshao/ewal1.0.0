@@ -116,7 +116,7 @@
                             <h3>{{item.user_id?item.user_id.name:''}}</h3>
                             <p class="desc">{{item.content}}</p>
                             <div class="bottom-operate">
-                                <!-- <p class="check-info"  @click="show_reply(is_show_reply)">查看{{item.sons_count}}条回复</p> -->
+                                <p class="check-info"  @click="show_reply(is_show_reply)">查看{{item.sons_count}}条回复</p>
                                 <p class="operate-btn">
                                     <span class="btn-icon" @click="delete_visible = true;currentComment=item;"><i></i><span>删除</span></span>
                                     <span class="btn-icon" @click="reply_visible = true;currentComment=item;"><i></i><span>回复</span></span>
@@ -129,15 +129,16 @@
                                 :data="item.son"
                                 style="width: 100%">
                                 <el-table-column width="100%">
-                                    <!-- <template slot-scope="scope">
+                                    <template slot-scope="scope">
                                         <div class="comment_left">
                                         <img :src="scope.row.user_id?scope.row.user_idavatar: ''" alt="">
                                     </div>
                                     <div class="comment_right">
                                         <h3>{{scope.row.user_id?scope.row.user_id.name:''}}</h3>
                                         <p class="desc">{{scope.row.content}}</p>
-                                        <span style="margin-left: 10px">{{ scope.row.date }}</span> -->
-                                    <!-- </template> -->
+                                        <span style="margin-left: 10px">{{ scope.row.date }}</span>
+                                    </div>
+                                    </template>
                                 </el-table-column>
                                  </el-table>
                             </div>
@@ -265,14 +266,14 @@
                                     <span>举报内容</span>
                                 </div>
                                 <div class="item_content">
-                                    <el-input type="textarea" v-model="comment" :rows="8"></el-input>
+                                    <el-input type="textarea" v-model="reportcomment" :rows="8"></el-input>
                                 </div>
                             </div>
                         </el-form-item>
                     </el-form>
                 </div>
                 <div class="dialog_footer">
-                    <el-button size="small" type="danger" @click="postReceivable_tag()">举报</el-button>
+                    <el-button size="small" type="danger" @click="reportOk()">举报</el-button>
                     <el-button size="small" type="info" @click="report_visible = false">取消</el-button>
                 </div>
             </div>
@@ -329,6 +330,7 @@
                 newcomment: '',//写评论
                 comment:'',
                 comment_type:[],
+                reportcomment: '',
                 activeNames: [],//查看回复
                 commentData:[//评论列表
                     {
@@ -528,6 +530,30 @@
                     }
                 });
             },
+             //举报
+            reportOk(){
+                this.$http.post(globalConfig.newMedia_sever + '/api/article/report',{content:this.reportcomment,comment_id:this.currentComment.id, type_id:this.comment_type}).then(res => {
+                    if(res.status===200){
+                        // this.commentData=res.data.data;/
+                        this.$notify({
+                            title: '成功',
+                            message: '操作成功',
+                            type: 'success'
+                        });
+                        this.showCommentList();
+                        this.getPath();
+                        this.report_visible=false;
+                        this.newcomment='';
+                    }else {
+                        this.$notify({
+                            title: '失败',
+                            message: '操作失败',
+                            type: 'error'
+                        });
+                    }
+                });
+            },
+            
             show_reply(val){
                 // console.log('val----------', val)
                 if(val===false){
