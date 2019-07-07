@@ -76,7 +76,7 @@
                                         <i class="icon-bg commit-icon"></i>
                                         <i class="person-number">{{detailData.comment_number}}</i>
                                     </div>
-                                    <div class="icon-list share-navbar">
+                                    <!-- <div class="icon-list share-navbar">
                                     <span class="share-navbar-box flex-center justify-around"
                                           v-if="share_navbar_visible"
                                           id="div1">
@@ -86,7 +86,7 @@
                                     </span>
                                         <i class="icon-bg share-icon" @mouseenter="share_navbar_visible = true"
                                         ></i>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                         </div>
