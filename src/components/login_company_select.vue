@@ -7,7 +7,7 @@
       <ul>
         <li v-for="(company,index) in companyInfo" :key="index" @click="companyClick(company)">
           <div class="img" :class="'common'+[index]"></div>
-          <div class="txt">{{company.companyName}}</div>
+          <div class="txt">{{company.companyName}} </div>
         </li>
       </ul>
     </div>
