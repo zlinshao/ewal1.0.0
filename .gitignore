@@ -8,7 +8,11 @@ yarn-error.log*
 src/boss.config.js
 /test/e2e/reports/
 selenium-debug.log
+<<<<<<< HEAD
 /src/boss.config.js
+=======
+src/boss.config.js
+>>>>>>> test0630
 
 # Editor directories and files
 .idea
