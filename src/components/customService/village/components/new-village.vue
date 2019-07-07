@@ -418,7 +418,7 @@
         this.getAddressList('region');
       },
       handleChangeCity(val) {
-        debugger
+        // debugger
         this.new_village_form.area = '';
         this.new_village_form.region = '';
         this.address_params.area = '';

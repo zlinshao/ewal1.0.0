@@ -142,7 +142,9 @@
           remarks:this.exception_reason,
           task_id: this.todo_list_current_selection.id,
         };
+        this.showLoading2(true);
         this.$http.put(`${this.url}attendance/attendance/${this.attence_id}`,params).then(res=> {
+          this.showLoading2(false);
           this.$LjNotifyEasy(res,()=> {
             this.submit_attence_visible = false;
             this.attenceHandler();

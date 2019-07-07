@@ -1,6 +1,6 @@
 <template>
   <div id="newMedia" class="flex-center">
-    <!-- <coming-soon></coming-soon> -->
+     <!-- <coming-soon></coming-soon> -->
     <div class="flex-center">
       <div class="mainList">
         <div class="list justify-bet">

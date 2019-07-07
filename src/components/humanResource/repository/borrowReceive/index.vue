@@ -901,7 +901,7 @@
 
       //保存照片
       savePictureList() {
-        debugger
+        // debugger
         let ids = this.tableSettingData.borrowReceive.currentSelection.id;
         let form = this.tableSettingData.goods.form.photo.formData;
         let params = {

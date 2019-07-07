@@ -52,7 +52,7 @@
         <el-table-column label="操作" align="center" width="260">
                 <template slot-scope="scope">
                   <el-button type="text" size="mini" @click="operateModule('power',scope.row)">权限</el-button>
-                  <el-button type="text" size="mini" @click="operateModule('leave',scope.row)">离职</el-button>
+                  <el-button type="text" size="mini" :disabled="scope.row.is_on_job===null? false:true" @click="operateModule('leave',scope.row)">离职</el-button>
                   <el-button type="text" size="mini" @click="operateModule('disabled',scope.row)">{{scope.row.is_enable ? '启用' : '禁用'}}</el-button>
                 </template>
               </el-table-column>
@@ -754,7 +754,7 @@ rules: {
             this.set_power.type_id = item.id;
             this.self_power_params.type = 'user';
             this.self_power_params.user_id = item.id;
-            this.set_power.permission_type = '';
+            this.set_power.permission_type = 'user';
             this.getSelfPower(this.powerChildName);
             break;
           case 'leave'://离职

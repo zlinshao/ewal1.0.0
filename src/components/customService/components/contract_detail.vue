@@ -679,7 +679,7 @@ export default {
         house_name: this.moduleData.house_name,
         contract_number: this.moduleData.contract_number,
         remark: this.dataRecord.content,
-        receive_ids: this.dataRecord.receive_ids || this.contractDetail.sign_user_id || contractDetail.org_leader
+        receive_ids: this.dataRecord.send_id ? this.dataRecord.send_id[0] : this.contractDetail.sign_user_id || contractDetail.org_leader
       }
 
       this.$http.post(this.market_server + `v1.0/market/contract/send-complete-data`, current).then(res => {

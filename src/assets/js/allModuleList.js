@@ -192,17 +192,17 @@ export const humanity = {
   type: 'humanity',
   data: [
     {
-      url: 'lejiaStars',
+      url: 'lejiaStars?type=1',
       title: '乐伽之星',
       letter: 'Lejia Star'
     },
     {
-      url: 'excellentStaff',
+      url: 'excellentStaff?type=2',
       title: '优秀员工',
       letter: 'Excellent Employee'
     },
     {
-      url: 'birthday',
+      url: 'birthday?type=3',
       title: '寿星墙  ',
       letter: 'Birthday'
     }

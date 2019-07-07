@@ -214,7 +214,7 @@ export default {
         this.$http.post(`${this.approval_sever}monitor/process-instances/${this.currentInfo.id}`, params).then(res => {
           // 改变当前这个值
           this.currentInfo.typeName = [];
-          debugger
+          // debugger
           let mType = this.currentInfo.type;
           this.currentInfo.type.forEach(ele => {
             this.currentInfo.typeName.push(this.receive_type[ele])
