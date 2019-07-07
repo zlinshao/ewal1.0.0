@@ -95,14 +95,13 @@
             </div>
         </div>
 
-
         <!--评论-->
         <lj-dialog :visible="comment_visible" :size="{width: 900 + 'px',height: 600 + 'px'}"
-                   @close="comment_visible = false">
+                   @close="comment_visible = false;commentData=[];commenttotal=0;currentCommentPage=1">
             <div class="dialog_container">
                 <div class="dialog_header justify-bet">
                     <h3>评论<span>共 <i>{{this.commenttotal}}</i> 条评论</span></h3>
-                    <p class="flex-center" @click="edit_comment_visible = true;parent_id=0;">
+                    <p class="flex-center" @click="edit_comment_visible = true;parent_id=0;newcomment=''">
                         <i class="write_comment"></i>
                         <span>写评论</span>
                     </p>
@@ -115,38 +114,48 @@
                         <div class="comment-right">
                             <h3>{{item.user_id?item.user_id.name:''}}</h3>
                             <p class="desc">{{item.content}}</p>
+                            <span style="margin-left: 10px">{{ item.created_at }}</span>
                             <div class="bottom-operate">
-                                <!-- <p class="check-info"  @click="show_reply(is_show_reply)">查看{{item.sons_count}}条回复</p> -->
+                                <p class="check-info"  @click="show_reply(item)">查看{{item.sons_count}}条回复</p>
                                 <p class="operate-btn">
                                     <span class="btn-icon" @click="delete_visible = true;currentComment=item;"><i></i><span>删除</span></span>
-                                    <span class="btn-icon" @click="reply_visible = true;currentComment=item;"><i></i><span>回复</span></span>
-                                    <span class="btn-icon" @click="report_visible = true;currentComment=item;"><i></i><span>举报</span></span>
+                                    <span class="btn-icon" @click="reply_visible = true;currentComment=item;replyComment=''"><i></i><span>回复</span></span>
+                                    <span class="btn-icon" @click="report_visible = true;currentComment=item;comment_type=[];reportcomment=''"><i></i><span>举报</span></span>
                                 </p>
                             </div>
                             <!-- 回复显隐-->
-                             <div class="is_show_comment" v-if="is_show_reply">
+                             <div class="is_show_comment" v-if="item.is_show_reply">
+                                 <!-- {{item.sons}} -->
                               <el-table
-                                :data="item.son"
-                                style="width: 100%">
-                                <el-table-column width="100%">
-                                    <!-- <template slot-scope="scope">
-                                        <div class="comment_left">
+                                :data="item.sons"
+                                style="width:700px">
+                                <el-table-column width="700px">
+                                    <template slot-scope="scope">
+                                    <div class="comment_left" style="float:left">
                                         <img :src="scope.row.user_id?scope.row.user_idavatar: ''" alt="">
                                     </div>
                                     <div class="comment_right">
                                         <h3>{{scope.row.user_id?scope.row.user_id.name:''}}</h3>
                                         <p class="desc">{{scope.row.content}}</p>
-                                        <span style="margin-left: 10px">{{ scope.row.date }}</span> -->
-                                    <!-- </template> -->
+                                        <span style="margin-left: 10px">{{ scope.row.created_at }}</span>
+                                    </div>
+                                    </template>
                                 </el-table-column>
                                  </el-table>
                             </div>
                         </div>
                     </div>
+                    <el-pagination
+                        @size-change="handleSizeChange"
+                        @current-change="handleCurrentChange"
+                        :current-page.sync="currentCommentPage"
+                        :page-size="commentlimit"
+                        layout="total, prev, pager, next"
+                        :total="commenttotal">
+                    </el-pagination>
                 </div>
             </div>
         </lj-dialog>
-
         <!--写评论-->
         <lj-dialog
                 :visible="edit_comment_visible"
@@ -178,7 +187,6 @@
                 </div>
             </div>
         </lj-dialog>
-
         <!--回复-->
         <lj-dialog
                 :visible="reply_visible"
@@ -210,7 +218,6 @@
                 </div>
             </div>
         </lj-dialog>
-
         <!--删除评论-->
         <lj-dialog :visible="delete_visible" :size="{width: 400 + 'px',height: 250 + 'px'}"
                    @close="delete_visible = false">
@@ -227,7 +234,6 @@
                 </div>
             </div>
         </lj-dialog>
-
         <!--举报-->
         <lj-dialog
                 :visible="report_visible"
@@ -265,20 +271,18 @@
                                     <span>举报内容</span>
                                 </div>
                                 <div class="item_content">
-                                    <el-input type="textarea" v-model="comment" :rows="8"></el-input>
+                                    <el-input type="textarea" v-model="reportcomment" :rows="8"></el-input>
                                 </div>
                             </div>
                         </el-form-item>
                     </el-form>
                 </div>
                 <div class="dialog_footer">
-                    <el-button size="small" type="danger" @click="postReceivable_tag()">举报</el-button>
+                    <el-button size="small" type="danger" @click="reportOk()">举报</el-button>
                     <el-button size="small" type="info" @click="report_visible = false">取消</el-button>
                 </div>
             </div>
         </lj-dialog>
-
-
         <!--复制链接-->
         <lj-dialog :visible="link_visible" :size="{width: 400 + 'px',height: 250 + 'px'}"
                    @close="link_visible = false">
@@ -297,12 +301,6 @@
                 </div>
             </div>
         </lj-dialog>
-
-
-
-
-
-
     </div>
 </template>
 
@@ -329,14 +327,19 @@
                 newcomment: '',//写评论
                 comment:'',
                 comment_type:[],
+                reportcomment: '',
+                currentCommentPage: 1,
                 activeNames: [],//查看回复
                 commentData:[//评论列表
                     {
                         name:'',
                         content:'',
+                        is_show_reply: false,
+                        sons:[]
                     },
                 ],
                 commenttotal:0,
+                commentlimit:15,
                 detailData:{
                     title:'',
                     view:0,
@@ -372,43 +375,31 @@
             '$route':'getPath'
         },
          mounted() {
-            //  this.getDetail();
              this.getPath();
-            console.log('22222222222222',this.$route);
-            // 用来监听滚轮
         },
         methods:{
             getOrder(){
-                console.log('22222222222222',this.$route);
                 let path = this.$route.query.type===2? 'news' : this.$route.query.type===3 ? 'announcement' : 'hot';
                this.$http.post(globalConfig.newMedia_sever + '/api/article/'+path+'/order').then(res => {
                         if(res.status===200){
                             this.detailDataList = res.data.data;
-                            console.log('this.res.data',res.data.data);
                         }else{
-                            // this.newsData = [];
-                            // this.count = 0;
                         }
                     });
             },
             //获取路由参数
             getPath(){
-                // console.log('333333333333333',this.$route.query.id);
-            //    console.log('22222222222222',);
                 if(this.$route.query.id !==undefined){  
                      this.getOrder();  
                     let path = this.$route.query.type===2? 'news' : this.$route.query.type===3 ? 'announcement' : 'hot';
                     this.$http.get(globalConfig.newMedia_sever + '/api/article/'+path+'/'+this.$route.query.id).then(res => {
                         if(res.status===200){
-                            // this.newsData = res.data;
-                            // console.log('this.res.data',res.data);
                             this.detailData={
                                 title:res.data.title,
                                 view:222,
                                 thumbs_up_number:res.data.thumbs_up_number, // 点赞数量
                                 collect_number: res.data.collect_number, //收藏数量
                                 comment_number: res.data.comment_number,
-                                // comment:'',
                                 name:res.data.user_id?res.data.user_id.name:'',
                                 department:res.data.user_id?res.data.user_id.org[0].name :"",
                                 time:res.data.created_at,
@@ -416,11 +407,7 @@
                                 desc:'描述',
                                 content:res.data.content
                             };
-                            console.log('this.detailData',this.detailData);
-                            // this.sort(0);// 分配数据到指定管道
                         }else{
-                            // this.newsData = [];
-                            // this.count = 0;
                         }
                     });
                 }else {
@@ -441,17 +428,31 @@
             handleChange(){
 
             },
+            handleSizeChange(val){
+                this.commentlimit=15;
+            },
+            handleCurrentChange(val){
+                this.currentCommentPage=val;
+                this.showCommentList();
+            },
             //展示评论
             showCommentList(){
                 this.comment_visible = true;
-                console.log('this.comment_visible', this.comment_visible);
                 let params={
                     article_id:this.$route.query.id,
+                    limit: this.commentlimit,
+                    offset:  this.currentCommentPage,
                 };
                  this.$http.get(globalConfig.newMedia_sever + '/api/article/comment',params).then(res => {
                      if(res.status===200){
-                         this.commentData=res.data.data;
+                        this.commentData=res.data.data;
                          this.commenttotal=res.data.total;
+                         if( this.commentData && this.commentData.length>0){
+                             this.commentData.forEach((item) => {
+                                 item.is_show_reply=false;
+                                 item.sons=[];
+                             });
+                         }
                      }else {
 
                      }
@@ -470,8 +471,6 @@
                             type: 'success'
                         });
                           this.getPath();
-                        //  this.commentData=res.data.data;
-                        //  this.commenttotal=res.data.total;
                      }else {
                         this.$notify({
                             title: '失败',
@@ -494,8 +493,6 @@
                             type: 'success'
                         });
                           this.getPath();
-                        //  this.commentData=res.data.data;
-                        //  this.commenttotal=res.data.total;
                      }else {
                         this.$notify({
                             title: '失败',
@@ -509,7 +506,6 @@
             postcomment_tag(){
                 this.$http.post(globalConfig.newMedia_sever + '/api/article/comment',{content:this.newcomment,article_id:this.$route.query.id}).then(res => {
                     if(res.status===200){
-                        // this.commentData=res.data.data;/
                         this.$notify({
                             title: '成功',
                             message: '操作成功',
@@ -518,6 +514,8 @@
                         this.showCommentList();
                         this.getPath();
                         this.edit_comment_visible=false;
+                        this.commentData=[];
+                        // this.commenttotal=0;
                         this.newcomment='';
                     }else {
                         this.$notify({
@@ -528,19 +526,51 @@
                     }
                 });
             },
+             //举报
+            reportOk(){
+                this.$http.post(globalConfig.newMedia_sever + '/api/article/report',{content:this.reportcomment,comment_id:this.currentComment.id, type_id:this.comment_type}).then(res => {
+                    if(res.status===200){
+                        this.$notify({
+                            title: '成功',
+                            message: '操作成功',
+                            type: 'success'
+                        });
+                        this.showCommentList();
+                        this.getPath();
+                        this.report_visible=false;
+                        this.newcomment='';
+                    }else {
+                        this.$notify({
+                            title: '失败',
+                            message: '操作失败',
+                            type: 'error'
+                        });
+                    }
+                });
+            },
+            
             show_reply(val){
-                // console.log('val----------', val)
-                if(val===false){
-                    this.is_show_reply = true;
-                }else {
-                    this.is_show_reply = false;
-                }
+                this.commentData.forEach((item)=>{
+                    if(val.id===item.id){
+                        this.$http.get(globalConfig.newMedia_sever + '/api/article/comment',{article_id:this.$route.query.id,layer_id:val.id}).then(res => {
+                            if(res.status===200){
+                                item.sons=res.data.data;
+                                this.$forceUpdate();
+                            }else {
+                            }
+                        });
+                        if(val.is_show_reply===false){
+                            item.is_show_reply = true;
+                        }else {
+                            item.is_show_reply = false;
+                        }
+                    }
+                });
             },
             //删除评论
             handleOkDel(){
                 this.$http.delete(globalConfig.newMedia_sever + '/api/article/comment/'+this.currentComment.id).then(res => {
                     if(res.status===200){
-                        // this.commentData=res.data.data;/
                         this.$notify({
                             title: '成功',
                             message: '操作成功',
@@ -561,7 +591,6 @@
             replyOk(){
             this.$http.post(globalConfig.newMedia_sever + '/api/article/comment',{content:this.replyComment, parent_id: this.currentComment.id,article_id:this.$route.query.id}).then(res => {
                     if(res.status===200){
-                        // this.commentData=res.data.data;/
                         this.$notify({
                             title: '成功',
                             message: '操作成功',
