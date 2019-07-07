@@ -1,21 +1,21 @@
 /*
-Error: Invalid GBK character "\xE9"
-        on line 35 of detail.scss
+Error: Invalid GBK character "\xE4"
+        on line 10 of approvalList.scss
 
-30: 
-31:         .detail-left-list {
-32:           padding-left: 100px;
-33:           width: 550px;
-34:           border-right: 1px solid #D6D6D6;
-35:           //隐藏滚动条
-36:           .element,
-37:           .outer-container {
-38:             width: 400px;
-39:             height: 770px;
-40:           }
+5:     #approval_list {
+6:       display: flex;
+7:       flex-direction: column;
+8:       align-items: center;
+9:       position: relative;
+10:       /*上面按钮*\/
+11:       .top-btn {
+12:         //display: flex;
+13:         //flex-direction: row;
+14: 
+15:         .left-text {
 
 Backtrace:
-detail.scss:35
+approvalList.scss:10
 C:/APP/ruby/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.4/lib/sass/util.rb:1090:in `rescue in block in find_encoding_error'
 C:/APP/ruby/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.4/lib/sass/util.rb:1087:in `block in find_encoding_error'
 C:/APP/ruby/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.4/lib/sass/util.rb:1086:in `each'
@@ -37,4 +37,4 @@ C:/APP/ruby/Ruby24-x64/bin/sass:23:in `<main>'
 body:before {
   white-space: pre;
   font-family: monospace;
-  content: "Error: Invalid GBK character \"\xE9\"\A         on line 35 of detail.scss\A \A 30: \A 31:         .detail-left-list {\A 32:           padding-left: 100px;\A 33:           width: 550px;\A 34:           border-right: 1px solid #D6D6D6;\A 35:           //隐藏滚动条\A 36:           .element,\A 37:           .outer-container {\A 38:             width: 400px;\A 39:             height: 770px;\A 40:           }"; }
+  content: "Error: Invalid GBK character \"\xE4\"\A         on line 10 of approvalList.scss\A \A 5:     #approval_list {\A 6:       display: flex;\A 7:       flex-direction: column;\A 8:       align-items: center;\A 9:       position: relative;\A 10:       /*上面按钮*/\A 11:       .top-btn {\A 12:         //display: flex;\A 13:         //flex-direction: row;\A 14: \A 15:         .left-text {"; }
