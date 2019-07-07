@@ -23,17 +23,17 @@
       <el-table-column label="标记" align="center" width="100">
         <template slot-scope="scope">
           <div class="statusBar">
-            <div class="flex-center" v-if="LordStatus[scope.$index] && LordStatus[scope.$index].suppress_dup === 0">
+            <div class="flex-center" v-if="LordStatus[scope.$index] && LordStatus[scope.$index].suppress_dup == 0">
               <el-tooltip content="手机号" placement="bottom" :visible-arrow="false">
                 <span class="phone"
-                      v-show="LordStatus[scope.$index] && LordStatus[scope.$index].is_contact === 1"></span>
+                      v-show="LordStatus[scope.$index] && LordStatus[scope.$index].is_contact == 1"></span>
               </el-tooltip>
               <el-tooltip content="姓名" placement="bottom" :visible-arrow="false">
-                <span class="name" v-show="LordStatus[scope.$index] && LordStatus[scope.$index].is_name === 1"></span>
+                <span class="name" v-show="LordStatus[scope.$index] && LordStatus[scope.$index].is_name == 1"></span>
               </el-tooltip>
               <el-tooltip content="地址" placement="bottom" :visible-arrow="false">
                 <span class="address"
-                      v-show="LordStatus[scope.$index] && LordStatus[scope.$index].is_address === 1"></span>
+                      v-show="LordStatus[scope.$index] && LordStatus[scope.$index].is_address == 1"></span>
               </el-tooltip>
             </div>
             <div v-else class="flex-center">
@@ -47,7 +47,7 @@
         <template slot-scope="scope">
           <el-tooltip :content="scope.row.address" placement="bottom-start" :visible-arrow="false">
             <div class="house-address-contain-money">
-<!--              {{substringPlugin(scope.row.address,14)}}-->
+              <!--              {{substringPlugin(scope.row.address,14)}}-->
               {{scope.row.address}}
               <span v-if="scope.row.has_running==1" class="lord-money"></span>
             </div>
@@ -191,8 +191,8 @@
 
     computed: {},
     methods: {
-      _substring(content,limit) {
-        return this.$substring(content,limit);
+      _substring(content, limit) {
+        return this.$substring(content, limit);
       },
 
       tableCell({row}) {
@@ -224,7 +224,7 @@
       },
       //加载初始数据
       getLordList() {
-        if(!this.validatePermission('Lord-List')) return;
+        if (!this.validatePermission('Lord-List')) return;
         this.showLoading(true);
         this.$http.get(globalConfig.temporary_server + 'customer_collect', this.params).then(res => {
           this.showLoading(false);
@@ -242,22 +242,22 @@
 
             //当点击生成待处理项或取消待处理项时
             //处理成功后根据获取的列表刷新当前被点击的列表数据，从而更新待处理项的状态
-             this.lordLists.forEach((item,index)=>{
-               if(item.id ==  this.is_table_choose){
-                   this.$emit('getMultipleSelection', item);
-               }
-             })
+            this.lordLists.forEach((item, index) => {
+              if (item.id == this.is_table_choose) {
+                this.$emit('getMultipleSelection', item);
+              }
+            })
             //前缀状态
             this.$http.get(globalConfig.temporary_server + 'customer_lord_repeat', {id: this.lordIds}).then(res => {
               if (res.code === 200) {
                 this.LordStatus = res.data.data.sort((a, b) => {
                   return a.id - b.id;
                 });
-                _.forEach(this.lordLists,(o)=> {
-                  let findRst = _.find(this.LordStatus,{id:o.id});
+                _.forEach(this.lordLists, (o) => {
+                  let findRst = _.find(this.LordStatus, {id: o.id});
                   o.prefix = findRst;
                   o.type = 'lord';//房东
-                  o.prefix_suppress_dup = findRst?.suppress_dup||0;
+                  o.prefix_suppress_dup = findRst?.suppress_dup || 0;
                 });
               }
             });
@@ -283,7 +283,7 @@
           this.params.startRange = val.gatherDate[0];
           this.params.endRange = val.gatherDate[1];
         }
-        Object.assign(this.params,val);
+        Object.assign(this.params, val);
         delete this.params.gatherDate;
         this.getLordList();
       },
@@ -317,11 +317,11 @@
         })
       },
       //取消或恢复重复标记
-      handleRemark(row,type) {
+      handleRemark(row, type) {
         let operate;
-        if(!type) {//取消重复标记
+        if (!type) {//取消重复标记
           operate = 1;
-        }else {//恢复重复标记
+        } else {//恢复重复标记
           operate = 2;
         }
         this.ra_ids = [];
@@ -347,7 +347,6 @@
     },
   }
 </script>
-
 
 
 <style lang="scss" scoped>
