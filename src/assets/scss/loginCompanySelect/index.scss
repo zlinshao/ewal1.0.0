@@ -1,0 +1,70 @@
+@import "../common.scss";
+#login_company_select {
+    width: 100%;
+    height: 100%;
+    z-index: 999;
+    position: fixed;
+    left: 0;
+    top: 0;
+    background-color: white;
+    ul {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      margin: auto;
+      z-index: 9;
+      width: 700px;
+      height: 500px;
+      display: flex;
+      justify-content: space-between;
+      li {
+        padding: 20px;
+        position: relative;
+        top:0;
+        transition: all ease-in-out 800ms;
+        cursor: pointer;
+        .img{
+            width: 157px;
+            height: 157px;
+        }
+        .txt{
+            position: absolute;
+            right: 30px;
+            top:180px;
+            width:30px;
+            font-size:28px;
+            color:rgba(74,74,74,1);
+            line-height:28px;
+            opacity: 0;
+            transition: all ease-in-out 1200ms;
+            font-family: jingDianXingShu
+        }
+      }
+    }
+    .tower{
+        position: absolute;
+        width: 67%;
+        height: 42vh;
+        bottom: 5.9%;
+        left: 10%;
+        z-index: 3;
+    }
+    .marble{
+        position: absolute;
+        right: 155px;
+        width: 390px;
+        height: 100vh;
+        z-index: 2;
+    }
+    .black{
+        height: 18vh;
+        width: 100%;
+        position: absolute;
+        bottom:0;
+        left: 0;
+        z-index: 1;
+        background: rgba(0, 0, 0, .5);
+    }
+  }

@@ -203,11 +203,19 @@
         </lj-dialog>
         <!--评论-->
         <lj-dialog :visible="comment_visible" :size="{width: 900 + 'px',height: 600 + 'px'}"
+<<<<<<< HEAD
+                   @close="comment_visible = false">
+            <div class="dialog_container">
+                <div class="dialog_header justify-bet">
+                    <h3>评论<span>共 <i>{{this.commenttotal}}</i> 条评论</span></h3>
+                    <p class="flex-center" @click="edit_comment_visible = true;parent_id=0;">
+=======
                    @close="comment_visible = false;commentData=[];commenttotal=0;currentCommentPage=1">
             <div class="dialog_container">
                 <div class="dialog_header justify-bet">
                     <h3>评论<span>共 <i>{{this.commenttotal}}</i> 条评论</span></h3>
                     <p class="flex-center" @click="edit_comment_visible = true;parent_id=0;newcomment=''">
+>>>>>>> test0630
                         <i class="write_comment"></i>
                         <span>写评论</span>
                     </p>
@@ -221,6 +229,23 @@
                             <h3>{{item.user_id?item.user_id.name:''}}</h3>
                             <p class="desc">{{item.content}}</p>
                             <div class="bottom-operate">
+<<<<<<< HEAD
+                                <!-- <p class="check-info"  @click="show_reply(is_show_reply)">查看{{item.sons_count}}条回复</p> -->
+                                <p class="operate-btn">
+                                    <span class="btn-icon" @click="delete_visible = true;currentComment=item;"><i></i><span>删除</span></span>
+                                    <span class="btn-icon" @click="reply_visible = true;currentComment=item;"><i></i><span>回复</span></span>
+                                    <span class="btn-icon" @click="report_visible = true;currentComment=item;"><i></i><span>举报</span></span>
+                                </p>
+                            </div>
+                            <!-- 回复显隐-->
+                             <div class="is_show_comment" v-if="is_show_reply">
+                              <el-table
+                                :data="item.son"
+                                style="width: 100%">
+                                <el-table-column width="100%">
+                                    <!-- <template slot-scope="scope">
+                                        <div class="comment_left">
+=======
                                 <p class="check-info"  @click="show_reply(item)">查看{{item.sons_count}}条回复</p>
                                 <p class="operate-btn">
                                     <span class="btn-icon" @click="delete_visible = true;currentComment=item;"><i></i><span>删除</span></span>
@@ -236,19 +261,27 @@
                                 <el-table-column width="700px">
                                     <template slot-scope="scope">
                                     <div class="comment_left" style="float:left">
+>>>>>>> test0630
                                         <img :src="scope.row.user_id?scope.row.user_idavatar: ''" alt="">
                                     </div>
                                     <div class="comment_right">
                                         <h3>{{scope.row.user_id?scope.row.user_id.name:''}}</h3>
                                         <p class="desc">{{scope.row.content}}</p>
+<<<<<<< HEAD
+                                        <span style="margin-left: 10px">{{ scope.row.date }}</span> -->
+                                    <!-- </template> -->
+=======
                                         <span style="margin-left: 10px">{{ scope.row.created_at }}</span>
                                     </div>
                                     </template>
+>>>>>>> test0630
                                 </el-table-column>
                                  </el-table>
                             </div>
                         </div>
                     </div>
+<<<<<<< HEAD
+=======
                     <el-pagination
                         @size-change="handleSizeChange"
                         @current-change="handleCurrentChange"
@@ -257,6 +290,7 @@
                         layout="total, prev, pager, next"
                         :total="commenttotal">
                     </el-pagination>
+>>>>>>> test0630
                 </div>
             </div>
         </lj-dialog>
@@ -292,6 +326,8 @@
                 </div>
             </div>
         </lj-dialog>
+<<<<<<< HEAD
+=======
         <!--举报-->
         <lj-dialog
                 :visible="report_visible"
@@ -341,6 +377,7 @@
                 </div>
             </div>
         </lj-dialog>
+>>>>>>> test0630
 
         <!--回复-->
         <lj-dialog
@@ -418,16 +455,24 @@
                 comment_visible: false,
                 reply_visible:false,
                 delete_visible: false,
+<<<<<<< HEAD
+=======
                 report_visible: false,
+>>>>>>> test0630
                 newcomment: '',
                 currentComment:'',
                 is_show_reply: false,
                 replyComment: '',
                 chooseTab: 1,
+<<<<<<< HEAD
+                commenttotal:'',
+                commentData:'',
+=======
                 commenttotal:0,
                 commentData:'',
                 currentCommentPage:1,
                 commentlimit:15,
+>>>>>>> test0630
                 detailData: {},
                 comment_type:[],
                 reportcomment: '',
@@ -485,6 +530,15 @@
             changeTabs(id) {
                 this.chooseTab = id;
             },
+<<<<<<< HEAD
+            show_reply(val){
+                // console.log('val----------', val)
+                if(val===false){
+                    this.is_show_reply = true;
+                }else {
+                    this.is_show_reply = false;
+                }
+=======
             handleSizeChange(val){
                 this.commentlimit=15;
             },
@@ -536,11 +590,16 @@
                 // }else {
                 //     this.is_show_reply = false;
                 // }
+>>>>>>> test0630
             },
            //删除评论
             handleOkDel(){
                 this.$http.delete(globalConfig.newMedia_sever + '/api/article/comment/'+this.currentComment.id).then(res => {
                     if(res.status===200){
+<<<<<<< HEAD
+                        // this.commentData=res.data.data;/
+=======
+>>>>>>> test0630
                         this.$notify({
                             title: '成功',
                             message: '操作成功',
@@ -559,7 +618,12 @@
             },
             getData(){
                 this.$http.get(globalConfig.newMedia_sever+'/api/humanity/star',).then(res=>{
+                    //  console.log(res);
                     if(res.status===200){
+<<<<<<< HEAD
+                        // console.log(res.data);
+=======
+>>>>>>> test0630
                         this.detailData = res.data;
                         if(res.data.star_id){
                             this.userInfo.avatar = res.data.star_id.avatar;
@@ -583,6 +647,12 @@
                             message: '点赞成功',
                             type: 'success'
                         });
+<<<<<<< HEAD
+                        //   this.getData();
+                        //  this.commentData=res.data.data;
+                        //  this.commenttotal=res.data.total;
+=======
+>>>>>>> test0630
                      }else {
                         this.$notify({
                             title: '失败',
@@ -604,6 +674,12 @@
                             message: '收藏成功',
                             type: 'success'
                         });
+<<<<<<< HEAD
+                        //   this.getData();
+                        //  this.commentData=res.data.data;
+                        //  this.commenttotal=res.data.total;
+=======
+>>>>>>> test0630
                      }else {
                         this.$notify({
                             title: '失败',
@@ -616,21 +692,30 @@
             //展示评论
             showCommentList(){
                 this.comment_visible = true;
+<<<<<<< HEAD
+                // console.log('this.comment_visible', this.comment_visible);
+                let params={
+                    article_id:this.detailData.id,
+=======
                 let params={
                     article_id:this.detailData.id,
                     limit: this.commentlimit,
                     offset: this.currentCommentPage,
+>>>>>>> test0630
                 };
                  this.$http.get(globalConfig.newMedia_sever + '/api/article/comment',params).then(res => {
                      if(res.status===200){
                          this.commentData=res.data.data;
                          this.commenttotal=res.data.total;
+<<<<<<< HEAD
+=======
                          if( this.commentData && this.commentData.length>0){
                              this.commentData.forEach((item) => {
                                  item.is_show_reply=false;
                                  item.sons=[];
                              });
                          }
+>>>>>>> test0630
                      }else {
 
                      }
@@ -640,14 +725,23 @@
             postcomment_tag(){
                 this.$http.post(globalConfig.newMedia_sever + '/api/article/comment',{content:this.newcomment,article_id:this.detailData.id}).then(res => {
                     if(res.status===200){
+<<<<<<< HEAD
+                        // this.commentData=res.data.data;/
+=======
+>>>>>>> test0630
                         this.$notify({
                             title: '成功',
                             message: '操作成功',
                             type: 'success'
                         });
                         this.showCommentList();
+<<<<<<< HEAD
+                        // this.getPath();
+                        this.edit_comment_visible=false;
+=======
                         this.edit_comment_visible=false;
                         this.commentData=[];
+>>>>>>> test0630
                         this.newcomment='';
                     }else {
                         this.$notify({
@@ -662,6 +756,10 @@
             replyOk(){
             this.$http.post(globalConfig.newMedia_sever + '/api/article/comment',{content:this.replyComment, parent_id: this.currentComment.id,article_id:this.detailData.id}).then(res => {
                     if(res.status===200){
+<<<<<<< HEAD
+                        // this.commentData=res.data.data;/
+=======
+>>>>>>> test0630
                         this.$notify({
                             title: '成功',
                             message: '操作成功',
