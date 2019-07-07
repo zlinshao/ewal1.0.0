@@ -1,24 +1,25 @@
 <template>
     <div id="friend_moments">
         <div class="water">
-            <div class="piping" ref="piping0">
-                <div class="card" v-for="(item,index) in columnData0" @click.stop="routerLink('newsDetail',{type:chooseTab,id:item.id})" @mouseenter="chooseTabAlert(chooseTab)">
+            <div class="piping" style="width:100%;display:table;" ref="piping0">
+                <div class="card" v-for="(item,index) in newsData" @click.stop="routerLink('newsDetail',{type:chooseTab,id:item.id})" @mouseenter="chooseTabAlert(chooseTab)">
                     <img src="../../../../../assets/image/newMedia/theme1/active.png" class="card-top">
                     <div class="card-middle">
                         <h3>{{item.title}}</h3>
                         <p class="card-status">
                             <span><i></i>{{item.collect_number}}</span>
                             <span><i></i>{{item.thumbs_up_number}}</span>
-                            <span><i></i>{{item.comment.length}}</span>
+                            <span><i></i>{{item.comment_number}}</span>
                         </p>
-                        <p class="card-desc">{{item.content}}</p>
+                        <!-- <div style="overflow: hidden;text-overflow: ellipsis; -o-text-overflow: ellipsis;white-space:nowrap; width:100%; height: " v-html="item.content"></div> -->
+                        <!-- <p >{{}}</p> -->
                     </div>
                     <div class="card-bottom">
                         <div class="avatar">
                             <img :src="item.user_id.avatar" alt="">
                             <div class="avatar-name">
-                                <p>{{item.user_id.name}}</p>
-                                <p>{{item.user_id.name}}</p>
+                                <p>{{item.user_id?item.user_id.name: ''}}</p>
+                                <p>{{item.user_id? item.user_id.org[0].name : ''}}</p>
                             </div>
                         </div>
                         <div class="time">
@@ -28,7 +29,7 @@
                     </div>
                 </div>
             </div>
-            <div class="piping" ref="piping1">
+            <!-- <div class="piping" ref="piping1">
                 <div class="card" v-for="(item,index) in columnData1" @click.stop="routerLink('newsDetail',{type:chooseTab,id:item.id})">
                     <img src="../../../../../assets/image/newMedia/theme1/active.png" class="card-top">
                     <div class="card-middle">
@@ -36,9 +37,9 @@
                         <p class="card-status">
                             <span><i></i>{{item.collect_number}}</span>
                             <span><i></i>{{item.thumbs_up_number}}</span>
-                            <span><i></i>{{item.comment.length}}</span>
+                            <span><i></i>{{item.comment_number}}</span>
                         </p>
-                        <p class="card-desc">{{item.content}}</p>
+                        <div style="overflow: hidden;text-overflow: ellipsis; -o-text-overflow: ellipsis;white-space:nowrap;" v-html="item.content"></div>
                     </div>
                     <div class="card-bottom">
                         <div class="avatar">
@@ -54,8 +55,8 @@
 
                     </div>
                 </div>
-            </div>
-            <div class="piping" ref="piping2">
+            </div> -->
+            <!-- <div class="piping" ref="piping2">
                 <div class="card" v-for="(item,index) in columnData2" @click.stop="routerLink('newsDetail',{type:chooseTab,id:item.id})">
                     <img src="../../../../../assets/image/newMedia/theme1/active.png" class="card-top">
                     <div class="card-middle">
@@ -63,7 +64,7 @@
                         <p class="card-status">
                             <span><i></i>{{item.collect_number}}</span>
                             <span><i></i>{{item.thumbs_up_number}}</span>
-                            <span><i></i>{{item.comment.length}}</span>
+                            <span><i></i>{{item.comment_number}}</span>
                         </p>
                         <p class="card-desc">{{item.content}}</p>
                     </div>
@@ -81,8 +82,8 @@
 
                     </div>
                 </div>
-            </div>
-            <div class="piping" ref="piping3">
+            </div> -->
+            <!-- <div class="piping" ref="piping3">
                 <div class="card" v-for="(item,index) in columnData3" @click.stop="routerLink('newsDetail',{type:chooseTab,id:item.id})">
                     <img src="../../../../../assets/image/newMedia/theme1/active.png" class="card-top">
                     <div class="card-middle">
@@ -90,9 +91,9 @@
                         <p class="card-status">
                             <span><i></i>{{item.collect_number}}</span>
                             <span><i></i>{{item.thumbs_up_number}}</span>
-                            <span><i></i>{{item.comment.length}}</span>
+                            <span><i></i>{{item.comment_number}}</span>
                         </p>
-                        <p class="card-desc">{{item.content}}</p>
+                        <div style="overflow: hidden;text-overflow: ellipsis; -o-text-overflow: ellipsis;white-space:nowrap;" v-html="item.content"></div>
                     </div>
                     <div class="card-bottom">
                         <div class="avatar">
@@ -108,7 +109,7 @@
 
                     </div>
                 </div>
-            </div>
+            </div> -->
 
         </div>
     </div>
@@ -152,11 +153,11 @@
         },
         methods: {
             getDataLists() {// 请求接口方法
-                this.$http.get(globalConfig.newMedia_sever + '/api/article/hot').then(res => {
+                this.$http.get(globalConfig.newMedia_sever + '/api/article/hot',{is_open:1}).then(res => {
                     if(res.status===200){
                         this.newsData = res.data.data;
-                        console.log(this.newsData);
-                        this.sort(0);// 分配数据到指定管道
+                        // console.log(this.newsData);
+                        // this.sort(0);// 分配数据到指定管道
                     }else{
                         this.newsData = [];
                         this.count = 0;
@@ -167,46 +168,44 @@
             chooseTabAlert(val){
                 console.log(val)
             },
-
-
             // sort()函数是递归的，因为要确保每个卡片的图片加载完成后再获取管道的高度，但是图片加载完成的函数是个异步函数，
             // 如果放在for循环中会打乱顺序，因此要使异步函数同步执行，for循环改为递归。
-            sort(j) {
-                if (j < this.newsData.length) {
-                    let that = this;
-                    // 创建Image类
-                    var newImg = new Image();
-                    // 获取要加载的图片地址
-                    // newImg.src = "http://lanyue.ink:8123/images/" + (Math.floor(Math.random() * 15) + 1) + ".png";
-                    newImg.src = 'https://unsplash.it/1600/900?random';
+            // sort(j) {
+            //     if (j < this.newsData.length) {
+            //         let that = this;
+            //         // 创建Image类
+            //         var newImg = new Image();
+            //         // 获取要加载的图片地址
+            //         // newImg.src = "http://lanyue.ink:8123/images/" + (Math.floor(Math.random() * 15) + 1) + ".png";
+            //         newImg.src = 'https://unsplash.it/1600/900?random';
 
-                    // 图片加载完成后（异步）
-                    newImg.onload = () => {
-                        // 四个管道的高度
-                        var arr = [
-                            that.$refs.piping0.offsetHeight,
-                            that.$refs.piping1.offsetHeight,
-                            that.$refs.piping2.offsetHeight,
-                            that.$refs.piping3.offsetHeight
-                        ];
-                        //获取管道最小高度
-                        var min = arr.indexOf(Math.min.apply(Math, arr));
-                        // 添加卡片的模板
+            //         // 图片加载完成后（异步）
+            //         newImg.onload = () => {
+            //             // 四个管道的高度
+            //             var arr = [
+            //                 that.$refs.piping0.offsetHeight,
+            //                 that.$refs.piping1.offsetHeight,
+            //                 that.$refs.piping2.offsetHeight,
+            //                 that.$refs.piping3.offsetHeight
+            //             ];
+            //             //获取管道最小高度
+            //             var min = arr.indexOf(Math.min.apply(Math, arr));
+            //             // 添加卡片的模板
 
-                        //给最小的管道添加卡片
-                        if (min == 0) {
-                            this.columnData0.push(this.newsData[j]);
-                        } else if (min == 1) {
-                            this.columnData1.push(this.newsData[j]);
-                        } else if (min == 2) {
-                            this.columnData2.push(this.newsData[j]);
-                        } else if (min == 3) {
-                            this.columnData3.push(this.newsData[j]);
-                        }
-                        that.sort(j + 1);
-                    };
-                }
-            },
+            //             //给最小的管道添加卡片
+            //             if (min == 0) {
+            //                 this.columnData0.push(this.newsData[j]);
+            //             } else if (min == 1) {
+            //                 this.columnData1.push(this.newsData[j]);
+            //             } else if (min == 2) {
+            //                 this.columnData2.push(this.newsData[j]);
+            //             } else if (min == 3) {
+            //                 this.columnData3.push(this.newsData[j]);
+            //             }
+            //             that.sort(j + 1);
+            //         };
+            //     }
+            // },
             handleScroll() {
                 // 获取滚轮位置
                 var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
@@ -255,6 +254,9 @@
             }
             .piping {
                 .card {
+                    display: inline-table;
+                    width: 23%;
+                    margin: 10px;
                     .card-top{
                         img{
                         }

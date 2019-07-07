@@ -683,7 +683,7 @@
         let params = {
           ...this.new_question_bank_form
         };
-        debugger
+        // debugger
         if (this.new_question_bank_exam_list) {
           this.$http.post(`${this.url}train/exam_question_bank`, params).then(res => {
             return res;
