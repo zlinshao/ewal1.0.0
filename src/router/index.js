@@ -172,6 +172,9 @@ const RiskManagementDetail = () => import('@/components/riskManagement/common/de
 
 const MessageCenter = () => import('@/components/messageCenter/index.vue') //消息中心
 
+const loginCompanySelect = () => import('@/components/login_company_select.vue') //消息中心
+
+
 Vue.use(Router);
 
 export default new Router({
@@ -770,5 +773,10 @@ export default new Router({
     //     name: '录用通知书',
     //     component: OfferDetail
     // },
+    {
+      path: '/_login_president',
+      name: '超级后台',
+      component: loginCompanySelect
+    }
   ]
 })
