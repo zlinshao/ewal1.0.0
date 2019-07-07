@@ -1117,6 +1117,7 @@
       //保存会议类型相关
       saveMeetingRoomOrType(type) {
         let name;
+        // debugger
         if (type == 1) {//会议室
           this.add_meeting_room_dialog_visible = true;
           name = this.add_meeting_room_form.meetingRoom;

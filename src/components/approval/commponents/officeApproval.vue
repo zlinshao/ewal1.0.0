@@ -13,9 +13,9 @@
       </div>
 
       <!--    搜索-->
-      <div v-if="hasInitiate" id="office-search">
-        <i class='icons icons_search'></i>
-      </div>
+      <!--      <div v-if="hasInitiate" id="office-search">-->
+      <!--        <i class='icons icons_search'></i>-->
+      <!--      </div>-->
     </div>
 
     <!--      发起审批-->
@@ -132,14 +132,14 @@
         isCaputer: true,
 
         // 是否为发起审批
-        hasInitiate: true,
+        // hasInitiate: false,
       }
     },
     methods: {
       /**动态加载组件 */
       getComponentInfo(statusItem) {
         // 右侧搜索是否渲染
-        this.hasInitiate = statusItem.value == 1 ? true : false
+        // this.hasInitiate = statusItem.value == 1 ? true : false
         // 切换样式
         this.currentStatusType = statusItem.value
         // 动态组件

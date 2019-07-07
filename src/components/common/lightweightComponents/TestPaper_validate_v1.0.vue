@@ -577,7 +577,7 @@
       //提交题库
       handleSubmitExam() {
         this.$refs['testPaperFormRef'].validate((valid) => {
-          debugger
+          // debugger
           if (valid) {
             this.$emit('success', this.exam_form_all.exam_form_list);
             this.paper_visible = false;
