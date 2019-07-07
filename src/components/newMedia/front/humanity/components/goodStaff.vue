@@ -6,12 +6,11 @@
         <div class="goodStaff-box">
           <div>
             <!--<img src="../../../../../assets/image/newMedia/theme1/staff.png" alt="">-->
-            <img v-for="(ter,inx) in item.cover" :src="ter.uri" alt="" :key="inx">
-
+            <img :src="item.star_id?item.star_id.avatar:''">
           </div>
           <p>
-            <span v-for="(ters,inxd) in item.user_id.org" :key="inxd">{{ters.name}}</span>
-            <span>{{item.user_id.name}}</span>
+            <span >{{item.star_id?item.star_id.org[0].name: ''}}</span>
+            <span>{{item.star_id?item.star_id.name: ''}}</span>
           </p>
         </div>
       </div>
@@ -54,9 +53,8 @@ export default {
     getDataLists () {
       this.$http.get(globalConfig.newMedia_sever + '/api/humanity/excellent', this.params).then(res => {
         if (res.status === 200) {
-          this.goodStaffData = res.data;
-          console.log(res);
-          this.count = res.data.length;
+          this.goodStaffData = res.data.data;
+          this.count = res.data.total;
         }
       })
     }

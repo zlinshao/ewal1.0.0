@@ -23,7 +23,8 @@
             <div class="birthday_box-right">
               <div class="outer-container">
                 <div class="inner-container">
-                  <div class="element">
+                   <Marquee :duration="600" direction="up" :interval="2000" onmouseover="this.stop()" onmouseout="this.start()">
+                  <div class="element" >                 
                     <div class="wishes-list" v-for="(item,index) in wishesData">
                       <img :src="item.avatar" alt="">
                       <div>
@@ -32,6 +33,7 @@
                       </div>
                     </div>
                   </div>
+                   </Marquee>
                 </div>
               </div>
               <!--透明图层-->
@@ -202,7 +204,7 @@
 <script>
 import mediaList from '../../../components/mediaList.vue';
 import LjDialog from '../../../../common/lj-dialog.vue';
-
+// import Marquee from 'vue-marquee';
 export default {
   name: "lejiaStars",
   components: {
@@ -230,7 +232,7 @@ export default {
       todayBirthday: [],//今日寿星
       monthBirthday: [],//本月寿星
       allBirthday: [],//所有寿星
-
+      busy: false,
       count: 0,
 
       content: '',//祝福语
@@ -270,13 +272,10 @@ export default {
         // this.chooseStaff.push(item);
       }
 
-      console.log(this.selectedBirthday);
     },
-
-    getDataLists () {//寿星列表信息
+    getDataLists (flag) {//寿星列表信息
       this.$http.get(globalConfig.newMedia_sever + '/api/humanity/birthday', this.params).then(res => {
         if (res.status === 200) {
-          console.log(res.data.data);
           let allBirthday = [];
           for (let item of res.data.data) {
             allBirthday.push({
@@ -324,7 +323,6 @@ export default {
           }
           this.todayBirthday = dayBirthdayList;
           this.monthBirthday = monthBirthdayList;
-          // console.log(this.wishesData);
           this.wishesData = wishesData;
           this.count = res.data.total;
         }

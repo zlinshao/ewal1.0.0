@@ -14,7 +14,7 @@
         </div>
         <div class="mainList justify-center">
             <div class="menu_images justify-bet">
-                <div v-for="(item,index) in humanity" class="menu_img_type" @click="routerLink(item.url,{type:item.chooseTab})"
+                <div v-for="(item,index) in humanity" class="menu_img_type" @click="routerLink(item.url)"
                      :key="index">
                     <span class="writingMode">
                         <span class="title">{{item.title}}</span>&nbsp;

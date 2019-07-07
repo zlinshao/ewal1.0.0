@@ -69,27 +69,27 @@
                 myData: [
                     {
                         title: '企业头条',
-                        url:'',
-                        //url:'/hotNews',
+                        // url:'',
+                        url:'/hotNews',
                         content:'企业头条负责公司最新的热门导读、公告三个子模块，的信息发布。',
 
                     },
                     {
                         title: '俱乐部',
-                        url:'',
-                        //url:'/club',
+                        // url:'',
+                        url:'/club',
                         content:'俱乐部负责各项员工活动、团队活动的开展实施。',
                     },
                     {
                         title: '公司资料',
-                        url:'',
-                        //url:'/profile',
+                        // url:'',
+                        url:'/profile',
                         content:'公司资料包含视频，文件两个部门，负责公司资料的存储和阅览。',
                     },
                     {
                         title: '员工关怀',
-                        url:'',
-                        //url:'/humanity',
+                        // url:'',
+                        url:'/humanity',
                         content:'乐伽人文包含乐伽之星，优秀员工寿星墙三个子模块介绍。',
                     },
                 ],

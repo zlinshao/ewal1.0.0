@@ -5,34 +5,35 @@
         <div class="star" v-for="(item,index) in starList" :key="index">
           <div class="starTop">
             <div class="frame">
-              <img :src="item.cover[0].uri">
+              <img :src="item.star_id.avatar" @dblclick="edit(item)">
               <div class="issue" @click="issueStar(item)">{{item.is_open ==1? '发布中':'发布'}}</div>
             </div>
           </div>
           <div class="starBottom">
-            <a>{{item.star_id.org[0].name}}</a><a>{{item.star_id.name}}</a>
+            <a>{{item.star_id &&item.star_id.org ? item.star_id.org[0].name : ''}}</a><a>{{item.star_id ?item.star_id.name : ''}}</a>
           </div>
         </div>
       </div>
-      <!-- <div class="star_info">
-        <div class="star_info_left">
+      <lj-dialog :visible="detail_visible" :size="{width:1200 + 'px' ,height: 800 + 'px'}" @close="detail_visible=false;currentRecord=null">
+      <div class="star_info">
+        <div class="star_info_left" style="width:270px">
           <div class="star_info_title writingMode flex-center"><span>乐伽之星</span></div>
-          <div class="star_info_avatar"><img :src="starInfo.user_id?starInfo.user_id.avatar:''"></div>
-          <div class="star_info_name writingMode flex-center"><span>{{starInfo.user_id?starInfo.user_id.name:''}}</span></div>
-          <div class="star_info_department writingMode flex-center"><span>{{starInfo.user_id?starInfo.user_id.org[0].name:''}}</span></div>
+          <div class="star_info_avatar"><img :src="starInfo.avatar"></div>
+          <div class="star_info_name writingMode flex-center"><span>{{starInfo.name}}</span></div>
+          <div class="star_info_department writingMode flex-center"><span>{{starInfo.org &&starInfo.org.length?starInfo.org[0].name:''}}</span></div>
         </div>
-
         <div class="star_info_right flex-center">
           <div class="main_info scroll_bar">
-            <h5 class="edit_icon justify-end" @click.stop="edit()"><span></span>编辑</h5>
+            <h5 class="edit_icon justify-end" v-if="currentRecord ? true : false" @click="add_visible=true;detail_visible=false;currentRecord=null"><span></span>编辑</h5>
             <h3>{{starInfo.title}}</h3>
-            <p>{{starInfo.content}}</p>
+             <div v-html="starInfo.content"></div>
+            <!-- <p>{{}}</p> -->
             <div class="justify-bet">
             </div>
           </div>
         </div>
-      </div> -->
-
+      </div>
+       </lj-dialog>
     </div>
     <footer class="flex-center bottomPage">
       <div class="develop flex-center">
@@ -52,14 +53,14 @@
         <div class="dialog_main borderNone">
           <el-form v-model="form" label-width="80px">
             <el-form-item label="姓名">
-              <user-choose width='700' v-model="form.userid"></user-choose>
+              <user-choose width='1060' v-model="form.userid"></user-choose>
             </el-form-item>
-            <el-form-item label="标题">
+             <!-- <el-form-item label="标题">
               <el-input width='700' v-model="form.title"></el-input>
             </el-form-item>
             <el-form-item label="封面图">
               <lj-upload size="50"  v-model="form.file_info"></lj-upload>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item label="文章内容">
               <div class="item_content">
                 <lj-editor :editorContent="form.content" @changeContent="getContentChange"></lj-editor>
@@ -67,9 +68,10 @@
             </el-form-item>
           </el-form>
         </div>
+       
         <div class="dialog_footer">
-          <el-button size="small" type="warning">预览</el-button>
-          <el-button size="small" type="danger" @click="postReceivable_tag()">发布</el-button>
+          <el-button size="small" type="warning" @click="showDetail">预览</el-button>
+          <el-button size="small" type="danger" @click="postReceivable_tag">发布</el-button>
           <el-button size="small" type="info" @click="cancelAddStatus">取消</el-button>
         </div>
       </div>
@@ -112,12 +114,12 @@ export default {
   data () {
     return {
       visible: false,
+      detail_visible: false,
       form: {
         userid: [],
-        name: '',
         content: '',
-        title:'',
-        file_info:[]
+        title: '',
+        file_info: []
       },
       params: {
         offset: 1,
@@ -131,6 +133,7 @@ export default {
         initialFrameWidth: null,
         initialFrameHeight: 350
       },
+      currentRecord: {},
       add_visible: false,
       issue_visible:false,
       selectItem: {},
@@ -148,46 +151,61 @@ export default {
   },
   
   methods: {
-    // edit () {
-    //   this.add_visible = true;
-    // },
+    edit (item) {
+      this.currentRecord=item;
+      this.starInfo.avatar = item && item.star_id ? item.star_id.avatar : '';
+      this.starInfo.name = item && item.star_id ? item.star_id.name : '';
+      this.starInfo.org = item && item.star_id ? item.star_id.org : '';
+      this.starInfo.content =item.content;
+       this.starInfo.title =item.title;
+        // this.starInfo.content =item.cover;
+      this.detail_visible = true;
+      this.form.content=item.content;
+      this.form.userid=[item.userid];
+    },
     cancelAddStatus () {//取消
       this.add_visible = false;
+       this.form={};
       this.$emit('cancelAdd', this.add_visible)
     },
+    // 预览
+    showDetail(){
+       this.currentRecord=null;
+      if(this.form.userid && this.form.content){
+      this.$http.get(globalConfig.humanResource_server + 'staff/user/'+this.form.userid).then(res => {
+          if (res.code === '20020') {
+            this.starInfo = res.data;
+            this.starInfo.content =this.form.content;
+          }
+        });
+       this.detail_visible=true;
+      }else {
+         this.$LjNotify('warning', {
+            title: '提示',
+            message: '有条目未填写',
+          });
+      }
+    },
     //获取乐伽之星
-    // getLeJiaStarInfo () {
-    //   this.$http.get(globalConfig.newMedia_sever + '/api/humanity/star').then(res => {
-    //     if (res.status === 200) {
-    //       this.starInfo = res.data;
-    //     }
-    //   })
-    // },
+    getLeJiaStarInfo () {
+      this.$http.get(globalConfig.newMedia_sever + '/api/humanity/star').then(res => {
+        if (res.status === 200) {
+          this.starInfo = res.data;
+        }
+      })
+    },
     //发布
-
     postReceivable_tag(){
-      console.log('this.form.', this.form)
       let param = {
         star_id: this.form.userid[0],
-        title: this.form.title,
         content: this.form.content,
-        cover: this.form.file_info[0]
+        title: this.form.title,
+        cover: this.form.file_info
       }
       if(param.star_id == undefined|| this.form.userid.length<0){
-        console.log(this.form.userid.length>0)
         this.$LjNotify('error', {
             title: '失败',
             message: '人员不能为空且只能选一个',
-          });
-      }else if(param.title == ''){
-        this.$LjNotify('error', {
-            title: '失败',
-            message: '标题不能为空',
-          });
-      }else if(param.cover == undefined || this.form.file_info.length<1 ||this.form.file_info.length >1){
-        this.$LjNotify('error', {
-            title: '失败',
-            message: '封面图不能为空且只能选一个',
           });
       }else if(param.content == ''){
         this.$LjNotify('error', {
@@ -208,7 +226,6 @@ export default {
     getLeJiaStarList(){
       this.starList = []
       this.$http.post(globalConfig.newMedia_sever + '/api/humanity/star/history',this.params).then(res => {
-        console.log('res', res);
         if (res.status === 200) {
           this.total = res.data.total
           for(let i = 0;i<res.data.data.length;i++){
@@ -243,7 +260,7 @@ export default {
       })
     },
     getContentChange (val) {
-      this.form.content = val.slice(3,val.length-4);
+      this.form.content = val;
     },
   },
 }

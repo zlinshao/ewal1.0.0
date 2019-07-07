@@ -63,13 +63,11 @@
         },
         methods:{
             getPath(){
-                console.log(this.$route.query.type);
                 this.chooseTab = this.$route.query.type;
             },
             changeTabs(id,url) {
                 this.chooseTab = id;
                 this.tabView  = url;
-                console.log(this.chooseTab);
             },
         }
     }
