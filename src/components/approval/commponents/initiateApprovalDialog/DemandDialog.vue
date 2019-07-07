@@ -197,7 +197,6 @@
       content: null,
       // 附件
       attachment: [],
-      user_info: {},
       priority: 50
     }
   }
@@ -258,7 +257,13 @@
         // 学历下拉选项
         education: _.map(this.DROPDOWN_CONSTANT.EDUCATION_BACKGROUND, 'name'),
         processKey: 'HR-ApplyForPersonnelDemand',
-        demand_form: createEmpty()
+        demand_form: createEmpty(),
+        user_info: {
+          name: '',
+          org: '',
+          user_id: 0,
+          org_id: 0,
+        },
       }
     },
     methods: {
@@ -297,11 +302,11 @@
                 detail: [{...this.demand_form}],
                 more_data: [
                   {key: '申请部门', value: this.$refs.applyOrg.org_name.join('')},
-                  {key: '所需人数', value: `${number.min} —— ${number.max}`},
-                  {key: '薪资范围', value: `${salary.min} —— ${salary.max}`},
+                  {key: '所需人数', value: `${number.min} — ${number.max}`},
+                  {key: '薪资范围', value: `${salary.min} — ${salary.max}`},
                   {key: '期望到岗日期', value: expect_date},
                   {key: '需求岗位', value: this.$refs.applyPost.post_name.join('')},
-                  {key: '年龄范围', value: `${year.min} —— ${year.max}`},
+                  {key: '年龄范围', value: `${year.min} — ${year.max}`},
                   {key: '工作经验', value: this.experience[experience - 1]},
                   {key: '现有人数', value: now_count},
                   {key: '性别', value: this.gender[gender - 1]},
@@ -329,8 +334,10 @@
       }
 
     },
-    created() {
+    mounted() {
       this.getUserInfo()
+    },
+    created() {
     }
   }
 </script>

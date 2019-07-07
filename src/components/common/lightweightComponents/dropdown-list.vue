@@ -73,6 +73,7 @@
           if(this.dropdown_code) {
             this.dropdown_name = _.find(this.dropdown_list,{id:this.dropdown_code})?.name;
           }
+          this.$emit('name-change',this.dropdown_name);
           /*if (this.arr) {
             this.dropdown_code = Number(this.value);
           } else {

@@ -47,27 +47,28 @@
           num: Infinity,
         },// 组织架构配置 选择数量 num
         inputContent: '',
-        user_name:[],
+        user_name: [],
         dropdownListWidth: 320
       }
     },
     watch: {
       value: {
-        handler(val, oldVal) {
+        async handler(val, oldVal) {
           if (val && val.constructor === Array && val.length > 0) {
             let params = {
               limit: 1000,
               user_id: val,
               staff: 1,
             };
-            this.$http.get(`${this.url}staff/user`, params).then(res => {
+            await this.$http.get(`${this.url}staff/user`, params).then(res => {
               this.user_name = _.map(res.data?.data, 'name');
               this.inputContent = this.user_name.join(',');
             });
           } else {
-            this.user_name =[];
+            this.user_name = [];
             this.inputContent = '';
           }
+          this.$emit('user-choose-name', this.user_name)
         },
         immediate: true,
       },
