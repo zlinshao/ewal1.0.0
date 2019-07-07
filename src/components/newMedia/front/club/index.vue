@@ -61,7 +61,9 @@
                         <p><span>活动名称</span><span>{{showData.name}}</span></p>
                         <p><span>活动时间</span><span>{{showData.start_time}} - {{showData.over_time}}</span></p>
                         <p><span>活动地点</span><span>{{showData.address}}</span></p>
-                        <p><span>活动内容</span><span>{{showData.content}}</span></p>
+                        <p><span>活动内容</span></p>
+                        <div v-html="showData.content"></div>
+                        <!-- <span><span>活动内容</span><span>{{}}</span></p> -->
                     </div>
                 </div>
                 <div class="dialog_footer" v-if="showData.status!=2">
@@ -89,10 +91,10 @@
                     <div>
                         <div class="all-birthday-list" v-for="(item,index) in allPerson">
                             <div class="all-birthday-info">
-                                <img src="../../../../assets/image/newMedia/theme1/active.png" alt="">
+                                <img :src="item.avatar" alt="">
                                 <div class="" style="text-align: left">
-                                    <p style="font-weight: bold">赵丽颖</p>
-                                    <p>南京二区一组</p>
+                                    <p style="font-weight: bold">{{item.name}}</p>
+                                    <p>{{item.org?item.org[0].name: ''}}</p>
                                 </div>
                             </div>
                         </div>
@@ -158,7 +160,7 @@
                 } else {
                     this.$LjNotify('error', {
                         title: '失败',
-                        message: res.msg,
+                        message: res.message,
                         subMessage: '',
                     });
                 }
@@ -195,8 +197,9 @@
             getReportedUsers(){//获取参加活动的所有用户列表
                 this.person_visible=true;
                 this.$http.get(globalConfig.newMedia_sever+'/api/club/event/user/'+this.showData.id,).then(res => {
+                    console.log('res', res);
                     if(res.status===200){
-                        // this.allPerson = res.data.data;
+                        this.allPerson = res.data;
                     }
                 })
             },

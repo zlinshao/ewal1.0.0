@@ -12,11 +12,7 @@ import * as qiniu from 'qiniu-js'
 import { md5 } from '../../../static/js/MD5.js'
 
 export default {
-  props: {
-    display: {
-      type: Boolean
-    }
-  },
+  props: ['editorContent'],
   components: {
     VueEditor,
   },
@@ -50,8 +46,23 @@ export default {
     }
   },
   created () { },
-  mounted () { },
+  mounted () {
+    // console.log('2222222222',this)
+    this.content= this.editorContent;
+   },
   watch:{
+    // editorContent: {
+    //   handler (val) {
+    //   console.log('val=======================',val)
+    //     this.content = val;
+    //   }, deep: true
+    // },
+    editorContent(val) {
+      // handler (val) {
+      console.log('val=======================',val)
+      this.content = val;
+      // }, deep: true
+    },
     content(){
       this.$emit('changeContent',this.content)
     }

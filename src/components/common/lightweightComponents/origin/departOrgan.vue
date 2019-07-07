@@ -86,7 +86,7 @@
       value: {
         handler(val, oldVal) {
           if(val.constructor===Array&&val.length===0) {
-            debugger
+            // debugger
             this.checkList = [];
           }
          }
