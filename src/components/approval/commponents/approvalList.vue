@@ -142,6 +142,7 @@
         if (newValue === 5) {
           this.popoverBtnData = this.popoverBtnInfo['suspend']
         }
+        this.highSearchParams(newValue)
       },
       activeName(newValue, oldValue) {
         this.page_info.page_current = 1
@@ -159,7 +160,7 @@
       return {
         /**高级搜索 */
         showSearch: false, // 高级搜索 显示隐藏
-        searchHigh: _.cloneDeep(officeApprovalHighSearch), // 高级搜索 参数
+        searchHigh: {}, // 高级搜索 参数
         category_options: _.cloneDeep(dicties.category_options),
         row: {},
         urlConfig: globalConfig.approval_sever,
@@ -339,6 +340,39 @@
               item.options = val === '' ? [] : this.category_options[val]
             }
           })
+        }
+      },
+      /**根据页签动态配置高级搜索的参数 */
+      highSearchParams(tabKey) {
+        let searchHighData = _.cloneDeep(officeApprovalHighSearch)
+        switch (tabKey) {
+          case 2:// 我审批的
+            // TODO
+            let ignore2 = ['processMark', 'cc']
+            _.remove(searchHighData.data, item => {
+              return ignore2.includes(item.keyName)
+            })
+            this.searchHigh = searchHighData
+            break;
+          case 3:// 我发起的
+            // TODO
+            let ignore3 = ['end_time', 'founder', 'creator_depart', 'processMark', 'cc']
+            searchHighData.data = searchHighData.data
+              .filter(item => {
+                return !ignore3.includes(item.keyName)
+              })
+            this.searchHigh = searchHighData
+            break;
+          case 4:// 抄送我的
+            // TODO
+            let ignore4 = ['end_time']
+            _.remove(searchHighData.data, item => {
+              return ignore4.includes(item.keyName)
+            })
+            this.searchHigh = searchHighData
+            break;
+          case 5:// 暂不处理
+            break;
         }
       },
       /**格式化列表数据 */
@@ -690,6 +724,7 @@
         if (this.tabKey === 5) {
           this.popoverBtnData = this.popoverBtnInfo['suspend']
         }
+        this.highSearchParams(this.tabKey)
       }
     },
     created() {

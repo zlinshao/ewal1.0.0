@@ -2442,6 +2442,22 @@ export const officeApprovalHighSearch = {
       ]
     },
     {
+      keyType: 'radio',
+      title: '流程标志',
+      keyName: 'processMark',
+      dataType: '',
+      value: [
+        {
+          id: 'unread',
+          title: '未读'
+        },
+        {
+          id: 'read',
+          title: '已读'
+        }
+      ]
+    },
+    {
       keyType: 'dateRange',
       title: '创建日期',
       placeholder: '请选择日期',
@@ -2454,6 +2470,36 @@ export const officeApprovalHighSearch = {
       placeholder: '请选择日期',
       keyName: 'end_time',
       dataType: []
+    },
+    {
+      keyType: 'staff',
+      title: '抄送人',
+      placeholder: '请选择人员',
+      keyName: 'cc',
+      dataType: '',
+      value: {
+        num: '1'
+      }
+    },
+    {
+      keyType: 'staff',
+      title: '创建人',
+      placeholder: '请选择人员',
+      keyName: 'founder',
+      dataType: '',
+      value: {
+        num: '1'
+      }
+    },
+    {
+      keyType: 'depart',
+      title: '创建人部门',
+      placeholder: '请选择部门',
+      keyName: 'creator_depart',
+      dataType: '',
+      value: {
+        num: '1'
+      }
     }
   ]
 }
