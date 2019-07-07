@@ -1,7 +1,5 @@
 <template>
   <div id="nq">
-    <coming-soon></coming-soon>
-    <StaffOrgan :module="organModule" @close="hiddenOrgan"></StaffOrgan>
     <div class="listTopCss items-bet">
       <div class="items-center listTopLeft">
         <p class="flex-center" @click="moduleList">
@@ -23,7 +21,7 @@
       </div>
     </div>
 
-    <div class="main-container nq-container" v-if="$route.path=='/noticeQuestionnaire'">
+    <div class="main-container nq-container" v-if="$route.path=='/noticeQuestionnaire' && !chooseTab">
       <div class="content flex-center" >
         <div class="left flex-center" @click="chooseTab=1"><span>公告</span></div>
         <div class="right flex-center" @click="chooseTab=2"><span class="gray">问卷调查</span></div>
@@ -57,9 +55,7 @@
   import Notice from './notice/index.vue';//公告
   import Questionnaire from './questionnaire/index.vue';//问卷调查
   import WorkInfo from './components/workInfo/work-info';
-  import LjDialog from '../../common/lj-dialog.vue';
   import SearchHigh from '../../common/searchHigh.vue';
-  import StaffOrgan from '../../common/staffOrgan.vue';
   import {noticeSearch, questionnaireSearch} from '../../../assets/js/allSearchData.js';
   import {humanResource, resourceDepart} from '../../../assets/js/allModuleList.js';
 
@@ -70,9 +66,7 @@
       Notice,
       Questionnaire,
       WorkInfo,
-      LjDialog,
       SearchHigh,
-      StaffOrgan,
     },
     data() {
       return {
@@ -90,10 +84,8 @@
             title: '调查问卷',
           }
         ],//tab切换
-
-        organModule: false,//组织架构
         chooseTab: null,//tab切换
-        visibleStatus: false,//弹出部门
+        visibleStatus: false,//弹出列表
 
         showSearch: false,//高级搜索
         searchData: {},//搜索项
@@ -105,8 +97,6 @@
       }
     },
     mounted() {},
-    activated() {
-    },
     watch: {
       chooseTab: {
         handler(val,oldVal) {
@@ -124,6 +114,8 @@
             this.chooseTab = 1;
           }else if(val=='/noticeQuestionnaire/questionnaire') {
             this.chooseTab = 2;
+          }else if (val=='/noticeQuestionnaire') {
+            this.chooseTab = null;
           }
         },
         deep:true,
@@ -173,12 +165,6 @@
           }
         });
         this.$store.dispatch('route_animation');
-      },
-      hiddenOrgan(val) {
-        this.organModule = false;
-        if (val !== 'close') {
-          console.log(val);
-        }
       },
       moduleList() {
         this.visibleStatus = !this.visibleStatus;

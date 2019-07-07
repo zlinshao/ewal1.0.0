@@ -128,7 +128,6 @@
           fine:rst,
           pay_user_id:_.find(this.todo_list_current_selection.variables,{name:'pay_user_id'})?.value,
         };
-        // debugger
         let contentTip = rst=='success'?'提交':'驳回';
         this.$LjConfirm({
           content:`确定${contentTip}吗？`

@@ -1,6 +1,5 @@
 <template>
     <div id="leJiaCollege">
-      <coming-soon></coming-soon>
         <div class="mainList" :style="{'height': this.mainListHeight(-89) + 'px'}">
             <div class="leJiaCollege-menu">
                 <div class="leJiaCollege-menu-info flex-center" v-for="(item,index) in menuType">
@@ -53,12 +52,12 @@
                         letter:'Practical problems',
                         type:5
                     },
-                    {
+                    /*{
                         url: 'train',
                         title: '培训考试',
                         letter:'Train',
                         type:6
-                    },
+                    },*/
                 ],
                 showFinMenuList: false,
                 add_visible:false,//新增

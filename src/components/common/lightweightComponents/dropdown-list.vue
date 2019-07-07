@@ -50,6 +50,7 @@
       return {
         //url: globalConfig.humanResource_server,
         dropdown_code: '',
+        dropdown_name:'',
         dropdown_list: [],
         dropdownListWidth: 320
       }
@@ -60,13 +61,19 @@
           //debugger
           if (val === '') {
             this.dropdown_code = '';
+            this.dropdown_name = '';
             return;
           }
           if(val===0||val==='0') {
             this.dropdown_code = 0;
+            this.dropdown_name = '';
             return;
           }
           this.dropdown_code = Number(this.value)||'';
+          if(this.dropdown_code) {
+            this.dropdown_name = _.find(this.dropdown_list,{id:this.dropdown_code})?.name;
+          }
+          this.$emit('name-change',this.dropdown_name);
           /*if (this.arr) {
             this.dropdown_code = Number(this.value);
           } else {

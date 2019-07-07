@@ -282,6 +282,17 @@
                         <el-input v-model="staffDetail.dismiss_reason.dismiss_mess"></el-input>
                       </el-form-item>
                     </el-col>
+                    <el-col :span="6">
+                    <el-form-item label="学历">
+                      <dropdown-list :json-arr="DROPDOWN_CONSTANT.EDUCATION_BACKGROUND" width="219" v-model="staffDetail.education" title="请选择"></dropdown-list>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="6">
+                      <el-form-item label="角色">
+                         <post-choose  :num="999"  width="300"
+                           v-model="staffDetail.role_id"></post-choose>
+                      </el-form-item>
+                    </el-col>
                   </el-row>
                 </el-form>
               </el-tab-pane>
@@ -337,7 +348,6 @@
                       </el-col>
                     </el-row>
                     <div v-if="!reviseInfo && key==staffDetail.education_history.length-1" style="text-align: right">
-                      <el-button type="danger" size="mini" style="width: 120px" @click="handleAddItem('eduction')">添加</el-button>
                       <el-button type="info" size="mini" style="width: 120px" v-if="staffDetail.education_history.length > 1" @click="handleDelItem('eduction')">删除</el-button>
                     </div>
                   </div>
@@ -369,7 +379,9 @@
                     </el-col>
                   </el-row>
                 </el-form>
-
+                  <div v-if="!reviseInfo" style="text-align: right">
+                      <el-button type="danger" size="mini" style="width: 120px" @click="handleAddItem('eduction')">添加</el-button>
+                  </div>
               </el-tab-pane>
               <el-tab-pane label="工作履历" name="third">
                 <el-form class="borderNone" :disabled="reviseInfo" label-width="120px" size="small" style="width: 100%" v-if="staffDetail.work_history.length > 0">
@@ -525,6 +537,8 @@ import { constants } from 'fs';
           org_id: [], //部门id
           org_name: '', //部门名称
           enroll: '',
+          role_id: [],
+          education: '',
           email: '',
           gender: '',
           education: '',

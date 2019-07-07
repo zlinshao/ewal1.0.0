@@ -4,6 +4,9 @@
   }
 #theme_name.theme1 {
   #dataBase {
+    height: 100%;
+    overflow: auto;
+    margin:0 50px;
     .addAll{
       width: 30px;
       height: 30px;
@@ -30,7 +33,7 @@
       right: 40px;
     }
     .main-nav {
-      margin-left: 50px;
+      // margin-left: 50px;
       padding: 15px 0;
       display: flex;
       justify-content: space-between;
@@ -61,21 +64,12 @@
     }
     .dataBase-container {
       .contractNumber{
-        width: 1799px;
-        height: 100%;
-        margin: 0 60px 0 61px;
+        width:100%;
         .contractNumberTop{
-          width: 1799px;
-          height: 489px;
-        }
-        .page{
-          .el-pagination{
-            padding: 0 0 0 1200px;
-          } 
+          width: 100%;
         }
         .contractNumberBottom{
-          width: 1799px;
-          margin-top: 39px;
+          width: 100%;
         }
       }
       .contractNumberEdit{
@@ -119,7 +113,8 @@
           .main_right{
             width: 1424px;
             height: 639px;
-            padding: 36px 30px 0 75px;
+            padding: 36px 30px 0 30px;
+            margin-left:40px;
             .right_title{
               height: 35px;
               display: flex;
@@ -175,6 +170,60 @@
                 }
               }
             }
+            .right_body2{
+              .title{
+                margin-bottom: 17px;
+                overflow: hidden;
+                li{
+                  float: left;
+                  text-align: center;
+                  font-size: 16px;
+                  color: #686874;
+                  width: 33.3%;
+                  font-weight: bold;
+                }
+              }
+              .main{
+                .el-collapse-item__header{
+                  >div{
+                    width: 33.3%;
+                    text-align: center;
+                    float: left;
+                  }
+                }
+                .body{
+                  background: #FBFBFB;
+                  padding: 20px 28px!important;
+                  .body_header{
+                    overflow: hidden;
+                    margin-bottom: 30px;
+                    >h3{
+                      font-size:14px;
+                      font-family:MicrosoftYaHei;
+                      color:rgba(210,210,210,1);
+                      line-height:19px;
+                      float: left;
+                      cursor: pointer;
+                      margin-right: 60px;
+                    }
+                    .remainingUnpaidChoosed{
+                      color:rgba(207,46,51,1);
+                    }
+                  }
+                  .body_body{
+                    ul{
+                      overflow: hidden;
+                    }
+                    li{
+                      float: left;
+                      width: 12.5%;
+                      text-align: center;
+                      margin-bottom: 30px;
+                    }
+                  }
+                }
+              }
+            }
           }
         }
         .dialog_footer{
@@ -182,7 +231,7 @@
         }
       }
     }
-    //分配弹窗
+    //汇总分配弹窗
     .distributeDialog{
       .dialog_header{
         margin-left: 49px;
@@ -196,54 +245,37 @@
       .dialog_body{
         width: 100%;
         height: 575px;
-        .body_header{
-          height: 40px;
-          padding-right: 215px;
-        }
-        .body_main{
-          width:1060px;
-          height:495px;
-          margin-left: 67px;
-          padding: 80px 0px 0px 60px;
-          background:rgba(255,255,255,1);
-          border-radius:4px;
-          .right_title{
-            height: 35px;
-            display: flex;
-            align-items: center;
-            .words{
-              width:64px;
-              height:35px;
-              font-size:16px;
-              font-family: jingdianxingshu;
-              color:rgba(207,46,51,1);
-              line-height:35px;
-            }
-            .arrow{
-              width: 34px;
-              height: 5px;
-              margin-left: 23px;
-            }
+        .form_header{
+          text-align: left;
+          .el-form-item__label{
+            text-align: center;
           }
-          .body_detail{
-            display: flex;
-            flex-wrap: wrap;
-            >div{
-              width: 25%;
-              height: 19px;
-              margin-top: 30px;
-              display: flex;
-              align-items: center;
-              justify-content: flex-start;
-              .selector{
-                width: 18px;
-                height: 18px;
-                border-radius: 9px;
-                background:rgba(207,46,51,1);
-              }
-              .content{
-                margin-left: 20px;
-              }
+        }
+        .form_body{
+          background: white;
+          height: 495px;
+          overflow:auto;
+          margin-top:20px;
+          padding: 40px 60px;
+          .arrow{
+            display: inline-block;
+            width: 34px;
+            height: 5px;
+            margin-left:10px;
+          }
+          b{
+            display: inline-block;
+            line-height:35px;
+            font-size:16px;
+            font-family: jingdianxingshu;
+            color:rgba(207,46,51,1);
+          }
+          .el-form-item{
+            display: block;
+            text-align: left;
+            .el-checkbox{
+              display: inline-block;
+              width: 22%;
             }
           }
         }
@@ -251,13 +283,16 @@
     }
     //领取弹窗
     .receiveDialog{
+      .dialogContainer{
+        padding:0 30px;
+      }
       .dialogHeader{
         width: 100%;
         height: 31px;
+        margin-bottom:20px;
         p{
           width: 151px;
           height: 31px;
-          margin-left: 60px;
           font-size: 24px;
           font-family: MicrosoftYaHei;
           color: rgba(104,104,116,1);
@@ -266,9 +301,7 @@
         }
       }
       .dialogBody{
-        width: 1577px;
         height: 743px;
-        margin: 24px 0 71px 60px;
         .basicTitle{
           width: 100%;
           height: 19px;
@@ -282,11 +315,11 @@
           }
         }
         .basicDetail{
-          width: 1503px;
+          background: white;
           height: 108px;
-          margin: 8px 0px 0px 20px;
           display: flex;
           justify-content: center;
+          margin-bottom:20px;
           >div{
             width: 33%;
             height: 49px;
@@ -320,6 +353,7 @@
         .receivedTitle{
           width: 100%;
           height: 19px;
+          margin-bottom: 5px;
           p{
             width:105px;
             height:19px;
@@ -330,13 +364,13 @@
           }
         }
         .receivedDetail{
-          width: 1503px;
+          background: white;
           height: 133px;
-          margin: 8px 0px 0px 20px;
           padding: 25px 40px 31px 41px;
           display: flex;
           justify-content: space-between;
           flex-wrap: wrap;
+          margin-bottom:20px;
           >p{
             width: 16.7%;
             height: 15px;
@@ -351,6 +385,7 @@
         .rentTitle{
           width: 100%;
           height: 19px;
+          margin-bottom: 5px;
           p{
             width:105px;
             height:19px;
@@ -361,13 +396,13 @@
           }
         }
         .rentDetail{
-          width: 1503px;
+          background: white;
           height: 130px;
-          margin: 8px 0px 0px 20px;
           padding: 26px 39px 27px 41px;
           display: flex;
           justify-content: space-between;
           flex-wrap: wrap;
+          margin-bottom:20px;
           >p{
             width: 16.7%;
             height: 15px;
@@ -382,6 +417,7 @@
         .otherTitle{
           width: 100%;
           height: 19px;
+          margin-bottom: 5px;
           >p{
             width:30px;
             height:19px;
@@ -392,10 +428,11 @@
           }
         }
         .otherDetail{
-          width: 1503px;
+          background: white;
           height: 204px;
           margin-top: 8px;
           padding: 30px 0px 0px 40px;
+          margin-bottom:20px;
           .otherDetailTop{
             width: 100%;
             height: 50px;
@@ -444,7 +481,6 @@
         p{
           width: 151px;
           height: 31px;
-          margin-left: 60px;
           font-size: 24px;
           font-family: MicrosoftYaHei;
           color: rgba(104,104,116,1);
@@ -452,179 +488,57 @@
           letter-spacing: 1px;
         }
       }
-      .dialogBody{
-        width: 1577px;
-        height: 713px;
-        margin: 20px 3px 0px 60px;
-        .basicTitle{
-          width: 100%;
-          height: 24px;
-          p{
-            width:77px;
-            height:24px;
-            font-size:18px;
-            font-family:MicrosoftYaHei;
-            color:rgba(104,104,116,1);
-            line-height:24px;
-            letter-spacing:1px;
+      .dialogContainer{
+        padding: 0 30px;
+      }
+      .dialog_body{
+        width: 100%;
+        height: 700px;
+        h4{
+          margin-top:20px;
+        }
+        .form_header{
+          margin-top:30px;
+          text-align: left;
+          .el-form-item__label{
+            text-align: center;
           }
         }
-        .basicDetail{
-          width: 1503px;
-          height: 112px;
-          margin: 21px 64px 32px 0px;
-          display: flex;
-          justify-content: center;
-          >div{
-            width: 33%;
-            height: 112px;
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            .title{
-              height: 112px;
-              display: flex;
-              flex-direction: column;
-              justify-content: space-between;
-              padding-top: 5px;
-              padding-bottom: 6px;
-              >h3{
-                height: 40px;
-                display: flex;
-                justify-content: flex-end;
-                align-items: center;
-                font-family:MicrosoftYaHei;
-                font-size: 14px;
-                color:rgba(210,210,210,1);
-              }
-            }
-            .value{
-              height: 112px;
-              margin-left: 18px;
-              padding: 5px 0px 6px 0px;
-              flex-direction: column;
-              justify-content: center;
-              align-items: center;
-              >h3{
-                width: 350px;
-                height: 40px;
-                margin-top: 21px;
-                display: flex;
-                justify-content: flex-start;
-                align-items: center;
-                background:rgba(240,240,240,1);
-                font-size:14px;
-                font-family:MicrosoftYaHei;
-                color:rgba(0,0,0,1);
-              }
-            }
+        .form_body{
+          background: white;
+          height: 495px;
+          overflow:auto;
+          margin-top:20px;
+          padding: 40px 60px;
+          .arrow{
+            display: inline-block;
+            width: 34px;
+            height: 5px;
+            margin-left:10px;
           }
-        }
-        .operateInfo{
-          width: 100%;
-          height: 24px;
-          p{
-            width:287px;
-            height:24px;
-            font-size:18px;
-            font-family:MicrosoftYaHei;
-            color:rgba(104,104,116,1);
-            line-height:24px;
-            letter-spacing:1px;
+          b{
+            display: inline-block;
+            line-height:35px;
+            font-size:16px;
+            font-family: jingdianxingshu;
+            color:rgba(207,46,51,1);
           }
-        }
-        .operateDetail{
-          width: 1503px;
-          margin: 20px 64px 0 0;
-          padding: 46px 51px 0px 30px;
-          .right_title{
-            height: 35px;
-            display: flex;
-            align-items: center;
-            .words{
-              width:64px;
-              height:35px;
-              font-size:16px;
-              font-family: jingdianxingshu;
-              color:rgba(207,46,51,1);
-              line-height:35px;
-            }
-            .arrow{
-              width: 34px;
-              height: 5px;
-              margin-left: 23px;
-            }
-          }
-          .body_detail{
-            margin-bottom: 69px;
-            display: flex;
-            flex-wrap: wrap;
-            >div{
-              width: 25%;
-              height: 19px;
-              margin-top: 30px;
-              display: flex;
-              align-items: center;
-              justify-content: flex-start;
-              .selector{
-                width: 18px;
-                height: 18px;
-                border-radius: 9px;
-                background:rgba(207,46,51,1);
-              }
-              .content{
-                margin-left: 20px;
-              }
-            }
-          }
-          
-        }
-        .otherDetail{
-          width: 1503px;
-          height: 204px;
-          margin-top: 8px;
-          padding: 30px 0px 0px 40px;
-          .otherDetailTop{
-            width: 100%;
-            height: 50px;
-            display: flex;
-            justify-content: flex-start;
-            p{
-              margin-right: 19px;
-              font-size:14px;
-              font-family:MicrosoftYaHei;
-              color:rgba(176,176,176,1);
-              line-height:19px
-            }
-            img{
-              width: 50px;
-              height: 50px;
-              margin-right: 10px; 
-            }
-          }
-          .otherDetailBottom{
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: flex-start;
-            .bottomTitle{
-              margin-right: 24px;
-              font-size:14px;
-              font-family:MicrosoftYaHei;
-              color:rgba(176,176,176,1);
-              line-height:19px;
-            }
-            .bottomDetail{
-              font-size:14px;
-              font-family:MicrosoftYaHei;
-              color:rgba(104,104,116,1);
-              line-height:19px;
+          .el-form-item{
+            display: block;
+            text-align: left;
+            .el-checkbox{
+              display: inline-block;
+              width: 22%;
             }
           }
         }
       }
       .dialog_footer{
-        padding-left: 1223px;
+        text-align: right;
+        margin-top:20px;
+        button{
+          margin:0 20px;
+        }
       }
     }
     //领取新建任务
@@ -633,195 +547,76 @@
         width: 100%;
         height: 31px;
         p{
-          width: 101px;
           height: 31px;
-          margin-left: 60px;
           font-size: 24px;
           font-family: MicrosoftYaHei;
           color: rgba(104,104,116,1);
           line-height: 31px;
           letter-spacing: 1px;
+          text-align: left;
         }
       }
-      .dialogBody{
-        width: 1597px;
-        height: 719px;
-        margin-top: 23px;
-        padding: 0px 101px 0px 60px;
-        .basicTitle{
-          width: 100%;
-          height: 19px;
-          p{
-            width:78px;
-            height:21px;
-            font-size:18px;
-            font-family:MicrosoftYaHei;
-            color:rgba(104,104,116,1);
-            line-height:24px;
+      .dialogContainer{
+        padding: 0 30px;
+      }
+      .dialog_body{
+        width: 100%;
+        height: 700px;
+        h4{
+          margin-top:20px;
+        }
+        .form_header{
+          margin-top:30px;
+          text-align: left;
+          .el-form-item__label{
+            text-align: center;
           }
         }
-        .basicDetail{
-          width: 1503px;
-          height: 112px;
-          margin: 21px 64px 32px 0px;
-          display: flex;
-          justify-content: center;
-          >div{
-            width: 33%;
-            height: 112px;
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            .title{
-              height: 112px;
-              display: flex;
-              flex-direction: column;
-              justify-content: space-between;
-              padding-top: 5px;
-              padding-bottom: 6px;
-              >h3{
-                height: 40px;
-                display: flex;
-                justify-content: flex-end;
-                align-items: center;
-                font-family:MicrosoftYaHei;
-                font-size: 14px;
-                color:rgba(210,210,210,1);
-              }
-            }
-            .value{
-              height: 112px;
-              margin-left: 18px;
-              padding: 5px 0px 6px 0px;
-              flex-direction: column;
-              justify-content: center;
-              align-items: center;
-              >h3{
-                width: 350px;
-                height: 40px;
-                margin-top: 21px;
-                display: flex;
-                justify-content: flex-start;
-                align-items: center;
-                background:rgba(240,240,240,1);
-                font-size:14px;
-                font-family:MicrosoftYaHei;
-                color:rgba(0,0,0,1);
-              }
+        .form_main{
+          .shou,.zu{
+            .addIcon,.reduceIcon{
+              width: 20px;
+              height: 20px;
+              display: inline-block;
+              vertical-align:middle;
             }
           }
         }
-        .version{
-          height: 61px;
-          display: flex;
-          justify-content: flex-start;
-          align-items: center;
-          padding-left: 34px;
-          h3{
-            width: 60px;
-            height: 100%;
-            display: flex;
-            justify-content: flex-end;
-            font-family:MicrosoftYaHei;
-            font-size: 14px;
-            color:rgba(210,210,210,1);
-          }
-          >div{
-            height: 100%;
-            display: flex;
-            justify-content: flex-start;
-            >div{
-              margin-right: 48px;
-            }
-          }
-        }
-        .operateDetail{
-          width: 1503px;
-          margin: 20px 50px 37px 5px;
-          .addOperate{
-            height: 40px;
-            margin-bottom: 22px;
-            display: flex;
-            justify-content: space-between;
-            >div{
-              width: 33%;
-              height: 40px;
-              display: flex;
-              justify-content: flex-start;
-              font-size:14px;
-              font-family:MicrosoftYaHei;
-              color:rgba(176,176,176,1);
-              line-height:51px;
-              .el-input{
-                width: 350px;
-                margin-left: 18px;
-              }
-              .addIcon{
-                width: 20px;
-                height: 20px;
-                margin: 15px 0 0 10px;
-              }
-            }
-          }
-        }
-        .otherTitle{
-          width: 100%;
-          height: 19px;
-          p{
-            width:38px;
-            height:21px;
-            font-size:18px;
-            font-family:MicrosoftYaHei;
-            color:rgba(104,104,116,1);
-            line-height:24px;
-          }
-        }
-        .otherDetail{
-          width: 1503px;
-          height: 204px;
-          margin-top: 8px;
-          padding: 30px 0px 0px 40px;
-          .otherDetailTop{
-            width: 100%;
-            height: 50px;
-            display: flex;
-            justify-content: flex-start;
-            p{
-              margin-right: 19px;
-              font-size:14px;
-              font-family:MicrosoftYaHei;
-              color:rgba(176,176,176,1);
-              line-height:19px
-            }
-            img{
-              width: 50px;
-              height: 50px;
-              margin-right: 10px; 
-            }
-          }
-          .otherDetailBottom{
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: flex-start;
-            .bottomTitle{
-              margin-right: 24px;
-              font-size:14px;
-              font-family:MicrosoftYaHei;
-              color:rgba(176,176,176,1);
-              line-height:19px;
-            }
-            .bottomDetail{
-              font-size:14px;
-              font-family:MicrosoftYaHei;
-              color:rgba(104,104,116,1);
-              line-height:19px;
-            }
-          }
-        }
+        // .form_body{
+        //   background: white;
+        //   height: 495px;
+        //   overflow:auto;
+        //   margin-top:20px;
+        //   padding: 40px 60px;
+        //   .arrow{
+        //     display: inline-block;
+        //     width: 34px;
+        //     height: 5px;
+        //     margin-left:10px;
+        //   }
+        //   b{
+        //     display: inline-block;
+        //     line-height:35px;
+        //     font-size:16px;
+        //     font-family: jingdianxingshu;
+        //     color:rgba(207,46,51,1);
+        //   }
+        //   .el-form-item{
+        //     display: block;
+        //     text-align: left;
+        //     .el-checkbox{
+        //       display: inline-block;
+        //       width: 22%;
+        //     }
+        //   }
+        // }
       }
       .dialog_footer{
-        padding-left: 1223px;
+        text-align: right;
+        margin-top:20px;
+        button{
+          margin:0 20px;
+        }
       }
     }
     //作废新建任务
@@ -1771,6 +1566,55 @@
             color:black;
             line-height:50px;
           }
+        }
+      }
+    }
+    .photo-img{
+      width: 40px;
+      height: 40px;
+      margin:0 auto;
+      cursor: pointer;
+    }
+    // 电子资料的模态框
+    .dianziziliao{
+      .dialog_header{
+        h3{
+          font-size: 24px;
+          color: #686874;
+        }
+        margin-bottom: 30px;
+      }
+      .dialog_body{
+        ul{
+          text-align: left;
+          li{
+            margin-bottom: 10px;
+            overflow: hidden;
+            .type{
+              float: left;
+              width: 130px;
+              line-height: 50px;
+              text-align: right;
+              color: #B8B8BD;
+            }
+            .img{
+              float: left;
+              width: 50px;
+              height: 50px;
+              margin:0 auto;
+              cursor: pointer;
+              // background-color:#B8B8BD;
+            }
+          }
+        }
+      }
+      .dialog_footer{
+        margin-top:65px;
+        button{
+          padding:8px 36px;
+          border-radius: 5px;
+          font-size: 18px;
+          letter-spacing: 2px;
         }
       }
     }

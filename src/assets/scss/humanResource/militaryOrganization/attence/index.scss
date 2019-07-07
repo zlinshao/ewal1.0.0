@@ -100,7 +100,7 @@
         .table-operate {
           &.no-send {
             color: $colorE33;
-            cursor: pointer;
+            //cursor: pointer;
           }
 
           &.send {
@@ -194,7 +194,7 @@
           .middle-item {
             cursor: pointer;
             margin: 0 30px;
-            width: 10.4%;
+            width: 11%;
             height: 68%;
             @include flex('flex-center');
             text-align: center;

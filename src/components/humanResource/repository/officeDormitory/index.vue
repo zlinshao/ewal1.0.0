@@ -10,16 +10,17 @@
     </div>
 
     <!-- 办公室管理列表页 -->
-    <div class="office-container" v-if="activeIndex == 0">
+    <div class="office-container" v-if="activeIndex == 0" :key="0">
       <el-table
         highlight-current-row
         header-row-class-name="tableHeader"
         height="670px"
         :data="officeList"
         @row-click="handle_office"
+        @row-dblclick="dblclick_office"
       >
         <el-table-column align="center" width="60">
-          <template slot-scope="scope">
+          <template>
             <div class="operation-box">
               <a class="sangedian">
                 <span></span>
@@ -33,34 +34,53 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="房屋地址" align="center" prop="housrAddress"></el-table-column>
-        <el-table-column label="小区地址" align="center" prop="communityAddress"></el-table-column>
-        <el-table-column label="房型" align="center" prop="houseType"></el-table-column>
+
+        <el-table-column label="房屋地址" align="center" prop="house_name"></el-table-column>
+        <el-table-column label="小区地址" align="center" prop="village_name"></el-table-column>
+        <el-table-column label="房型" align="center" prop="house_feature"></el-table-column>
         <el-table-column label="面积" align="center" prop="area"></el-table-column>
-        <el-table-column label="装修" align="center" prop="decorate"></el-table-column>
-        <el-table-column label="房屋类型" align="center" prop="buildingType"></el-table-column>
-        <el-table-column label="照片" align="center" prop="photo"></el-table-column>
-        <el-table-column label="收房价格" align="center" prop="housePrice"></el-table-column>
-        <el-table-column label="人均价格" align="center" prop="perPersonPrice"></el-table-column>
-        <el-table-column label="部门人数" align="center" prop="departmentPersonNum"></el-table-column>
-        <el-table-column label="办公室类型" align="center" prop="officeType"></el-table-column>
-        <el-table-column label="开始时间" align="center" prop="startTime"></el-table-column>
-        <el-table-column label="结束时间" align="center" prop="endTime"></el-table-column>
-        <el-table-column label="片区经理" align="center" prop="areaManager"></el-table-column>
+        <el-table-column label="装修" align="center" prop="decoration"></el-table-column>
+        <el-table-column label="房屋类型" align="center" prop="house_identity"></el-table-column>
+        <el-table-column label="照片" align="center">
+          <template slot-scope="scope">
+            <div @click="showPictureList(scope.row)" class="photo-img"></div>
+          </template>
+        </el-table-column>
+        <el-table-column label="收房价格" align="center" prop="suggest_price"></el-table-column>
+        <el-table-column label="人均价格" align="center" prop="average_price"></el-table-column>
+        <el-table-column label="部门人数" align="center" prop="office_num"></el-table-column>
+        <el-table-column
+          label="办公室类型"
+          align="center"
+          prop="office_type"
+          :formatter="format_office_type"
+        ></el-table-column>
+        <el-table-column label="开始时间" align="center" prop="start_at"></el-table-column>
+        <el-table-column label="结束时间" align="center" prop="end_at"></el-table-column>
+        <el-table-column label="片区经理" align="center" prop="leader_name"></el-table-column>
       </el-table>
     </div>
 
+    <!-- 办公室的高级搜索选项 -->
+    <searchHigh
+      class="searchOffice"
+      :module="searchOffice_visiable"
+      :show-data="officeSearchData"
+      @close="closeSearchOffice"
+    ></searchHigh>
+
     <!-- 宿舍管理列表页 -->
-    <div class="dormitory-container" v-if="activeIndex == 1">
+    <div class="dormitory-container" v-if="activeIndex == 1" :key="1">
       <el-table
         highlight-current-row
         header-row-class-name="tableHeader"
         height="670px"
         :data="dormitoryList"
         @row-click="handle_dormitory"
+        @row-dblclick="dblclick_dormitory"
       >
         <el-table-column align="center" width="60">
-          <template slot-scope="scope">
+          <template>
             <div class="operation-box">
               <a class="sangedian">
                 <span></span>
@@ -75,26 +95,45 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="房屋地址" align="center" prop="housrAddress"></el-table-column>
-        <el-table-column label="小区地址" align="center" prop="communityAddress"></el-table-column>
-        <el-table-column label="房型" align="center" prop="houseType"></el-table-column>
+        <el-table-column label="房屋地址" align="center" prop="house_name"></el-table-column>
+        <el-table-column label="小区地址" align="center" prop="village_name"></el-table-column>
+        <el-table-column label="房型" align="center" prop="house_feature"></el-table-column>
         <el-table-column label="面积" align="center" prop="area"></el-table-column>
-        <el-table-column label="装修" align="center" prop="decorate"></el-table-column>
-        <el-table-column label="房屋类型" align="center" prop="buildingType"></el-table-column>
-        <el-table-column label="照片" align="center" prop="photo"></el-table-column>
-        <el-table-column label="收房价格" align="center" prop="housePrice"></el-table-column>
-        <el-table-column label="人均价格" align="center" prop="perPersonPrice"></el-table-column>
-        <el-table-column label="当前入住人数" align="center" prop></el-table-column>
-        <el-table-column label="剩余床位" align="center" prop></el-table-column>
-        <el-table-column label="开始时间" align="center" prop="startTime"></el-table-column>
-        <el-table-column label="结束时间" align="center" prop="endTime"></el-table-column>
-        <el-table-column label="片区经理" align="center" prop="areaManager"></el-table-column>
-        <el-table-column label="部门" align="center" prop></el-table-column>
+        <el-table-column label="装修" align="center" prop="decoration"></el-table-column>
+        <el-table-column label="房屋类型" align="center" prop="house_identity"></el-table-column>
+        <el-table-column label="照片" align="center">
+          <template slot-scope="scope">
+            <div @click="showPictureList(scope.row)" class="photo-img"></div>
+          </template>
+        </el-table-column>
+        <el-table-column label="收房价格" align="center" prop="suggest_price"></el-table-column>
+        <el-table-column label="人均价格" align="center" prop="average_price"></el-table-column>
+        <el-table-column label="当前入住人数" align="center" prop="live_num">
+          <template slot-scope="scope_live_num">
+            <div
+              class="live_num"
+              @click="getGuest(scope_live_num.row.id,scope_live_num.row.house_id)"
+            >{{scope_live_num.row.live_num}}</div>
+          </template>
+        </el-table-column>
+        <el-table-column label="剩余床位" align="center" prop="last_bed"></el-table-column>
+        <el-table-column label="开始时间" align="center" prop="start_at"></el-table-column>
+        <el-table-column label="结束时间" align="center" prop="end_at"></el-table-column>
+        <el-table-column label="片区经理" align="center" prop="leader_name"></el-table-column>
+        <el-table-column label="部门" align="center" prop="depart_name"></el-table-column>
       </el-table>
     </div>
 
+    <!-- 宿舍的高级搜索选项 -->
+    <searchHigh
+      class="searchDormitory"
+      :module="searchDormitory_visiable"
+      :show-data="DormitorySearchData"
+      @close="closeSearchDormitory"
+    ></searchHigh>
+
     <!-- 下方滑动展示区域 -->
-    <div id="workInfo">
+    <!-- <div id="workInfo">
       <div class="tip-icon"></div>
       <div class="info_container">
         <div class="period_info">
@@ -133,15 +172,27 @@
           >{{item.val}}</li>
         </ul>
       </div>
+    </div>-->
+
+    <!-- 分页,普通搜索-->
+    <div class="page flex-center" :key="'comoonSearch'" v-if="!isHighSearch">
+      <el-pagination
+        :total="commonPages.total"
+        layout="total,jumper,prev,pager,next"
+        :current-page="commonPages.page"
+        :page-size="commonPages.limit"
+        @current-change="current_change_common"
+      ></el-pagination>
     </div>
 
-    <!-- 分页,两个分类共用一个分页 -->
-    <div class="page flex-center">
+    <!-- 分页,高级搜索-->
+    <div class="page flex-center" :key="'highSearch'" v-if="isHighSearch">
       <el-pagination
-        :total="pages.total"
+        :total="highPages.total"
         layout="total,jumper,prev,pager,next"
-        :current-page="pages.currentPage"
-        :page-size="pages.size"
+        :current-page="highPages.page"
+        :page-size="highPages.limit"
+        @current-change="current_change_high"
       ></el-pagination>
     </div>
 
@@ -175,6 +226,9 @@
             <el-form-item label="部门人数">
               <el-input v-model="addOffice_form.office_num" value="25"></el-input>
             </el-form-item>
+            <el-form-item label="领导">
+              <user-choose title="请选择人员" v-model="addOffice_form.leader_id" num="1"></user-choose>
+            </el-form-item>
             <el-form-item label="开始时间">
               <div class="items-center iconInput">
                 <el-date-picker
@@ -199,14 +253,6 @@
       </div>
     </lj-dialog>
 
-    <!-- 办公室的高级搜索选项 -->
-    <searchHigh
-      class="searchOffice"
-      :module="searchOffice_visiable"
-      :show-data="officeSearchData"
-      @close="closeSearchOffice"
-    ></searchHigh>
-
     <!-- 办公室记录 -->
     <lj-dialog
       :visible="officeRecord_visiable"
@@ -218,48 +264,54 @@
         <div class="dialog_header">
           <h3>办公室记录</h3>
           <div>
-            <span>审批编号: 00001</span>
-            <span>申请人: 张三</span>
-            <span>申请时间: 2019-04-01</span>
+            <span>审批编号: {{rowData.id}}</span>
+            <span>申请人: {{rowData.applicant.name}}</span>
+            <span>申请时间: {{rowData.created_at}}</span>
           </div>
         </div>
         <ul class="basicInfo">
           <li>
-            <span>房屋地址</span>范德萨发达
+            <span>房屋地址</span>
+            {{rowData.house_name}}
           </li>
           <li>
-            <span>办公室类型</span>豆腐干地方
+            <span>办公室类型</span>
+            {{rowData.office_type===1?"临时":"正式"}}
           </li>
           <li>
-            <span>小区地址</span>公司的故事
+            <span>小区地址</span>
+            {{rowData.village_name}}
           </li>
           <li>
-            <span>片区经理</span>的风格
+            <span>片区经理</span>
+            {{rowData.leader_name}}
           </li>
           <li>
-            <span>房型</span>重新
+            <span>房型</span>
+            {{rowData.house_feature}}
           </li>
           <li>
-            <span>部门</span>梵蒂冈地方
+            <span>部门</span>
+            {{rowData.depart_name}}
           </li>
         </ul>
         <div class="dialog_body">
           <el-timeline>
-            <!-- <el-timeline-item v-for="(activity, index) in timeLines" :key="index"> -->
-            <el-timeline-item>
+            <el-timeline-item v-for="(operator, index) in rowData.operator_log" :key="index">
+              <!-- <el-timeline-item> -->
               <div class="timeLines-detail-box">
                 <div class="txt">
-                  <p>2019-04-01 张一</p>
-                  <p>开始时间：2019-04-01 创建办公室</p>
-                  <p>备注：123456</p>
+                  <p>{{operator.operate_time}} {{operator.operator_name}}</p>
+                  <p>开始时间:{{operator.operate_content.start_at}} {{operator.operate_content.content}}</p>
+                  <p>备注：{{operator.remarks}}</p>
                 </div>
-                <div class="merge" @click="officeRecordMerge_visiable=true">修改</div>
+                <div class="merge" @click="officeRecordMerge_fun(operator,rowData.id)">修改</div>
               </div>
             </el-timeline-item>
           </el-timeline>
         </div>
         <div class="dialog_footer">
-          <el-button type="danger" size="small">确定</el-button>
+          <el-button type="danger" size="small" @click="officeRecord_visiable = false">确定</el-button>
           <el-button type="info" size="small" @click="officeRecord_visiable = false">取消</el-button>
         </div>
       </div>
@@ -278,27 +330,27 @@
         </div>
         <div class="dialog_body">
           <el-form ref="officeRecordMerge_form" :model="officeRecordMerge_form" label-width="80px">
-            <el-form-item label="开始时间">
+            <el-form-item label="开始时间" v-if="officeRecordMerge_form.start_at">
               <el-date-picker
-                v-model="officeRecordMerge_form.starttime"
+                v-model="officeRecordMerge_form.start_at"
                 type="date"
                 placeholder="选择日期"
               ></el-date-picker>
             </el-form-item>
-            <el-form-item label="取消时间">
+            <el-form-item label="取消时间" v-if="officeRecordMerge_form.end_at">
               <el-date-picker
-                v-model="officeRecordMerge_form.canceltime"
+                v-model="officeRecordMerge_form.end_at"
                 type="date"
                 placeholder="选择日期"
               ></el-date-picker>
             </el-form-item>
             <el-form-item label="备注">
-              <el-input type="textarea" v-model="officeRecordMerge_form.desc"></el-input>
+              <el-input type="textarea" v-model="officeRecordMerge_form.remarks"></el-input>
             </el-form-item>
           </el-form>
         </div>
         <div class="dialog_footer">
-          <el-button type="danger" size="small">确定</el-button>
+          <el-button type="danger" size="small" @click="officeRecordMerge_fun_confirm">确定</el-button>
           <el-button type="info" size="small" @click="officeRecordMerge_visiable = false">取消</el-button>
         </div>
       </div>
@@ -318,9 +370,9 @@
         <div class="dialog_body">
           <el-form ref="cancelOffice_form" :model="cancelOffice_form" label-width="80px">
             <el-form-item label="房屋地址">
-              <el-input readonly placeholder="获取的房屋地址"></el-input>
+              <el-input readonly v-model="cancelOffice_form.house_name"></el-input>
             </el-form-item>
-            <el-form-item label="开始时间">
+            <el-form-item label="取消时间">
               <el-date-picker
                 v-model="cancelOffice_form.end_at"
                 type="date"
@@ -354,7 +406,8 @@
         <div class="dialog_main flex-center borderNone">
           <el-form label-width="110px" :model="changeOfficeInfo_form">
             <el-form-item label="请选择房屋">
-              <house-community :style="{width:100+'%'}" @getHouseIdName="getHouseId_change_office"></house-community>
+              <!-- <house-community :style="{width:100+'%'}" @getHouseIdName="getHouseId_change_office"></house-community> -->
+              <el-input v-model="changeOfficeInfo_form.house_name" readonly></el-input>
             </el-form-item>
             <el-form-item label="办公室类型">
               <div class="items-center iconInput">
@@ -368,14 +421,14 @@
               <org-choose title="请选择部门" v-model="changeOfficeInfo_form.depart_id"></org-choose>
             </el-form-item>
             <el-form-item label="部门人数">
-              <el-input v-model="changeOfficeInfo_form.office_num" value="25"></el-input>
+              <el-input v-model="changeOfficeInfo_form.office_num"></el-input>
             </el-form-item>
             <el-form-item label="开始时间">
               <div class="items-center iconInput">
                 <el-date-picker
                   type="date"
                   placeholder="选择日期"
-                  v-model="changeOfficeInfo_form.start_at"
+                  v-model="changeOfficeInfo_form.start_time"
                   value-format="yyyy-MM-dd"
                 ></el-date-picker>
               </div>
@@ -415,12 +468,20 @@
                 <el-input v-model="addDormitory_form.bed_num" value="11"></el-input>
               </div>
             </el-form-item>
+            <el-form-item label="部门">
+              <org-choose title="请选择部门" v-model="addDormitory_form.depart_id"></org-choose>
+            </el-form-item>
             <el-form-item label="片区经理">
               <user-choose title="请选择人员" v-model="addDormitory_form.leader_id" num="1"></user-choose>
             </el-form-item>
             <el-form-item label="开始时间">
               <div class="items-center iconInput">
-                <el-date-picker type="date" placeholder="选择日期" v-model="addDormitory_form.start_at"></el-date-picker>
+                <el-date-picker
+                  type="date"
+                  placeholder="选择日期"
+                  v-model="addDormitory_form.start_at"
+                  value-format="yyyy-MM-dd"
+                ></el-date-picker>
               </div>
             </el-form-item>
             <el-form-item label="备注">
@@ -451,10 +512,10 @@
         <div class="dialog_body">
           <el-form ref="cancelDormitory_form" :model="cancelDormitory_form" label-width="100px">
             <el-form-item label="房屋地址">
-              <el-input placeholder="获取的房屋地址" readonly></el-input>
+              <el-input placeholder="获取的房屋地址" readonly v-model="cancelDormitory_form.house_name"></el-input>
             </el-form-item>
             <el-form-item label="当前入住人数">
-              <el-input placeholder="获取的入住人数" readonly></el-input>
+              <el-input placeholder="获取的入住人数" readonly v-model="cancelDormitory_form.live_num"></el-input>
             </el-form-item>
             <el-form-item label="取消时间">
               <el-date-picker
@@ -487,48 +548,54 @@
         <div class="dialog_header">
           <h3>宿舍记录</h3>
           <div>
-            <span>审批编号: 00001</span>
-            <span>申请人: 张三</span>
-            <span>申请时间: 2019-04-01</span>
+            <span>审批编号: {{rowData.id}}</span>
+            <span>申请人: {{rowData.applicant.name}}</span>
+            <span>申请时间: {{rowData.created_at}}</span>
           </div>
         </div>
         <ul class="basicInfo">
           <li>
-            <span>房屋地址</span>范德萨发达
+            <span>房屋地址</span>
+            {{rowData.house_name}}
           </li>
           <li>
-            <span>当前入住人数</span>3
+            <span>当前入住人数</span>
+            {{rowData.live_num}}
           </li>
           <li>
-            <span>小区地址</span>公司的故事
+            <span>小区地址</span>
+            {{rowData.village_name}}
           </li>
           <li>
-            <span>剩余床位数</span>1
+            <span>剩余床位数</span>
+            {{rowData.last_bed}}
           </li>
           <li>
-            <span>房型</span>重新
+            <span>房型</span>
+            {{rowData.house_feature}}
           </li>
           <li>
-            <span>片区经理</span>自诩大多数的
+            <span>片区经理</span>
+            {{rowData.leader_name}}
           </li>
         </ul>
         <div class="dialog_body">
           <el-timeline>
-            <!-- <el-timeline-item v-for="(activity, index) in timeLines" :key="index"> -->
-            <el-timeline-item>
+            <el-timeline-item v-for="(operator, index) in rowData.operator_log" :key="index">
+              <!-- <el-timeline-item> -->
               <div class="timeLines-detail-box">
                 <div class="txt">
-                  <p>2019-04-01 张一</p>
-                  <p>开始时间：2019-04-01 创建宿舍</p>
-                  <p>备注：123456</p>
+                  <p>{{operator.operate_time}} {{operator.operator_name}}</p>
+                  <p>开始时间：{{operator.operate_content.start_at}} {{operator.operate_content.content}}</p>
+                  <p>备注：{{operator.remarks}}</p>
                 </div>
-                <div class="merge" @click="dormitoryRecordMerge_visiable=true">修改</div>
+                <div class="merge" @click="dormitoryRecordMerge_fun(operator,rowData.id)">修改</div>
               </div>
             </el-timeline-item>
           </el-timeline>
         </div>
         <div class="dialog_footer">
-          <el-button type="danger" size="small">确定</el-button>
+          <el-button type="danger" size="small" @click="dormitoryRecord_visiable = false">确定</el-button>
           <el-button type="info" size="small" @click="dormitoryRecord_visiable = false">取消</el-button>
         </div>
       </div>
@@ -551,41 +618,41 @@
             :model="dormitoryRecordMerge_form"
             label-width="80px"
           >
-            <el-form-item label="开始时间">
+            <el-form-item label="开始时间" v-if="dormitoryRecordMerge_form.start_at">
               <el-date-picker
-                v-model="dormitoryRecordMerge_form.starttime"
+                v-model="dormitoryRecordMerge_form.start_at"
                 type="date"
                 placeholder="选择日期"
               ></el-date-picker>
             </el-form-item>
-            <el-form-item label="取消时间">
+            <el-form-item label="取消时间" v-if="dormitoryRecordMerge_form.end_at">
               <el-date-picker
-                v-model="dormitoryRecordMerge_form.canceltime"
+                v-model="dormitoryRecordMerge_form.end_at"
                 type="date"
                 placeholder="选择日期"
               ></el-date-picker>
             </el-form-item>
-            <el-form-item label="入住时间">
+            <el-form-item label="入住时间" v-if="dormitoryRecordMerge_form.live_time">
               <el-date-picker
-                v-model="dormitoryRecordMerge_form.ruzhu"
+                v-model="dormitoryRecordMerge_form.live_time"
                 type="date"
                 placeholder="选择日期"
               ></el-date-picker>
             </el-form-item>
-            <el-form-item label="离宿时间">
+            <el-form-item label="离宿时间" v-if="dormitoryRecordMerge_form.out_time">
               <el-date-picker
-                v-model="dormitoryRecordMerge_form.lisultime"
+                v-model="dormitoryRecordMerge_form.out_time"
                 type="date"
                 placeholder="选择日期"
               ></el-date-picker>
             </el-form-item>
             <el-form-item label="备注">
-              <el-input type="textarea" v-model="dormitoryRecordMerge_form.desc"></el-input>
+              <el-input type="textarea" v-model="dormitoryRecordMerge_form.remarks"></el-input>
             </el-form-item>
           </el-form>
         </div>
         <div class="dialog_footer">
-          <el-button type="danger" size="small">确定</el-button>
+          <el-button type="danger" size="small" @click="dormitoryRecordMerge_fun_confirm">确定</el-button>
           <el-button type="info" size="small" @click="dormitoryRecordMerge_visiable = false">取消</el-button>
         </div>
       </div>
@@ -609,14 +676,20 @@
             label-width="100px"
           >
             <el-form-item label="房屋地址">
-              <el-input placeholder="获取的房屋地址" readonly></el-input>
+              <el-input readonly v-model="add_dormitory_member_form.house_name"></el-input>
             </el-form-item>
             <el-form-item label="当前入住人数">
-              <el-input placeholder="获取的入住人数" readonly></el-input>
+              <el-input readonly v-model="add_dormitory_member_form.live_num"></el-input>
             </el-form-item>
-            <el-form-item label="取消时间">
+            <el-form-item label="剩余床位">
+              <el-input readonly v-model="add_dormitory_member_form.last_bed"></el-input>
+            </el-form-item>
+            <el-form-item label="人员姓名">
+              <user-choose title="请选择人员" v-model="add_dormitory_member_form.guest_ids" width="420"></user-choose>
+            </el-form-item>
+            <el-form-item label="入住时间">
               <el-date-picker
-                v-model="add_dormitory_member_form.end_at"
+                v-model="add_dormitory_member_form.live_time"
                 type="date"
                 placeholder="选择日期"
                 value-format="yyyy-MM-dd"
@@ -692,18 +765,18 @@
             <li>操作</li>
           </ul>
           <dl>
-            <dd>
-              <span>反对犯得上</span>
-              <span>756756</span>
-              <span>2019.4.76</span>
+            <dd v-for="(guest,index) in guestList.list" :key="index">
+              <span>{{guest.guest_name}}</span>
+              <span>{{guest.id}}</span>
+              <span>{{guest.live_time}}</span>
               <span>
-                <el-button type="danger" plain size="small">离宿</el-button>
+                <el-button type="danger" plain size="small" @click="guestLeave(guest)">离宿</el-button>
               </span>
             </dd>
           </dl>
         </div>
         <div class="dialog_footer">
-          <el-button type="danger" size="small" @click="changeDormitoryInfo_fun">确定</el-button>
+          <el-button type="danger" size="small" @click="dormitory_member_list_visiable=false">确定</el-button>
           <el-button type="info" size="small" @click="dormitory_member_list_visiable=false">取消</el-button>
         </div>
       </div>
@@ -727,45 +800,51 @@
             label-width="80px"
           >
             <el-form-item label="人员姓名">
-              <el-input type="text" readonly v-model="dormitory_member_leave_form.name"></el-input>
+              <el-input type="text" readonly v-model="dormitory_member_leave_form.guest_name"></el-input>
             </el-form-item>
             <el-form-item label="离宿时间">
               <el-date-picker
-                v-model="dormitory_member_leave_form.lisultime"
+                v-model="dormitory_member_leave_form.out_time"
                 type="date"
                 placeholder="选择日期"
+                value-format="yyyy-MM-dd"
               ></el-date-picker>
             </el-form-item>
             <el-form-item label="备注">
-              <el-input type="textarea" v-model="dormitory_member_leave_form.remark"></el-input>
+              <el-input type="textarea" v-model="dormitory_member_leave_form.remarks"></el-input>
             </el-form-item>
           </el-form>
         </div>
         <div class="dialog_footer">
-          <el-button type="danger" size="small" @click="dormitory_member_leave_fun">确定</el-button>
+          <el-button type="danger" size="small" @click="guestLeave_confirm">确定</el-button>
           <el-button type="info" size="small" @click="dormitory_member_leave_visiable=false">取消</el-button>
         </div>
       </div>
     </lj-dialog>
 
-    <!-- 宿舍的高级搜索选项 -->
-    <searchHigh
-      class="searchDormitory"
-      :module="searchDormitory_visiable"
-      :show-data="DormitorySearchData"
-      @close="closeSearchDormitory"
-    ></searchHigh>
+    <lj-dialog
+      :visible="imgSlider_visiable"
+      :size="{width: 700 + 'px',height: 400 + 'px'}"
+      @close="imgSlider_visiable = false"
+      class="imgSlider"
+    >
+      <imgSlider :arr="imgData"></imgSlider>
+    </lj-dialog>
   </div>
 </template>
 
 <script>
 import LjDialog from "../../../common/lj-dialog.vue";
+import imgSlider from "../../../common/lightweightComponents/ImgSlider.vue";
 import LjUpload from "../../../common/lightweightComponents/lj-upload.vue";
 import UserChoose from "../../../common/lightweightComponents/UserChoose";
 import OrgChoose from "../../../common/lightweightComponents/OrgChoose";
 import searchHigh from "../../../common/searchHigh.vue";
 import { constants } from "os";
-import { officeHightSearch,dormitoryHightSearch} from '../../../../assets/js/allSearchData.js';
+import {
+  officeHightSearch,
+  dormitoryHightSearch
+} from "../../../../assets/js/allSearchData.js";
 export default {
   name: "index",
   components: {
@@ -773,7 +852,8 @@ export default {
     LjUpload,
     UserChoose,
     OrgChoose,
-    searchHigh
+    searchHigh,
+    imgSlider
   },
   props: {
     addOffice_visiable: {
@@ -812,7 +892,8 @@ export default {
         depart_id: "", //部门id
         office_num: "", //部门人数
         start_at: "", //开始时间
-        remarks: "" //备注
+        remarks: "", //备注
+        leader_id: ""
       },
       // 新增宿舍的表单
       addDormitory_form: {
@@ -822,89 +903,23 @@ export default {
         bed_num: "", //床位
         start_at: "",
         remarks: "",
-        operate_type: 1
+        operate_type: 1,
+        depart_id: ""
       },
-      // 办公室详情的数据
-      officeList: [
-        {
-          housrAddress: "1",
-          communityAddress: "2",
-          houseType: "3",
-          area: "4",
-          decorate: "5",
-          buildingType: "5",
-          photo: "6",
-          housePrice: "7",
-          perPersonPrice: "8",
-          departmentPersonNum: "9",
-          officeType: "10",
-          startTime: "11",
-          endTime: "12",
-          areaManager: "13"
-        },
-        {
-          housrAddress: "32131",
-          communityAddress: "656",
-          houseType: "787",
-          area: "fd54",
-          decorate: "bv87",
-          buildingType: "g3",
-          photo: "6fdgf",
-          housePrice: "776575gfd",
-          perPersonPrice: "8dfsad",
-          departmentPersonNum: "9fdsfsd",
-          officeType: "10fdgd",
-          startTime: "11edas",
-          endTime: "12dasdag",
-          areaManager: "13jh"
-        }
-      ],
-      // 宿舍详情的数据
-      dormitoryList: [
-        {
-          housrAddress: "1",
-          communityAddress: "2",
-          houseType: "3",
-          area: "4",
-          decorate: "5",
-          buildingType: "5",
-          photo: "6",
-          housePrice: "7",
-          perPersonPrice: "8",
-          departmentPersonNum: "9",
-          officeType: "10",
-          startTime: "11",
-          endTime: "12",
-          areaManager: "13"
-        },
-        {
-          housrAddress: "32131",
-          communityAddress: "656",
-          houseType: "787",
-          area: "fd54",
-          decorate: "bv87",
-          buildingType: "g3",
-          photo: "6fdgf",
-          housePrice: "776575gfd",
-          perPersonPrice: "8dfsad",
-          departmentPersonNum: "9fdsfsd",
-          officeType: "10fdgd",
-          startTime: "11edas",
-          endTime: "12dasdag",
-          areaManager: "13jh"
-        }
-      ],
-      // 控制取消办公室显示
+      // 办公室列表的数据
+      officeList: [],
+      // 宿舍列表的数据
+      dormitoryList: [],
+      // 控制取消办公室模态框显示
       cancelOffice_visiable: false,
       // 取消办公室的表单信息
       cancelOffice_form: {
-        operate_type: 4,
-        id: "", //根据列表传入
-        house_type: "", //根据列表传入,也可以写死
         end_at: "",
-        remarks: ""
+        remarks: "",
+        house_name: "",
+        id: ""
       },
-      // 取消宿舍的显示
+      // 控制取消宿舍的模态框显示
       cancel_dormitory_visiable: false,
       // 取消宿舍的表单信息
       cancelDormitory_form: {
@@ -912,110 +927,106 @@ export default {
         end_at: "",
         remarks: ""
       },
-      // 控制添加宿舍人员显示
+      // 控制添加宿舍人员模态框显示
       add_dormitory_member_visiable: false,
-      // 控制添加宿舍人员的表单
+      // 添加宿舍人员的表单
       add_dormitory_member_form: {},
-      // 控制更改办公室信息显示
+      // 控制更改办公室信息模态框显示
       changeOfficeInfo_visiable: false,
       // 更改办公室信息的表单
       changeOfficeInfo_form: {
-        house_type: 1, //房屋类型（办公室还是宿舍）
+        // house_type: 1, //房屋类型（办公室还是宿舍）
         house_id: "", //房屋id
+        id: "",
         office_type: "", //办公室类型
-        operate_type: 1, //操作类型
+        // operate_type: 1, //操作类型
         depart_id: "", //部门id
+        leader_id: "",
         office_num: "", //部门人数
-        start_at: "", //开始时间
+        start_time: "", //开始时间
         remarks: "" //备注
       },
-      // 控制更改宿舍信息的修改显示
+      // 控制更改宿舍信息的模态框显示
       changeDormitoryInfo_visiable: false,
+      // 修改宿舍信息的表单
       changeDormitoryInfo_form: {
         house_id: "",
         bed_num: "",
         leader_id: "",
-        remarks: ""
+        remarks: "",
+        id: ""
       },
-      // 控制办公室记录
+      // 控制办公室记录模态框显示
       officeRecord_visiable: false,
       // 控制办公室记录中的修改
       officeRecordMerge_visiable: false,
       // 办公室记录中的修改的表单数据
       officeRecordMerge_form: {
-        starttime: "",
-        canceltime: "",
-        desc: ""
+        start_at: "",
+        end_at: "",
+        id: "",
+        remarks: ""
       },
-      // 控制宿舍记录的显示
+      // 控制宿舍记录 模态框的显示
       dormitoryRecord_visiable: false,
       // 控制宿舍记录中的修改
       dormitoryRecordMerge_visiable: false,
       dormitoryRecordMerge_form: {
-        starttime: "",
-        canceltime: "",
-        desc: ""
+        start_at: "",
+        end_at: "",
+        id: "",
+        remarks: "",
+        live_time: "", //入住时间
+        out_time: "" //离宿时间
       },
-      // 控制宿舍入住人员详情的显示
+      // 控制宿舍入住人员详情模态框的显示
       dormitory_member_list_visiable: false,
-      // 控制确认离宿显示
+      // 控制确认离宿模态框显示
       dormitory_member_leave_visiable: false,
-      dormitory_member_leave_form: {},
+      // 确认离开宿的表单
+      dormitory_member_leave_form: {
+        house_id: "",
+        guest_ids: [],
+        out_time: "",
+        remarks: ""
+      },
       // 办公室高级搜索的表单
-      // searchOffice_form: {
-      //   where: "",
-      //   leader_id: "",
-      //   depart_id: "",
-      //   priceMin: "",
-      //   priceMax: "",
-      //   start_time: "",
-      //   end_time: "",
-      //   type: ""
-      // },
       officeSearchData: officeHightSearch,
-      // 宿舍高级搜索的data
+      // 宿舍高级搜索的表单
       DormitorySearchData: dormitoryHightSearch,
+      // 控制图表
       showCharts: false,
+      // 图标分类
       periodChoosed: 0,
       // 分页信息
-      pages: {
-        currentPage: 1,
-        size: 8,
-        total: 20
+      commonPages: {
+        page: 1,
+        limit: 8,
+        total: 0
       },
-      // 时间线的数据
-      timeLines: [
-        {
-          //   "id": 231,
-          //   "operator_id": 2876,
-          //   "operator_name": "刘钦崇",
-          //   "depart_name": "南京三区一组",
-          //   "depart_id": 453,
-          //   "operate_content": "{\"guests\": [], \"content\": \"添加人员\"}",
-          //   "dorm_id": 147,
-          //   "operate_time": "2018-11-15",
-          //   "operate_type": 2,
-          //   "remarks": "阿斯蒂芬",
-          //   "deleted_at": null
-          // },
-          // {
-          //   "id": 232,
-          //   "operator_id": 2876,
-          //   "operator_name": "刘钦崇",
-          //   "depart_name": "南京三区一组",
-          //   "depart_id": 453,
-          //   "operate_content": "{\"content\": \"更新宿舍\"}",
-          //   "dorm_id": 147,
-          //   "operate_time": "2018-11-15",
-          //   "operate_type": 5,
-          //   "remarks": "发多少",
-          //   "deleted_at": null
+      highPages: {
+        page: 1,
+        limit: 8,
+        total: 0
+      },
+      isHighSearch: false,
+      // 具体一行的数据
+      rowData: {
+        applicant: {
+          name: ""
         }
-      ]
+      },
+      // 控制图片模态框显示
+      imgSlider_visiable: false,
+      // 图片的数据
+      imgData: {},
+      // 入住人员数据
+      guestList: {}
     };
   },
   mounted() {
     this.$emit("officeDormitoryChoose", this.activeIndex);
+    this.getOfficeList_fun();
   },
   watch: {
     activeIndex() {
@@ -1025,6 +1036,22 @@ export default {
   methods: {
     changeTab: function(index) {
       this.activeIndex = index;
+      // 切换的时候重置分页
+      this.commonPages = {
+        page: 1,
+        limit: 8,
+        total: 0
+      };
+      this.highPages = {
+        page: 1,
+        limit: 8,
+        total: 0
+      };
+      if (index === 0) {
+        this.getOfficeList_fun();
+      } else if (index === 1) {
+        this.getDormitoryList_fun();
+      }
     },
     changePeriod: function(index) {
       this.periodChoosed = index;
@@ -1035,19 +1062,74 @@ export default {
     closeDomitoryVisiable: function() {
       this.$emit("closeAddDormitory", false);
     },
+    // 办公室高级搜索事件
     closeSearchOffice: function(val) {
-      console.log(val)
       this.$emit("closeSearchOffice", false);
+      // 判断返回的是不是数据对象
+      if (typeof val === "object") {
+        let searchData = JSON.parse(JSON.stringify(val));
+        // 如果选择了开始/结束事件,对时间格式进行调整
+        if ("start_at" in searchData) {
+          searchData.end_at = searchData.start_at[1];
+          searchData.start_at = searchData.start_at[0];
+        }
+        // 如果筛选了领导
+        if ("leader_id" in searchData) {
+          searchData.leader_id = searchData.leader_id[0];
+        }
+        // 如果筛选了部门
+        if ("depart_id" in searchData) {
+          searchData.depart_id = searchData.depart_id[0];
+        }
+        // console.log(searchData);
+        if (Object.keys(searchData).length > 0) {
+          // 有数据就执行高级搜索
+          this.getOfficeList_fun(searchData);
+          this.isHighSearch = true;
+        } else {
+          this.isHighSearch = false;
+          this.getOfficeList_fun();
+        }
+      }
     },
+    // 宿舍高级搜索事件
     closeSearchDormitory: function(val) {
-      console.log(val)
       this.$emit("closeSearchDormitory", false);
+      // 判断返回的是不是数据对象
+      if (typeof val === "object") {
+        let searchData = JSON.parse(JSON.stringify(val));
+        // 如果选择了开始/结束事件,对时间格式进行调整
+        if ("start_at" in searchData) {
+          searchData.end_at = searchData.start_at[1];
+          searchData.start_at = searchData.start_at[0];
+        }
+        // 如果筛选了领导
+        if ("leader_id" in searchData) {
+          searchData.leader_id = searchData.leader_id[0];
+        }
+        // 如果筛选了部门
+        if ("depart_id" in searchData) {
+          searchData.depart_id = searchData.depart_id[0];
+        }
+        // console.log(searchData);
+        if (Object.keys(searchData).length > 0) {
+          // 有数据就执行高级搜索
+          this.getDormitoryList_fun(searchData);
+          this.isHighSearch = true;
+        } else {
+          this.isHighSearch = false;
+          this.getDormitoryList_fun();
+        }
+      }
     },
     // 新增办公室
     addOffice_fun() {
-      console.log("新增办公室", this.addOffice_form);
+      let data = JSON.parse(JSON.stringify(this.addOffice_form));
+      data.depart_id = data.depart_id[0];
+      data.leader_id = data.leader_id[0];
+      console.log("新增办公室", data);
       this.$http
-        .post(`${this.url}/v1.0/market/dormitory/add`, this.addOffice_form)
+        .post(`${this.url}/v1.0/market/dormitory/add`, data)
         .then(res => {
           switch (res.success) {
             case true:
@@ -1055,6 +1137,19 @@ export default {
                 title: "成功",
                 msg: res.message
               });
+              this.getOfficeList_fun();
+              this.closeOfficeVisiable();
+              this.addOffice_form = {
+                house_type: 1,
+                house_id: "",
+                office_type: "",
+                operate_type: 1,
+                depart_id: "",
+                office_num: "",
+                start_at: "",
+                remarks: "",
+                leader_id: ""
+              };
               break;
             default:
               this.$LjMessage("error", {
@@ -1069,9 +1164,15 @@ export default {
     addDormitory_fun() {
       console.log("新增宿舍", this.addDormitory_form);
       // 将宿舍leader_Id数组类型设为int类型
-      this.addDormitory_form.leader_id = this.addDormitory_form.leader_id[0];
+      let data = JSON.parse(JSON.stringify(this.addDormitory_form));
+      if (data.leader_id.length > 0) {
+        data.leader_id = data.leader_id[0];
+      }
+      if (data.depart_id.length > 0) {
+        data.depart_id = data.depart_id[0];
+      }
       this.$http
-        .post(`${this.url}/v1.0/market/dormitory/add`, this.addDormitory_form)
+        .post(`${this.url}/v1.0/market/dormitory/add`, data)
         .then(res => {
           console.log(res);
           switch (res.success) {
@@ -1080,6 +1181,18 @@ export default {
                 title: "成功",
                 msg: res.message
               });
+              this.getDormitoryList_fun();
+              this.closeDomitoryVisiable();
+              this.addDormitory_form = {
+                house_type: 2,
+                house_id: "",
+                leader_id: "",
+                bed_num: "",
+                start_at: "",
+                remarks: "",
+                operate_type: 1,
+                depart_id: ""
+              };
               break;
             default:
               this.$LjMessage("error", {
@@ -1094,6 +1207,78 @@ export default {
     getHouseId_add_office(val) {
       this.addOffice_form.house_id = val.house_id;
     },
+    // 办公室的列表获取
+    getOfficeList_fun(searchData = {}) {
+      this.showLoading(true);
+      // 判断有没有高级搜索的
+      let data = {};
+      if (arguments.length === 0) {
+        data = {
+          house_type: 1,
+          page: this.commonPages.page,
+          limit: this.commonPages.limit
+        };
+      } else {
+        data = Object.assign(
+          {},
+          {
+            house_type: 1,
+            page: this.highPages.page,
+            limit: this.highPages.limit
+          },
+          searchData
+        );
+      }
+      this.$http
+        .get(`${this.url}/v1.0/market/dormitory/list`, data)
+        .then(res => {
+          console.log("办公室列表", res.data);
+          if (this.isHighSearch) {
+            this.highPages.total = res.data.count;
+          } else {
+            this.commonPages.total = res.data.count;
+          }
+          // 渲染具体数据
+          this.officeList = res.data.data;
+          this.showLoading(false);
+        });
+    },
+    // 宿舍的列表获取
+    getDormitoryList_fun(searchData = {}) {
+      this.showLoading(true);
+      // 判断有没有高级搜索的
+      let data = {};
+      if (arguments.length === 0) {
+        data = {
+          house_type: 2,
+          page: this.commonPages.page,
+          limit: this.commonPages.limit
+        };
+      } else {
+        data = Object.assign(
+          {},
+          {
+            house_type: 2,
+            page: this.highPages.page,
+            limit: this.highPages.limit
+          },
+          searchData
+        );
+      }
+      this.$http
+        .get(`${this.url}/v1.0/market/dormitory/list`, data)
+        .then(res => {
+          console.log("宿舍列表", res.data);
+          if (this.isHighSearch) {
+            this.highPages.total = res.data.count;
+          } else {
+            this.commonPages.total = res.data.count;
+          }
+          // 渲染具体数据
+          this.dormitoryList = res.data.data;
+          this.showLoading(false);
+        });
+    },
     // 变更办公室信息获取组件id
     getHouseId_change_office(val) {
       this.changeOfficeInfo_form.house_id = val.house_id;
@@ -1104,67 +1289,432 @@ export default {
     },
     // 变更宿舍获取组件的id
     getHouseId_change_domitory(val) {
-      console.log(val);
       this.changeDormitoryInfo_form.house_id = val.house_id;
     },
     // 取消办公室
     cancelOffice_fun() {
-      console.log("取消办公室", this.cancelOffice_form);
+      this.$http
+        .post(
+          `${this.url}/v1.0/market/dormitory/delete`,
+          this.cancelOffice_form
+        )
+        .then(res => {
+          switch (res.success) {
+            case true:
+              this.$LjMessage("success", {
+                title: "成功",
+                msg: res.message
+              });
+              // 关闭模态框
+              this.cancelOffice_visiable = false;
+              // 更新数据
+              this.getOfficeList_fun();
+              break;
+            default:
+              this.$LjMessage("error", {
+                title: "失败",
+                msg: res.message
+              });
+              break;
+          }
+        });
     },
     // 变更办公室信息
     changeOfficeInfo_fun() {
-      console.log("变更办公室信息", this.changeOfficeInfo_form);
+      let data = JSON.parse(JSON.stringify(this.changeOfficeInfo_form));
+      data.depart_id = data.depart_id[0];
+      console.log("变更办公室信息", data);
+      this.$http
+        .post(`${this.url}/v1.0/market/dormitory/houseUpdate`, data)
+        .then(res => {
+          switch (res.success) {
+            case true:
+              this.$LjMessage("success", {
+                title: "成功",
+                msg: res.message
+              });
+              // 关闭模态框
+              this.changeOfficeInfo_visiable = false;
+              // 重置表单
+              this.changeOfficeInfo_form = {};
+              // 更新数据
+              this.getOfficeList_fun();
+              break;
+            default:
+              this.$LjMessage("error", {
+                title: "失败",
+                msg: res.message
+              });
+              break;
+          }
+        });
     },
     // 变更宿舍信息
     changeDormitoryInfo_fun() {
+      if ("leader_id" in this.changeDormitoryInfo_form) {
+        this.changeDormitoryInfo_form.leader_id = this.changeDormitoryInfo_form.leader_id[0];
+      }
       console.log("变更宿舍信息", this.changeDormitoryInfo_form);
+      this.$http
+        .post(
+          `${this.url}/v1.0/market/dormitory/houseUpdate`,
+          this.changeDormitoryInfo_form
+        )
+        .then(res => {
+          switch (res.success) {
+            case true:
+              this.$LjMessage("success", {
+                title: "成功",
+                msg: res.message
+              });
+              // 关闭模态框
+              this.changeDormitoryInfo_visiable = false;
+              // 重置表单
+              this.changeDormitoryInfo_form = {};
+              // 更新数据
+              this.getDormitoryList_fun();
+              break;
+            default:
+              this.$LjMessage("error", {
+                title: "失败",
+                msg: res.message
+              });
+              break;
+          }
+        });
+    },
+    // 办公室记录修改
+    officeRecordMerge_fun(operator, id) {
+      this.officeRecordMerge_visiable = true;
+      this.officeRecordMerge_form.content = operator.operate_content.content;
+      this.officeRecordMerge_form.end_at = operator.operate_content.end_at;
+      this.officeRecordMerge_form.start_at = operator.operate_content.start_at;
+      this.officeRecordMerge_form.id = id;
+      this.officeRecordMerge_form.remarks = operator.remarks;
+      // console.log(this.officeRecordMerge_form);
+    },
+    // 办公室记录确认修改
+    officeRecordMerge_fun_confirm() {
+      this.$http
+        .post(
+          `${this.url}/v1.0/market/dormitory/remarks`,
+          this.officeRecordMerge_form
+        )
+        .then(res => {
+          switch (res.success) {
+            case true:
+              this.officeRecordMerge_visiable = false;
+              this.$LjMessage("success", {
+                title: "成功",
+                msg: res.message
+              });
+              break;
+            default:
+              this.$LjMessage("error", {
+                title: "失败",
+                msg: res.message
+              });
+              break;
+          }
+        });
+    },
+    // 宿舍记录修改
+    dormitoryRecordMerge_fun(operator, id) {
+      console.log(operator);
+      this.dormitoryRecordMerge_visiable = true;
+      this.dormitoryRecordMerge_form.content = operator.operate_content.content;
+      this.dormitoryRecordMerge_form.end_at = operator.operate_content.end_at;
+      this.dormitoryRecordMerge_form.start_at =
+        operator.operate_content.start_at;
+      this.dormitoryRecordMerge_form.live_time =
+        operator.operate_content.live_time;
+      this.dormitoryRecordMerge_form.out_time =
+        operator.operate_content.out_time;
+      this.dormitoryRecordMerge_form.id = id;
+      this.dormitoryRecordMerge_form.remarks = operator.remarks;
+      // console.log(this.dormitoryRecordMerge_form);
+    },
+    // 宿舍记录确认修改
+    dormitoryRecordMerge_fun_confirm() {
+      this.$http
+        .post(
+          `${this.url}/v1.0/market/dormitory/remarks`,
+          this.dormitoryRecordMerge_form
+        )
+        .then(res => {
+          switch (res.success) {
+            case true:
+              this.dormitoryRecordMerge_visiable = false;
+              this.$LjMessage("success", {
+                title: "成功",
+                msg: res.message
+              });
+              break;
+            default:
+              this.$LjMessage("error", {
+                title: "失败",
+                msg: res.message
+              });
+              break;
+          }
+        });
     },
     // 取消宿舍
     cancelDormitory_fun() {
       console.log("取消宿舍", this.cancelDormitory_form);
+      this.$http
+        .post(
+          `${this.url}/v1.0/market/dormitory/delete`,
+          this.cancelDormitory_form
+        )
+        .then(res => {
+          switch (res.success) {
+            case true:
+              this.$LjMessage("success", {
+                title: "成功",
+                msg: res.message
+              });
+              // 关闭模态框
+              this.cancel_dormitory_visiable = false;
+              // 更新数据
+              this.getDormitoryList_fun();
+              break;
+            default:
+              this.$LjMessage("error", {
+                title: "失败",
+                msg: res.message
+              });
+              break;
+          }
+        });
     },
     // 添加宿舍入住人员
     add_dormitory_member_fun() {
-      console.log("添加宿舍入住人员", this.add_dormitory_member_form);
-    },
-    // 确认离开操作
-    dormitory_member_leave_fun() {
-      console.log("确认离宿操作");
-    },
-    // 办公室高级搜索事件
-    officeSearch_fun(){
-      console.log(this.officeSearchData)
+      let data = Object.assign({}, this.add_dormitory_member_form, {
+        operate_type: 2
+      });
+      console.log("添加宿舍入住人员", data);
+      this.$http
+        .post(`${this.url}/v1.0/market/dormitory/addGuest`, data)
+        .then(res => {
+          switch (res.success) {
+            case true:
+              this.$LjMessage("success", {
+                title: "成功",
+                msg: res.message
+              });
+              // 关闭模态框
+              this.add_dormitory_member_visiable = false;
+              // 更新数据
+              this.getDormitoryList_fun();
+              // 重置表单
+              this.add_dormitory_member_form = {};
+              break;
+            default:
+              this.$LjMessage("error", {
+                title: "失败",
+                msg: res.message
+              });
+              break;
+          }
+        });
     },
     // 处理办公室管理数据列表的点击事件
     // 根据event来判断具体事件
     handle_office(row, column, event) {
-      // console.log(event)
+      console.log(row);
       if (event.target.innerText === "取消办公室") {
-        console.log("取消办公室");
+        // 显示
         this.cancelOffice_visiable = true;
+        // 写入取消办公是的表单数据
+        this.cancelOffice_form.id = row.id;
+        this.cancelOffice_form.house_name = row.house_name;
+        this.cancelOffice_form.end_at = row.end_at;
       } else if (event.target.innerText === "变更信息") {
-        console.log("变更信息");
         this.changeOfficeInfo_visiable = true;
-      } else {
-        // 办公室记录
-        console.log("办公室记录");
-        this.officeRecord_visiable = true;
+        this.changeOfficeInfo_form.house_id = row.house_id;
+        this.changeOfficeInfo_form.house_name = row.house_name;
+        this.changeOfficeInfo_form.id = row.id;
+        this.changeOfficeInfo_form.office_type = row.office_type.toString();
+        this.changeOfficeInfo_form.depart_id = [row.depart_id];
+        this.changeOfficeInfo_form.leader_id = row.leader_id;
+        this.changeOfficeInfo_form.office_num = row.office_num;
+        this.changeOfficeInfo_form.remarks = row.remarks;
+        this.changeOfficeInfo_form.start_time = row.start_at;
       }
+    },
+    // 办公室双击
+    dblclick_office(row) {
+      // 办公室记录
+      this.officeRecord_visiable = true;
+      this.rowData = JSON.parse(JSON.stringify(row));
+      // 获取申请人信息
+      // this.$http
+      //   .get(`${this.url}/v1.0/market/dormitory/detail`, { id: row.id })
+      //   .then(res => {
+      //     switch (res.success) {
+      //       case true:
+      //         this.rowData.applicant=res.data.applicant;
+      //         break;
+      //       default:
+      //         this.$LjMessage("error", {
+      //           title: "失败",
+      //           msg: res.message
+      //         });
+      //         break;
+      //     }
+      //   });
     },
     // 处理宿舍的点击事件
     handle_dormitory(row, column, event) {
       if (event.target.innerText === "添加入住人员") {
         console.log("添加入住人员");
         this.add_dormitory_member_visiable = true;
+        this.add_dormitory_member_form.house_name = row.house_name;
+        this.add_dormitory_member_form.house_id = row.house_id;
+        this.add_dormitory_member_form.live_num = row.live_num;
+        this.add_dormitory_member_form.last_bed = row.last_bed;
       } else if (event.target.innerText === "取消宿舍") {
         console.log("取消宿舍");
         this.cancel_dormitory_visiable = true;
+        this.cancelDormitory_form.house_name = row.house_name;
+        this.cancelDormitory_form.live_num = row.live_num;
+        this.cancelDormitory_form.id = row.id;
+        this.cancelDormitory_form.end_at = row.end_at;
       } else if (event.target.innerText === "变更信息") {
         console.log("变更信息");
         this.changeDormitoryInfo_visiable = true;
-      } else {
-        console.log("宿舍记录");
-        this.dormitoryRecord_visiable = true;
+        this.changeDormitoryInfo_form.id = row.id;
+      }
+    },
+    // 宿舍双击
+    dblclick_dormitory(row) {
+      console.log("宿舍记录");
+      this.dormitoryRecord_visiable = true;
+      this.rowData = JSON.parse(JSON.stringify(row));
+    },
+    // 格式化办公室类型
+    format_office_type(row, column, cellValue, index) {
+      switch (cellValue) {
+        case 1:
+          return "临时";
+          break;
+        case 2:
+          return "正式";
+          break;
+      }
+    },
+    // 显示具体的图片
+    showPictureList(row) {
+      this.$http
+        .get(`${this.url}/v1.0/market/dormitory/detail`, { id: row.id })
+        .then(res => {
+          switch (res.success) {
+            case true:
+              this.imgData = Object.values(res.data.album);
+              // 如果有图
+              if (this.imgData.length > 0) {
+                this.imgSlider_visiable = true;
+              } else {
+                // 如果没图
+                this.$LjMessage("error", {
+                  title: "失败",
+                  msg: "暂无图片"
+                });
+              }
+              break;
+            default:
+              this.$LjMessage("error", {
+                title: "失败",
+                msg: res.message
+              });
+              break;
+          }
+        });
+    },
+    // 获取入住人员列表
+    getGuest(id, house_id) {
+      // 显示入住人员详情
+      this.dormitory_member_list_visiable = true;
+      this.$http
+        .get(`${this.url}/v1.0/market/dormitory/detail`, { id: id })
+        .then(res => {
+          switch (res.success) {
+            case true:
+              this.$set(this.guestList, "list", res.data.guest);
+              this.guestList.house_id = house_id;
+              break;
+            default:
+              this.$LjMessage("error", {
+                title: "失败",
+                msg: res.message
+              });
+              break;
+          }
+        });
+    },
+    // 员工离开宿舍
+    guestLeave(guest) {
+      this.dormitory_member_leave_visiable = true;
+      this.dormitory_member_leave_form.guest_name = guest.guest_name;
+      this.dormitory_member_leave_form.house_id = this.guestList.house_id;
+      this.dormitory_member_leave_form.guest_ids = [guest.guest_id];
+    },
+    // 确认离开宿舍
+    guestLeave_confirm() {
+      let data = Object.assign(
+        {},
+        {
+          operate_type: 3
+        },
+        this.dormitory_member_leave_form
+      );
+      // console.log(data);
+      this.$http
+        .post(`${this.url}/v1.0/market/dormitory/deleteGuest`, data)
+        .then(res => {
+          console.log(res);
+          switch (res.success) {
+            case true:
+              this.dormitory_member_leave_visiable = false;
+              break;
+            default:
+              this.$LjMessage("error", {
+                title: "失败",
+                msg: res.message
+              });
+              break;
+          }
+        });
+    },
+    // 非高级搜索分页事件
+    current_change_common(page) {
+      switch (this.activeIndex) {
+        case 0:
+          // 办公室
+          this.commonPages.page = page;
+          this.getOfficeList_fun();
+          break;
+        case 1:
+          // 宿舍
+          this.commonPages.page = page;
+          this.getDormitoryList_fun();
+          break;
+      }
+    },
+    // 高级搜索分页事件
+    current_change_high(page) {
+      switch (this.activeIndex) {
+        case 0:
+          // 办公室
+          this.highPages.page = page;
+          this.getOfficeList_fun();
+          break;
+        case 1:
+          // 宿舍
+          this.highPages.page = page;
+          this.getDormitoryList_fun();
+          break;
       }
     }
   }
@@ -1174,7 +1724,7 @@ export default {
 <style lang="scss">
 #theme_name.theme1 {
   #officeDormitory {
-    .el-table__body .el-table__row .cell {
+    .el-table__body .el-table__row td:nth-child(1) .cell {
       overflow: initial;
     }
     .el-table__body-wrapper {
@@ -1192,6 +1742,11 @@ export default {
 @mixin childrenImg($m, $n) {
   $url: "../../../../assets/image/humanResource/repository/dataBase/" + $n + "/" +
     $m;
+  @include bgImage($url);
+}
+@mixin childrenImg2($m, $n) {
+  $url: "../../../../assets/image/humanResource/repository/borrowReceive/" + $n +
+    "/" + $m;
   @include bgImage($url);
 }
 @mixin officeImg($m, $n) {
@@ -1216,6 +1771,12 @@ export default {
         li:hover {
           @include officeImg("qxbgs.png", "theme1");
         }
+      }
+    }
+    .office-container,
+    .dormitory-container {
+      .photo-img {
+        @include childrenImg2("tp.png", "theme1");
       }
     }
   }

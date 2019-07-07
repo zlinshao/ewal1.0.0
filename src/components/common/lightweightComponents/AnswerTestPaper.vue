@@ -287,7 +287,6 @@ export default {
         answer
       };
       this.$http.put(`${this.url}train/exam/set/${exam_id}`,params).then(res=> {
-        // debugger
         let that = this;
         if(res.code.endsWith('0')) {
           this.$LjMessage('success',{

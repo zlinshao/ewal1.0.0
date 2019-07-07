@@ -82,6 +82,10 @@
       </div>
     </div>
 
+    <div class="loading2" v-if="all_loading2">
+      <div class="loading2-img"></div>
+    </div>
+
     <!--请求回调-->
     <div class="global_notify" :class="{'notify_show': global_notify.visible}">
       <div class="notify_icon" :class="['notify_icon__' + global_notify.type]"></div>
@@ -155,11 +159,11 @@ export default {
       showPersonal:false,//是否显示个人中心下拉框
 
       modules: [
-        {
+        /*{
           url: '/president',
           title: '总裁办',
           English: 'Presidents',
-        },
+        },*/
         {
           url: '/finance',
           title: '财务中心',
@@ -246,6 +250,9 @@ export default {
     },
     all_loading () {
       return this.$store.state.app.loading;
+    },
+    all_loading2 () {
+      return this.$store.state.app.loading2;
     },
     global_notify () {
       return this.$store.state.app.globalNotify;
@@ -449,6 +456,12 @@ export default {
 
   .icon-personal-center {
     @include notifyImg("personal_center.png", "theme1");
+  }
+
+  .loading2 {
+    .loading2-img {
+      @include notifyImg('loading2.png','theme1')
+    }
   }
 }
 </style>
