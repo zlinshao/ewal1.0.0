@@ -25,7 +25,9 @@
         <!--          <div :class="['icon','icon-'+ btn.btn_icon]"></div>-->
         <!--          <p class="text">{{btn.btn_text}}</p>-->
         <!--        </div>-->
-        <div class="search-btn">
+
+        <!--        高级搜索-->
+        <div class="search-btn" @click='highSearch'>
           <i class='icons icons_search'></i>
         </div>
       </div>
@@ -110,18 +112,28 @@
     </ProcessDetails>
 
     <TransferDialog ref="transferDialog" :row="row"></TransferDialog>
+
+    <!-- 高级搜索 -->
+    <SearchHigh :module.sync="showSearch" :showData="searchHigh"
+                @radio-change="getRadioChange"
+                @close="hiddenModule"/>
+
   </div>
 </template>
 
 <script>
   import ProcessDetails from './ProcessDetails'
   import TransferDialog from './transferDialog';
+  import SearchHigh from '../../common/searchHigh.vue'
+
+  import {officeApprovalHighSearch} from '../../../assets/js/allSearchData.js'
 
   export default {
     name: "approvalList",
     components: {
       ProcessDetails,
-      TransferDialog
+      TransferDialog,
+      SearchHigh
     },
     props: ['tabsData', 'tabKey'],
     watch: {
@@ -145,6 +157,10 @@
     // },
     data() {
       return {
+        /**高级搜索 */
+        showSearch: false, // 高级搜索 显示隐藏
+        searchHigh: _.cloneDeep(officeApprovalHighSearch), // 高级搜索 参数
+        category_options: _.cloneDeep(dicties.category_options),
         row: {},
         urlConfig: globalConfig.approval_sever,
         urlApi: null,
@@ -307,6 +323,24 @@
       }
     },
     methods: {
+      /**高级搜索 */
+      hiddenModule(val) {
+        console.log(val)
+      },
+      /**点击搜索 */
+      highSearch() {
+        this.showSearch = true
+      },
+      /**获取单选的值 */
+      getRadioChange({key, val}) {
+        if (key === 'process_category') {
+          _.forEach(this.searchHigh.data, item => {
+            if (item.keyName === 'processDefinitionKey') {
+              item.options = val === '' ? [] : this.category_options[val]
+            }
+          })
+        }
+      },
       /**格式化列表数据 */
       table_data(data) {
         return data.map(row => {

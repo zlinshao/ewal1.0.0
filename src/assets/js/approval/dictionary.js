@@ -13,7 +13,116 @@ const valueHave = {
   value_2: {0: ''},
 };
 
+// 办公审批 高级搜索 流程名称
+const category_options = {
+  // 人事
+  personnel_options: [
+    {
+      label: '人员需求审批',
+      value: 'HR-ApplyForPersonnelDemand'
+    },
+    {
+      label: '个人异动/调岗',
+      value: 'HR-ApplyForPersonalChange'
+    },
+    {
+      label: '整组调岗/异动',
+      value: 'HR-ApplyForGroupChange'
+    },
+    {
+      label: '转正申请',
+      value: 'HR-ApplyForPositive'
+    },
+    {
+      label: '文职晋升申请',
+      value: 'HR-ApplyForCivilianPromotion'
+    },
+    {
+      label: '离职审批',
+      value: 'HR-ApplyForDimission'
+    },
+    {
+      label: '二次入职审批',
+      value: 'HR-ApplyForSecondEntry'
+    },
+    {
+      label: '花名册使用审批',
+      value: 'HR-ApplyForRoster'
+    },
+    {
+      label: '绝密花名册使用审批',
+      value: 'HR-ApplyForSecretRoster'
+    },
+    {
+      label: '个人信息修改审批',
+      value: 'HR-ApplyForUserInfo'
+    }
+  ],
+  // 人事专用
+  personnel_special_options: [
+    {
+      label: '人事专用',
+      value: 'HR-ApplyForStamp'
+    },
+    {
+      label: '还车贷专用申请',
+      value: 'HR-ApplyForCarLoan'
+    },
+    {
+      label: '薪资调整申请',
+      value: 'HR-ApplyForSalary'
+    }
+  ],
+  // 公告
+  notice_options: [
+    {
+      label: '公告审核审批',
+      value: 'HR-ApplyForAnnouncement'
+    }
+  ],
+  // 行政
+  administration_options: [
+    {
+      label: '用章申请',
+      value: 'HR-ApplyForStamp'
+    },
+    {
+      label: '采购申请',
+      value: 'HR-ApplyForProcurement'
+    },
+    {
+      label: '物品领/借用',
+      value: 'HR-ApplyForReceiveBorrow'
+    },
+    {
+      label: '增加办公室/宿舍申请',
+      value: 'HR-ApplyForAddOfficeDormitory'
+    },
+    {
+      label: '减少办公室/宿舍申请',
+      value: 'HR-ApplyForSubOfficeDormitory'
+    },
+    {
+      label: '住宿申请',
+      value: 'HR-ApplyForLiveDormitory'
+    },
+    {
+      label: '离宿申请',
+      value: 'HR-ApplyForLeaveDormitory'
+    }
+  ],
+  // 其他
+  other_options: [
+    {
+      label: '工作指示',
+      value: 'HR-ApplyForWorkInstructions'
+    }
+  ]
+}
+
 dicties = {
+  // 办公审批 高级搜索 流程名称
+  category_options,
   // 省
   province: {},
   // 市
@@ -263,3 +372,4 @@ dicties = {
   // 协议类型
   pact_type: {1: '延长收房时长', 2: '房东更换银行卡', 3: '调整收房价'},
 };
+
