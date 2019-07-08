@@ -672,6 +672,7 @@
        *  params: isOrigin 是否初始化页码  默认false 不初始化
       **/
       getAttenceList(isOrigin = false) {
+        if(!this.validatePermission('Month-Summary')) return;
         if (isOrigin) {
           this.tableSettingData.attence.params.page = 1;
         }
