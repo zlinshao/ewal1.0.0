@@ -38,7 +38,7 @@
     methods:{
       //时间范围为一周
       changeDate(val){
-        let date=val.getTime() - 3600 * 1000 * 24 * 7;
+        let date=val.getTime() - 3600 * 1000 * 24 * 6;
         this.start_date=this.dateToString(date);
         this.end_date=this.dateToString(val);
         let param={

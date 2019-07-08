@@ -5,7 +5,7 @@ optionColletRent ={
     left: 0,
     right: 0,
     bottom: 10,
-    containLabel: true,
+    containLabel: false,
   },
   tooltip: {
     trigger: 'axis',
@@ -16,6 +16,7 @@ optionColletRent ={
   },
   xAxis: [{
     type: 'category',
+    // boundaryGap : true,
     data: [],
     show:false
   }],
@@ -216,7 +217,8 @@ optionRentChangee = {
     splitLine: {
       lineStyle: {
         type: 'dashed',
-        color:'#6B7298'
+        color:'#6B7298',
+        width:0.5,
       }
     },
   }],
@@ -277,7 +279,8 @@ optionHouseAchieve = {
     splitLine: {
       lineStyle: {
         type: 'dashed',
-        color:'#6B7298'
+        color:'#6B7298',
+        width:0.5,
       }
     },
     scale: true
@@ -445,7 +448,8 @@ optionEntryLeave = {
         show: true,
         lineStyle: {
           type: 'dashed', //设置Y轴刻度为虚线
-          color: '#6B7298'
+          color: '#6B7298',
+          width:0.5,
         }
       },
     },
@@ -463,7 +467,8 @@ optionEntryLeave = {
         show: true,
         lineStyle: {
           type: 'dashed', //设置Y轴刻度为虚线
-          color: '#6B7298'
+          color: '#6B7298',
+          width:0.5,
         }
       },
       inverse: true

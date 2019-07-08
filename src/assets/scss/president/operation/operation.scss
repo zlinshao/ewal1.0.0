@@ -1,0 +1,191 @@
+#operation{
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  //左半部分
+
+  .operation_left{
+    width: 30%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    .date_location{
+      display: flex;
+      justify-content: space-between;
+    }
+    .left_charts{
+      width: 100%;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      //电话
+      .phone{
+        width: 100%;
+        height: 50%;
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 20px;
+        padding:20px 20px 0 20px;
+        .phone_num{
+          display: flex;
+          justify-content: flex-start;
+          margin-left: 10px;
+          p:nth-child(1){
+            margin-right: 50px;
+          }
+        }
+        .phone_echarts{
+          width: 100%;
+          flex: 1;
+          display: flex;
+          justify-content: space-between;
+          margin: 15px 0 20px 10px;
+          #asnswerRateEcharts, #satisfaDegreeEcharts,#oneSoluteEcharts{
+            width: 33%;
+            height: 100%;
+            margin-right: 20px;
+          }
+          #oneSoluteEcharts{
+            margin-right: 0px;
+          }
+        }
+      }
+      //在线满意度
+      .satisfaction{
+        width: 100%;
+        height: 50%;
+        padding:20px 0 0 20px;
+        display: flex;
+        flex-direction: column;
+        .title{
+          margin-bottom: 0px;
+        }
+        .echarts_num{
+          width: 100%;
+          flex: 1;
+          display: flex;
+          justify-content: flex-start;
+          margin-bottom: 40px;
+          #onlineSatisfaEcharts{
+            width: 40%;
+            height: 100%;
+            margin-left: 10px;
+          }
+          .line{
+            display: block;
+            border-left: 1px dashed #00FFFF;
+            margin:0 50px;
+          }
+          .num_info{
+            width: 60%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            .label_num{
+              .num{
+                font-size:40px;
+              }
+            }
+            .label_num:nth-child(3){
+              margin-bottom: 0px;
+            }
+          }
+        }
+      }
+
+    }
+
+  }
+  //中间部分
+  .operation_middle{
+    flex: 1;
+    height: 100%;
+  }
+  //右半部分
+  .operation_right{
+    width: 30%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    .material_audit, .material_return{
+      width: 100%;
+      padding:20px 0 0 20px;
+    }
+    //资料审核
+    .material_audit{
+      height: 30%;
+      margin-bottom: 20px;
+      padding:16px 24px  30px 24px;
+      display: flex;
+      flex-direction: column;
+      #auditPassEcharts{
+        width: 33%;
+        height: 100%;
+      }
+    }
+    //资料回访
+    .material_return{
+      height: 70%;
+      padding:16px 24px ;
+      display: flex;
+      flex-direction: column;
+      .return_total_call{
+        width: 100%;
+        flex:1;
+        //总回访数,拨打次数
+        .return_total{
+          width: 100%;
+          height: 50%;
+          display: flex;
+          flex-direction: column;
+          .num_charts{
+            height: 50%;
+            #totalPassEcharts, #callPassEcharts{
+              width: 33%;
+              height: 100%;
+            }
+          }
+          #returnTotalEcharts,#returnCallEcharts{
+            width: 100%;
+            flex: 1;
+          }
+          //optionReturnTotal:{},        //资料回访:总回访数
+        //optionReturnCall:{},
+        }
+      }
+    }
+     //右边公共样式
+    .num_charts{
+      width: 100%;
+      flex: 1;
+      display: flex;
+      justify-content: space-between;
+      .label_num{
+        width: 33%;
+      }
+    }
+  }
+
+  //公用样式
+  .title{
+    font-size: 18px;
+    color:#00FFFF;
+    margin-bottom: 30px;
+  }
+  .label_num{
+    .label{
+      display: block;
+      font-size:14px;
+      color: #33C8FF;
+    }
+    .num{
+      display: block;
+      font-size:50px;
+      color: #fff;
+    }
+  }
+}

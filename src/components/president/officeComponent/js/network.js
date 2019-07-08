@@ -93,7 +93,8 @@ optionCpu = {
       show: true,
       lineStyle: {
         type: 'dashed', //设置Y轴刻度为虚线
-        color: '#6B7298'
+        color: '#6B7298',
+        width:0.5,
       }
     },
   }],
@@ -158,7 +159,8 @@ optionInter = {
       show: true,
       lineStyle: {
         type: 'dashed', //设置Y轴刻度为虚线
-        color: '#6B7298'
+        color: '#6B7298',
+        width:0.5,
       }
     },
   }],
