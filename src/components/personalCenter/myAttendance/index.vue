@@ -19,15 +19,15 @@
         <div class="calendar-container">
           <calendar :datetime="datetime" lang="en">
             <div :slot="'slot'+item.id" v-for="(item, index) in daysList" :key="index"
-                     class="calendar-days-item" :class="{rest:item.week==0||item.week==6,current:item.today}"
-                >
-                  <div class="days-item-content-container"
-                       :class="{colorE33:item.attendance_data&&item.attendance_data!=='正常'}">
-                    <span class="days-item-content-date">{{item.date}}</span>
-                    <span style="font-size: 13px" v-if="item.attendance_data">{{item.attendance_data}}</span>
+                 class="calendar-days-item" :class="{rest:item.week==0||item.week==6,current:item.today}"
+            >
+              <div class="days-item-content-container"
+                   :class="{colorE33:item.attendance_data&&item.attendance_data!=='正常'}">
+                <span class="days-item-content-date">{{item.date}}</span>
+                <span style="font-size: 13px" v-if="item.attendance_data">{{item.attendance_data}}</span>
 
-                  </div>
               </div>
+            </div>
           </calendar>
         </div>
         <div class="calendar-useless"></div>
@@ -57,127 +57,124 @@
         datetime: new Date(),
         attendanceList: [
           {
-            id:1,
-            tip:'应出勤',
-            value:'31天',
+            id: 1,
+            tip: '应出勤',
+            value: '0天',
           },
           {
-            id:2,
-            tip:'实际出勤',
-            value:'17天',
+            id: 2,
+            tip: '实际出勤',
+            value: '0天',
           },
           {
-            id:3,
-            tip:'迟到次数',
-            value:'0次',
+            id: 3,
+            tip: '迟到次数',
+            value: '0次',
           },
           {
-            id:4,
-            tip:'早退次数',
-            value:'0次',
+            id: 4,
+            tip: '早退次数',
+            value: '0次',
           },
           {
-            id:5,
-            tip:'未签退',
-            value:'2次',
+            id: 5,
+            tip: '未签退',
+            value: '0次',
           },
           {
-            id:6,
-            tip:'旷工',
-            value:'2天',
+            id: 6,
+            tip: '旷工',
+            value: '2天',
           },
           {
-            id:7,
-            tip:'外勤',
-            value:'4天',
+            id: 7,
+            tip: '外勤',
+            value: '0天',
           },
           {
-            id:8,
-            tip:'外出',
-            value:'11天',
+            id: 8,
+            tip: '外出',
+            value: '0天',
           },
           {
-            id:9,
-            tip:'请假',
-            value:'0天',
-          },{
-            id:10,
-            tip:'加班',
-            value:'2天',
-          },{
-            id:11,
-            tip:'出差',
-            value:'0天',
+            id: 9,
+            tip: '请假',
+            value: '0天',
+          }, {
+            id: 10,
+            tip: '加班',
+            value: '0天',
+          }, {
+            id: 11,
+            tip: '出差',
+            value: '0天',
           }
         ],
         attence: {
-                  counts: 0,
-                  params: {
-                          page: 1,
-                          limit: 1000,
-                  },
-                  init() {
-                          this.params.page = 1;
-                          this.params.limit = 5;
-                  },
-                  departmentId: [106],
-                  tableData: [],
+          counts: 0,
+          params: {
+            page: 1,
+            limit: 1000,
+          },
+          init() {
+            this.params.page = 1;
+            this.params.limit = 5;
+          },
+          departmentId: [106],
+          tableData: [],
         },
         formData: [],
         daysList: [],
-      } 
+      }
     },
     mounted() {
       this.getAttenceList();
     },
     watch: {
-      datetime(){
+      datetime() {
         this.getAttenceList()
       }
     },
-    methods:{
+    methods: {
       getAttenceList: function () {
         this.attence.tableData = [];
         let params = {
-          is_on_job: this.attence.isLeave ? 1 : 0,
-          date: this.myUtils.formatDate(new Date(this.datetime),'yyyy-MM-dd hh:mm:ss'),
-          ...this.attence.params,
-          org_id: this.attence.departmentId[0] || 2,
+          date: this.myUtils.formatDate(new Date(this.datetime), 'yyyy-MM'),
         };
-        this.$http.get(`${this.url}attendance/attendance/`,params).then(res => {
-          if (res.code==="20000") {
-            for (let item of res.data.data) {
-              //所有假
-              let shijia = item.attendance[0]?.vacate_data[0] || 0;
-              let bingjia = item.attendance[0]?.vacate_data[1] || 0;
-              let nianjia = item.attendance[0]?.vacate_data[2] || 0;
-              let tiaoxiu = item.attendance[0]?.vacate_data[3] || 0;
-              let hunjia = item.attendance[0]?.vacate_data[4] || 0;
-              let chanjia = item.attendance[0]?.vacate_data[5] || 0;
-              let peichanjia = item.attendance[0]?.vacate_data[6] || 0;
-              let sangjia = item.attendance[0]?.vacate_data[7] || 0;
-              let vacate_count = shijia + bingjia + nianjia + tiaoxiu + hunjia + chanjia + peichanjia + sangjia; //假的总和
-              let attendanceDay = item.attendance[0]?.attendance_day || 0;
-              let jiaban = item.attendance[0]?.overtime_day || 0;
-              this.attendanceList[0].value = `${attendanceDay - jiaban + vacate_count}天` //应出勤
-              this.attendanceList[1].value = `${attendanceDay}天` //实际出勤
-              this.attendanceList[2].value = `${item.attendance[0]?.late_day || 0}次` //迟到
-              // this.attendanceList[3].value = `${}次` //早退
-              this.attendanceList[4].value = `${item.attendance[0]?.not_signed_count[1] || 0}次` //未签退
-              this.attendanceList[5].value = `${item.attendance[0]?.absenteeism_day || 0}天` //旷工
-              // this.attendanceList[6].value = `${}天` //外勤
-              this.attendanceList[7].value = `${item.attendance[0]?.out_time || 0}小时` //外出
-              this.attendanceList[8].value = `${vacate_count}天` //请假
-              this.attendanceList[9].value = `${item.attendance[0]?.overtime_day || 0}天` //加班
-              this.attendanceList[10].value = `${item.attendance[0]?.business_day || 0}天` //出差
-              let obj = {
-                attendance: item.attendance,
-              };
-              this.attence.tableData.push(obj);
-              this.formData = this.attence.tableData[0].attendance[0]?.attendance_data;
-            }
+        let user_id = this.$storage.get('user_info').id;
+        this.$http.get(`${this.url}attendance/attendance/${user_id}`, params).then(res => {
+          if (res.code.toString().endsWith('0')) {
+            let item = res.data;
+            //所有假
+            let shijia = item.attendance[0]?.vacate_data[0] || 0;
+            let bingjia = item.attendance[0]?.vacate_data[1] || 0;
+            let nianjia = item.attendance[0]?.vacate_data[2] || 0;
+            let tiaoxiu = item.attendance[0]?.vacate_data[3] || 0;
+            let hunjia = item.attendance[0]?.vacate_data[4] || 0;
+            let chanjia = item.attendance[0]?.vacate_data[5] || 0;
+            let peichanjia = item.attendance[0]?.vacate_data[6] || 0;
+            let sangjia = item.attendance[0]?.vacate_data[7] || 0;
+            let vacate_count = shijia + bingjia + nianjia + tiaoxiu + hunjia + chanjia + peichanjia + sangjia; //假的总和
+            let attendanceDay = item.attendance[0]?.attendance_day || 0;
+            let jiaban = item.attendance[0]?.overtime_day || 0;
+            this.attendanceList[0].value = `${attendanceDay - jiaban + vacate_count}天`; //应出勤
+            this.attendanceList[1].value = `${attendanceDay}天`;//实际出勤
+            this.attendanceList[2].value = `${item.attendance[0]?.late_day || 0}次`; //迟到
+            // this.attendanceList[3].value = `${}次` //早退
+            this.attendanceList[4].value = `${item.attendance[0]?.not_signed_count[1] || 0}次`; //未签退
+            this.attendanceList[5].value = `${item.attendance[0]?.absenteeism_day || 0}天`;//旷工
+            // this.attendanceList[6].value = `${}天` //外勤
+            this.attendanceList[7].value = `${item.attendance[0]?.out_time || 0}小时`; //外出
+            this.attendanceList[8].value = `${vacate_count}天`; //请假
+            this.attendanceList[9].value = `${item.attendance[0]?.overtime_day || 0}天`; //加班
+            this.attendanceList[10].value = `${item.attendance[0]?.business_day || 0}天`; //出差
+            let obj = {
+              attendance: item.attendance,
+            };
+            this.attence.tableData.push(obj);
+            this.formData = this.attence.tableData[0].attendance[0]?.attendance_data;
           }
-        }).then(()=> {
+        }).then(() => {
           if (new Date(this.datetime)) {
             let daysList = [...this.getPrevMonthRestList(new Date(this.datetime)), ...this.getCurrentMonthList(new Date(this.datetime)), ...this.getNextMonthRestList(new Date(this.datetime))];
             daysList.forEach((item, index) => {
