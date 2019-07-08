@@ -146,7 +146,7 @@
       :disabled='true' :showData='false' :showRelated='true' @close="handleCloseDetail" />
 
     <!-- 添加 修改标记 -->
-    <lj-dialog :visible.sync="mark_visible" :size="{width: 490 + 'px',height: 500 + 'px'}" @close="handleCancelMark">
+    <lj-dialog :visible.sync="mark_visible" :size="{width: 500 + 'px',height: 550 + 'px'}" @close="handleCancelMark">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>{{tagType == 1 ? "添加标记":"修改标记"}}</h3>
@@ -164,6 +164,9 @@
             <el-form-item label="预约时间">
               <el-date-picker format="yyyy-MM-dd" v-model="mark_form.appointment_time" type="datetime"
                 placeholder="请选择"></el-date-picker>
+            </el-form-item>
+            <el-form-item label="处理人">
+              <user-choose v-model="mark_form.receiver" width="360" data-type="int" num="1" title="请选择处理人"></user-choose>
             </el-form-item>
             <el-form-item label="备注信息">
               <el-input v-model="mark_form.remark" type="textarea" placeholder="请输入" :row="6"></el-input>
@@ -302,6 +305,7 @@ export default {
       mark_form: {
         tag_status: 1,
         appointment_time: null,
+        receiver:[],//处理人
         remark: null,
         album: [],
       },
@@ -402,7 +406,7 @@ export default {
             item.keyType='';
             item.title ='';
           }
-        
+
         });
       } else {
         _.forEach(data.data,(item)=>{

@@ -185,12 +185,14 @@
         if (res) {
           this.$http.get(`${this.url}api/auth/user`).then(async res2 => {
             if (res2.success === true) {
+              debugger
               await this.$storage.set('user_info', {
                 id: res2.data.id,
                 name: res2.data.name,
                 org:res2.data.detail?.org||[],
                 position:res2.data.detail?.position||[],
-                avatar: res2.data.detail?.avatar
+                avatar: res2.data.detail?.avatar,
+                position_level: res2.data.detail?.staff?.position_level||null,//职位等级
               });
               this.$bus.emit('photo-url',res2.data.detail?.avatar);
               let that = this;

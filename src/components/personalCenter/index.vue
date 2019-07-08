@@ -11,7 +11,7 @@
             </div>
             <div class="personal-info-name">
               {{$storage.get('user_info').name}}
-              <div class="personal-info-badge"><span>P2</span></div>
+              <div class="personal-info-badge"><span>{{position_level_name}}</span></div>
             </div>
             <div v-show="workType==1" class="personal-info-status" @click="triggerEditWorkStatus" :title="workStatus">
               {{workStatus}}
@@ -108,6 +108,8 @@
             router: 'myKPI',
           },
         ],
+
+        position_level_name: _.find(this.DROPDOWN_CONSTANT.POSITION_LEVEL,{id:this.$storage.get('user_info').position_level})?.name||'P*',
 
         workStatus: '',//工作状态文本
         workStatusEditContent: '',

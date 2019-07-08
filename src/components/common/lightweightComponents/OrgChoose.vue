@@ -5,7 +5,7 @@
       <p v-if="showIcon" class="icons organization"></p>
     </div>
 
-    <DepartOrgan :initial="value" :module="departModule" :organ-data="organData" @close="hiddenOrgan"></DepartOrgan>
+    <DepartOrgan :initial="initial_value" :module="departModule" :organ-data="organData" @close="hiddenOrgan"></DepartOrgan>
   </div>
 </template>
 
@@ -35,7 +35,10 @@
         default() {
           return true;
         }
-      }
+      },
+      dataType: {
+        default: 'array',
+      },
     },
     components: {
       DepartOrgan
@@ -49,12 +52,17 @@
         },// 组织架构配置 选择数量 num
         inputContent: '',
         org_name:[],
-        dropdownListWidth: 320
+        dropdownListWidth: 320,
+        initial_value: null,
       }
     },
     watch: {
       value: {
         handler(val, oldVal) {
+          this.initial_value = val;
+          if(val && !Array.isArray(val)) {
+            val = [val];
+          }
           if (val && val.constructor === Array && val.length > 0) {
             let params = {
               org_id:val
@@ -69,6 +77,14 @@
           }
         },
         immediate: true,
+      },
+      initial_value: {
+        handler(val,oldVal) {
+          if(val && !Array.isArray(val)) {
+            this.initial_value = [val];
+          }
+        },
+        immediate:true,
       },
       width: {
         handler(val, oldVal) {
@@ -95,6 +111,9 @@
         this.departModule = false;
         if (ids !== 'close') {
           this.inputContent = names;
+          if(ids.length == 1 && this.dataType =='int') {
+            ids = ids[0];
+          }
           this.$emit('input', ids);
         }
       },
