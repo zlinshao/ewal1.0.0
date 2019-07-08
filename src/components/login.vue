@@ -1,5 +1,6 @@
 <template>
-  <div id="login">
+  <loginCompanySelect v-if="!showLogin"></loginCompanySelect>
+  <div id="login" v-else>
     <header class="flex-center">
       <span></span>
     </header>
@@ -42,11 +43,15 @@
 
 <script>
   import axios from 'axios';
+  import loginCompanySelect from './login_company_select'
 
   const TIME_REMAIN = 60;//短信验证码时长
 
   export default {
     name: "login",
+    components:{
+      loginCompanySelect
+    },
     data() {
       return {
         url: globalConfig.shield_server,
@@ -60,10 +65,14 @@
           phone: null,//手机号
           ver_code: null,//验证码
         },
+        showLogin:false
       }
     },
     async created() {
       await this.validateScanLogin();
+      if(this.getQueryVariable("companyName")){
+        this.showLogin=true;
+      }
     },
     mounted() {
     },
@@ -245,6 +254,18 @@
           }
         }
       },
+      // 获取url参数，据此判断是否显示选择公司
+      getQueryVariable(variable) {
+        let query = window.location.search.substring(1);
+        let vars = query.split("&");
+        for (var i=0;i<vars.length;i++) {
+          let pair = vars[i].split("=");
+          if(pair[0] == variable){
+            return pair[1];
+          }
+        }
+        return false;
+      }
     },
   }
 </script>

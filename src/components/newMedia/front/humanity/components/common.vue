@@ -42,7 +42,7 @@
         },
         data() {
             return {
-                tabView:'leJiaStars',//组件初始化
+                tabView: 'leJiaStars',//组件初始化
                 showFinMenuList: false,
                 chooseTab: 1,
                 selects: [
@@ -52,8 +52,23 @@
                 ],
             }
         },
+         watch:{
+            //  '$route': 'changeTabs'
+        },
+        mounted(){
+            console.log(' this.$route.query.type5555',  this.$route.query.type)
+            if(this.$route.query.type==1){
+                 this.changeTabs(1,'leJiaStars');
+            }else if(this.$route.query.type==2){
+                 this.changeTabs(2,'goodStaff');
+            }else if(this.$route.query.type==3){
+                 this.changeTabs(3,'birthday');
+            } 
+           
+        },
         methods: {
             changeTabs(id,url) {
+                console.log(' this.$route.query.typevvvvv',  this.$route.query.type)
                 this.chooseTab = id;
                 this.tabView = url;
             },

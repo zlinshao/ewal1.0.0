@@ -320,7 +320,7 @@
   flex-direction: row;
 }
 #theme_name #leJiaStars .star_info .star_info_left {
-  width: 200px;
+  width: 270px;
   height: 100%;
   margin-left: 200px;
   position: relative;
@@ -331,7 +331,7 @@
   border-radius: 50%;
   position: absolute;
   top: 40%;
-  left: 50%;
+  left: 35%;
   transform: translate(-50%, -50%);
 }
 #theme_name #leJiaStars .star_info .star_info_left .star_info_avatar img {
@@ -388,7 +388,7 @@
 #theme_name #leJiaStars .star_info .star_info_right .main_info {
   width: 100%;
   height: 600px;
-  padding-right: 200px;
+  padding-right: 50px;
 }
 #theme_name #leJiaStars .star_info .star_info_right .main_info h5 {
   width: 100%;

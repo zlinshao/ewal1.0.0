@@ -5,9 +5,6 @@
                 <h1>{{this.$route.query.type ===1 ? '热门导读详情':this.$route.query.type ===2 ? '乐伽新闻详情':this.$route.query.type ===3?'公告详情':''}}</h1>
             </div>
         </div>
-
-
-
         <div class="mainList scroll_bar" :style="{'height': this.mainListHeight() + 'px'}">
             <div class="news-title" style="height: 80px">
                 <h3 class="detail-title">
@@ -23,17 +20,17 @@
                                     <div class="detail-box-top">
                                         <h3>{{item.title}}</h3>
                                         <div class="top-icons justify-start">
-                                            <span><i class="view"></i>{{item.view}}</span>
-                                            <span><i class="point"></i>{{item.point}}</span>
-                                            <span><i class="comment"></i>{{item.comment}}</span>
+                                            <span><i class="view"></i>{{item.collect_number}}</span>
+                                            <span><i class="point"></i>{{item.thumbs_up_number}}</span>
+                                            <span><i class="comment"></i>{{item.comment_number}}</span>
                                         </div>
                                     </div>
                                     <div class="detail-box-bottom">
                                         <div class="bottom-left">
-                                            <img src="../../../../../assets/image/newMedia/theme1/avatar.png" alt=""></div>
+                                            <img :src="item.user_id?item.user_id.avatar:''" alt=""></div>
                                         <div class="bottom-right">
-                                            <p><span class="mar-right">{{item.name}}</span></p>
-                                            <p><span class="mar-right">{{item.department}}</span><span>{{item.time}}</span>
+                                            <p><span class="mar-right">{{item.user_id?item.user_id.name:''}}</span></p>
+                                            <p><span class="mar-right">{{item.user_id?item.user_id.org[0].name:''}}</span><span>{{item.created_at}}</span>
                                             </p>
                                         </div>
                                     </div>
@@ -49,7 +46,7 @@
                                 <h1>{{detailData.title}}</h1>
                                 <div class="detail-box-bottom">
                                     <div class="bottom-left"><img
-                                            src="../../../../../assets/image/newMedia/theme1/avatar.png"
+                                            :src="detailData.avatar"
                                             alt=""></div>
                                     <div class="bottom-right">
                                         <p><span class="mar-right">{{detailData.name}}</span></p>
@@ -58,40 +55,38 @@
                                         </p>
                                     </div>
                                 </div>
-                                <p class="desc">{{detailData.desc}}</p>
-                                <div class="middle-img justify-bet">
+                                <!-- <p class="desc">{{detailData.desc}}</p> -->
+                                <!-- <div class="middle-img justify-bet">
                                     <img src="../../../../../assets/image/newMedia/theme1/active.png" alt="">
                                     <img src="../../../../../assets/image/newMedia/theme1/active.png" alt="">
-                                </div>
-                                <p class="content">{{detailData.content}}</p>
+                                </div> -->
+                                <div class="content" v-html="detailData.content"></div>
                             </div>
                             <div class="detail-content-right flex-center">
                                 <div class="right-info-icons">
-                                    <div class="icon-list" @click="comment_visible = true">
-                                        <i class="icon-bg collect-icon"></i>
-                                        <i class="person-number">3213</i>
+                                    <div class="icon-list">
+                                        <i class="icon-bg collect-icon" @click="clickCollect"></i>
+                                        <i class="person-number">{{detailData.collect_number}}</i>
                                     </div>
                                     <div class="icon-list">
-                                        <i class="icon-bg point-icon"></i>
-                                        <i class="person-number">3213</i>
+                                        <i class="icon-bg point-icon" @click="clickGood"></i>
+                                        <i class="person-number">{{detailData.thumbs_up_number}}</i>
                                     </div>
-                                    <div class="icon-list">
+                                    <div class="icon-list" @click="showCommentList">
                                         <i class="icon-bg commit-icon"></i>
-                                        <i class="person-number">312</i>
+                                        <i class="person-number">{{detailData.comment_number}}</i>
                                     </div>
-                                    <div class="icon-list share-navbar">
+                                    <!-- <div class="icon-list share-navbar">
                                     <span class="share-navbar-box flex-center justify-around"
                                           v-if="share_navbar_visible"
-                                          id="div1"
-
-                                    >
+                                          id="div1">
                                         <i class="sina-icon"></i>
                                         <i class="wechat-icon"></i>
                                         <i class="link-icon"></i>
                                     </span>
                                         <i class="icon-bg share-icon" @mouseenter="share_navbar_visible = true"
                                         ></i>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                         </div>
@@ -100,14 +95,17 @@
             </div>
         </div>
 
-
         <!--评论-->
         <lj-dialog :visible="comment_visible" :size="{width: 900 + 'px',height: 600 + 'px'}"
-                   @close="comment_visible = false">
+                   @close="comment_visible = false;commentData=[];commenttotal=0;currentCommentPage=1">
             <div class="dialog_container">
                 <div class="dialog_header justify-bet">
-                    <h3>评论<span>共 <i>56</i> 条评论</span></h3>
-                    <p class="flex-center" @click="edit_comment_visible = true">
+                    <h3>评论<span>共 <i>{{this.commenttotal}}</i> 条评论</span></h3>
+<<<<<<< HEAD
+                    <p class="flex-center" @click="edit_comment_visible = true;parent_id=0;">
+=======
+                    <p class="flex-center" @click="edit_comment_visible = true;parent_id=0;newcomment=''">
+>>>>>>> test0630
                         <i class="write_comment"></i>
                         <span>写评论</span>
                     </p>
@@ -115,47 +113,81 @@
                 <div class="dialog_main">
                     <div class="comment-lists" v-for="(item,index) in commentData" >
                         <div class="comment-left">
-                            <img src="../../../../../assets/image/newMedia/theme1/avatar.png" alt="">
+                            <img :src="item.user_id?item.user_idavatar: ''" alt="">
                         </div>
                         <div class="comment-right">
-                            <h3>{{item.name}}</h3>
+                            <h3>{{item.user_id?item.user_id.name:''}}</h3>
                             <p class="desc">{{item.content}}</p>
+                            <span style="margin-left: 10px">{{ item.created_at }}</span>
                             <div class="bottom-operate">
-                                <p class="check-info"  @click="show_reply(is_show_reply)">查看2条回复</p>
+<<<<<<< HEAD
+                                <!-- <p class="check-info"  @click="show_reply(is_show_reply)">查看{{item.sons_count}}条回复</p> -->
                                 <p class="operate-btn">
-                                    <span class="btn-icon" @click="delete_visible = true"><i></i><span>删除</span></span>
-                                    <span class="btn-icon" @click="reply_visible = true"><i></i><span>回复</span></span>
-                                    <span class="btn-icon" @click="report_visible = true"><i></i><span>举报</span></span>
+                                    <span class="btn-icon" @click="delete_visible = true;currentComment=item;"><i></i><span>删除</span></span>
+                                    <span class="btn-icon" @click="reply_visible = true;currentComment=item;"><i></i><span>回复</span></span>
+                                    <span class="btn-icon" @click="report_visible = true;currentComment=item;"><i></i><span>举报</span></span>
                                 </p>
                             </div>
-                            <!--回复显隐-->
-                            <div class="is_show_comment" v-if="is_show_reply">
-                                <div class="comment_left">
-                                    <img src="../../../../../assets/image/newMedia/theme1/avatar.png" alt="">
-                                </div>
-                                <div class="comment_right">
-                                    <h3>{{item.name}}</h3>
-                                    <p class="desc">{{item.content}}</p>
-                                    <div class="bottom_operate">
-                                        <p class="operate_btn">
-                                            <span class="btn_icon" @click="delete_visible = true"><i></i><span>删除</span></span>
-                                            <span class="btn_icon" @click="reply_visible = true"><i></i><span>回复</span></span>
-                                            <span class="btn_icon" @click="report_visible = true"><i></i><span>举报</span></span>
-                                        </p>
+                            <!-- 回复显隐-->
+                             <div class="is_show_comment" v-if="is_show_reply">
+                              <el-table
+                                :data="item.son"
+                                style="width: 100%">
+                                <el-table-column width="100%">
+                                    <!-- <template slot-scope="scope">
+                                        <div class="comment_left">
+=======
+                                <p class="check-info"  @click="show_reply(item)">查看{{item.sons_count}}条回复</p>
+                                <p class="operate-btn">
+                                    <span class="btn-icon" @click="delete_visible = true;currentComment=item;"><i></i><span>删除</span></span>
+                                    <span class="btn-icon" @click="reply_visible = true;currentComment=item;replyComment=''"><i></i><span>回复</span></span>
+                                    <span class="btn-icon" @click="report_visible = true;currentComment=item;comment_type=[];reportcomment=''"><i></i><span>举报</span></span>
+                                </p>
+                            </div>
+                            <!-- 回复显隐-->
+                             <div class="is_show_comment" v-if="item.is_show_reply">
+                                 <!-- {{item.sons}} -->
+                              <el-table
+                                :data="item.sons"
+                                style="width:700px">
+                                <el-table-column width="700px">
+                                    <template slot-scope="scope">
+                                    <div class="comment_left" style="float:left">
+>>>>>>> test0630
+                                        <img :src="scope.row.user_id?scope.row.user_idavatar: ''" alt="">
                                     </div>
-                                </div>
+                                    <div class="comment_right">
+                                        <h3>{{scope.row.user_id?scope.row.user_id.name:''}}</h3>
+                                        <p class="desc">{{scope.row.content}}</p>
+<<<<<<< HEAD
+                                        <span style="margin-left: 10px">{{ scope.row.date }}</span> -->
+                                    <!-- </template> -->
+=======
+                                        <span style="margin-left: 10px">{{ scope.row.created_at }}</span>
+                                    </div>
+                                    </template>
+>>>>>>> test0630
+                                </el-table-column>
+                                 </el-table>
                             </div>
                         </div>
                     </div>
+                    <el-pagination
+                        @size-change="handleSizeChange"
+                        @current-change="handleCurrentChange"
+                        :current-page.sync="currentCommentPage"
+                        :page-size="commentlimit"
+                        layout="total, prev, pager, next"
+                        :total="commenttotal">
+                    </el-pagination>
                 </div>
             </div>
         </lj-dialog>
-
         <!--写评论-->
         <lj-dialog
                 :visible="edit_comment_visible"
                 :size="{width: 800 + 'px' ,height: 460 + 'px'}"
-                @close="edit_comment_visible = false">
+                @close="edit_comment_visible = false;newcomment=''">
             <div class="dialog_container">
                 <div class="dialog_header">
                     <h3>写评论</h3>
@@ -171,18 +203,17 @@
                                     <span>评论内容</span>
                                 </div>
                                 <div class="item_content">
-                                    <el-input type="textarea" v-model="comment" :rows="8"></el-input>
+                                    <el-input type="textarea" v-model="newcomment" :rows="8"></el-input>
                                 </div>
                             </div>
                         </el-form-item>
                     </el-form>
                 </div>
                 <div class="dialog_footer">
-                    <el-button size="small" type="danger" @click="postReceivable_tag()">发布</el-button>
+                    <el-button size="small" type="danger" @click="postcomment_tag">发布</el-button>
                 </div>
             </div>
         </lj-dialog>
-
         <!--回复-->
         <lj-dialog
                 :visible="reply_visible"
@@ -203,18 +234,17 @@
                                     <span>评论内容</span>
                                 </div>
                                 <div class="item_content">
-                                    <el-input type="textarea" v-model="comment" :rows="8"></el-input>
+                                    <el-input type="textarea" v-model="replyComment" :rows="8"></el-input>
                                 </div>
                             </div>
                         </el-form-item>
                     </el-form>
                 </div>
                 <div class="dialog_footer">
-                    <el-button size="small" type="danger" @click="postReceivable_tag()">发布</el-button>
+                    <el-button size="small" type="danger" @click="replyOk()">发布</el-button>
                 </div>
             </div>
         </lj-dialog>
-
         <!--删除评论-->
         <lj-dialog :visible="delete_visible" :size="{width: 400 + 'px',height: 250 + 'px'}"
                    @close="delete_visible = false">
@@ -231,7 +261,6 @@
                 </div>
             </div>
         </lj-dialog>
-
         <!--举报-->
         <lj-dialog
                 :visible="report_visible"
@@ -269,20 +298,18 @@
                                     <span>举报内容</span>
                                 </div>
                                 <div class="item_content">
-                                    <el-input type="textarea" v-model="comment" :rows="8"></el-input>
+                                    <el-input type="textarea" v-model="reportcomment" :rows="8"></el-input>
                                 </div>
                             </div>
                         </el-form-item>
                     </el-form>
                 </div>
                 <div class="dialog_footer">
-                    <el-button size="small" type="danger" @click="postReceivable_tag()">举报</el-button>
+                    <el-button size="small" type="danger" @click="reportOk()">举报</el-button>
                     <el-button size="small" type="info" @click="report_visible = false">取消</el-button>
                 </div>
             </div>
         </lj-dialog>
-
-
         <!--复制链接-->
         <lj-dialog :visible="link_visible" :size="{width: 400 + 'px',height: 250 + 'px'}"
                    @close="link_visible = false">
@@ -301,12 +328,6 @@
                 </div>
             </div>
         </lj-dialog>
-
-
-
-
-
-
     </div>
 </template>
 
@@ -324,120 +345,61 @@
                 is_show_reply:false,
                 edit_comment_visible:false,
                 delete_visible:false,
+                currentComment: {},
                 report_visible:false,
                 link_visible:false,
                 share_navbar_visible:false,
                 reply_visible:false,
-                comment:'',//写评论
+                replyComment: '',// 回复
+                newcomment: '',//写评论
+                comment:'',
                 comment_type:[],
+                reportcomment: '',
+                currentCommentPage: 1,
                 activeNames: [],//查看回复
                 commentData:[//评论列表
                     {
-                        avatar:'',
-                        name:'赵晓刀',
-                        content:'评论列表评论列列表评论列表评论表评论列表评论列表评论列表评论列表评论列表评论列表评论列表评论列表评论列表',
-                        reply:'2'
+                        name:'',
+                        content:'',
+<<<<<<< HEAD
                     },
-                    {
-                        avatar:'',
-                        name:'赵晓刀',
-                        content:'评论列表评论列表列表评论列表评论评论列表评论列表评论列表评论列表评论列表评论列表评论列表评论列表评论列表',
-                        reply:'2'
-                    },
-                    {
-                        avatar:'',
-                        name:'赵晓刀',
-                        content:'评论列表评论列表评列表评论列表评论论列表评论列表评论列表评论列表评论列表评论列表评论列表评论列表评论列表',
-                        reply:'2'
-                    }
                 ],
+                commenttotal:0,
+=======
+                        is_show_reply: false,
+                        sons:[]
+                    },
+                ],
+                commenttotal:0,
+                commentlimit:15,
+>>>>>>> test0630
                 detailData:{
-                    title:'这是一则导读标题内标题内容标题内容标题内',
-                    view:222,
-                    point:333,
-                    comment:444,
-                    name:'来来来',
-                    department:'南京二区房东租',
-                    time:'2018-02-12 14:04:12',
-                    avatar:'../../../assets/image/newMedia/theme1/avatar.png',
-                    desc:'这是一则导读标题内标题内容标题内容标题内这是一则导读标题内标题内容标题内容标题内',
-                    content:'小编认为，其实我们每个人都有一个大侠梦，英雄梦！自打小，或幻想着成为一代武林宗师小编认为，其实我们每个人都有一个大侠梦，英雄梦！自打小，或幻想着成为一代武林宗师，惩奸除恶；或幻小编认为，其实我们每个人都有一个大侠梦，英雄梦！自打小，或幻想着成为一代武林宗师，惩奸除恶；或幻小编认为，其实我们每个人都有一个大侠梦，英雄梦！自打小，或幻想着成为一代武林宗师，惩奸除恶；或幻小编认为，其实我们每个人都有一个大侠梦，英雄梦！自打小，或幻想着成为一代武林宗师，惩奸除恶；或幻小编认为，其实我们每个人都有一个大侠梦，英雄梦！自打小，或幻想着成为一代武林宗师，惩奸除恶；或幻小编认为，其实我们每个人都有一个大侠梦，英雄梦！自打小，或幻想着成为一代武林宗师，惩奸除恶；或幻小编认为，其实我们每个人都有一个大侠梦，英雄梦！自打小，或幻想着成为一代武林宗师，惩奸除恶；或幻小编认为，其实我们每个人都有一个大侠梦，英雄梦！自打小，或幻想着成为一代武林宗师，惩奸除恶；或幻小编认为，其实我们每个人都有一个大侠梦，英雄梦！自打小，或幻想着成为一代武林宗师，惩奸除恶；或幻小编认为，其实我们每个人都有一个大侠梦，英雄梦！自打小，或幻想着成为一代武林宗师，惩奸除恶；或幻，惩奸除恶；或幻想着自己行走于市井之间，救死扶伤。长大后，经历过现实的洗礼磨练，发现自己怎么可能成为一代大侠？这辈子看来是实现不了了...... 不！小编要告诉你！大侠不仅仅存在在武侠小说里，其实在咱们乐伽就有一位大侠！小编认为，其实我们每个人都有一个大侠梦，英雄梦！自打小，或幻想着成为一代武林宗师，惩奸除恶；或幻想着自己行走于市井之间，救死扶伤。长大后，经历过现实的洗礼磨练，发现自己怎么可能成为一代大侠？这辈子看来是实现不了了...... 不！小编要告诉你！大侠不仅仅存在在武侠小说里，其实在咱们乐伽就有一位大侠！'
+                    title:'',
+                    view:0,
+                    point:0,
+                    comment:0,
+                    name:'',
+                    department:'',
+                    time:'',
+                    avatar:'',
+                    desc:'',
+                    content:''
                 },
                 detailDataList:[
                     {
-                        title:'这是一则导读标题内标题内容标题内容标题内这是一则导读标题内标题内容标题内容标题内',
-                        view:222,
-                        point:333,
-                        comment:444,
-                        department:'南京二区房东租',
-                        time:'2018-02-12 14:04:12',
-                        name:'浏览量',
-                        avatar:'../../../assets/image/newMedia/theme1/avatar.png',
-                        desc:'这是一则导读标题内标题内容标题内容标题内这是一则导读标题内标题内容标题内容标题内',
-                        content:'这是一则导读标题内标题内容标题内容标题内这是一则导读标题内标题内容标题内容标题内这是一则导读标题内标题内容标题内容标题内这是一则导读标题内标题内容标题内容标题内'
-                    },
-                    {
-                        title:'这是一则导读标题内标题内容标题内容标题内',
-                        view:222,
-                        point:333,
-                        comment:444,
-                        department:'南京二区房东租',
-                        time:'2018-02-12 14:04:12',
-                        name:'浏览量',
-                        avatar:'../../../assets/image/newMedia/theme1/avatar.png',
-                        desc:'这是一则导读标题内标题内容标题内容标题内这是一则导读标题内标题内容标题内容标题内',
-                        content:'这是一则导读标题内标题内容标题内容标题内这是一则导读标题内标题内容标题内容标题内这是一则导读标题内标题内容标题内容标题内这是一则导读标题内标题内容标题内容标题内'
-                    },
-                    {
-                        title:'这是一则导读标题内标题内容标题内容标题内',
-                        view:222,
-                        point:333,
-                        comment:444,
-                        name:'浏览量',
-                        department:'南京二区房东租',
-                        time:'2018-02-12 14:04:12',
-                        avatar:'../../../assets/image/newMedia/theme1/avatar.png',
-                        desc:'这是一则导读标题内标题内容标题内容标题内这是一则导读标题内标题内容标题内容标题内',
-                        content:'这是一则导读标题内标题内容标题内容标题内这是一则导读标题内标题内容标题内容标题内这是一则导读标题内标题内容标题内容标题内这是一则导读标题内标题内容标题内容标题内'
-                    },
-                    {
-                        title:'这是一则导读标题内标题内容标题内容标题内',
-                        view:222,
-                        point:333,
-                        comment:444,
-                        name:'浏览量',
-                        department:'南京二区房东租',
-                        time:'2018-02-12 14:04:12',
-                        avatar:'../../../assets/image/newMedia/theme1/avatar.png',
-                        desc:'这是一则导读标题内标题内容标题内容标题内这是一则导读标题内标题内容标题内容标题内',
-                        content:'这是一则导读标题内标题内容标题内容标题内这是一则导读标题内标题内容标题内容标题内这是一则导读标题内标题内容标题内容标题内这是一则导读标题内标题内容标题内容标题内'
-                    },
-                    {
-                        title:'这是一则导读标题内标题内容标题内容标题内',
-                        view:222,
-                        point:333,
-                        comment:444,
-                        name:'浏览量',
-                        department:'南京二区房东租',
-                        time:'2018-02-12 14:04:12',
-                        avatar:'../../../assets/image/newMedia/theme1/avatar.png',
-                        desc:'这是一则导读标题内标题内容标题内容标题内这是一则导读标题内标题内容标题内容标题内',
-                        content:'这是一则导读标题内标题内容标题内容标题内这是一则导读标题内标题内容标题内容标题内这是一则导读标题内标题内容标题内容标题内这是一则导读标题内标题内容标题内容标题内'
-                    },
-                    {
-                        title:'这是一则导读标题内标题内容标题内容标题内',
-                        view:222,
-                        point:333,
-                        comment:444,
-                        name:'浏览量',
-                        department:'南京二区房东租',
-                        time:'2018-02-12 14:04:12',
-                        avatar:'../../../assets/image/newMedia/theme1/avatar.png',
-                        desc:'这是一则导读标题内标题内容标题内容标题内这是一则导读标题内标题内容标题内容标题内',
-                        content:'这是一则导读标题内标题内容标题内容标题内这是一则导读标题内标题内容标题内容标题内这是一则导读标题内标题内容标题内容标题内这是一则导读标题内标题内容标题内容标题内'
+                        title:'',
+                        view:0,
+                        point:0,
+                        comment:0,
+                        department:'',
+                        time:'',
+                        name:'',
+                        avatar:'',
+                        desc:'',
+                        content:''
                     },
                 ],
-
+                parent_id: '',
                 chooseTabType:'',
 
             }
@@ -445,24 +407,327 @@
         watch:{
             '$route':'getPath'
         },
+         mounted() {
+<<<<<<< HEAD
+            //  this.getDetail();
+             this.getPath();
+            console.log('22222222222222',this.$route);
+            // 用来监听滚轮
+        },
         methods:{
+            getOrder(){
+                console.log('22222222222222',this.$route);
+=======
+             this.getPath();
+        },
+        methods:{
+            getOrder(){
+>>>>>>> test0630
+                let path = this.$route.query.type===2? 'news' : this.$route.query.type===3 ? 'announcement' : 'hot';
+               this.$http.post(globalConfig.newMedia_sever + '/api/article/'+path+'/order').then(res => {
+                        if(res.status===200){
+                            this.detailDataList = res.data.data;
+<<<<<<< HEAD
+                            console.log('this.res.data',res.data.data);
+                        }else{
+                            // this.newsData = [];
+                            // this.count = 0;
+=======
+                        }else{
+>>>>>>> test0630
+                        }
+                    });
+            },
             //获取路由参数
             getPath(){
-                console.log(this.$route.query.type);
+<<<<<<< HEAD
+                // console.log('333333333333333',this.$route.query.id);
+            //    console.log('22222222222222',);
+=======
+>>>>>>> test0630
+                if(this.$route.query.id !==undefined){  
+                     this.getOrder();  
+                    let path = this.$route.query.type===2? 'news' : this.$route.query.type===3 ? 'announcement' : 'hot';
+                    this.$http.get(globalConfig.newMedia_sever + '/api/article/'+path+'/'+this.$route.query.id).then(res => {
+                        if(res.status===200){
+<<<<<<< HEAD
+                            // this.newsData = res.data;
+                            // console.log('this.res.data',res.data);
+=======
+>>>>>>> test0630
+                            this.detailData={
+                                title:res.data.title,
+                                view:222,
+                                thumbs_up_number:res.data.thumbs_up_number, // 点赞数量
+                                collect_number: res.data.collect_number, //收藏数量
+                                comment_number: res.data.comment_number,
+<<<<<<< HEAD
+                                // comment:'',
+=======
+>>>>>>> test0630
+                                name:res.data.user_id?res.data.user_id.name:'',
+                                department:res.data.user_id?res.data.user_id.org[0].name :"",
+                                time:res.data.created_at,
+                                avatar:res.data.user_id ? res.data.user_id.avatar : '',
+                                desc:'描述',
+                                content:res.data.content
+                            };
+<<<<<<< HEAD
+                            console.log('this.detailData',this.detailData);
+                            // this.sort(0);// 分配数据到指定管道
+                        }else{
+                            // this.newsData = [];
+                            // this.count = 0;
+=======
+                        }else{
+>>>>>>> test0630
+                        }
+                    });
+                }else {
+                    this.detailData={
+                        title:'',
+                        view:'',
+                        point:'',
+                        comment:'',
+                        name:'',
+                        department:'',
+                        time:'',
+                        avatar:'',
+                        desc:'',
+                        content:''
+                    };
+                }
             },
             handleChange(){
 
             },
+<<<<<<< HEAD
+            //展示评论
+            showCommentList(){
+                this.comment_visible = true;
+                console.log('this.comment_visible', this.comment_visible);
+                let params={
+                    article_id:this.$route.query.id,
+                };
+                 this.$http.get(globalConfig.newMedia_sever + '/api/article/comment',params).then(res => {
+                     if(res.status===200){
+                         this.commentData=res.data.data;
+                         this.commenttotal=res.data.total;
+=======
+            handleSizeChange(val){
+                this.commentlimit=15;
+            },
+            handleCurrentChange(val){
+                this.currentCommentPage=val;
+                this.showCommentList();
+            },
+            //展示评论
+            showCommentList(){
+                this.comment_visible = true;
+                let params={
+                    article_id:this.$route.query.id,
+                    limit: this.commentlimit,
+                    offset:  this.currentCommentPage,
+                };
+                 this.$http.get(globalConfig.newMedia_sever + '/api/article/comment',params).then(res => {
+                     if(res.status===200){
+                        this.commentData=res.data.data;
+                         this.commenttotal=res.data.total;
+                         if( this.commentData && this.commentData.length>0){
+                             this.commentData.forEach((item) => {
+                                 item.is_show_reply=false;
+                                 item.sons=[];
+                             });
+                         }
+>>>>>>> test0630
+                     }else {
+
+                     }
+                 });
+            },
+            //点赞
+            clickGood(){
+                 let params={
+                    article_id:this.$route.query.id,
+                };
+                this.$http.post(globalConfig.newMedia_sever + '/api/article/thumbs_up',params).then(res => {
+                     if(res.status===200){
+                         this.$notify({
+                            title: '成功',
+                            message: '点赞成功',
+                            type: 'success'
+                        });
+                          this.getPath();
+<<<<<<< HEAD
+                        //  this.commentData=res.data.data;
+                        //  this.commenttotal=res.data.total;
+=======
+>>>>>>> test0630
+                     }else {
+                        this.$notify({
+                            title: '失败',
+                            message: '点赞失败',
+                            type: 'error'
+                        });
+                     }
+                 });
+            },
+            //收藏
+            clickCollect(){
+                let params={
+                    article_id:this.$route.query.id,
+                };
+                this.$http.post(globalConfig.newMedia_sever + '/api/article/collect',params).then(res => {
+                     if(res.status===200){
+                         this.$notify({
+                            title: '成功',
+                            message: '收藏成功',
+                            type: 'success'
+                        });
+                          this.getPath();
+<<<<<<< HEAD
+                        //  this.commentData=res.data.data;
+                        //  this.commenttotal=res.data.total;
+=======
+>>>>>>> test0630
+                     }else {
+                        this.$notify({
+                            title: '失败',
+                            message: '收藏失败',
+                            type: 'error'
+                        });
+                     }
+                 });
+            },
+            //评论
+            postcomment_tag(){
+                this.$http.post(globalConfig.newMedia_sever + '/api/article/comment',{content:this.newcomment,article_id:this.$route.query.id}).then(res => {
+                    if(res.status===200){
+<<<<<<< HEAD
+                        // this.commentData=res.data.data;/
+=======
+>>>>>>> test0630
+                        this.$notify({
+                            title: '成功',
+                            message: '操作成功',
+                            type: 'success'
+                        });
+                        this.showCommentList();
+                        this.getPath();
+                        this.edit_comment_visible=false;
+<<<<<<< HEAD
+=======
+                        this.commentData=[];
+                        // this.commenttotal=0;
+                        this.newcomment='';
+                    }else {
+                        this.$notify({
+                            title: '失败',
+                            message: '操作失败',
+                            type: 'error'
+                        });
+                    }
+                });
+            },
+             //举报
+            reportOk(){
+                this.$http.post(globalConfig.newMedia_sever + '/api/article/report',{content:this.reportcomment,comment_id:this.currentComment.id, type_id:this.comment_type}).then(res => {
+                    if(res.status===200){
+                        this.$notify({
+                            title: '成功',
+                            message: '操作成功',
+                            type: 'success'
+                        });
+                        this.showCommentList();
+                        this.getPath();
+                        this.report_visible=false;
+>>>>>>> test0630
+                        this.newcomment='';
+                    }else {
+                        this.$notify({
+                            title: '失败',
+                            message: '操作失败',
+                            type: 'error'
+                        });
+                    }
+                });
+            },
+<<<<<<< HEAD
             show_reply(val){
+                // console.log('val----------', val)
                 if(val===false){
                     this.is_show_reply = true;
                 }else {
                     this.is_show_reply = false;
                 }
+=======
+            
+            show_reply(val){
+                this.commentData.forEach((item)=>{
+                    if(val.id===item.id){
+                        this.$http.get(globalConfig.newMedia_sever + '/api/article/comment',{article_id:this.$route.query.id,layer_id:val.id}).then(res => {
+                            if(res.status===200){
+                                item.sons=res.data.data;
+                                this.$forceUpdate();
+                            }else {
+                            }
+                        });
+                        if(val.is_show_reply===false){
+                            item.is_show_reply = true;
+                        }else {
+                            item.is_show_reply = false;
+                        }
+                    }
+                });
+>>>>>>> test0630
             },
-
+            //删除评论
             handleOkDel(){
-
+                this.$http.delete(globalConfig.newMedia_sever + '/api/article/comment/'+this.currentComment.id).then(res => {
+                    if(res.status===200){
+<<<<<<< HEAD
+                        // this.commentData=res.data.data;/
+=======
+>>>>>>> test0630
+                        this.$notify({
+                            title: '成功',
+                            message: '操作成功',
+                            type: 'success'
+                        });
+                        this.delete_visible=false;
+                        this.showCommentList();
+                    }else {
+                        this.$notify({
+                            title: '失败',
+                            message: '操作失败',
+                            type: 'error'
+                        });
+                    }
+                });
+            },
+            //回复评论
+            replyOk(){
+            this.$http.post(globalConfig.newMedia_sever + '/api/article/comment',{content:this.replyComment, parent_id: this.currentComment.id,article_id:this.$route.query.id}).then(res => {
+                    if(res.status===200){
+<<<<<<< HEAD
+                        // this.commentData=res.data.data;/
+=======
+>>>>>>> test0630
+                        this.$notify({
+                            title: '成功',
+                            message: '操作成功',
+                            type: 'success'
+                        });
+                        this.showCommentList();
+                        this.reply_visible=false;
+                    }else {
+                        this.$notify({
+                            title: '失败',
+                            message: '操作失败',
+                            type: 'error'
+                        });
+                    }
+                });
             }
 
         }

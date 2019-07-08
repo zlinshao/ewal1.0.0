@@ -122,7 +122,8 @@
               <div class="justify-bet">
                 <el-input @focus="organSearch('department')" v-model="form.permission_org_name" placeholder="请选择部门"
                   style="margin-right: 10px"></el-input>
-                <el-input @focus="organSearch('staff')" v-model="form.permission_user_name" placeholder="请选择用户"></el-input>
+                <user-choose width='150' v-model="form.permission.user_id"></user-choose>
+                <!-- <el-input @focus="organSearch('staff')" v-model="form.permission_user_name" placeholder="请选择用户"></el-input> -->
               </div>
             </el-form-item>
             <el-form-item label="添加附件">
@@ -141,7 +142,7 @@
     </lj-dialog>
     <PostOrgan :module="postModule" :organData="organData" @close="hiddenOrgan"></PostOrgan>
     <DepartOrgan :module="departModule" :organData="organData" @close="hiddenOrgan"></DepartOrgan>
-    <StaffOrgan :module="staffModule" :organData="organData" @close="hiddenOrgan"></StaffOrgan>
+    <!-- <StaffOrgan :module="staffModule" :organData="organData" @close="hiddenOrgan"></StaffOrgan> -->
 
   </div>
 </template>
@@ -156,12 +157,14 @@ import PostOrgan from '../../../../components/common/postOrgan.vue';
 import LjUpload from '../../../common/lightweightComponents/lj-upload';
 import DepartOrgan from '../../../common/departOrgan.vue';
 import StaffOrgan from '../../../common/staffOrgan.vue';
+import UserChoose from '../../../common/lightweightComponents/UserChoose';
 
 export default {
   name: "common",
   props: [],
   components: {
     mediaList,
+    UserChoose,
     LjDialog,
     BackDocument,
     BackVideo,
@@ -207,7 +210,7 @@ export default {
         permission_org: [],
         permission_user: [],
         permission_org_name: '',//部门名称
-        permission_user_name: '',//用户名称
+        // permission_user_name: '',//用户名称
       },
     }
   },
@@ -257,7 +260,7 @@ export default {
       this.form.permission_org = [];
       this.form.permission_user = [];
       this.form.permission_org_name = '';
-      this.form.permission_user_name = '';
+      // this.form.permission_user_name = '';
     },
 
     openEdit (row) {//编辑弹出
@@ -270,11 +273,11 @@ export default {
             this.form[item] = res.data[item];
           }
           this.form.permission_org_name = res.data.permission_org[0] ?.name;
-          this.form.permission_user_name = '';
+          // this.form.permission_user_name = '';
           this.form.file_info = [];
-          for (let item of res.data.permission_user) {
-            this.form.permission_user_name += item.name + '、';
-          }
+          // for (let item of res.data.permission_user) {
+          //   this.form.permission_user_name += item.name + '、';
+          // }
           for (let item of res.data.file_id) {
             this.form.file_info.push(item.id);
           }
@@ -339,6 +342,9 @@ export default {
           message: res.msg,
           subMessage: '',
         });
+        this.visible = false;
+        this.delete_visible = false;
+        this.current_row = '';
         this.getDataLists();
       } else {
         this.$LjNotify('error', {
@@ -402,10 +408,8 @@ export default {
         if (this.module_type === 'department') {
           this.form.permission.org_id = ids;
           this.form.permission_org_name = names;
-        } else if (this.module_type === 'staff') {
-          this.form.permission.user_id = ids;
-          this.form.permission_user_name = names;
         }
+        
       }
     },
     onMousteIn: function (index) {//移入
@@ -437,20 +441,15 @@ export default {
         type_id: this.form.type_id,//string
         name: this.form.name,//string
         permission: this.form.permission,//{}
-        file_id: this.form.file_info[0],//int
+        file_id: this.form.file_info,//int
       };
       if (type === 1) {//编辑
         this.$http.put(globalConfig.newMedia_sever + '/api/datum/admin/' + this.current_row.id, paramsForm).then(res => {
           this.callbackSuccess(res);
-          this.visible = false;
-          this.current_row = '';
-
         })
       } else if (type === 2) {//新增
         this.$http.post(globalConfig.newMedia_sever + '/api/datum/admin', paramsForm).then(res => {
           this.callbackSuccess(res);
-          this.visible = false;
-          this.current_row = '';
         })
       }
     },
@@ -458,8 +457,6 @@ export default {
     delOk () {
       this.$http.delete(globalConfig.newMedia_sever + '/api/datum/admin/' + this.current_row.id).then(res => {
         this.callbackSuccess(res);
-        this.delete_visible = false;
-        this.current_row = '';
       })
     },
 
