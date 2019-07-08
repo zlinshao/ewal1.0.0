@@ -213,7 +213,6 @@
                 this.getDataLists();
             },
             openFile(val) {
-                console.log(val);
                 window.open(val);
             },
             openDetail(){

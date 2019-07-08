@@ -13,7 +13,116 @@ const valueHave = {
   value_2: {0: ''},
 };
 
+// 办公审批 高级搜索 流程名称
+const category_options = {
+  // 人事
+  personnel_options: [
+    {
+      label: '人员需求审批',
+      value: 'HR-ApplyForPersonnelDemand'
+    },
+    {
+      label: '个人异动/调岗',
+      value: 'HR-ApplyForPersonalChange'
+    },
+    {
+      label: '整组调岗/异动',
+      value: 'HR-ApplyForGroupChange'
+    },
+    {
+      label: '转正申请',
+      value: 'HR-ApplyForPositive'
+    },
+    {
+      label: '文职晋升申请',
+      value: 'HR-ApplyForCivilianPromotion'
+    },
+    {
+      label: '离职审批',
+      value: 'HR-ApplyForDimission'
+    },
+    {
+      label: '二次入职审批',
+      value: 'HR-ApplyForSecondEntry'
+    },
+    {
+      label: '花名册使用审批',
+      value: 'HR-ApplyForRoster'
+    },
+    {
+      label: '绝密花名册使用审批',
+      value: 'HR-ApplyForSecretRoster'
+    },
+    {
+      label: '个人信息修改审批',
+      value: 'HR-ApplyForUserInfo'
+    }
+  ],
+  // 人事专用
+  personnel_special_options: [
+    {
+      label: '人事专用',
+      value: 'HR-ApplyForStamp'
+    },
+    {
+      label: '还车贷专用申请',
+      value: 'HR-ApplyForCarLoan'
+    },
+    {
+      label: '薪资调整申请',
+      value: 'HR-ApplyForSalary'
+    }
+  ],
+  // 公告
+  notice_options: [
+    {
+      label: '公告审核审批',
+      value: 'HR-ApplyForAnnouncement'
+    }
+  ],
+  // 行政
+  administration_options: [
+    {
+      label: '用章申请',
+      value: 'HR-ApplyForStamp'
+    },
+    {
+      label: '采购申请',
+      value: 'HR-ApplyForProcurement'
+    },
+    {
+      label: '物品领/借用',
+      value: 'HR-ApplyForReceiveBorrow'
+    },
+    {
+      label: '增加办公室/宿舍申请',
+      value: 'HR-ApplyForAddOfficeDormitory'
+    },
+    {
+      label: '减少办公室/宿舍申请',
+      value: 'HR-ApplyForSubOfficeDormitory'
+    },
+    {
+      label: '住宿申请',
+      value: 'HR-ApplyForLiveDormitory'
+    },
+    {
+      label: '离宿申请',
+      value: 'HR-ApplyForLeaveDormitory'
+    }
+  ],
+  // 其他
+  other_options: [
+    {
+      label: '工作指示',
+      value: 'HR-ApplyForWorkInstructions'
+    }
+  ]
+}
+
 dicties = {
+  // 办公审批 高级搜索 流程名称
+  category_options,
   // 省
   province: {},
   // 市
@@ -76,7 +185,7 @@ dicties = {
   // 押
   pay_way_bet: [0, 1, 2, 3, 4, 5, 6],
   // 付款方式
-  pay_way: {1: '月付', 2: '双月付', 3: '季付', 6: '半年付', 12: '年付'},
+  pay_way: {1: '月付', 2: '双月付', 3: '季付'},
   // 非房东费用
   non_landlord_fee: {1: '水费', 2: '电费', 3: '燃气费', 4: '物业管理费', 5: '网费', 6: '其他费用'},
   // 证件类型
@@ -97,6 +206,8 @@ dicties = {
     '4': '非甲方及房屋原因导致的安全责任事故与甲方无关',
     '5': '同等条件下，房东享有签约权(从乙方处承租）'
   },
+  // 其他费用
+  other_fee: {1: '保洁费', 2: '垃圾费', 3: '钥匙费用', 4: '暖气费', 5: '有线电视费', 6: '网络费'},
   // 保洁类型
   cleaning_type: {1: '自己保洁', 2: '第三方保洁'},
   // 维修类型
@@ -248,6 +359,7 @@ dicties = {
   trans_type: {0: '公司转租', 1: '个人转租'},
   // 已收金额类型
   amount_type_received: {1: '押金', 2: '押金+租金', 3: '押金+租金+其他费用'},
+  // amount_type_received: {2: '押金+租金', 3: '押金+租金+其他费用'},
   // 是否有其他金额
   is_other_fee: {0: '否', 1: '有'},
   // 是否是家庭
@@ -262,4 +374,23 @@ dicties = {
   is_joint: {1: '合租', 0: '整租'},
   // 协议类型
   pact_type: {1: '延长收房时长', 2: '房东更换银行卡', 3: '调整收房价'},
+  // 退租性质
+  check_type: {},
+  // 公告类型
+  type_id: {},
+  // 性别
+  gender: {0: '限男', 1: '限女', 2: '男优先', 3: '女优先', 4: '不限'},
+  // 工作经验
+  experience: {0: '1年', 1: '1-3年', 2: '3-5年', 3: '5-10年', 4: '10年以上', 5: '不限'},
+  // 学历
+  education: {0: '高中及以上', 1: '大专及以上', 2: '本科及以上', 3: '不限'},
+  // 是否补款
+  is_supplement_money: oneYesZeroNo,
+  // 是否退还押金
+  is_checkout_deposit: oneYesZeroNo,
+  // 是否为本人账户
+  is_self_account: oneYesZeroNo,
+  // 紧急程度
+  priority: {50: '正常', 60: '重要', 70: '紧急'},
 };
+

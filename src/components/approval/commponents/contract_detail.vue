@@ -75,6 +75,7 @@
                     <div :class="key" v-else>{{val}}</div>
                   </div>
                 </div>
+                <span :class="key" v-else-if="formatData[key].name">{{formatData[key].name}}</span>
                 <span :class="key" v-else>{{formatData[key]}}</span>
               </div>
             </li>
@@ -87,8 +88,8 @@
             </li>
             <li>
               <div>
-                <div>同类型房源市场价2500-3000元</div>
-                <div>该小区已有房源1000套,未出租500套</div>
+                <!--<div>同类型房源市场价2500-3000元</div>-->
+                <!--<div>该小区已有房源1000套,未出租500套</div>-->
               </div>
             </li>
             <li>
@@ -232,7 +233,6 @@
       },
       moduleData: {
         handler(val) {
-          console.log(val);
           if (val) {
             this.vLoading = true;
             this.fullLoading = false;
@@ -275,44 +275,75 @@
       },
       // 报备类型
       divisionBulletinType(type, val) {
-        // console.log('type----------', type);
         let data, title;
         switch (type) {
-          case 'bulletin_collect_basic':
+          case 'bulletin_collect_basic'://收房
             title = ['房屋信息', '物品信息', '客户信息', '合同信息'];
             data = this.jsonData(defineCollectReport);
             this.villageRelation(val, val.ctl_detail_request_url);
             break;
-          case 'bulletin_rent_basic':
+          case 'bulletin_collect_continued'://续收
+            title = ['合同信息', '客户信息'];
+            data = this.jsonData(defineContinueCollect);
+            break;
+          case 'bulletin_rent_basic'://租房
             title = ['合同信息', '客户信息'];
             data = this.jsonData(defineRentReport);
             data.slither0 = defineNewRentReport.concat(data.slither0);
             this.villageRelation(val, val.rtl_detail_request_url);
             break;
-          case 'bulletin_agency':
-            title = ['渠道费报备'];
-            data = this.jsonData(defineAgencyReport);
-            break;
-          case 'bulletin_retainage':
-            title = ['尾款报备'];
-            data = this.jsonData(defineRetainageReport);
-            break;
-          case 'bulletin_change'://调租
-            title = ['客户信息', '合同信息'];
-            data = this.jsonData(defineChangeReport);
-            break;
           case 'bulletin_rent_trans'://转租
-            title = ['客户信息', '合同信息'];
+            title = ['合同信息', '客户信息'];
             data = this.jsonData(defineRentReport);
             data.slither0 = defineSubletReport.concat(data.slither0);
             break;
-          case 'bulletin_special'://特殊事项
+          case 'bulletin_rent_continued'://续租
+            title = ['合同信息', '客户信息'];
+            data = this.jsonData(defineContinueRent);
+            break;
+          case 'bulletin_booking_renting'://预定
+            title = ['合同信息', '客户信息'];
+            data = this.jsonData(defineBookingBWCReport);
+            data.slither0 = defineRentBookingReport.concat(data.slither0);
+            break;
+          case 'bulletin_rent_RWC'://未收先租
+            title = ['合同信息', '客户信息'];
+            if (rwc === 'bulletin_rent_RWC') {
+              data = this.jsonData(defineRentReport);
+              data.slither0 = defineRentRWCReport.concat(data.slither0);
+            } else {
+              data = this.jsonData(defineBookingBWCReport);
+              data.slither0 = defineRentBWCReport.concat(data.slither0);
+            }
+            break;
+          case 'bulletin_change'://调租
+            title = ['合同信息', '客户信息'];
+            data = this.jsonData(defineChangeReport);
+            break;
+          case 'bulletin_agency'://渠道
+            title = ['渠道费报备'];
+            data = this.jsonData(defineAgencyReport);
+            break;
+          case 'bulletin_retainage'://尾款
+            title = ['尾款报备'];
+            data = this.jsonData(defineRetainageReport);
+            break;
+          case 'bulletin_special':
+          case 'bulletin_special_rent'://特殊
+          case 'bulletin_special_collect':
             title = ['特殊事项报备'];
             data = this.jsonData(defineSpecialReport);
             break;
           case 'bulletin_checkout'://退租
-            title = ['客厅', '厨房/阳台/卫生间', '主卧', '次卧', '费用交接'];
+          case 'bulletin_checkout_collect'://退租
+          case 'bulletin_checkout_rent'://退租
+            title = ['退租'];
             data = this.jsonData(defineCheckoutReport);
+            break;
+          case 'Market-VillageExpand'://新增小区
+            title = ['新增小区'];
+            data = {};
+            data.slither0 = this.jsonData(defineNewAddVillage);
             break;
           case 'supplement_lord_time': //延长收房时长
           case 'supplement_lord_change_bank': //房东跟还银行卡
@@ -398,7 +429,7 @@
         for (let val of Object.keys(data)) {
           obj[val] = {};
           for (let item of data[val]) {
-            if (item.picker === 'upload') {
+            if (item.picker === 'upload' || item.picker === 'album') {
               for (let pic of item.photos) {
                 obj[val][pic.keyName] = pic.label;
               }
@@ -419,12 +450,20 @@
       // 详情接口
       getDetailForm(url, type) {
         this.$http.get(url).then(res => {
-          console.log(res);
           if (res.code === 200) {
+            let content = {}, data = res.data.content, parse = data.bulletin_content;
+            if (parse && typeof parse !== 'object') {
+              if (parse.startsWith('{') && parse.endsWith('}')) {
+                content = JSON.parse(parse || '{}');
+              } else {
+                content = res.data.content;
+              }
+            } else {
+              content = res.data.content;
+            }
             this.vLoading = false;
-            this.formatData = res.data.content;
-            this.handleDetail(res.data.content);
-            this.getVillageRelatedParams(this.formatData, type);
+            this.handleDetail(content);
+            this.getVillageRelatedParams(content, type);
           } else {
             this.$LjNotify('error', {
               title: '提示',
@@ -440,7 +479,7 @@
           params = {
             community_id: data.community.id,	//小区id
             staff_id: data.staff_id,	//签约人
-             room: data.house_info.room,	//户型
+            room: data.house_info.room,	//户型
             // room: data.house_type[0],	//户型
             is_collect: 1
           }
@@ -463,13 +502,16 @@
             let data = res.data;
             data.house_type_price = (data.house_type_price[0] || 0) + '-' + (data.house_type_price[1] || 0);
             data.noReason = data.break_a_contract_count - (data.customer_break_contract_count || 0) - (data.company_break_contract_count || 0);
-            this.relateions = data;
+            // this.relateions = data;
           }
         })
       },
       // 数据转换文本
       handleDetail(res) {
         for (let item of Object.keys(res)) {
+          if (item.keyName !== 'album') {
+            this.formatData[item] = res[item];
+          }
           switch (item) {
             case 'house_id':
               this.formatData.house_id = res.address;
@@ -544,7 +586,18 @@
         }
         if (res.album) {
           for (let pic of Object.keys(res.album)) {
-            this.formatData[pic] = res.album[pic];
+            if (res.album[pic].length) {
+              if (typeof res.album[pic][0] !== 'object') {
+                this.post(`${globalConfig.upload_sever}api/v1/get_urls`, {ids: res.album[pic]}).then(res => {
+                  if (res.data.code.endsWith('0')) {
+                    this.formatData[pic] = res.data;
+                    this.formatData = Object.assign({}, this.formatData);
+                  }
+                });
+              } else {
+                this.formatData[pic] = res.album[pic];
+              }
+            }
           }
         }
       },

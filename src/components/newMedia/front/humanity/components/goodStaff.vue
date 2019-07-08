@@ -54,7 +54,6 @@ export default {
       this.$http.get(globalConfig.newMedia_sever + '/api/humanity/excellent', this.params).then(res => {
         if (res.status === 200) {
           this.goodStaffData = res.data.data;
-          console.log(res);
           this.count = res.data.total;
         }
       })

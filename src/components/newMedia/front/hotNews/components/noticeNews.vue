@@ -163,7 +163,6 @@
                 this.$http.get(globalConfig.newMedia_sever + '/api/article/announcement').then(res => {
                     if(res.status===200){
                         this.newsData = res.data.data;
-                        console.log(this.newsData);
                         this.sort(0);// 分配数据到指定管道
                     }else{
                         this.newsData = [];

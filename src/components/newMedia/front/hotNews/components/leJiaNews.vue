@@ -153,7 +153,6 @@
             this.getDataLists();
         },
         mounted() {
-            console.log(this.chooseTab);
             // 用来监听滚轮
             window.addEventListener("scroll", this.handleScroll);
         },

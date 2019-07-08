@@ -3,7 +3,15 @@
     <lj-dialog :visible.sync="add_office_dialog_visible"
                :size="size"
                @close="cancelAddOffice">
-      <div class="dialog_container">
+      <div v-show="isLoading"
+           style="width: 90%;height: 100%;"
+           v-loading="isLoading"
+           element-loading-text="拼命加载中"
+           element-loading-spinner="el-icon-loading"
+           element-loading-background="rgba(255, 255, 255, 0)">
+      </div>
+
+      <div v-show="!isLoading" class="dialog_container">
         <div class="dialog_header">
           <h3>增加办公室/宿舍审批</h3>
         </div>
@@ -115,7 +123,10 @@
             </el-form>
 
             <!--          流程组件-->
-            <ApprovalProcess :user_info="user_info" :type="add_office_form.type"></ApprovalProcess>
+            <ApprovalProcess :user_info="user_info"
+                             :type="add_office_form.type"
+                             @is-show-loading="isLoading = $event">
+            </ApprovalProcess>
           </div>
         </div>
         <div class="dialog_footer">
@@ -164,6 +175,7 @@
     props: ['user_info_all', 'size', 'addUrl'],
     data() {
       return {
+        isLoading: true,
         url: globalConfig.market_server,
         // 校验规则
         add_office_form_rule: {
@@ -204,6 +216,7 @@
       reset() {
         this.add_office_form = createEmpty()
         this.$refs.addOfficeForm.clearValidate()
+        this.isLoading = true
       },
       open() {
         this.add_office_dialog_visible = true
@@ -269,8 +282,10 @@
                   {key: '申请原因', value: reason}
                 ]
               }
+              this.showLoading2(true)
               this.$http.post(this.addUrl, data)
                 .then(res => {
+                  this.showLoading2(false)
                   this.$LjMessageEasy(res, () => {
                     this.add_office_dialog_visible = false;
                     this.reset()
@@ -289,7 +304,6 @@
     },
     created() {
       this.getUserInfo()
-
     }
   }
 </script>
