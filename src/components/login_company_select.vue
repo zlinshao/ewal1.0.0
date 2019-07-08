@@ -37,7 +37,7 @@ export default {
   },
   methods: {
     companyClick(company) {
-      window.open(`${company.url}login?companyName=${company.companyName}`, '_blank');
+      window.open(`${company.url}index?companyName=${company.companyName}`, '_blank');
     }
     // showFun(index) {
     //   this.$set(this.companyInfo[index], "textShow", true);
