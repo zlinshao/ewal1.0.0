@@ -65,7 +65,8 @@
           }
           if (val && val.constructor === Array && val.length > 0) {
             let params = {
-              org_id:val
+              org_id:val,
+              is_enable: 1,
             };
             this.$http.get(`${this.url}organization/organization`,params).then(res=> {
               this.org_name = _.map(res.data.data,'name');

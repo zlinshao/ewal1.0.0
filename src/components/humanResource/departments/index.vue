@@ -138,7 +138,7 @@
       <Company :searchVal="companySearch2"
                    :search-params="company_params" :isfresh="isfresh"></Company>
     </div>
-    
+
 
     <!--离职管理-->
     <div v-if="chooseTab === 4">
@@ -735,7 +735,8 @@
         next_depart_params: {
           page: 1,
           limit: 999,
-          parent_id: ''
+          parent_id: '',
+          is_enable: 1,
         },
         nav_depart: [],
         is_next: true,
@@ -856,7 +857,8 @@
         params: {
           page: 1,
           limit: 7,
-          parent_id: 1
+          parent_id: 1,
+          is_enable: 1,
         },
         OrgSearch,
         staffBookSearch,
@@ -981,7 +983,7 @@
                         message: '公司名称必填'
                     });
           }
-        }, 
+        },
         getCityList(){
             this.$http.get(this.url+'company/city').then(res=>{
                 console.log(res);
@@ -1093,7 +1095,8 @@
         this.$http.get(this.url+'organization/organization', {
           page: 1,
           limit: 999,
-          parent_id: depart.id
+          parent_id: depart.id,
+          is_enable: 1,
         }).then(res => {
           if (res.code === '20000') {
             if (res.data.data.length > 0) {
@@ -1686,7 +1689,7 @@
             case 6:
             this.searchData = this.companySearch;
             break;
-            
+
         }
       },
 

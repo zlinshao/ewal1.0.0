@@ -187,7 +187,8 @@
         let params = {
           page:1,
           limit:100,
-          parent_id
+          parent_id,
+          is_enable: 1,
         };
         await this.$http.get(`${this.url}organization/organization`,params).then(async res=> {
           if(res.code.toString().endsWith('0')) {

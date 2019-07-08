@@ -156,6 +156,7 @@ class Axios {
     //debugger
     return new Promise((resolve, reject) => {
       this.get(url + 'organization/organization', {
+        is_enable: 1,
         parent_id: org,
         page: 1,
         limit: 999
