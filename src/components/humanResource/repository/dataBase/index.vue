@@ -335,19 +335,14 @@
             :data="contractHandinList"
             @row-dblclick="showHandintDetail"
           >
-            <el-table-column label="上缴时间" align="center" prop="report_time">
-            </el-table-column>
-            <el-table-column label="部门" align="center" prop="department_name">
-            </el-table-column>
-            <el-table-column label="姓名" align="center" prop="staff_name">
-            </el-table-column>
-            <el-table-column label="上缴合同数(收)" align="center" prop="collect_contracts_count">
-            </el-table-column>
-            <el-table-column label="上缴合同数(租)" align="center" prop="rent_contracts_count">
-            </el-table-column>
+            <el-table-column label="上缴时间" align="center" prop="report_time"></el-table-column>
+            <el-table-column label="部门" align="center" prop="department_name"></el-table-column>
+            <el-table-column label="姓名" align="center" prop="staff_name"></el-table-column>
+            <el-table-column label="上缴合同数(收)" align="center" prop="collect_contracts_count"></el-table-column>
+            <el-table-column label="上缴合同数(租)" align="center" prop="rent_contracts_count"></el-table-column>
             <el-table-column label="操作" align="center">
               <template slot-scope="scope">
-                <el-button  @click="modifyHandin(scope.row)" plain type="primary">修改</el-button>
+                <el-button @click="modifyHandin(scope.row)" plain type="primary">修改</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -362,16 +357,11 @@
             :data="contractLoseList"
             @row-dblclick="showLoseDetail"
           >
-            <el-table-column label="丢失时间" align="center" prop="report_time">
-            </el-table-column>
-            <el-table-column label="部门" align="center" prop="department_name">
-            </el-table-column>
-            <el-table-column label="姓名" align="center" prop="staff_name">
-            </el-table-column>
-            <el-table-column label="丢失合同数(收)" align="center" prop="collect_contracts_count">
-            </el-table-column>
-            <el-table-column label="丢失合同数(租)" align="center" prop="rent_contracts_count">
-            </el-table-column>
+            <el-table-column label="丢失时间" align="center" prop="report_time"></el-table-column>
+            <el-table-column label="部门" align="center" prop="department_name"></el-table-column>
+            <el-table-column label="姓名" align="center" prop="staff_name"></el-table-column>
+            <el-table-column label="丢失合同数(收)" align="center" prop="collect_contracts_count"></el-table-column>
+            <el-table-column label="丢失合同数(租)" align="center" prop="rent_contracts_count"></el-table-column>
             <el-table-column label="操作" align="center">
               <template slot-scope="scope">
                 <el-button type="primary" @click="modifyLose(scope.row)" plain>修改</el-button>
@@ -1139,176 +1129,91 @@
       @close="contractHandin_visible = false"
       class="handinDialog"
     >
-      <div class="dialogHeader">
-        <p>上缴合同详情</p>
-      </div>
-      <div class="dialogBody scroll_bar">
-        <div class="basicTitle">
-          <p>基本信息</p>
+      <div class="dialogContainer">
+        <div class="dialogHeader">
+          <p>上缴合同详情</p>
         </div>
-        <div class="basicDetail">
-          <div>
-            <div class="title">
-              <h3>上缴人</h3>
-              <h3>上缴时间</h3>
+        <div class="dialog_body scroll_bar">
+          <el-form :inline="true">
+            <h4 align="left">基本信息</h4>
+            <div class="form_header">
+              <el-form-item label="上缴人">
+                <el-input readonly></el-input>
+              </el-form-item>
+              <el-form-item label="所属部门">
+                <el-input readonly></el-input>
+              </el-form-item>
+              <el-form-item label="城市">
+                <el-input readonly></el-input>
+              </el-form-item>
+              <el-form-item label="上缴时间">
+                <el-input readonly></el-input>
+              </el-form-item>
+              <el-form-item label="操作时间">
+                <el-input readonly></el-input>
+              </el-form-item>
+              <el-form-item label="操作人">
+                <el-input readonly></el-input>
+              </el-form-item>
             </div>
-            <div class="value">
-              <h3>{{handinBasiclInfo[0]?handinBasiclInfo[0].simple_staff.real_name:''}}</h3>
-              <h3>{{handinBasiclInfo[0]?handinBasiclInfo[0].report_time:''}}</h3>
+            <h4 align="left">已上缴收房合同</h4>
+            <div class="sf">
+              <div class="select_box">
+                <div class="ht_box">
+                  <p>fdsgfdsfds4543</p>
+                  <el-form-item label="地址" label-width="40">
+                    <el-input></el-input>
+                  </el-form-item>
+                  <el-form-item>
+                    <el-checkbox-group v-model="distribute_form.checkList_sf">
+                      <el-checkbox label="交接单"></el-checkbox>
+                      <el-checkbox label="收据"></el-checkbox>
+                      <el-checkbox label="钥匙"></el-checkbox>
+                    </el-checkbox-group>
+                  </el-form-item>
+                </div>
+              </div>
             </div>
-          </div>
-          <div>
-            <div class="title">
-              <h3>所属部门</h3>
-              <h3>操作时间</h3>
+            <!-- <h4 align="left">已上缴租房合同</h4> -->
+            <!-- <div class="zf">
+                <div class="title">
+                  <b>租房合同上缴</b>
+                  <span class="arrow"></span>
+                </div>
+                <div class="select_box">
+                  <div class="ht_box">
+                    <el-form-item>
+                      <el-radio v-model="radio" label="1">备选项</el-radio>
+                    </el-form-item>
+                    <el-form-item label="地址">
+                      <el-input></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                      <el-checkbox-group v-model="distribute_form.checkList_sf">
+                        <el-checkbox label="交接单"></el-checkbox>
+                        <el-checkbox label="收据"></el-checkbox>
+                        <el-checkbox label="钥匙"></el-checkbox>
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </div>
+            </div>-->
+
+            <h4 align="left">其他</h4>
+            <div class="form_footer" align="left">
+              <el-form-item label="截图">
+                <lj-upload></lj-upload>
+              </el-form-item>
+              <el-form-item label="备注">
+                <el-input type="textarea" :rows="2" v-model="modifyRemark"></el-input>
+              </el-form-item>
             </div>
-            <div class="value">
-              <h3>{{handinBasiclInfo[0]?handinBasiclInfo[0].department:''}}</h3>
-              <h3>{{handinBasiclInfo[0]?handinBasiclInfo[0].report_time:''}}</h3>
-            </div>
-          </div>
-          <div>
-            <div class="title">
-              <h3>城市</h3>
-              <h3>操作人</h3>
-            </div>
-            <div class="value">
-              <h3>{{handinBasiclInfo[0]?handinBasiclInfo[0].city_name:''}}</h3>
-              <h3>{{handinBasiclInfo[0]?handinBasiclInfo[0].operator.real_name:''}}</h3>
-            </div>
-          </div>
+          </el-form>
         </div>
-        <div class="receivedTitle">
-          <p>已上缴收房合同</p>
+        <div class="dialog_footer">
+          <el-button type="danger">确定</el-button>
+          <el-button type="info">取消</el-button>
         </div>
-        <div class="receivedDetail">
-          <div>
-            <div class="contractNumber">LJGYSF01001656</div>
-            <div class="address">
-              <div class="title">地址</div>
-              <div class="detail">南京市建邺区艺树家工场19楼</div>
-            </div>
-            <div class="content">
-              <div class="selector"></div>
-              <div class="seletion">交接单</div>
-              <div class="selector"></div>
-              <div class="seletion">收据</div>
-              <div class="selector"></div>
-              <div class="seletion">钥匙</div>
-            </div>
-            <button>审核</button>
-          </div>
-          <div>
-            <div class="contractNumber">LJGYSF01001656</div>
-            <div class="address">
-              <div class="title">地址</div>
-              <div class="detail">南京市建邺区艺树家工场19楼</div>
-            </div>
-            <div class="content">
-              <div class="selector"></div>
-              <div class="seletion">交接单</div>
-              <div class="selector"></div>
-              <div class="seletion">收据</div>
-              <div class="selector"></div>
-              <div class="seletion">钥匙</div>
-            </div>
-            <button>审核</button>
-          </div>
-          <div>
-            <div class="contractNumber">LJGYSF01001656</div>
-            <div class="address">
-              <div class="title">地址</div>
-              <div class="detail">南京市建邺区艺树家工场19楼</div>
-            </div>
-            <div class="content">
-              <div class="selector"></div>
-              <div class="seletion">交接单</div>
-              <div class="selector"></div>
-              <div class="seletion">收据</div>
-              <div class="selector"></div>
-              <div class="seletion">钥匙</div>
-            </div>
-            <button>审核</button>
-          </div>
-        </div>
-        <div class="rentTitle">
-          <p>已上缴租房合同</p>
-        </div>
-        <div class="receivedDetail">
-          <div>
-            <div class="contractNumber">LJGYSF01001656</div>
-            <div class="address">
-              <div class="title">地址</div>
-              <div class="detail">南京市建邺区艺树家工场19楼</div>
-            </div>
-            <div class="content">
-              <div class="selector"></div>
-              <div class="seletion">交接单</div>
-              <div class="selector"></div>
-              <div class="seletion">收据</div>
-              <div class="selector"></div>
-              <div class="seletion">钥匙</div>
-            </div>
-            <button>审核</button>
-          </div>
-          <div>
-            <div class="contractNumber">LJGYSF01001656</div>
-            <div class="address">
-              <div class="title">地址</div>
-              <div class="detail">南京市建邺区艺树家工场19楼</div>
-            </div>
-            <div class="content">
-              <div class="selector"></div>
-              <div class="seletion">交接单</div>
-              <div class="selector"></div>
-              <div class="seletion">收据</div>
-              <div class="selector"></div>
-              <div class="seletion">钥匙</div>
-            </div>
-            <button>审核</button>
-          </div>
-          <div>
-            <div class="contractNumber">LJGYSF01001656</div>
-            <div class="address">
-              <div class="title">地址</div>
-              <div class="detail">南京市建邺区艺树家工场19楼</div>
-            </div>
-            <div class="content">
-              <div class="selector"></div>
-              <div class="seletion">交接单</div>
-              <div class="selector"></div>
-              <div class="seletion">收据</div>
-              <div class="selector"></div>
-              <div class="seletion">钥匙</div>
-            </div>
-            <button>审核</button>
-          </div>
-        </div>
-        <div class="otherTitle">
-          <p>其他</p>
-        </div>
-        <div class="otherDetail">
-          <div class="otherDetailTop">
-            <p>截图</p>
-            <img
-              :src="item.uri"
-              v-for="item in handinBasiclInfo[0]?handinBasiclInfo[0].screenshot:[]"
-              :key="item"
-            />
-          </div>
-          <div class="otherDetailBottom">
-            <p class="bottomTitle">备注</p>
-            <p
-              class="bottomDetail"
-              v-for="item in handinBasiclInfo[0]?handinBasiclInfo[0].remarks:[]"
-              :key="item"
-            >{{item}}</p>
-          </div>
-        </div>
-      </div>
-      <div class="dialog_footer">
-        <el-button type="danger">确定</el-button>
-        <el-button type="info">取消</el-button>
       </div>
     </lj-dialog>
     <!-- 上缴确认 -->
@@ -1317,6 +1222,7 @@
       :size="{width: 471 + 'px',height: 368 + 'px'}"
       @close="handinConfirm_visible = false"
     >上缴确认</lj-dialog>
+
     <!-- 上缴修改 -->
     <lj-dialog
       :visible="haninModify_visible"
@@ -1324,315 +1230,223 @@
       @close="haninModify_visible = false"
       class="handinModify"
     >
-      <div class="dialogHeader">
-        <p>上缴修改</p>
-      </div>
-      <div class="dialogBody scroll_bar">
-        <div class="basicTitle">
-          <p>基本信息</p>
+      <div class="dialogContainer">
+        <div class="dialogHeader">
+          <p>上缴合同修改</p>
         </div>
-        <div class="basicDetail">
-          <div>
-            <div class="title">
-              <h3>任务类型</h3>
-              <h3>领用人</h3>
+        <div class="dialog_body scroll_bar">
+          <el-form :inline="true">
+            <h4 align="left">基本信息</h4>
+            <div class="form_header">
+              <el-form-item label="任务类型">
+                <el-select>
+                  <el-option label value></el-option>
+                  <el-option label value></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="城市">
+                <el-select>
+                  <el-option label value></el-option>
+                  <el-option label value></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="合同类型">
+                <el-select>
+                  <el-option label value></el-option>
+                  <el-option label value></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="报备日期">
+                <el-date-picker type="datetime" placeholder="选择日期时间"></el-date-picker>
+              </el-form-item>
+              <el-form-item label="报备人">
+                <UserChoose></UserChoose>
+              </el-form-item>
+              <el-form-item label="所属部门">
+                <div
+                  style="background:rgba(240,240,240,1);width:350px;height:40px; padding:0 20px;"
+                >南京一区</div>
+              </el-form-item>
             </div>
-            <div class="value">
-              <el-select placeholder="请选择" v-model="misssionType" disabled></el-select>
-              <h3>{{modifyName}}</h3>
+            <h4 align="left">操作信息</h4>
+            <div class="form_box">
+              <div class="sf">
+                <div class="title">
+                  <b>收房合同上缴</b>
+                  <span class="arrow"></span>
+                </div>
+                <div class="select_box">
+                  <div class="ht_box">
+                    <el-form-item>
+                      <el-radio label>fsastg41432432</el-radio>
+                    </el-form-item>
+                    <el-form-item label="地址" label-width="40">
+                      <el-input></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                      <el-checkbox-group v-model="distribute_form.checkList_sf">
+                        <el-checkbox label="交接单"></el-checkbox>
+                        <el-checkbox label="收据"></el-checkbox>
+                        <el-checkbox label="钥匙"></el-checkbox>
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </div>
+              </div>
+              <div class="zf">
+                <div class="title">
+                  <b>租房合同上缴</b>
+                  <span class="arrow"></span>
+                </div>
+                <div class="select_box">
+                  <div class="ht_box">
+                    <el-form-item>
+                      <el-radio v-model="radio" label="1">备选项</el-radio>
+                    </el-form-item>
+                    <el-form-item label="地址">
+                      <el-input></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                      <el-checkbox-group v-model="distribute_form.checkList_sf">
+                        <el-checkbox label="交接单"></el-checkbox>
+                        <el-checkbox label="收据"></el-checkbox>
+                        <el-checkbox label="钥匙"></el-checkbox>
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-          <div>
-            <div class="title">
-              <h3>城市</h3>
-              <h3>所属部门</h3>
+            <h4 align="left">其他</h4>
+            <div class="form_footer" align="left">
+              <el-form-item label="截图">
+                <lj-upload></lj-upload>
+              </el-form-item>
+              <el-form-item label="备注">
+                <el-input type="textarea" :rows="2" v-model="modifyRemark"></el-input>
+              </el-form-item>
             </div>
-            <div class="value">
-              <el-select placeholder="请选择" v-model="selectedCity" disabled></el-select>
-              <h3>{{modifyDepartment}}</h3>
-            </div>
-          </div>
-          <div>
-            <div class="title">
-              <h3>领取日期</h3>
-            </div>
-            <div class="value">
-              <el-date-picker
-                type="datetime"
-                placeholder="选择日期时间"
-                align="right"
-                v-model="timePicker"
-                disabled
-              ></el-date-picker>
-            </div>
-          </div>
+          </el-form>
         </div>
-        <div class="operateInfo">
-          <p>操作信息（请勾选）</p>
+        <div class="dialog_footer">
+          <el-button type="danger">确定</el-button>
+          <el-button type="info">取消</el-button>
         </div>
-        <div class="operateDetail">
-          <div class="right_title">
-            <div class="words">收房合同上缴</div>
-            <div class="arrow"></div>
-          </div>
-          <div class="receiveHose">
-            <div class="contractNumber">LJGYSF01001656</div>
-            <div class="address">
-              <div class="title">地址</div>
-              <div class="detail">南京市建邺区艺树家工场19楼</div>
-            </div>
-            <div class="content">
-              <div class="selector"></div>
-              <div class="seletion">交接单</div>
-              <div class="selector"></div>
-              <div class="seletion">收据</div>
-              <div class="selector"></div>
-              <div class="seletion">钥匙</div>
-            </div>
-          </div>
-          <div class="receiveHose">
-            <div class="contractNumber">LJGYSF01001656</div>
-            <div class="address">
-              <div class="title">地址</div>
-              <div class="detail">南京市建邺区艺树家工场19楼</div>
-            </div>
-            <div class="content">
-              <div class="selector"></div>
-              <div class="seletion">交接单</div>
-              <div class="selector"></div>
-              <div class="seletion">收据</div>
-              <div class="selector"></div>
-              <div class="seletion">钥匙</div>
-            </div>
-          </div>
-          <div class="receiveHose">
-            <div class="contractNumber">LJGYSF01001656</div>
-            <div class="address">
-              <div class="title">地址</div>
-              <div class="detail">南京市建邺区艺树家工场19楼</div>
-            </div>
-            <div class="content">
-              <div class="selector"></div>
-              <div class="seletion">交接单</div>
-              <div class="selector"></div>
-              <div class="seletion">收据</div>
-              <div class="selector"></div>
-              <div class="seletion">钥匙</div>
-            </div>
-          </div>
-          <div class="right_title">
-            <div class="words">租房合同上缴</div>
-            <div class="arrow"></div>
-          </div>
-          <div class="receiveHose">
-            <div class="contractNumber">LJGYSF01001656</div>
-            <div class="address">
-              <div class="title">地址</div>
-              <div class="detail">南京市建邺区艺树家工场19楼</div>
-            </div>
-            <div class="content">
-              <div class="selector"></div>
-              <div class="seletion">交接单</div>
-              <div class="selector"></div>
-              <div class="seletion">收据</div>
-              <div class="selector"></div>
-              <div class="seletion">钥匙</div>
-            </div>
-          </div>
-          <div class="receiveHose">
-            <div class="contractNumber">LJGYSF01001656</div>
-            <div class="address">
-              <div class="title">地址</div>
-              <div class="detail">南京市建邺区艺树家工场19楼</div>
-            </div>
-            <div class="content">
-              <div class="selector"></div>
-              <div class="seletion">交接单</div>
-              <div class="selector"></div>
-              <div class="seletion">收据</div>
-              <div class="selector"></div>
-              <div class="seletion">钥匙</div>
-            </div>
-          </div>
-        </div>
-        <div class="basicTitle">
-          <p>剩余合同</p>
-        </div>
-        <div class="otherDetail">
-          <div class="otherDetailTop">
-            <p>截图</p>
-            <img src alt="sss" />
-          </div>
-          <div class="otherDetailBottom">
-            <p class="bottomTitle">备注</p>
-            <p class="bottomDetail">这里是备注文字这里是备注文字这里是备注文字</p>
-          </div>
-        </div>
-      </div>
-      <div class="dialog_footer">
-        <el-button type="danger">确定</el-button>
-        <el-button type="info">取消</el-button>
       </div>
     </lj-dialog>
+
     <!-- 上缴创建任务 -->
     <lj-dialog
       :visible="handinMission_visible"
       :size="{width: 1700 + 'px',height: 900 + 'px'}"
       @close="handinMission_visible = false"
-      class="cancelMission"
+      class="shangjiao_create"
     >
-      <div class="dialogHeader">
-        <p>创建任务</p>
-      </div>
-      <div class="dialogBody">
-        <div class="basicTitle">
-          <p>基本信息</p>
+      <div class="dialogContainer">
+        <div class="dialogHeader">
+          <p>创建任务</p>
         </div>
-        <div class="basicDetailContent">
-          <div>
-            <div class="title">
-              <h3>任务类型</h3>
-              <h3>报备时间</h3>
+        <div class="dialog_body scroll_bar">
+          <el-form :inline="true">
+            <h4 align="left">基本信息</h4>
+            <div class="form_header">
+              <el-form-item label="任务类型">
+                <el-select>
+                  <el-option label value></el-option>
+                  <el-option label value></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="城市">
+                <el-select>
+                  <el-option label value></el-option>
+                  <el-option label value></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="合同类型">
+                <el-select>
+                  <el-option label value></el-option>
+                  <el-option label value></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="报备日期">
+                <el-date-picker type="datetime" placeholder="选择日期时间"></el-date-picker>
+              </el-form-item>
+              <el-form-item label="报备人">
+                <UserChoose></UserChoose>
+              </el-form-item>
+              <el-form-item label="所属部门">
+                <div
+                  style="background:rgba(240,240,240,1);width:350px;height:40px; padding:0 20px;"
+                >南京一区</div>
+              </el-form-item>
             </div>
-            <div class="valueR">
-              <el-select placeholder="请选择">
-                <el-option size="mini"></el-option>
-              </el-select>
-              <el-date-picker type="datetime" placeholder="选择日期时间" align="right"></el-date-picker>
+            <h4 align="left">操作信息</h4>
+            <div class="form_box">
+              <div class="sf">
+                <div class="title">
+                  <b>收房合同上缴</b>
+                  <span class="arrow"></span>
+                </div>
+                <div class="select_box">
+                  <div class="ht_box">
+                    <el-form-item>
+                      <el-radio label>fsastg41432432</el-radio>
+                    </el-form-item>
+                    <el-form-item label="地址" label-width="40">
+                      <el-input></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                      <el-checkbox-group v-model="distribute_form.checkList_sf">
+                        <el-checkbox label="交接单"></el-checkbox>
+                        <el-checkbox label="收据"></el-checkbox>
+                        <el-checkbox label="钥匙"></el-checkbox>
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </div>
+              </div>
+              <div class="zf">
+                <div class="title">
+                  <b>租房合同上缴</b>
+                  <span class="arrow"></span>
+                </div>
+                <div class="select_box">
+                  <div class="ht_box">
+                    <el-form-item>
+                      <el-radio v-model="radio" label="1">备选项</el-radio>
+                    </el-form-item>
+                    <el-form-item label="地址">
+                      <el-input></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                      <el-checkbox-group v-model="distribute_form.checkList_sf">
+                        <el-checkbox label="交接单"></el-checkbox>
+                        <el-checkbox label="收据"></el-checkbox>
+                        <el-checkbox label="钥匙"></el-checkbox>
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-          <div>
-            <div class="title">
-              <h3>城市</h3>
-              <h3>报备人</h3>
+            <h4 align="left">其他</h4>
+            <div class="form_footer" align="left">
+              <el-form-item label="截图">
+                <lj-upload></lj-upload>
+              </el-form-item>
+              <el-form-item label="备注">
+                <el-input type="textarea" :rows="2" v-model="modifyRemark"></el-input>
+              </el-form-item>
             </div>
-            <div class="valueS">
-              <el-select placeholder="请选择">
-                <el-option size="mini"></el-option>
-              </el-select>
-              <user-choose></user-choose>
-            </div>
-          </div>
-          <div>
-            <div class="title">
-              <h3>合同类型</h3>
-              <h3>所属部门</h3>
-            </div>
-            <div class="value">
-              <el-select placeholder="请选择">
-                <el-option size="mini"></el-option>
-              </el-select>
-              <h3>南京一区</h3>
-            </div>
-          </div>
+          </el-form>
         </div>
-        <div class="basicTitle">
-          <p>操作信息</p>
+        <div class="dialog_footer">
+          <el-button type="danger">确定</el-button>
+          <el-button type="info">取消</el-button>
         </div>
-        <div class="operatorDetail">
-          <div class="right_title">
-            <div class="words">收房合同上缴</div>
-            <div class="arrow"></div>
-          </div>
-          <div class="receiveHose">
-            <div class="contractNumber">LJGYSF01001656</div>
-            <div class="address">
-              <div class="title">地址</div>
-              <div class="detail">南京市建邺区艺树家工场19楼</div>
-            </div>
-            <div class="content">
-              <div class="selector"></div>
-              <div class="seletion">交接单</div>
-              <div class="selector"></div>
-              <div class="seletion">收据</div>
-              <div class="selector"></div>
-              <div class="seletion">钥匙</div>
-            </div>
-          </div>
-          <div class="receiveHose">
-            <div class="contractNumber">LJGYSF01001656</div>
-            <div class="address">
-              <div class="title">地址</div>
-              <div class="detail">南京市建邺区艺树家工场19楼</div>
-            </div>
-            <div class="content">
-              <div class="selector"></div>
-              <div class="seletion">交接单</div>
-              <div class="selector"></div>
-              <div class="seletion">收据</div>
-              <div class="selector"></div>
-              <div class="seletion">钥匙</div>
-            </div>
-          </div>
-          <div class="receiveHose">
-            <div class="contractNumber">LJGYSF01001656</div>
-            <div class="address">
-              <div class="title">地址</div>
-              <div class="detail">南京市建邺区艺树家工场19楼</div>
-            </div>
-            <div class="content">
-              <div class="selector"></div>
-              <div class="seletion">交接单</div>
-              <div class="selector"></div>
-              <div class="seletion">收据</div>
-              <div class="selector"></div>
-              <div class="seletion">钥匙</div>
-            </div>
-          </div>
-          <div class="right_title">
-            <div class="words">租房合同上缴</div>
-            <div class="arrow"></div>
-          </div>
-          <div class="receiveHose">
-            <div class="contractNumber">LJGYSF01001656</div>
-            <div class="address">
-              <div class="title">地址</div>
-              <div class="detail">南京市建邺区艺树家工场19楼</div>
-            </div>
-            <div class="content">
-              <div class="selector"></div>
-              <div class="seletion">交接单</div>
-              <div class="selector"></div>
-              <div class="seletion">收据</div>
-              <div class="selector"></div>
-              <div class="seletion">钥匙</div>
-            </div>
-          </div>
-          <div class="receiveHose">
-            <div class="contractNumber">LJGYSF01001656</div>
-            <div class="address">
-              <div class="title">地址</div>
-              <div class="detail">南京市建邺区艺树家工场19楼</div>
-            </div>
-            <div class="content">
-              <div class="selector"></div>
-              <div class="seletion">交接单</div>
-              <div class="selector"></div>
-              <div class="seletion">收据</div>
-              <div class="selector"></div>
-              <div class="seletion">钥匙</div>
-            </div>
-          </div>
-        </div>
-        <div class="otherTitle">
-          <p>其他</p>
-        </div>
-        <div class="otherDetail">
-          <div class="otherDetailTop">
-            <p>截图</p>
-            <img src alt="sss" />
-          </div>
-          <div class="otherDetailBottom">
-            <p class="bottomTitle">备注</p>
-            <p class="bottomDetail">这里是备注文字这里是备注文字这里是备注文字</p>
-          </div>
-        </div>
-      </div>
-      <div class="dialog_footer">
-        <el-button type="danger">确定</el-button>
-        <el-button type="info">取消</el-button>
       </div>
     </lj-dialog>
+
     <!-- 丢失 -->
     <lj-dialog
       :visible="contractLose_visible"
@@ -2428,7 +2242,9 @@ export default {
         {
           value: ""
         }
-      ]
+      ],
+      // 创建任务的收房合同上缴循环数据
+      sf_create: []
     };
   },
   mounted() {
@@ -3057,6 +2873,29 @@ export default {
         color: white;
       }
     }
+    .form_box {
+      .el-input__inner {
+        border: 1px solid #efefef;
+        width: 768px;
+      }
+      .el-checkbox__inner {
+        border-radius: 50%;
+        &::after {
+          border: none;
+          width: 0;
+          height: 0;
+          content: none;
+        }
+      }
+      .el-radio__label {
+        line-height: 40px;
+      }
+      .el-radio__inner {
+        width: 18px;
+        height: 18px;
+        vertical-align: middle;
+      }
+    }
   }
 }
 // .contractNumberButton{
@@ -3144,13 +2983,11 @@ export default {
       }
     }
     .cancelMission {
+      .arrow {
+        @include childrenImg("zs.png", "theme1");
+      }
       .dialogBody {
         .operateDetail {
-          .right_title {
-            .arrow {
-              @include childrenImg("zs.png", "theme1");
-            }
-          }
         }
         .operatorDetail {
           .right_title {
@@ -3178,6 +3015,12 @@ export default {
     .dianziziliao {
       .img {
         @include childrenImg2("tp.png", "theme1");
+      }
+    }
+    // 上缴创建任务和丢失创建任务
+    .shangjiao_create {
+      .arrow {
+        @include childrenImg("zs.png", "theme1");
       }
     }
   }

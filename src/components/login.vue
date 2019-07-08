@@ -1,6 +1,5 @@
 <template>
-  <loginCompanySelect v-if="!showLogin"></loginCompanySelect>
-  <div id="login" v-else>
+  <div id="login">
     <header class="flex-center">
       <span></span>
     </header>
@@ -43,15 +42,11 @@
 
 <script>
   import axios from 'axios';
-  import loginCompanySelect from './login_company_select'
 
   const TIME_REMAIN = 60;//短信验证码时长
 
   export default {
     name: "login",
-    components:{
-      loginCompanySelect
-    },
     data() {
       return {
         url: globalConfig.shield_server,
