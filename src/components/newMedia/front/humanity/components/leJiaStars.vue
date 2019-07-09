@@ -178,18 +178,64 @@
                 <div class="item_content">
                   <el-input></el-input>
                 </div>
-              </div>
-            </el-form-item>
-            <el-form-item>
-              <div class="form_item_container">
-                <div class="item_label">
-                  <b class="item_icons">
-                    <i class="icon_account"></i>
-                  </b>
-                  <span>添加附件</span>
+            </div>
+        </lj-dialog>
+        <!--评论-->
+        <lj-dialog :visible="comment_visible" :size="{width: 900 + 'px',height: 600 + 'px'}"
+                   @close="comment_visible = false;commentData=[];commenttotal=0;currentCommentPage=1">
+            <div class="dialog_container">
+                <div class="dialog_header justify-bet">
+                    <h3>评论<span>共 <i>{{this.commenttotal}}</i> 条评论</span></h3>
+                    <p class="flex-center" @click="edit_comment_visible = true;parent_id=0;newcomment=''">
+                        <i class="write_comment"></i>
+                        <span>写评论</span>
+                    </p>
                 </div>
-                <div class="item_content">
-                  <span class="uploadFile">+</span>
+                <div class="dialog_main">
+                    <div class="comment-lists" v-for="(item,index) in commentData" >
+                        <div class="comment-left">
+                            <img :src="item.user_id?item.user_idavatar: ''" alt="">
+                        </div>
+                        <div class="comment-right">
+                            <h3>{{item.user_id?item.user_id.name:''}}</h3>
+                            <p class="desc">{{item.content}}</p>
+                            <div class="bottom-operate">
+                                <p class="check-info"  @click="show_reply(item)">查看{{item.sons_count}}条回复</p>
+                                <p class="operate-btn">
+                                    <span class="btn-icon" @click="delete_visible = true;currentComment=item;"><i></i><span>删除</span></span>
+                                    <span class="btn-icon" @click="reply_visible = true;currentComment=item;replyComment=''"><i></i><span>回复</span></span>
+                                    <span class="btn-icon" @click="report_visible = true;currentComment=item;comment_type=[];reportcomment=''"><i></i><span>举报</span></span>
+                                </p>
+                            </div>
+                            <!-- 回复显隐-->
+                             <div class="is_show_comment" v-if="item.is_show_reply">
+                              <el-table
+                                :data="item.sons"
+                                style="width:700px">
+                                <el-table-column width="700px">
+                                    <template slot-scope="scope">
+                                    <div class="comment_left" style="float:left">
+                                        <img :src="scope.row.user_id?scope.row.user_idavatar: ''" alt="">
+                                    </div>
+                                    <div class="comment_right">
+                                        <h3>{{scope.row.user_id?scope.row.user_id.name:''}}</h3>
+                                        <p class="desc">{{scope.row.content}}</p>
+                                        <span style="margin-left: 10px">{{ scope.row.created_at }}</span>
+                                    </div>
+                                    </template>
+                                </el-table-column>
+                                 </el-table>
+                            </div>
+                        </div>
+                    </div>
+                    <el-pagination
+                        @size-change="handleSizeChange"
+                        @current-change="handleCurrentChange"
+                        :current-page.sync="currentCommentPage"
+                        :page-size="commentlimit"
+                        layout="total, prev, pager, next"
+                        :total="commenttotal">
+                    </el-pagination>
                 </div>
               </div>
             </el-form-item>
@@ -248,68 +294,64 @@
                 </el-table>
               </div>
             </div>
-          </div>
-          <el-pagination
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page.sync="currentCommentPage"
-            :page-size="commentlimit"
-            layout="total, prev, pager, next"
-            :total="commenttotal">
-          </el-pagination>
-        </div>
-      </div>
-    </lj-dialog>
-
-    <!--写评论-->
-    <lj-dialog
-      :visible="edit_comment_visible"
-      :size="{width: 800 + 'px' ,height: 460 + 'px'}"
-      @close="edit_comment_visible = false;newcomment=''">
-      <div class="dialog_container">
-        <div class="dialog_header">
-          <h3>写评论</h3>
-        </div>
-        <div class="dialog_main">
-          <el-form  size="mini">
-            <el-form-item>
-              <div class="form_item_container">
-                <div class="item_label">
-                  <b class="item_icons">
-                    <i class="icon_mark"></i>
-                  </b>
-                  <span>评论内容</span>
+        </lj-dialog>
+        <!--举报-->
+        <lj-dialog
+                :visible="report_visible"
+                :size="{width: 800 + 'px' ,height: 460 + 'px'}"
+                @close="report_visible = false">
+            <div class="dialog_container">
+                <div class="dialog_header">
+                    <h3>举报</h3>
+                </div>
+                <div class="dialog_main">
+                    <el-form  size="mini">
+                        <el-form-item>
+                            <div class="form_item_container">
+                                <div class="item_label">
+                                    <b class="item_icons">
+                                        <i class="icon_mark"></i>
+                                    </b>
+                                    <span>类型</span>
+                                </div>
+                                <div class="item_content changeChoose">
+                                    <el-checkbox-group v-model="comment_type" class="flex-center justify-start">
+                                        <el-checkbox label="低俗色情"></el-checkbox>
+                                        <el-checkbox label="辱骂攻击"></el-checkbox>
+                                        <el-checkbox label="违法信息"></el-checkbox>
+                                    </el-checkbox-group>
+                                </div>
+                            </div>
+                        </el-form-item>
+                        <el-form-item>
+                            <div class="form_item_container">
+                                <div class="item_label">
+                                    <b class="item_icons">
+                                        <i class="icon_mark"></i>
+                                    </b>
+                                    <span>举报内容</span>
+                                </div>
+                                <div class="item_content">
+                                    <el-input type="textarea" v-model="reportcomment" :rows="8"></el-input>
+                                </div>
+                            </div>
+                        </el-form-item>
+                    </el-form>
                 </div>
                 <div class="item_content">
                   <el-input type="textarea" v-model="newcomment" :rows="8"></el-input>
                 </div>
-              </div>
-            </el-form-item>
-          </el-form>
-        </div>
-        <div class="dialog_footer">
-          <el-button size="small" type="danger" @click="postcomment_tag">发布</el-button>
-        </div>
-      </div>
-    </lj-dialog>
-    <!--举报-->
-    <lj-dialog
-      :visible="report_visible"
-      :size="{width: 800 + 'px' ,height: 460 + 'px'}"
-      @close="report_visible = false">
-      <div class="dialog_container">
-        <div class="dialog_header">
-          <h3>举报</h3>
-        </div>
-        <div class="dialog_main">
-          <el-form  size="mini">
-            <el-form-item>
-              <div class="form_item_container">
-                <div class="item_label">
-                  <b class="item_icons">
-                    <i class="icon_mark"></i>
-                  </b>
-                  <span>类型</span>
+            </div>
+        </lj-dialog>
+
+        <!--回复-->
+        <lj-dialog
+                :visible="reply_visible"
+                :size="{width: 800 + 'px' ,height: 460 + 'px'}"
+                @close="reply_visible = false">
+            <div class="dialog_container">
+                <div class="dialog_header">
+                    <h3>回复评论</h3>
                 </div>
                 <div class="item_content changeChoose">
                   <el-checkbox-group v-model="comment_type" class="flex-center justify-start">
@@ -469,103 +511,279 @@
           name:'',
           department:'',
         },
-      }
-    },
-    created() {
-      // 获取第一页数据
-      this.getData();
-    },
-    //  watch:{
-    //     '$route':'getPath'
-    // },
-    mounted(){
-      this.getData();
-    },
-    methods: {
-      changeTabs(id) {
-        this.chooseTab = id;
-      },
-      handleSizeChange(val){
-        this.commentlimit=15;
-      },
-      handleCurrentChange(val){
-        this.currentCommentPage=val;
-        this.showCommentList();
-      },
-      //举报
-      reportOk(){
-        this.$http.post(globalConfig.newMedia_sever + '/api/article/report',{content:this.reportcomment,comment_id:this.currentComment.id, type_id:this.comment_type}).then(res => {
-          if(res.status===200){
-            this.$notify({
-              title: '成功',
-              message: '操作成功',
-              type: 'success'
-            });
-            this.showCommentList();
-            // this.getPath();
-            this.report_visible=false;
-            this.newcomment='';
-          }else {
-            this.$notify({
-              title: '失败',
-              message: '操作失败',
-              type: 'error'
-            });
-          }
-        });
-      },
-      show_reply(val){
-        this.commentData.forEach((item)=>{
-          if(val.id===item.id){
-            this.$http.get(globalConfig.newMedia_sever + '/api/article/comment',{article_id: this.detailData.id,layer_id:val.id}).then(res => {
-              if(res.status===200){
-                item.sons=res.data.data;
-                this.$forceUpdate();
-              }else {
-              }
-            });
-            if(val.is_show_reply===false){
-              item.is_show_reply = true;
-            }else {
-              item.is_show_reply = false;
-            }
-          }
-        });
-        // if(val===false){
-        //     this.is_show_reply = true;
-        // }else {
-        //     this.is_show_reply = false;
-        // }
-      },
-      //删除评论
-      handleOkDel(){
-        this.$http.delete(globalConfig.newMedia_sever + '/api/article/comment/'+this.currentComment.id).then(res => {
-          if(res.status===200){
-            this.$notify({
-              title: '成功',
-              message: '操作成功',
-              type: 'success'
-            });
-            this.delete_visible=false;
-            this.showCommentList();
-          }else {
-            this.$notify({
-              title: '失败',
-              message: '操作失败',
-              type: 'error'
-            });
-          }
-        });
-      },
-      getData(){
-        this.$http.get(globalConfig.newMedia_sever+'/api/humanity/star',).then(res=>{
-          if(res.status===200){
-            this.detailData = res.data;
-            if(res.data.star_id){
-              this.userInfo.avatar = res.data.star_id.avatar;
-              this.userInfo.name = res.data.star_id.name;
-              this.userInfo.department = res.data.star_id.org[0].name;
+        data() {
+            return {
+                showFinMenuList: false,
+                delete_visible: false,
+                edit_visible: false,
+                showModal: false,
+                wishes_visible:false,
+                edit_wishes_visible:false,
+                share_navbar_visible:false,
+                edit_comment_visible: false,
+                comment_visible: false,
+                reply_visible:false,
+                delete_visible: false,
+                report_visible: false,
+                newcomment: '',
+                currentComment:'',
+                is_show_reply: false,
+                replyComment: '',
+                chooseTab: 1,
+                commenttotal:0,
+                commentData:'',
+                currentCommentPage:1,
+                commentlimit:15,
+                detailData: {},
+                comment_type:[],
+                reportcomment: '',
+                selects: [
+                    {id: 1, title: "乐伽之星"}, {id: 2, title: "优秀员工"}, {id: 3, title: "寿星墙"}
+                ],
+                wishesData:[
+                    {
+                        avatar:'',
+                        name:'赵晓刀',
+                        content:'评论列表评论列列表评论列表评论表评论列表评论列表评论列表评论列表评论列表评论列表评论列表评论列表评论列表',
+                        reply:'2'
+                    },
+                    {
+                        avatar:'',
+                        name:'赵晓刀',
+                        content:'评论列表评论列列表评论列表评论表评论列表评论列表评论列表评论列表评论列表评论列表评论列表评论列表评论列表',
+                        reply:'2'
+                    },
+                ],
+                todayBirthday:[
+                    {name:'齐达内',depart:'南京二区一组',avatar:""},
+                    {name:'齐达内',depart:'南京二区一组',avatar:""},
+                    {name:'齐达内',depart:'南京二区一组',avatar:""},
 
+                ],
+                monthBirthday:[
+                    {name:'齐达内',depart:'南京二区一组',avatar:""},
+                    {name:'齐达内',depart:'南京二区一组',avatar:""},
+                    {name:'齐达内',depart:'南京二区一组',avatar:""},
+                    {name:'齐达内',depart:'南京二区一组',avatar:""},
+                    {name:'齐达内',depart:'南京二区一组',avatar:""},
+                    {name:'齐达内',depart:'南京二区一组',avatar:""},
+                    {name:'齐达内',depart:'南京二区一组',avatar:""},
+                ],
+
+                userInfo:{
+                    avatar:'',
+                    name:'',
+                    department:'',
+                },
+            }
+        },
+         created() {
+            // 获取第一页数据
+            this.getData();
+        },
+        //  watch:{
+        //     '$route':'getPath'
+        // },
+        mounted(){
+          this.getData();
+        },
+        methods: {
+            changeTabs(id) {
+                this.chooseTab = id;
+            },
+            handleSizeChange(val){
+                this.commentlimit=15;
+            },
+            handleCurrentChange(val){
+                this.currentCommentPage=val;
+                this.showCommentList();
+            },
+             //举报
+            reportOk(){
+                this.$http.post(globalConfig.newMedia_sever + '/api/article/report',{content:this.reportcomment,comment_id:this.currentComment.id, type_id:this.comment_type}).then(res => {
+                    if(res.status===200){
+                        this.$notify({
+                            title: '成功',
+                            message: '操作成功',
+                            type: 'success'
+                        });
+                        this.showCommentList();
+                        // this.getPath();
+                        this.report_visible=false;
+                        this.newcomment='';
+                    }else {
+                        this.$notify({
+                            title: '失败',
+                            message: '操作失败',
+                            type: 'error'
+                        });
+                    }
+                });
+            },
+            show_reply(val){
+                this.commentData.forEach((item)=>{
+                    if(val.id===item.id){
+                        this.$http.get(globalConfig.newMedia_sever + '/api/article/comment',{article_id: this.detailData.id,layer_id:val.id}).then(res => {
+                            if(res.status===200){
+                                item.sons=res.data.data;
+                                this.$forceUpdate();
+                            }else {
+                            }
+                        });
+                        if(val.is_show_reply===false){
+                            item.is_show_reply = true;
+                        }else {
+                            item.is_show_reply = false;
+                        }
+                    }
+                });
+                // if(val===false){
+                //     this.is_show_reply = true;
+                // }else {
+                //     this.is_show_reply = false;
+                // }
+            },
+           //删除评论
+            handleOkDel(){
+                this.$http.delete(globalConfig.newMedia_sever + '/api/article/comment/'+this.currentComment.id).then(res => {
+                    if(res.status===200){
+                        this.$notify({
+                            title: '成功',
+                            message: '操作成功',
+                            type: 'success'
+                        });
+                        this.delete_visible=false;
+                        this.showCommentList();
+                    }else {
+                        this.$notify({
+                            title: '失败',
+                            message: '操作失败',
+                            type: 'error'
+                        });
+                    }
+                });
+            },
+            getData(){
+                this.$http.get(globalConfig.newMedia_sever+'/api/humanity/star',).then(res=>{
+                    //  console.log(res);
+                    if(res.status===200){
+                        this.detailData = res.data;
+                        if(res.data.star_id){
+                            this.userInfo.avatar = res.data.star_id.avatar;
+                            this.userInfo.name = res.data.star_id.name;
+                            this.userInfo.department = res.data.star_id.org[0].name;
+
+                        }
+
+                    }
+                })
+            },
+            //点赞
+            clickGood(){
+                 let params={
+                    article_id: this.detailData.id,
+                };
+                this.$http.post(globalConfig.newMedia_sever + '/api/article/thumbs_up',params).then(res => {
+                     if(res.status===200){
+                         this.$notify({
+                            title: '成功',
+                            message: '点赞成功',
+                            type: 'success'
+                        });
+                     }else {
+                        this.$notify({
+                            title: '失败',
+                            message: '点赞失败',
+                            type: 'error'
+                        });
+                     }
+                 });
+            },
+            //收藏
+            clickCollect(){
+                let params={
+                    article_id: this.detailData.id,
+                };
+                this.$http.post(globalConfig.newMedia_sever + '/api/article/collect',params).then(res => {
+                     if(res.status===200){
+                         this.$notify({
+                            title: '成功',
+                            message: '收藏成功',
+                            type: 'success'
+                        });
+                     }else {
+                        this.$notify({
+                            title: '失败',
+                            message: '收藏失败',
+                            type: 'error'
+                        });
+                     }
+                 });
+            },
+            //展示评论
+            showCommentList(){
+                this.comment_visible = true;
+                let params={
+                    article_id:this.detailData.id,
+                    limit: this.commentlimit,
+                    offset: this.currentCommentPage,
+                };
+                 this.$http.get(globalConfig.newMedia_sever + '/api/article/comment',params).then(res => {
+                     if(res.status===200){
+                         this.commentData=res.data.data;
+                         this.commenttotal=res.data.total;
+                         if( this.commentData && this.commentData.length>0){
+                             this.commentData.forEach((item) => {
+                                 item.is_show_reply=false;
+                                 item.sons=[];
+                             });
+                         }
+                     }else {
+
+                     }
+                 });
+            },
+            //评论
+            postcomment_tag(){
+                this.$http.post(globalConfig.newMedia_sever + '/api/article/comment',{content:this.newcomment,article_id:this.detailData.id}).then(res => {
+                    if(res.status===200){
+                        this.$notify({
+                            title: '成功',
+                            message: '操作成功',
+                            type: 'success'
+                        });
+                        this.showCommentList();
+                        this.edit_comment_visible=false;
+                        this.commentData=[];
+                        this.newcomment='';
+                    }else {
+                        this.$notify({
+                            title: '失败',
+                            message: '操作失败',
+                            type: 'error'
+                        });
+                    }
+                });
+            },
+            //回复评论
+            replyOk(){
+            this.$http.post(globalConfig.newMedia_sever + '/api/article/comment',{content:this.replyComment, parent_id: this.currentComment.id,article_id:this.detailData.id}).then(res => {
+                    if(res.status===200){
+                        this.$notify({
+                            title: '成功',
+                            message: '操作成功',
+                            type: 'success'
+                        });
+                        this.showCommentList();
+                        this.reply_visible=false;
+                    }else {
+                        this.$notify({
+                            title: '失败',
+                            message: '操作失败',
+                            type: 'error'
+                        });
+                    }
+                });
             }
 
           }
