@@ -537,8 +537,8 @@
         </div>
 
         <div class="dialog_footer">
-          <el-button size="small" type="danger">确定</el-button>
-          <el-button size="small" type="info" @click="tableSettingData.useless.table_dialog_visible = false">取消
+          <el-button size="small" type="danger" @click="tableSettingData.editCategory.table_dialog_visible = false">确定</el-button>
+          <el-button size="small" type="info" @click="tableSettingData.editCategory.table_dialog_visible = false">取消
           </el-button>
         </div>
       </div>
@@ -559,7 +559,7 @@
           <el-form ref="addCategoryForm" :rules="rules.addCategory" :model="add_category_form" style="text-align: left"
                    size="small" label-width="100px">
             <el-form-item prop="parent_id" required label="上级分类" v-show="add_category_form.type==1">
-              <dropdown-list v-model="add_category_form.parent_id" title="必选"
+              <dropdown-list v-model="add_category_form.parent_id" title="必选" :clearable="false"
                              :json-arr="DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.ADD_GOODS.PARENT_CLASSIFY"></dropdown-list>
             </el-form-item>
             <el-form-item prop="name" required :label="add_category_form_tip.label">
@@ -788,11 +788,11 @@
             ],
           },
           addCategory: {
-            /*parent_id: [
+            parent_id: [
               {required: true, message: '不能为空', trigger: 'blur'},
-            ],*/
+            ],
             name: [
-              {required: true, message: '不能为空', trigger: 'blur'},
+              {required: true, message: '分类名称不能为空', trigger: 'blur'},
             ],
           },
         },
@@ -1424,7 +1424,7 @@
       addCategory(index) {
         this.add_category_type = 1;
         this.add_category_visible = true;
-        this.add_category_form.parent_id = 0;
+        this.add_category_form.parent_id = 1;
         switch (index) {
           case 1:
             this.add_category_form.type = 1;//
@@ -1464,7 +1464,11 @@
                 });
                 this.add_category_visible = false;
                 this.$refs['categoryDropdown' + this.add_category_form.type].update();
-                this.add_category_form = {};
+                this.add_category_form = {
+                  parent_id: 1,
+                  name: '',
+                  type: 1,
+                };
               } else {
                 this.$LjNotify('error', {
                   title: '失败',
