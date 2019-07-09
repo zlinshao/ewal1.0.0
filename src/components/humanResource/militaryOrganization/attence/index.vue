@@ -672,6 +672,7 @@
        *  params: isOrigin 是否初始化页码  默认false 不初始化
       **/
       getAttenceList(isOrigin = false) {
+        if(!this.validatePermission('Month-Summary')) return;
         if (isOrigin) {
           this.tableSettingData.attence.params.page = 1;
         }
@@ -880,7 +881,9 @@
             org_id: org_id[0],
             month: this.myUtils.formatDate(this.monthValue, 'yyyy-MM'),
           };
+          this.showLoading2(true);
           this.$http.post(`${this.url}staff/e_contract/generate_confirm`, params).then(res => {
+            this.showLoading2(false);
             this.$LjMessageEasy(res);
           });
         });

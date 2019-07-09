@@ -82,7 +82,8 @@
           return;
         }
         let params = {
-          org_id: this.ids
+          org_id: this.ids,
+          is_enable: 1,
         };
         this.$http.get(`${this.url}organization/organization`, params).then(res => {
           if (res.code.endsWith('0')) {

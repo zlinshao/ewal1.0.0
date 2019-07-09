@@ -7,7 +7,7 @@
     </div>
 
 
-    <StaffOrgan :initial="value" :module="staffModule" :is_on_job="is_on_job" :organ-data="organData"
+    <StaffOrgan :initial="initial_value" :module="staffModule" :is_on_job="is_on_job" :organ-data="organData"
                 @close="hiddenOrgan"></StaffOrgan>
   </div>
 </template>
@@ -34,6 +34,9 @@
           return true;
         }
       },
+      dataType: {//默认返回全为数组类型 如果dataType为'int'字符串之后,当只允许选一个人时,返回和导入的数据类型皆为int类型
+        default: 'array',
+      },
     },
     components: {
       StaffOrgan
@@ -48,12 +51,17 @@
         },// 组织架构配置 选择数量 num
         inputContent: '',
         user_name: [],
-        dropdownListWidth: 320
+        dropdownListWidth: 320,
+        initial_value: null,
       }
     },
     watch: {
       value: {
         async handler(val, oldVal) {
+          this.initial_value = val;
+          if(val && !Array.isArray(val)) {
+            val = [val];
+          }
           if (val && val.constructor === Array && val.length > 0) {
             let params = {
               limit: 1000,
@@ -71,6 +79,14 @@
           this.$emit('user-choose-name', this.user_name)
         },
         immediate: true,
+      },
+      initial_value: {
+        handler(val,oldVal) {
+          if(val && !Array.isArray(val)) {
+            this.initial_value = [val];
+          }
+        },
+        immediate:true,
       },
       width: {
         handler(val, oldVal) {
@@ -97,6 +113,9 @@
         this.staffModule = false;
         if (ids !== 'close') {
           this.inputContent = names;
+          if(ids.length == 1 && this.dataType =='int') {
+            ids = ids[0];
+          }
           this.$emit('input', ids);
         }
       },

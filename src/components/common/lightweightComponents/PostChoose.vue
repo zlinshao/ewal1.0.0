@@ -5,7 +5,7 @@
       <p v-if="showIcon" class="icons position"></p>
     </div>
 
-    <PostOrgan :initial="value" :module="departModule" :organ-data="organData" @close="hiddenOrgan"></PostOrgan>
+    <PostOrgan :initial="initial_value" :module="departModule" :organ-data="organData" @close="hiddenOrgan"></PostOrgan>
   </div>
 </template>
 
@@ -31,7 +31,10 @@
         default() {
           return true;
         }
-      }
+      },
+      dataType: {
+        default: 'array',
+      },
     },
     components: {
       PostOrgan
@@ -45,12 +48,17 @@
         },// 组织架构配置 选择数量 num
         inputContent: '',
         post_name:[],
-        dropdownListWidth: 320
+        dropdownListWidth: 320,
+        initial_value: null,
       }
     },
     watch: {
       value: {
         handler(val, oldVal) {
+          this.initial_value = val;
+          if(val && !Array.isArray(val)) {
+            val = [val];
+          }
           if (val && val.constructor === Array && val.length > 0) {
             let params = {
               id:val
@@ -71,6 +79,14 @@
           }
         },
         immediate: true,
+      },
+      initial_value: {
+        handler(val,oldVal) {
+          if(val && !Array.isArray(val)) {
+            this.initial_value = [val];
+          }
+        },
+        immediate:true,
       },
       width: {
         handler(val, oldVal) {
@@ -97,6 +113,9 @@
         this.departModule = false;
         if (ids !== 'close') {
           this.inputContent = names;
+          if(ids.length == 1 && this.dataType =='int') {
+            ids = ids[0];
+          }
           this.$emit('input', ids);
         }
       },

@@ -196,6 +196,7 @@ export default {
     },
     //发布
     postReceivable_tag(){
+      // console.log('this.form.', this.form)
       let param = {
         star_id: this.form.userid[0],
         content: this.form.content,
@@ -260,6 +261,7 @@ export default {
       })
     },
     getContentChange (val) {
+      // console.log('val', val);
       this.form.content = val;
     },
   },

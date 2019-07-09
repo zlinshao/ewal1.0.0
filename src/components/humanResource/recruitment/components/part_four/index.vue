@@ -438,7 +438,7 @@
       <!--发送offer-->
       <div class="offer_container" :class="{'hide_offer_container': !write_offer_visible}">
         <h1>录用通知书</h1>
-        <h4>南京乐伽商业管理有限公司</h4>
+        <h4>{{$storage.get('user_info').company_info.name || '乐伽商业管理有限公司'}}</h4>
         <div class="content">
           <p>
             <a class="name">{{ currentInfo && currentInfo.name }}</a><strong>先生/小姐</strong> <br>
@@ -1188,7 +1188,7 @@
               }else {
                  this.interview_info_detail[key] = res.data[key] ? res.data[key] : null;
               }
-              
+
             }
             this.interviewee_info_visible = true;
           } else {

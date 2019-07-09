@@ -470,6 +470,7 @@ export default {
           property_photo: '房产证照片',
           water_card_photo: '水卡照片',
           electricity_card_photo: '电卡照片',
+          certificate_photo: '截图凭证',
           gas_card_photo: '气卡照片',
         },
         {
@@ -501,6 +502,7 @@ export default {
         checkout_photo: '退租交接单照片',
         checkout_settle_photo: '退租结算照片',
         water_card_photo: '水卡照片',
+        certificate_photo: '截图凭证',
         property_photo: '物业照片',
         house_video:'房屋影像',
       },
@@ -686,8 +688,9 @@ export default {
 
         let warning = null
         if (res.code == 200) {
-          warning = '发送成功'
-          this.rewrite_data = []
+          warning = '发送成功';
+          this.rewrite_data = [];
+          this.$emit('getDateList');
         } else {
           warning = '发送失败'
         }
@@ -718,9 +721,21 @@ export default {
       }
       //params.data[this.complete.key_name] = isTrue
       this.$http.post(this.market_server + `v1.0/market/contract/complete`, params).then(res => {
-        this.$LjNotifyEasy(res,()=> {
+        if (res.code.toString().endsWith('0')) {
+                this.$LjNotify('success', {
+                    title: '成功',
+                    message: res.msg || res.message,
+                });
+                this.$emit('getDateList');
+            } else {
+                this.$LjNotify('error', {
+                    title: '失败',
+                    message: res.msg || res.message,
+                });
+            }
+        // this.$LjNotifyEasy(res,()=> {
           this.handleCloseDetail();
-        });
+        // });
       })
     },
 
