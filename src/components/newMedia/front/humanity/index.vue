@@ -2,7 +2,7 @@
     <div id="humanity">
         <div class="listTopCss items-bet">
             <div class="items-center listTopLeft">
-                <p class="flex-center" @click="showFinMenuList = true">
+                <p class="flex-center" @click="showFinMenuList = false">
                     <b>...</b>
                 </p>
                 <h1>乐伽人文</h1>
@@ -23,8 +23,6 @@
             </div>
         </div>
         <media-list :module="showFinMenuList" @close="showFinMenuList = false"></media-list>
-
-
     </div>
 
 
@@ -45,7 +43,7 @@
                 showFinMenuList: false,
 
             }
-        }
+        },
     }
 </script>
 

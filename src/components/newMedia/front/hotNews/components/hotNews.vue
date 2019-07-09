@@ -2,8 +2,9 @@
     <div id="friend_moments">
         <div class="water">
             <div class="piping" style="width:100%;display:table;" ref="piping0">
-                <div class="card" v-for="(item,index) in newsData" @click.stop="routerLink('newsDetail',{type:chooseTab,id:item.id})" @mouseenter="chooseTabAlert(chooseTab)">
-                    <img src="../../../../../assets/image/newMedia/theme1/active.png" class="card-top">
+                <div class="card" v-for="(item,index) in newsData" @click.stop="routerLink('newsDetail',{type:chooseTab,id:item.id})" @mouseenter="chooseTabAlert(chooseTab)"> 
+                    <img v-if="item.cover&&item.cover[0]" :src="item.cover[0].uri" class="card-top" style="height:150px">
+                    <img v-else src="../../../../../assets/image/newMedia/theme1/active.png" class="card-top" style="height:150px">
                     <div class="card-middle">
                         <h3>{{item.title}}</h3>
                         <p class="card-status">
@@ -164,7 +165,7 @@
             },
 
             chooseTabAlert(val){
-                console.log(val)
+                console.log('11111',val)
             },
             // sort()函数是递归的，因为要确保每个卡片的图片加载完成后再获取管道的高度，但是图片加载完成的函数是个异步函数，
             // 如果放在for循环中会打乱顺序，因此要使异步函数同步执行，for循环改为递归。

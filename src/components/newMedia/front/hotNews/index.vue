@@ -2,7 +2,7 @@
     <div id="humanity">
         <div class="listTopCss items-bet">
             <div class="items-center listTopLeft">
-                <p class="flex-center" @click="showFinMenuList = true">
+                <p class="flex-center" @click="showFinMenuList =false">
                     <b>...</b>
                 </p>
                 <h1>企业头条</h1>
@@ -38,19 +38,19 @@
             return {
                 humanity: [
                     {
-                        url: 'hot',
+                        url: 'hot?type=1',
                         title: '热门导读',
                         letter: "Hot News",
                         chooseTab:1,
                     },
                     {
-                        url: 'lejiaNews',
+                        url: 'lejiaNews?type=2',
                         title: '乐伽新闻',
                         letter: "Lejia News",
                         chooseTab:2,
                     },
                     {
-                        url: 'announcement',
+                        url: 'announcement?type=3',
                         title: '公告  ',
                         letter: "Notice",
                         chooseTab:3,

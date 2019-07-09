@@ -380,7 +380,7 @@
         methods:{
             getOrder(){
                 let path = this.$route.query.type===2? 'news' : this.$route.query.type===3 ? 'announcement' : 'hot';
-               this.$http.post(globalConfig.newMedia_sever + '/api/article/'+path+'/order').then(res => {
+               this.$http.get(globalConfig.newMedia_sever + '/api/article/'+path,{is_open:1,limit:3}).then(res => {
                         if(res.status===200){
                             this.detailDataList = res.data.data;
                         }else{

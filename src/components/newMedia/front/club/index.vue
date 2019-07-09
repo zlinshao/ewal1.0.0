@@ -2,7 +2,7 @@
     <div id="club">
         <div class="listTopCss items-bet">
             <div class="items-center listTopLeft">
-                <p class="flex-center" @click="showFinMenuList = true">
+                <p class="flex-center" @click="showFinMenuList = false">
                     <b>...</b>
                 </p>
                 <h1>俱乐部</h1>

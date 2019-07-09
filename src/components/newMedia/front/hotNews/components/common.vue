@@ -57,12 +57,14 @@
         watch:{
             '$route':'getPath'
         },
-        mounted(){
-
+         created() {
+            // 获取第一页数据
+            // this.getDataLists();
         },
         methods:{
             getPath(){
                 this.chooseTab = this.$route.query.type;
+                this.changeTabs(this.$route.query.type, this.$route.query.type===1 ? 'hotNews' :this.$route.query.type===2 ? 'leJiaNews':'noticeNews')
             },
             changeTabs(id,url) {
                 this.chooseTab = id;
