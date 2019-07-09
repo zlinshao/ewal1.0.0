@@ -2299,7 +2299,7 @@ export const areaChangeOrderHighSearch={
 // 合同编号的高级搜索
 export const contractNumberHighSearch={
     status: 'contractNumberHighSearch',
-    keywords: 'keyWord',
+    keywords: 'search',
     placeholder: '请输入搜索内容',
     data: [
         {

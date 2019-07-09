@@ -308,7 +308,7 @@
     methods: {
       //获取图片
       getPictureUrl(val) {
-        let params = {"id": val};
+        let params = {"ids": val};
         this.$http.post(`${globalConfig.upload_sever}api/v1/get_urls`,params).then(res=> {
           if (res.code.endsWith('0')) {
             this.sliders = res.data;
