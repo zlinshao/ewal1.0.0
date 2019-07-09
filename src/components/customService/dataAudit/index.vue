@@ -72,7 +72,7 @@
 
     <!--合同详情-->
     <contractDetail :visible="contract_detail_visible" :moduleData='currentRow' :tagStatus='contract_type' :chooseTab='chooseTab' :showFooter='true'
-      :showRelated='false' :disabled='contract_disable' :showData='contract_showData' @close="handleCloseDetail"/>
+      :showRelated='false' :disabled='contract_disable' :showData='contract_showData' @close="handleCloseDetail" @getDateList="getDateList"/>
 
     <!--menu-->
     <MenuList :list="customService" :module="visibleStatus" :backdrop="true" @close="visibleStatus = false"></MenuList>
@@ -238,7 +238,7 @@ export default {
     //高级搜索
    async hiddenModule (val) {
       if (val !== 'close') {
-        this.searchParams = Object.assign({}, this.searchParams, val)
+        this.searchParams = Object.assign({}, this.searchParams, val);
         this.currentPage = 1;
         await this.getDateList();
       }
