@@ -470,6 +470,7 @@ export default {
           property_photo: '房产证照片',
           water_card_photo: '水卡照片',
           electricity_card_photo: '电卡照片',
+          certificate_photo: '截图凭证',
           gas_card_photo: '气卡照片',
         },
         {
@@ -501,6 +502,7 @@ export default {
         checkout_photo: '退租交接单照片',
         checkout_settle_photo: '退租结算照片',
         water_card_photo: '水卡照片',
+        certificate_photo: '截图凭证',
         property_photo: '物业照片',
         house_video:'房屋影像',
       },
