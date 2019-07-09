@@ -110,7 +110,7 @@
             </el-form-item>
             <div v-if="new_question_bank_exam_list.length==0">
               <el-form-item label="批量导入试题">
-                <lj-upload :limit="['xls']" size="40" style="position: absolute;top:-10px"
+                <lj-upload :limit="['xls','xlsx']" size="40" style="position: absolute;top:-10px"
                            v-model="new_question_bank_form.attachment"></lj-upload>
               </el-form-item>
               <el-form-item label="下载模板">

@@ -138,7 +138,7 @@
       <Company :searchVal="companySearch2"
                    :search-params="company_params" :isfresh="isfresh"></Company>
     </div>
-    
+
 
     <!--离职管理-->
     <div v-if="chooseTab === 4">
@@ -735,7 +735,8 @@
         next_depart_params: {
           page: 1,
           limit: 999,
-          parent_id: ''
+          parent_id: '',
+          is_enable: 1,
         },
         nav_depart: [],
         is_next: true,
@@ -856,7 +857,8 @@
         params: {
           page: 1,
           limit: 7,
-          parent_id: 1
+          parent_id: 1,
+          is_enable: 1,
         },
         OrgSearch,
         staffBookSearch,
@@ -981,7 +983,7 @@
                         message: '公司名称必填'
                     });
           }
-        }, 
+        },
         getCityList(){
             this.$http.get(this.url+'company/city').then(res=>{
                 console.log(res);
@@ -1044,8 +1046,8 @@
         this.check_info = '';
         this.departModule = false;
         this.show_depart_detail = false;
-        this.departForm.parent_id = [1];
-        this.departForm.parent = '南京乐伽商业管理有限公司';
+        this.departForm.parent_id = [this.$storage.get('user_info').company_info.id || 1];
+        this.departForm.parent = this.$storage.get('user_info').company_info.name || '乐伽商业管理有限公司';
       },
       handleIconClick(direction){
           let temp=this.next_depart_pool;
@@ -1093,7 +1095,8 @@
         this.$http.get(this.url+'organization/organization', {
           page: 1,
           limit: 999,
-          parent_id: depart.id
+          parent_id: depart.id,
+          is_enable: 1,
         }).then(res => {
           if (res.code === '20000') {
             if (res.data.data.length > 0) {
@@ -1528,8 +1531,8 @@
           order:0
         };
         if (!this.show_depart_detail) {
-          this.departForm.parent_id = [1];
-          this.departForm.parent = '南京乐伽商业管理有限公司';
+          this.departForm.parent_id = [this.$storage.get('user_info').company_info.id || 1];
+          this.departForm.parent = this.$storage.get('user_info').company_info.id || '乐伽商业管理有限公司';
         }
         if (this.show_depart_detail) {
           this.departForm.parent_id = [];
@@ -1686,7 +1689,7 @@
             case 6:
             this.searchData = this.companySearch;
             break;
-            
+
         }
       },
 

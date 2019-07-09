@@ -7,7 +7,7 @@
       <ul>
         <li v-for="(company,index) in companyInfo" :key="index" @click="companyClick(company)">
           <div class="img" :class="'common'+[index]"></div>
-          <div class="txt">{{company.companyName}}</div>
+          <div class="txt">{{company.companyName}} </div>
         </li>
       </ul>
     </div>
@@ -37,7 +37,7 @@ export default {
   },
   methods: {
     companyClick(company) {
-      window.location.href = `${company.url}login?companyName=${company.companyName}`;
+      window.open(`${company.url}index?companyName=${company.companyName}`, '_blank');
     }
     // showFun(index) {
     //   this.$set(this.companyInfo[index], "textShow", true);

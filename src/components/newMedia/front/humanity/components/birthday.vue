@@ -272,12 +272,10 @@ export default {
         // this.chooseStaff.push(item);
       }
 
-      console.log(this.selectedBirthday);
     },
     getDataLists (flag) {//寿星列表信息
       this.$http.get(globalConfig.newMedia_sever + '/api/humanity/birthday', this.params).then(res => {
         if (res.status === 200) {
-          console.log(res.data.data);
           let allBirthday = [];
           for (let item of res.data.data) {
             allBirthday.push({
@@ -325,8 +323,6 @@ export default {
           }
           this.todayBirthday = dayBirthdayList;
           this.monthBirthday = monthBirthdayList;
-          console.log(' this.todayBirthday',  this.todayBirthday);
-          console.log(' this.monthBirthday',  this.monthBirthday);
           this.wishesData = wishesData;
           this.count = res.data.total;
         }

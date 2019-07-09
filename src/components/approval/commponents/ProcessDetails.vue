@@ -6,11 +6,12 @@
       <!--      拼命加载中-->
       <div v-if="isLoading"
            style="width: 90%;height: 100%;"
-           v-loading="loading"
+           v-loading="isLoading"
            element-loading-text="拼命加载中"
            element-loading-spinner="el-icon-loading"
            element-loading-background="rgba(255, 255, 255, 0)">
       </div>
+
       <div v-if="!isLoading" class="dialog_container">
         <div class="dialog_header">
           <h3>{{base_info.title}}</h3>
@@ -61,15 +62,15 @@
                     <!--                    发起人信息-->
                     <div class="approval-timeline">
                       <div class="avatar-img">
-                        <img v-if="base_info.user.avatar"
-                             :src="base_info.user.avatar">
+                        <img v-if="base_info.user && base_info.user.avatar"
+                             :src="base_info.user?base_info.user.avatar:''">
                         <img v-else
                              src="../../../assets/image/no_avatar.png">
                       </div>
                       <div class="timeline-info">
                         <div class="timeline-top">
                           <p class="avatar-name">
-                            {{base_info.user.name?base_info.user.name:''}}
+                            {{base_info.user?base_info.user.name?base_info.user.name:'':''}}
                           </p>
                           <!--                          审核中-->
                           <!--                          <p :class="['timeline-result',activity.result?'result-agree':'result-check']">-->
@@ -86,11 +87,12 @@
                       </p>
                       <!--                      信息详情-->
                       <p class="base-info-text"
-                         v-for="(item_data,index) in base_info.data.more_data" :key="index">
+                         v-for="(item_data,index) in base_info.data?base_info.data.more_data:[]" :key="index">
                         <span class="base-info-text-left">{{item_data.key}}</span>：
                         <span>{{item_data.value}}</span>
                       </p>
-                      <div v-if="base_info.data.sanction_info && base_info.data.sanction_info.length > 0">
+                      <div
+                        v-if="base_info.data && base_info.data.sanction_info && base_info.data.sanction_info.length > 0">
                         <p class="base-info-list"
                            v-for="(item_data,index) in base_info.data.sanction_info" :key="index">
                         <span v-for="(item,index) in item_data" :key="index">
@@ -251,10 +253,7 @@
     },
     computed: {
       isLoading() {
-        if (this.load_user && this.load_info && this.load_record) {
-          return true
-        }
-        return false
+        return this.load_user || this.load_info || this.load_record
       }
     },
     methods: {
@@ -291,13 +290,15 @@
             org_name: ''
           }
         ]
+        this.load_user = true
+        this.load_info = true
+        this.load_record = true
       },
       closeDialog() {
         this.close()
       },
       /**获取流程详情 */
       getProcessDetails(url) {
-        // this.showLoading(true)
         this.base_info = {
           attachment: [],
           data: {
@@ -315,7 +316,6 @@
         this.$http.get(url)
           .then(res => {
             this.load_info = false
-            // this.showLoading(false)
             if (res.code === '20020') {
               this.base_info = res.data
             }
@@ -323,7 +323,6 @@
       },
       /**获取审批记录 */
       getApprovalRecord(url) {
-        // this.showLoading(true)
         this.activities = [
           {
             user: {
@@ -336,7 +335,6 @@
         this.$http.get(url)
           .then(res => {
             this.load_record = false
-            // this.showLoading(false)
             if (res.httpCode === 200) {
               delete res.httpCode
               this.activities = res
@@ -372,6 +370,7 @@
         /**任务*/
         if (row.assignee) {
           this.getLoginUser(row.assignee)
+          return
         }
         /**流程 */
         if (row.taskInfo) {
@@ -379,7 +378,10 @@
           assignee_ids.forEach((item_id) => {
             this.getLoginUser(item_id)
           })
+          return
         }
+        /**暂无处理人信息 */
+        this.load_user = false
       },
       /**点击操作按钮 */
       operateBtnClick(btn) {

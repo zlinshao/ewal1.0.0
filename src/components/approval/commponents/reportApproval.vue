@@ -137,28 +137,28 @@
           table1: {
             bulletin_name: '报备类型',
             bulletin_staff_name: '报备人',
-            house_address: '房屋地址',
+            title: '房屋地址',
           },
           table2: {
             bulletin_name: '报备类型',
             bulletin_staff_name: '报备人',
-            house_address: '房屋地址',
+            title: '房屋地址',
           },
           table3: {
             bulletin_name: '报备类型',
             bulletin_staff_name: '报备人',
-            house_address: '房屋地址',
+            title: '房屋地址',
             endTime: '完成时间',
           },
           table4: {
             bulletin_name: '报备类型',
             bulletin_staff_name: '报备人',
-            house_address: '房屋地址',
+            title: '房屋地址',
           },
           table5: {
             bulletin_name: '报备类型',
             bulletin_staff_name: '报备人',
-            house_address: '房屋地址',
+            title: '房屋地址',
           }
         },//表格显示字段
         tableData: {
@@ -308,6 +308,11 @@
                 }
               }
             }
+            if (key.name === 'due_date') {
+              let date = this.myUtils.timeDifference(key.value);
+              obj.due_date_hours = date.hours;
+              obj.due_date_minutes = date.minutes;
+            }
             if (key.name.includes('detail_request_url')) {
               if (key.name !== 'bm_detail_request_url') {
                 obj.detail_request_url = key.value || '';
@@ -319,10 +324,21 @@
               if (key.value) {
                 let contract = JSON.parse(key.value);
                 obj.contract_id = contract.v3_contract_id;
+                obj.house_id = contract.house_id;
               }
             }
-            if (key.name.includes('_approved')) {
-              obj.approvedStatus = key.value || '';
+            if (key.name === 'outcome') {
+              let outcome = '';
+              let come = JSON.parse(key.value);
+              outcome = come.variableName;
+              obj.approvedName = outcome;
+              for (let names of item.variables) {
+                if (names.name === outcome) {
+                  obj.approvedStatus = names.value;
+                }
+              }
+            } else if (key.name.includes('_approved') && !key.name.startsWith('bm_')) {
+              obj.approvedStatus = key.value;
             }
           }
           for (let key of Object.keys(item)) {
@@ -398,7 +414,7 @@
             let data = res.data;
             _.forEach(data, (val, key) => {
               //console.log(val,key);
-              if (!key || !val || key=='httpCode') {
+              if (!key || !val || key === 'httpCode') {
                 delete data[key];
                 return;
               }
@@ -409,7 +425,7 @@
               this.approval_type_list.push(obj);
             });
             this.receive_type = data;
-            if (this.receive_check.length == 0) {
+            if (this.receive_check.length === 0) {
               _.forEach(data, (value, key) => {
                 //if(key=='httpCode') {return}
                 this.receive_check.push(key);
@@ -431,13 +447,6 @@
               title: '开始时间',
               placeholder: '请选择日期',
               keyName: 'start_time',
-              dataType: []
-            },
-            {
-              keyType: 'dateRange',
-              title: '结束时间',
-              placeholder: '请选择日期',
-              keyName: 'end_time',
               dataType: []
             },
             {
@@ -464,24 +473,23 @@
       },
       // 高级搜索 确定
       hiddenModule(val) {
-        if (val.orgId && val.orgId.length == 1) {//部门高级搜索
+        if (val.orgId && val.orgId.length === 1) {//部门高级搜索
           val.orgId = val.orgId[0];
         }
-        if (val.start_time && val.start_time.length == 2) {//开始时间区间
+        if (val.start_time && val.start_time.length === 2) {//开始时间区间
           val.startedAfter = val.start_time[0];
           val.startedBefore = val.start_time[1];
         }
         delete val['start_time'];
 
-        if (val.end_time && val.end_time.length == 2) {//结束时间区间
+        if (val.end_time && val.end_time.length === 2) {//结束时间区间
           val.finishedAfter = val.end_time[0];
           val.finishedBefore = val.end_time[1];
         }
         delete val['end_time'];
 
-        this.showSearch = false
-        if (val != 'close') {
-          this.params['param' + this.status_type] = val
+        this.showSearch = false;
+        if (val !== 'close') {
           this.handleCurrentChange(1)
         }
       },
@@ -536,7 +544,7 @@
       }
     },
     created() {
-      let messageVisible = this.$store.state.approval.approval_message_visible
+      let messageVisible = this.$store.state.approval.approval_message_visible;
       if (messageVisible) {
         this.getApprovalTypeList();
         this.getChoseApprovalTypeList();

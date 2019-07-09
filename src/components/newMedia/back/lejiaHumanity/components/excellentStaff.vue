@@ -133,7 +133,6 @@
         watch:{
             add_status: {
             handler (val) {
-                console.log('----------------',val);
                 this.add_exvisible = val;
             }, deep: true
             },
@@ -148,7 +147,6 @@
             },
              edit (item) {
                 this.currentRecord=item;
-                console.log('-----------------',item)
                 this.exInfo.avatar = item && item.star_id ? item.star_id.avatar : '';
                 this.exInfo.name = item && item.star_id ? item.star_id.name : '';
                 this.exInfo.org = item && item.star_id ? item.star_id.org : '';
@@ -158,7 +156,6 @@
                 this.form.star_id=[item.star_id.id];
             },
             getContentChange (val) {
-                console.log('val', val);
                 this.form.content = val;
             },
             // 预览
@@ -167,7 +164,6 @@
             if(this.form.star_id && this.form.content){
             this.$http.get(globalConfig.humanResource_server + 'staff/user/'+this.form.star_id).then(res => {
                 if (res.code === '20020') {
-                    console.log('res.data', res.data);                    
                     this.exInfo = res.data;
                     this.exInfo.content =this.form.content;
                 }
@@ -260,7 +256,6 @@
             },
              //发布
             postReceivable_Ex(){
-                console.log('this.form.', this.form)
                 let param = {
                     star_id: this.form.star_id[0],
                     content: this.form.content,

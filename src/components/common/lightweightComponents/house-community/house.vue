@@ -16,7 +16,7 @@
             <div class="flex">
                 <div class="left_container changeChoose">
                 <div class="header_control flex">
-                    <span>南京乐伽商业管理有限公司</span>
+                    <span>{{$storage.get('user_info').company_info.name || '乐伽商业管理有限公司'}}</span>
                 </div>
                 <div class="house-address scroll_bar">
                     <div>
@@ -94,7 +94,7 @@
         params: {
           page: 1,
           limit: 15,
-          type: 1, 
+          type: 1,
           search: '',
           room: '',
           hall: '',
@@ -168,7 +168,7 @@
         handleCancelChoose(type) {
             this.$emit('close','close');
         },
-    
+
     },
   }
 </script>

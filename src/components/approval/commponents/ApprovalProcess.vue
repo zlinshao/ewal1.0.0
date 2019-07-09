@@ -10,11 +10,7 @@
         </div>
       </div>
       <!--      右侧流程-->
-      <div class="right-process"
-           v-loading="loading"
-           element-loading-text="拼命加载中"
-           element-loading-spinner="el-icon-loading"
-           element-loading-background="rgba(0, 0, 0, 0.1)">
+      <div class="right-process">
         <el-timeline>
           <el-timeline-item
             v-for="(activity, index) in activities"
@@ -57,7 +53,7 @@
       const url = globalConfig.approval_sever
       return {
         url,
-        loading: false,
+        loading: true,
         processData: {
           processDefinitionKey: '',
           tenantId: 'hr',
@@ -65,6 +61,14 @@
           orgId: ''
         },
         activities: []
+      }
+    },
+    watch: {
+      user_info(newValue, oldValue) {
+        this.getProcessApprover()
+      },
+      loading(newValue, oldValue) {
+        this.$emit('is-show-loading', newValue)
       }
     },
     methods: {
