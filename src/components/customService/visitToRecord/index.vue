@@ -180,7 +180,7 @@
                 </div>
                 <div>
                   <span class='tit'>性别</span>
-                  <span class="content">{{recordDetail.customer_info && recordDetail.customer_info[0].sex == 2 ? "男":"女"}}</span>
+                  <span class="content">{{recordDetail.customer_info && recordDetail.customer_info[0].sex == 1 ? "男":"女"}}</span>
                 </div>
                 <div>
                   <span class='tit'>性质</span>
