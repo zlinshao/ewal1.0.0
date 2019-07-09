@@ -1046,8 +1046,8 @@
         this.check_info = '';
         this.departModule = false;
         this.show_depart_detail = false;
-        this.departForm.parent_id = [1];
-        this.departForm.parent = '南京乐伽商业管理有限公司';
+        this.departForm.parent_id = [this.$storage.get('user_info').company_info.id || 1];
+        this.departForm.parent = this.$storage.get('user_info').company_info.name || '乐伽商业管理有限公司';
       },
       handleIconClick(direction){
           let temp=this.next_depart_pool;
@@ -1531,8 +1531,8 @@
           order:0
         };
         if (!this.show_depart_detail) {
-          this.departForm.parent_id = [1];
-          this.departForm.parent = '南京乐伽商业管理有限公司';
+          this.departForm.parent_id = [this.$storage.get('user_info').company_info.id || 1];
+          this.departForm.parent = this.$storage.get('user_info').company_info.id || '乐伽商业管理有限公司';
         }
         if (this.show_depart_detail) {
           this.departForm.parent_id = [];

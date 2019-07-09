@@ -72,7 +72,7 @@
         configure: {},
         checkList: [],
         choose_list: [
-          {name: '南京乐伽商业管理有限公司',id: 1},
+          {name: this.$storage.get('user_info').company_info.name || '乐伽商业管理有限公司',id: this.$storage.get('user_info').company_info.id || 1},
         ],
       }
     },

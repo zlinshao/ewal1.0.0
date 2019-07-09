@@ -193,6 +193,7 @@
                 position:res2.data.detail?.position||[],
                 avatar: res2.data.detail?.avatar,
                 position_level: res2.data.detail?.staff?.position_level||null,//职位等级
+                company_info: res2.data.detail?.company_info || {},//公司信息
               });
               this.$bus.emit('photo-url',res2.data.detail?.avatar);
               let that = this;
