@@ -1,5 +1,6 @@
 <template>
   <div id="my_KPI">
+    <coming-soon></coming-soon>
     <div class="my-kpi-container">
       <div class="my-kpi-toolbar">
         <div v-for="(item,index) in period" @click="choosePeriod(index)" :class="{checked:choosedPeriod==index}" :key="index"
@@ -291,7 +292,7 @@
               let obj = {
                 name: res.data[i].staff_name.name,
                 department: res.data[i].org_name.name,
-                yearScore: res.data[i].year_score ? res.data[i].year_score : '-' 
+                yearScore: res.data[i].year_score ? res.data[i].year_score : '-'
               }
               this.yearData.push(obj)
             }
