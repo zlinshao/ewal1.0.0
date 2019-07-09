@@ -1,4 +1,3 @@
-
 <!--租客-->
 <template>
   <div class="mainListTable changeChoose">
@@ -11,9 +10,8 @@
       :cell-class-name="tableCell"
       @cell-click="tableClickRow"
       style="width: 100%">
-
       <!--<el-table-column-->
-        <!--type="selection" width="40">-->
+      <!--type="selection" width="40">-->
       <!--</el-table-column>-->
       <el-table-column width="40">
         <template slot-scope="scope">
@@ -25,13 +23,15 @@
           <div class="statusBar">
             <div class="flex-center" v-if="renterStatus[scope.$index] && renterStatus[scope.$index].suppress_dup === 0">
               <el-tooltip content="手机号" placement="bottom" :visible-arrow="false">
-                <span class="phone" v-if="renterStatus[scope.$index] && renterStatus[scope.$index].is_contact === 1"></span>
+                <span class="phone"
+                      v-if="renterStatus[scope.$index] && renterStatus[scope.$index].is_contact === 1"></span>
               </el-tooltip>
               <el-tooltip content="姓名" placement="bottom" :visible-arrow="false">
                 <span class="name" v-if="renterStatus[scope.$index] && renterStatus[scope.$index].is_name === 1"></span>
               </el-tooltip>
               <el-tooltip content="地址" placement="bottom" :visible-arrow="false">
-                <span class="address" v-if="renterStatus[scope.$index] && renterStatus[scope.$index].is_address === 1"></span>
+                <span class="address"
+                      v-if="renterStatus[scope.$index] && renterStatus[scope.$index].is_address === 1"></span>
               </el-tooltip>
             </div>
             <div v-else class="flex-center">
@@ -47,7 +47,7 @@
         :prop="item"
         :align="item=='address'?'left':'center'">
       </el-table-column>
-      <el-table-column  show-overflow-tooltip label="付款方式/月单价" prop="prices" align="center" width="180" >
+      <el-table-column show-overflow-tooltip label="付款方式/月单价" prop="prices" align="center" width="180">
       </el-table-column>
       <el-table-column label="状态" prop="" align="center">
         <template slot-scope="scope">
@@ -66,8 +66,7 @@
           layout="total,jumper,prev,pager,next"
           :current-page="params.page"
           :page-size="params.limit"
-          @current-change="handleChangePage"
-        >
+          @current-change="handleChangePage">
         </el-pagination>
       </div>
     </footer>
@@ -101,7 +100,6 @@
         @cancel="getCancelStatus"
         @updateList="updateRenterList"></renter-form>
     </lj-dialog>
-
   </div>
 </template>
 <script>
@@ -167,7 +165,6 @@
       this.getRenterList();
     },
     activated() {
-
     },
     watch: {
       current_row_info: {
@@ -187,7 +184,6 @@
     },
     created() {
       this.$bus.on('getParams', this.handleParamsRenter);
-
     },
     beforeDestroy() {
       this.$bus.off('getParams', this.handleParamsRenter);
@@ -208,7 +204,7 @@
           this.params.startRange = val.gatherDate[0];
           this.params.endRange = val.gatherDate[1];
         }
-        Object.assign(this.params,val);
+        Object.assign(this.params, val);
         delete this.params.gatherDate;
         this.getRenterList();
       },
@@ -261,19 +257,18 @@
             //     return a.id - b.id
             //   }
             // );
-             this.renterLists = res.data.data;
+            this.renterLists = res.data.data;
             this.renterIds = [];
             for (let item of this.renterLists) {
               this.renterIds.push(item.id)
             }
-
             //当点击生成待处理项或取消待处理项时
             //处理成功后根据获取的列表刷新当前被点击的列表数据，从而更新待处理项的状态
-             this.renterLists.forEach((item,index)=>{
-               if(item.id ==  this.is_table_choose){
-                   this.$emit('getMultipleSelection', item);
-               }
-             })
+            this.renterLists.forEach((item, index) => {
+              if (item.id == this.is_table_choose) {
+                this.$emit('getMultipleSelection', item);
+              }
+            });
             //前缀状态
             this.$http.get(globalConfig.temporary_server + 'customer_renter_repeat', {id: this.renterIds}).then(res => {
               //console.log(res);
@@ -283,11 +278,11 @@
                     return a.id - b.id
                   }
                 );
-                _.forEach(this.renterLists,(o)=> {
-                  let findRst = _.find(this.renterStatus,{id:o.id});
+                _.forEach(this.renterLists, (o) => {
+                  let findRst = _.find(this.renterStatus, {id: o.id});
                   o.prefix = findRst;
                   o.type = 'renter';//租客
-                  o.prefix_suppress_dup = findRst?.suppress_dup||0;
+                  o.prefix_suppress_dup = findRst?.suppress_dup || 0;
                 });
               }
             });
@@ -318,11 +313,11 @@
         })
       },
       //取消或恢复重复标记
-      handleRemarkRenter(row,type) {
+      handleRemarkRenter(row, type) {
         let operate;
-        if(!type) {//取消重复标记
+        if (!type) {//取消重复标记
           operate = 1;
-        }else {//恢复重复标记
+        } else {//恢复重复标记
           operate = 2;
         }
         this.ra_ids = [];
@@ -349,14 +344,13 @@
           console.log(err);
         })
       },
-
-
     },
   }
 </script>
 
 <style lang="scss">
   @import "../../../../assets/scss/finance/customer/index.scss";
+
   @mixin financeImg($m, $n) {
     $url: '../../../../assets/image/finance/' + $n + '/' + $m;
     @include bgImage($url);
@@ -372,26 +366,32 @@
           border-radius: 50%;
           margin-left: 4px;
         }
+
         a {
-           font-size: 12px;
-           margin-left: 3px;
-         }
+          font-size: 12px;
+          margin-left: 3px;
+        }
+
         span.ignore {
           @include financeImg('yanjing.png', 'theme1');
 
         }
+
         span.phone {
           @include financeImg('dianhua.png', 'theme1');
 
         }
+
         span.name {
           @include financeImg('kehu.png', 'theme1');
 
         }
+
         span.address {
           @include financeImg('dizhi.png', 'theme1');
         }
       }
+
       .el-table .success-row {
         background: #DFDFDF;
       }
@@ -401,6 +401,7 @@
       }
 
     }
+
     .light_cell {
       background-color: #D6D6D6 !important;
     }

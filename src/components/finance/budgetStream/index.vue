@@ -55,7 +55,7 @@
         <el-table-column label="交易金额" prop="amount_received" min-width="150px" align="center"></el-table-column>
         <el-table-column label="交易前账户金额" prop="amount_receivable" min-width="150px"
                          align="center"></el-table-column>
-        <el-table-column label="地址" prop="operate_time" min-width="150px" align="center"></el-table-column>
+        <el-table-column label="地址" prop="address" min-width="150px" align="center"></el-table-column>
         <el-table-column label="交易后账户金额" prop="balance" min-width="150px" align="center"></el-table-column>
         <el-table-column label="交易时间" prop="create_time" min-width="150px" align="center"></el-table-column>
         <el-table-column label="操作人" prop="operator.name" min-width="150px" align="center"></el-table-column>
