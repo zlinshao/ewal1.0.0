@@ -340,6 +340,16 @@
             <el-form-item label="部门上级岗位">
               <post-choose v-model="departForm.position_id" title="请选择部门上级岗位" width="276" num="1"></post-choose>
             </el-form-item>
+            <el-form-item label="钉钉是否隐藏">
+              <el-select v-model="departForm.is_enable" clearable placeholder="请选择">
+                 <el-option
+                        v-for="item in is_enable"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                </el-option>
+              </el-select>
+              </el-form-item>
           </el-form>
         </div>
         <div class="dialog_footer">
@@ -832,6 +842,13 @@
           limit: 5
         },
         city_options:[],
+        is_enable:[{
+          value: 1,
+          label: '显示'
+        },{
+          value: 0,
+          label: '隐藏'
+        }],
         system_list: [],
         system_count: 0,
         module_list: [],
@@ -906,7 +923,8 @@
           parent_id: [1],
           position_id: [],
           order:0,
-          city_id:''
+          city_id:'',
+          is_enable: ''
         },//新增部门
         visibleStatus: false,//弹出部门
 
@@ -1471,6 +1489,7 @@
         }
         this.edit_depart = item;
         this.departForm.name = item.name;
+        this.departForm.is_enable= item.is_enable;
         this.departForm.order = item.order;
         this.departForm.leader = item.leader && item.leader.name || '';
         this.departForm.leader_id.push(item.leader_id);
@@ -1528,6 +1547,7 @@
           parent_id: [],
           parent: '',
           position_id:[],
+          is_enable: '',
           order:0
         };
         if (!this.show_depart_detail) {
