@@ -49,7 +49,7 @@
 
         <div class="favorite-table-pagination flex-center common-page">
           <div class="page">
-            <el-pagination :current-page="currentPage" :page-size="10" :total="total" layout="total,jumper,prev,pager,next">
+            <el-pagination :current-page.sync="currentPage" :page-size="10" :total="total" layout="total,jumper,prev,pager,next">
             </el-pagination>
           </div>
         </div>
@@ -91,9 +91,8 @@ export default {
         limit: 10
       }
       this.$http.post(`${this.url}api/article/collect/userCollect`, param).then(res => {
-        console.log(res)
         if (res.status === 200) {
-          this.total = res.data.data.total
+          this.total = res.data.total
           for (let i = 0; i < res.data.data.length; i++) {
             this.favoriteList.push(res.data.data[i])
           }

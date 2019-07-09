@@ -94,8 +94,8 @@
         search: '',
         crumbs: [
           {
-            id: 1,
-            name: '乐伽商业管理有限公司',
+            id: this.$storage.get('user_info').company_info.id || 1,
+            name: this.$storage.get('user_info').company_info.name || '乐伽商业管理有限公司',
           },
         ],
         departList: [],
