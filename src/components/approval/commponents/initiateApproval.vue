@@ -28,7 +28,7 @@
     <!--    动态组件-->
     <component
       ref="dialog"
-      v-if="dialog.component"
+      v-if="dialog.component && user_info_all"
       :is="dialog.component"
       v-bind="dialog.props"
       :user_info_all="user_info_all"
@@ -271,7 +271,7 @@
       /**获取个人信息 */
       getLoginUser() {
         let user_id = this.$storage.get('user_info').id
-        this.$http.get(`${this.url}staff/user/${user_id}?staff=0`)
+        return this.$http.get(`${this.url}staff/user/${user_id}?staff=0`)
           .then(res => {
             if (res.code == 20020) {
               this.user_info_all = res.data
@@ -279,11 +279,14 @@
           })
       },
       /**打开对话框 */
-      openDialog(item) {
+      async openDialog(item) {
         this.dialog = {
           component: item.component,
           props: item.props
         };
+        if (!this.user_info_all) {
+          await this.getLoginUser()
+        }
         this.$nextTick(() => {
           this.$refs.dialog.open();
         });

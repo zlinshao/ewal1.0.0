@@ -11,6 +11,7 @@
           <h5>高级</h5>
           <div class="formData borderNone" v-for="item in showData.data">
             <h5>{{item.title}}</h5>
+            <!--            日期控件-->
             <div v-if="item.keyType === 'date'">
               <el-date-picker
                 v-model="params[item.keyName]"
@@ -21,6 +22,7 @@
                 :picker-options="pickerOptions1">
               </el-date-picker>
             </div>
+            <!--            日期范围控件-->
             <div v-if="item.keyType === 'dateRange'">
               <el-date-picker
                 v-model="params[item.keyName]"
@@ -59,10 +61,23 @@
                            v-model="params[item.keyName]"></post-choose>
             </div>
             <div v-if="item.keyType === 'input'">
-              <el-input width="470"  :placeholder="item.placeholder" v-model="params[item.keyName]"  ></el-input>
+              <el-input width="470" :placeholder="item.placeholder" v-model="params[item.keyName]"></el-input>
             </div>
             <div v-if="item.keyType === 'subject'">
-              <el-input width="470"  :placeholder="item.placeholder" @focus="subject_visible = true;which_subject = 'out_account';is_disabled = true;keyName=item.keyName;lebleName=item.lebleName" v-model="params[item.lebleName]"  ></el-input>
+              <el-input width="470" :placeholder="item.placeholder"
+                        @focus="subject_visible = true;which_subject = 'out_account';is_disabled = true;keyName=item.keyName;lebleName=item.lebleName"
+                        v-model="params[item.lebleName]"></el-input>
+            </div>
+            <!--            选择器组件-->
+            <div v-if="item.keyType === 'select'">
+              <el-select width="470" popper-class="process-name-options"
+                         :placeholder="item.placeholder" v-model="params[item.keyName]"
+                         :no-data-text="item.no_option_text">
+                <el-option v-for="o in item.options" :key="o.value"
+                           :label="o.label"
+                           :value="o.value">
+                </el-option>
+              </el-select>
             </div>
           </div>
         </div>
@@ -72,24 +87,24 @@
         </footer>
       </div>
     </div>
-     <lj-subject :visible="subject_visible" @close="subject_visible = false" @confirm="handleConfirmSubject"
+    <lj-subject :visible="subject_visible" @close="subject_visible = false" @confirm="handleConfirmSubject"
                 style="z-index:1000"></lj-subject>
   </div>
 </template>
 
 <script>
-import LjSubject from './lj-subject.vue';
+  import LjSubject from './lj-subject.vue';
+
   export default {
     name: "search-high",
     props: ['module', 'showData'],
-    components: { LjSubject},
+    components: {LjSubject},
     data() {
       return {
         showModule: false,
         subject_visible: false,
         is_disabled: false,
         which_subject: '',
-        lebleName: '',
         lebleName: '',
         move_subject: {
           initial: '',
@@ -158,6 +173,7 @@ import LjSubject from './lj-subject.vue';
         this.showModule = val;
       },
       showModule(val) {
+        this.$emit('update:module', val)
         if (!val) {
           this.$emit('close', 'close');
         }
@@ -165,8 +181,8 @@ import LjSubject from './lj-subject.vue';
       },
       showData: {//深度监听，可监听到对象、数组的变化
         handler(val, oldVal) {
-         if(val != oldVal) {
-          for (let key of val.data) {
+          if (val != oldVal) {
+            for (let key of val.data) {
               this.reset[key.keyName] = key.dataType;
             }
             let word = val.keywords ? val.keywords : 'search';
@@ -174,7 +190,7 @@ import LjSubject from './lj-subject.vue';
             this.reset.page = val.page ? val.page : 1;
             this.reset.limit = val.limit ? val.limit : 30;
             this.resetting();
-         }
+          }
         },
         deep: true
       },
@@ -187,9 +203,9 @@ import LjSubject from './lj-subject.vue';
        */
       listenOnKeyDownEnter(flag = false) {
         let _this = this;
-        document.onkeydown = function(e){
+        document.onkeydown = function (e) {
           e = window.event || e;
-          if(e.keyCode=='13'||e.keyCode=='108'){
+          if (e.keyCode == '13' || e.keyCode == '108') {
             if (flag) {
               _this.subSearch();
             } else {
@@ -202,12 +218,12 @@ import LjSubject from './lj-subject.vue';
         if (this.which_subject === 'move_subject') {
           // this.move_subject.parent_id = val.id;
           // this.move_subject.title = val.title;
-           this.params[this.keyName] =  val.id;
-          this.params[this.lebleName] =  val.title;
+          this.params[this.keyName] = val.id;
+          this.params[this.lebleName] = val.title;
         }
         if (this.which_subject === 'subject') {
-           this.params[this.keyName] =  val.id;
-           this.params[this.lebleName] =  val.title;
+          this.params[this.keyName] = val.id;
+          this.params[this.lebleName] = val.title;
           // this.subject.parent_name = val.title;
           // this.subject.parent_id = val.id;
 
@@ -218,8 +234,8 @@ import LjSubject from './lj-subject.vue';
           // this.ruleForm.subject_name = val.title;
         }
         if (this.which_subject === 'out_account') {
-          this.params[this.keyName] =  val.id;
-          this.params[this.lebleName] =  val.title;
+          this.params[this.keyName] = val.id;
+          this.params[this.lebleName] = val.title;
           // this.out_form.subject_id = val.id;
           // this.out_form.subject_name = val.title;
         }
@@ -228,10 +244,10 @@ import LjSubject from './lj-subject.vue';
       // 单选
       chooseRadio(key, val) {
         if (val === this.params[key]) {
-          this.params[key] = '';
-        } else {
-          this.params[key] = val;
+          val = ''
         }
+        this.$set(this.params, key, val)
+        this.$emit('radio-change', {key, val})
       },
       // 复选
       chooseCheck(key, val) {
@@ -253,10 +269,16 @@ import LjSubject from './lj-subject.vue';
           }
         });
         this.params = this.jsonData(this.reset);
-      },
+      }
     },
   }
 </script>
+
+<style lang="scss">
+  .process-name-options.el-popper {
+    width: 470px;
+  }
+</style>
 
 <style lang="scss" scoped>
   @import "../../assets/scss/search/index.scss";

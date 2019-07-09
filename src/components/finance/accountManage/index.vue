@@ -9,7 +9,7 @@
       </div>
       <div class="items-center listTopRight">
         <el-tooltip content="新增账户" placement="bottom" :visible-arrow="false">
-          <div class="icons add" @click="add_account_visible = true;account_dialog_type=1;current_row = null;is_table_choose=null;action_visible=false"><b>+</b></div>
+          <div class="icons add" @click="addNewAccount"><b>+</b></div>
         </el-tooltip>
         <el-tooltip content="高级搜索" placement="bottom" :visible-arrow="false">
           <div class="icons search" @click="highSearch"></div>
@@ -21,11 +21,16 @@
         <!--<el-checkbox>全选</el-checkbox>-->
         <!--<span class="check-count" >已选中 <i>{{multipleSelection.length}}</i> 项</span>-->
         <span class="action-bar-name">
-                    <span class="edit" v-if="$storage.get('VALIDATE_PERMISSION')['Account-Edit']" @click="handleOpenUpdateAccount(current_row)">更新</span>
-                    <span class="edit" v-if="$storage.get('VALIDATE_PERMISSION')['Account-Recharge']" @click="handleOpenRecharge(current_row)">充值</span>
-                    <span class="edit" v-if="$storage.get('VALIDATE_PERMISSION')['Account-Archive']" @click="initial_visible = true;">归零</span>
-                    <span class="edit" v-if="$storage.get('VALIDATE_PERMISSION')['Account-Change-Log']" @click="handleOpenInfo(current_row)">记录</span>
-                    <span class="delete" v-if="$storage.get('VALIDATE_PERMISSION')['Account-Delete']" @click="handleOpenDel(current_row)">删除</span>
+                    <span class="edit" v-if="$storage.get('VALIDATE_PERMISSION')['Account-Edit']"
+                          @click="handleOpenUpdateAccount(current_row)">更新</span>
+                    <span class="edit" v-if="$storage.get('VALIDATE_PERMISSION')['Account-Recharge']"
+                          @click="handleOpenRecharge(current_row)">充值</span>
+                    <span class="edit" v-if="$storage.get('VALIDATE_PERMISSION')['Account-Archive']"
+                          @click="initial_visible = true;">归零</span>
+                    <span class="edit" v-if="$storage.get('VALIDATE_PERMISSION')['Account-Change-Log']"
+                          @click="handleOpenInfo(current_row)">记录</span>
+                    <span class="delete" v-if="$storage.get('VALIDATE_PERMISSION')['Account-Delete']"
+                          @click="handleOpenDel(current_row)">删除</span>
                 </span>
       </div>
       <div class="action-bar-right">
@@ -47,19 +52,19 @@
             <span class="table_choose" :class="{'is_table_choose': scope.row.id === is_table_choose }"></span>
           </template>
         </el-table-column>
-        <el-table-column  key="name" align="center"  prop="name"  label="账户名称"></el-table-column>
-        <el-table-column  key="cate" align="center"  prop="cate"  label="账户类型">
-            <template slot-scope="scope">
-              <span v-for='(item,key) in cate' v-if='key==scope.row.cate'>{{item}}</span>
+        <el-table-column key="name" align="center" prop="name" label="账户名称"></el-table-column>
+        <el-table-column key="cate" align="center" prop="cate" label="账户类型">
+          <template slot-scope="scope">
+            <span v-for='(item,key) in cate' v-if='key==scope.row.cate'>{{item}}</span>
           </template>
         </el-table-column>
-        <el-table-column  key="account_num" align="center"  prop="account_num"  label="账号"></el-table-column>
-        <el-table-column  key="bank" align="center"  prop="bank"  label="开户银行"></el-table-column>
-        <el-table-column  key="sub_bank" align="center"  prop="sub_bank"  label="支行"></el-table-column>
-        <el-table-column  key="amount_base" align="center"  prop="amount_base"  label="初始金额"></el-table-column>
-        <el-table-column  key="amount_remain" align="center"  prop="amount_remain"  label="当前余额"></el-table-column>
-        <el-table-column  key="remark" align="center"  prop="remark"  label="备注"></el-table-column>
-          
+        <el-table-column key="account_num" align="center" prop="account_num" label="账号"></el-table-column>
+        <el-table-column key="bank" align="center" prop="bank" label="开户银行"></el-table-column>
+        <el-table-column key="sub_bank" align="center" prop="sub_bank" label="支行"></el-table-column>
+        <el-table-column key="amount_base" align="center" prop="amount_base" label="初始金额"></el-table-column>
+        <el-table-column key="amount_remain" align="center" prop="amount_remain" label="当前余额"></el-table-column>
+        <el-table-column key="remark" align="center" prop="remark" label="备注"></el-table-column>
+
       </el-table>
       <footer class="flex-center bottomPage">
         <div class="develop flex-center">
@@ -331,11 +336,11 @@
         showFinMenuList: false,
         showData: {
           name: '账户名称',
-          cate:'账户类型',
-          account_num:'账号',
-          bank:'开户银行',
-          sub_bank:'支行',
-          amount_base:'初始金额',
+          cate: '账户类型',
+          account_num: '账号',
+          bank: '开户银行',
+          sub_bank: '支行',
+          amount_base: '初始金额',
           amount_remain: '当前余额',
           remark: '备注',
         },
@@ -364,7 +369,7 @@
 
         //充值dialog
         account_recharge_visible: false,
-        account_dialog_type:1,//1为新增 2为编辑(更新)
+        account_dialog_type: 1,//1为新增 2为编辑(更新)
         recharge: {
           amount: ''
         },
@@ -377,14 +382,7 @@
     },
     activated() {
     },
-    watch: {
-      add_account: {
-        handler(val, oldVal) {
-          console.log(val)
-        },
-        deep: true
-      }
-    },
+    watch: {},
     computed: {},
     methods: {
       handleCloseInfo() {
@@ -434,7 +432,7 @@
       handleOkRecharge() {//确认充值
         this.recharge.amount = parseFloat(this.recharge.amount).toFixed(2);
         this.$http.put(globalConfig.temporary_server + `account/recharge/${this.current_row.id}`, this.recharge).then(res => {
-          this.$LjMessageEasy(res,()=> {
+          this.$LjMessageEasy(res, () => {
             this.account_recharge_visible = false;
             this.getAccountList();
           });
@@ -463,25 +461,31 @@
         this.current_row = row;
         this.del_account_visible = true;
       },
+      // 新增账户
+      addNewAccount() {
+        this.add_account_visible = true;
+        this.account_dialog_type = 1;
+        this.is_table_choose = null;
+        this.action_visible = false;
+        for (let key in this.add_account) {
+          this.add_account[key] = '';
+        }
+      },
       //更新弹出
       handleOpenUpdateAccount(row) {
         this.account_dialog_type = 2;
         this.current_row = row;
-        for (var key in this.add_account) {
+        for (let key in this.add_account) {
           this.add_account[key] = row[key];
         }
         this.add_account_visible = true;
-        console.log(this.add_account_visible)
-
       },
       handleChangePage(page) {
         this.params.page = page;
         this.getAccountList();
       },
       submitAdd(formName) {
-        console.log(this.add_account);
         this.$refs[formName].validate((valid => {
-
           if (valid) {
             this.add_account.amount_base = parseFloat(this.add_account.amount_base).toFixed(2);
             if (this.current_row) {
@@ -494,20 +498,17 @@
       },
       handleSubmitAdd() {
         this.$http.post(globalConfig.temporary_server + 'account', this.add_account).then(res => {
-          this.callbackSuccess(res,() => {
+          this.callbackSuccess(res, () => {
             this.add_account_visible = false;
           });
         }).catch(err => {
           console.log(err);
         })
       },
-
       handleUpdateAccount() {
-        // console.log(this.current_row.id);
         this.$http.put(globalConfig.temporary_server + `account/${this.current_row.id}`, this.add_account).then(res => {
-          this.callbackSuccess(res,() => {
+          this.callbackSuccess(res, () => {
             this.handleCancelAdd();
-            this.current_row = null;
           });
         }).catch(err => {
           console.log(err);
@@ -515,22 +516,20 @@
       },
       handleCancelAdd() {
         this.$refs['addAccount'].resetFields();
-        for (var key in this.add_account) {
-          this.add_account[key] = '';
-        }
-        if(this.account_dialog_type==1) {
-          this.current_row = '';
+        if (this.account_dialog_type == 1) {
+          for (let key in this.add_account) {
+            this.add_account[key] = '';
+          }
         }
         this.add_account_visible = false;
       },
-      callbackSuccess(res,callback) {
+      callbackSuccess(res, callback) {
         if (res.code === 200) {
           this.$LjNotify('success', {
             title: '成功',
             message: res.msg,
             subMessage: '',
           });
-          this.current_row = '';
           this.getAccountList();
           callback();
         } else {
@@ -544,7 +543,7 @@
       },
       //获取账户列表
       getAccountList() {
-        if(!this.validatePermission('Account-List')) return;
+        if (!this.validatePermission('Account-List')) return;
         this.$http.get(globalConfig.temporary_server + 'account', this.params).then(res => {
           if (res.code === 200) {
             this.cate = res.data.cate;
@@ -567,15 +566,14 @@
       },
       // 当前点击
       tableClickRow(row) {
+        this.current_row = row;
         if (this.is_table_choose === row.id) {
           this.is_table_choose = '';
           this.multipleSelection = '';
-          this.current_row = '';
           this.action_visible = false;
         } else {
           this.is_table_choose = row.id;
           this.multipleSelection = row;
-          this.current_row = row;
           this.action_visible = true;
         }
         let ids = this.chooseRowIds;

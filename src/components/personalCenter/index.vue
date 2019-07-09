@@ -1,6 +1,5 @@
 <template>
   <div id="personal_center">
-    <coming-soon></coming-soon>
     <div class="personal-center-container">
       <div class="container-left">
         <div class="container-left-up">

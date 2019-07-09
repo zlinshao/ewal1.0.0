@@ -9,10 +9,10 @@
                     <el-col :span="8">
                         <div class="">
                             <el-form-item label="签约人">
-                                  <user-choose v-model="formParams.staff_id" num="1" width="200"></user-choose>
+                                  <user-choose v-model="formParams.staff_id" :disabled="is_disabled" num="1" width="200"></user-choose>
                             </el-form-item>
                             <el-form-item label="所属部门">
-                                <org-choose v-model="formParams.department_id" num="1" width="200"></org-choose>
+                                <org-choose v-model="formParams.department_id" :disabled="is_disabled" num="1" width="200"></org-choose>
                             </el-form-item>
                             <el-form-item label="负责人">
                                 <el-input v-model="commonModuleData.leader_name" style="width: 200px"
@@ -27,7 +27,7 @@
                                           :disabled="is_disabled"></el-input>
                             </el-form-item>
                             <el-form-item label="房屋地址">
-                                <HouseCommunity @getHouseIdName='getHouseIdName' v-model="formParams.house_id" width="200" ></HouseCommunity>
+                                <HouseCommunity @getHouseIdName='getHouseIdName' :disabled="is_disabled" v-model="formParams.house_id" width="200" ></HouseCommunity>
                             </el-form-item>
                             <el-form-item label="租房状态">
                                 <el-select placeholder="请选择租房状态" v-model="formParams.rent_type" style="width: 200px;"

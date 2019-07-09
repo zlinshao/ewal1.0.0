@@ -218,12 +218,10 @@
                 this.getDataLists();
             },
             openFile(val) {
-                console.log(val);
                 window.open(val);
             },
             getPath() {
                 this.chooseTab = this.$route.query.type;
-                console.log(this.chooseTab);
             },
             // 查看详情
             // openDetail(row) {

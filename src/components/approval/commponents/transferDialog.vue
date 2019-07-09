@@ -87,8 +87,10 @@
                 action: "delegate",
                 assignee: Number(this.transfer_form.assignee.toString())
               }
+              this.showLoading2(true)
               this.$http.post(url, params)
                 .then(res => {
+                  this.showLoading2(false)
                   if (res.httpCode === 200) {
                     this.$LjNotify('success', {
                       title: '流程审批',

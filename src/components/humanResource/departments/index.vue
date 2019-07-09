@@ -138,7 +138,7 @@
       <Company :searchVal="companySearch2"
                    :search-params="company_params" :isfresh="isfresh"></Company>
     </div>
-    
+
 
     <!--离职管理-->
     <div v-if="chooseTab === 4">
@@ -340,6 +340,16 @@
             <el-form-item label="部门上级岗位">
               <post-choose v-model="departForm.position_id" title="请选择部门上级岗位" width="276" num="1"></post-choose>
             </el-form-item>
+            <el-form-item label="钉钉是否隐藏">
+              <el-select v-model="departForm.is_enable" clearable placeholder="请选择">
+                 <el-option
+                        v-for="item in is_enable"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                </el-option>
+              </el-select>
+              </el-form-item>
           </el-form>
         </div>
         <div class="dialog_footer">
@@ -735,7 +745,8 @@
         next_depart_params: {
           page: 1,
           limit: 999,
-          parent_id: ''
+          parent_id: '',
+          is_enable: 1,
         },
         nav_depart: [],
         is_next: true,
@@ -831,6 +842,13 @@
           limit: 5
         },
         city_options:[],
+        is_enable:[{
+          value: 1,
+          label: '显示'
+        },{
+          value: 0,
+          label: '隐藏'
+        }],
         system_list: [],
         system_count: 0,
         module_list: [],
@@ -856,7 +874,8 @@
         params: {
           page: 1,
           limit: 7,
-          parent_id: 1
+          parent_id: 1,
+          is_enable: 1,
         },
         OrgSearch,
         staffBookSearch,
@@ -904,7 +923,8 @@
           parent_id: [1],
           position_id: [],
           order:0,
-          city_id:''
+          city_id:'',
+          is_enable: ''
         },//新增部门
         visibleStatus: false,//弹出部门
 
@@ -981,7 +1001,7 @@
                         message: '公司名称必填'
                     });
           }
-        }, 
+        },
         getCityList(){
             this.$http.get(this.url+'company/city').then(res=>{
                 console.log(res);
@@ -1044,8 +1064,8 @@
         this.check_info = '';
         this.departModule = false;
         this.show_depart_detail = false;
-        this.departForm.parent_id = [1];
-        this.departForm.parent = '南京乐伽商业管理有限公司';
+        this.departForm.parent_id = [this.$storage.get('user_info').company_info?.id || 1];
+        this.departForm.parent = this.$storage.get('user_info').company_info?.name || '乐伽商业管理有限公司';
       },
       handleIconClick(direction){
           let temp=this.next_depart_pool;
@@ -1093,7 +1113,8 @@
         this.$http.get(this.url+'organization/organization', {
           page: 1,
           limit: 999,
-          parent_id: depart.id
+          parent_id: depart.id,
+          is_enable: 1,
         }).then(res => {
           if (res.code === '20000') {
             if (res.data.data.length > 0) {
@@ -1468,6 +1489,7 @@
         }
         this.edit_depart = item;
         this.departForm.name = item.name;
+        this.departForm.is_enable= item.is_enable;
         this.departForm.order = item.order;
         this.departForm.leader = item.leader && item.leader.name || '';
         this.departForm.leader_id.push(item.leader_id);
@@ -1525,11 +1547,12 @@
           parent_id: [],
           parent: '',
           position_id:[],
+          is_enable: '',
           order:0
         };
         if (!this.show_depart_detail) {
-          this.departForm.parent_id = [1];
-          this.departForm.parent = '南京乐伽商业管理有限公司';
+          this.departForm.parent_id = [this.$storage.get('user_info').company_info?.id || 1];
+          this.departForm.parent = this.$storage.get('user_info').company_info?.id || '乐伽商业管理有限公司';
         }
         if (this.show_depart_detail) {
           this.departForm.parent_id = [];
@@ -1686,7 +1709,7 @@
             case 6:
             this.searchData = this.companySearch;
             break;
-            
+
         }
       },
 

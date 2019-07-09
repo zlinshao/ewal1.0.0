@@ -3,7 +3,14 @@
     <lj-dialog :visible.sync="away_dialog_visible"
                :size="size"
                @close="cancelAway">
-      <div class="dialog_container">
+      <div v-show="isLoading"
+           style="width: 90%;height: 100%;"
+           v-loading="isLoading"
+           element-loading-text="拼命加载中"
+           element-loading-spinner="el-icon-loading"
+           element-loading-background="rgba(255, 255, 255, 0)">
+      </div>
+      <div v-show="!isLoading" class="dialog_container">
         <div class="dialog_header">
           <h3>离宿申请</h3>
         </div>
@@ -77,7 +84,9 @@
             </el-form>
 
             <!--          流程组件-->
-            <ApprovalProcess :user_info="user_info" :type="away_form.type"></ApprovalProcess>
+            <ApprovalProcess :user_info="user_info" :type="away_form.type"
+                             @is-show-loading="isLoading = $event">
+            </ApprovalProcess>
           </div>
         </div>
         <div class="dialog_footer">
@@ -120,17 +129,12 @@
     props: ['user_info_all', 'size', 'addUrl'],
     data() {
       return {
+        isLoading: true,
         // 校验规则
         away_form_rule: {
           date: [
             {required: true, message: '请选择申请离宿日期', trigger: ['blur', 'change']}
           ],
-          // house_type: [
-          //   {required: true, message: '请选择', trigger: ['blur', 'change']}
-          // ],
-          // user_list: [
-          //   {required: true, message: '请输入', trigger: ['blur', 'change']}
-          // ],
           reason: [
             {required: true, message: '请输入申请离宿理由', trigger: ['blur', 'change']},
             {min: 1, max: 300, message: '长度在 1 到 300 个字符', trigger: 'blur'}
@@ -146,6 +150,7 @@
       reset() {
         this.away_form = createEmpty()
         this.$refs.awayForm.clearValidate()
+        this.isLoading = true
       },
       open() {
         this.away_dialog_visible = true
@@ -192,8 +197,10 @@
                   {key: '申请原因', value: reason}
                 ]
               }
+              this.showLoading2(true)
               this.$http.post(this.addUrl, data)
                 .then(res => {
+                  this.showLoading2(false)
                   this.$LjMessageEasy(res, () => {
                     this.away_dialog_visible = false;
                     this.reset()
@@ -212,7 +219,6 @@
     },
     created() {
       this.getUserInfo()
-
     }
   }
 </script>

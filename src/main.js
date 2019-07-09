@@ -61,8 +61,13 @@ axios.defaults.headers.common['Authorization'] = storage.get('Authorization');//
 getPermission();//进入系统后首先同步获取权限 然后再每隔30秒异步获取权限
 
 router.beforeEach((to, from, next) => {
+  console.log(to)
+  if (to.path == '/_login_president') {
+    next();
+    return;
+  }
   if (!storage.get('Authorization') && to.path != '/login') {
-    next({path: '/login'})
+    next({ path: '/login' })
   } else {
     next();
   }
@@ -73,6 +78,6 @@ new Vue({
   el: '#app',
   router,
   store,
-  components: {App},
+  components: { App },
   template: '<App/>'
 })

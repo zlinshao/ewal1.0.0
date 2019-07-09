@@ -881,7 +881,9 @@
             org_id: org_id[0],
             month: this.myUtils.formatDate(this.monthValue, 'yyyy-MM'),
           };
+          this.showLoading2(true);
           this.$http.post(`${this.url}staff/e_contract/generate_confirm`, params).then(res => {
+            this.showLoading2(false);
             this.$LjMessageEasy(res);
           });
         });

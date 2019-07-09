@@ -334,7 +334,6 @@
                         //给最小的管道添加卡片
                         if (min == 0) {
                             this.columnData0.push(this.newsData[j]);
-                            console.log(this.columnData0)
                             // that.$refs.piping0.innerHTML += html;
                         } else if (min == 1) {
                             this.columnData1.push(this.newsData[j]);

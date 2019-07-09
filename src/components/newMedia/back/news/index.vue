@@ -313,7 +313,6 @@ export default {
     // 确认搜索
       hiddenModule(val) {
         val = _.cloneDeep(val);
-        console.log(val)
         this.showSearch = false;
         if (val !== 'close') {
            this.params=val;
@@ -353,7 +352,6 @@ export default {
         message: content,
         type: 'success'
       });
-      console.log(content)
     },
     changeTabs (id) {
       this.chooseTab = id;
@@ -440,7 +438,6 @@ export default {
             } else {
 
             }
-            console.log(this.unread_info);
           }
         }
       });
@@ -455,7 +452,6 @@ export default {
           this.showLoading(false);
           this.tableData = res.data.data;
           this.count = res.data.total;
-          console.log(res.data.data)
         }
       })
     },
@@ -467,7 +463,6 @@ export default {
           this.showLoading(false);
           this.reportData = res.data.data;
           this.count = res.data.total;
-          console.log(res.data.data)
         }
       })
     },
@@ -503,8 +498,6 @@ export default {
           this.statusParams.is_great = 1;
           this.comfirmStatus();
         }
-        console.log(this.statusParams.cancel_great);
-        console.log(this.statusParams.is_great);
       }
     },
     //操作下架
@@ -529,7 +522,6 @@ export default {
       })
     },
     submit () {//发布
-    // console.log('222222222222222222222222');
       let paramsForm = {
         title: this.form.title,
         type_id: this.form.type_id,
@@ -589,9 +581,7 @@ export default {
     },
    
     comfirmStatus(){
-      console.log('this.statusParams', this.statusParams);
       this.$http.post(globalConfig.newMedia_sever + '/api/article/status', this.statusParams).then(res => {
-          console.log('this.res=====', res);
           if(res.status == 200){
             this.$LjNotify('success', {
               title: '成功',

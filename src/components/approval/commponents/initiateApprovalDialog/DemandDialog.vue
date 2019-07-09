@@ -3,7 +3,15 @@
     <lj-dialog :visible.sync="demand_dialog_visible"
                :size="size"
                @close="cancelDemand">
-      <div class="dialog_container">
+      <div v-show="isLoading"
+           style="width: 90%;height: 100%;"
+           v-loading="isLoading"
+           element-loading-text="拼命加载中"
+           element-loading-spinner="el-icon-loading"
+           element-loading-background="rgba(255, 255, 255, 0)">
+      </div>
+
+      <div v-show="!isLoading" class="dialog_container">
         <div class="dialog_header">
           <h3>人员需求审批</h3>
         </div>
@@ -140,7 +148,10 @@
               </el-row>
             </el-form>
             <!--          流程组件-->
-            <ApprovalProcess :user_info="user_info" :type="demand_form.type"></ApprovalProcess>
+            <ApprovalProcess :user_info="user_info"
+                             :type="demand_form.type"
+                             @is-show-loading="isLoading = $event">
+            </ApprovalProcess>
           </div>
         </div>
         <div class="dialog_footer">
@@ -209,8 +220,14 @@
       ApprovalProcess
     },
     props: ['size', 'user_info_all'],
+    watch: {
+      user_info_all(newValue, oldValue) {
+        this.getUserInfo()
+      }
+    },
     data() {
       return {
+        isLoading: true,
         url: globalConfig.humanResource_server,
         // 校验规则
         demand_form_rule: {
@@ -270,6 +287,7 @@
       reset() {
         this.demand_form = createEmpty()
         this.$refs.demandForm.clearValidate()
+        this.isLoading = true
       },
       open() {
         this.demand_dialog_visible = true
@@ -315,8 +333,10 @@
                   {key: '招聘要求', value: content}
                 ]
               }
+              this.showLoading2(true)
               this.$http.post(`${this.url}/process/process`, data)
                 .then(res => {
+                  this.showLoading2(false)
                   this.$LjMessageEasy(res, () => {
                     this.demand_dialog_visible = false;
                     this.reset()
@@ -335,9 +355,9 @@
 
     },
     mounted() {
-      this.getUserInfo()
     },
     created() {
+      this.getUserInfo()
     }
   }
 </script>
