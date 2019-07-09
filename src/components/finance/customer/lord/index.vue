@@ -83,8 +83,7 @@
           layout="total,jumper,prev,pager,next"
           :current-page="params.page"
           :page-size="params.limit"
-          @current-change="handleChangePage"
-        >
+          @current-change="handleChangePage">
         </el-pagination>
       </div>
     </footer>
@@ -115,7 +114,6 @@
                  :del_visible="delete_visible"
                  @editSuccess="updateData"
                  @cancel="getCancelStatus">
-
       </lord-form>
     </lj-dialog>
 
@@ -235,18 +233,16 @@
             this.lordLists = res.data.data;
             this.lordCount = res.data.count;
             this.lordIds = [];
-
             for (let item of this.lordLists) {
               this.lordIds.push(item.id);
             }
-
             //当点击生成待处理项或取消待处理项时
             //处理成功后根据获取的列表刷新当前被点击的列表数据，从而更新待处理项的状态
             this.lordLists.forEach((item, index) => {
               if (item.id == this.is_table_choose) {
                 this.$emit('getMultipleSelection', item);
               }
-            })
+            });
             //前缀状态
             this.$http.get(globalConfig.temporary_server + 'customer_lord_repeat', {id: this.lordIds}).then(res => {
               if (res.code === 200) {
@@ -270,7 +266,6 @@
       //取消
       getCancelStatus(val) {
         this.action_status.details_visible = val;
-
       },
       //编辑成功回调
       updateData(val) {
