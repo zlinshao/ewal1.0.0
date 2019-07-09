@@ -105,8 +105,8 @@
         search: '',
         crumbs: [
           {
-            id: this.$storage.get('user_info').company_info.id || 1,
-            name: this.$storage.get('user_info').company_info.name || '乐伽商业管理有限公司',
+            id: this.$storage.get('user_info').company_info?.id || 1,
+            name: this.$storage.get('user_info').company_info?.name || '乐伽商业管理有限公司',
           },
         ],
         departList: [],
@@ -186,8 +186,8 @@
           if(val) {
             this.crumbs= [
               {
-                id: this.$storage.get('user_info').company_info.id || 1,
-                name: this.$storage.get('user_info').company_info.name || '乐伽商业管理有限公司',
+                id: this.$storage.get('user_info').company_info?.id || 1,
+                name: this.$storage.get('user_info').company_info?.name || '乐伽商业管理有限公司',
               },
             ];
             this.getList();

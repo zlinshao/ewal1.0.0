@@ -1,7 +1,7 @@
 <template>
   <div id="organization">
     <div v-if="$storage.get('VALIDATE_PERMISSION')['Organization-Structure']">
-      <p>{{$storage.get('user_info').company_info.name || '乐伽商业管理有限公司'}}</p>
+      <p>{{$storage.get('user_info').company_info?.name || '乐伽商业管理有限公司'}}</p>
       <div class="organ-tree scroll_bar">
         <div class="strt-wrap flex-center" id="strtWrap" ref="strtWrap">
         <!--<div class="strt-wrap flex-center" id="strtWrap" ref="strtWrap" @mousedown="handleDragOrgan">-->
