@@ -164,7 +164,7 @@
             <el-form-item label="标题">
               <el-input v-model="form.title"></el-input>
             </el-form-item>
-             <el-form-item label="封面图">{{form.file_info}}
+             <el-form-item label="封面图">
               <lj-upload size="50"  v-model="form.file_info"></lj-upload>
             </el-form-item>
             <el-form-item label="文章内容">
