@@ -98,7 +98,7 @@
                            v-for="(item_data,index) in base_info.data.sanction_info" :key="index">
                         <span v-for="(item,index) in item_data?item_data:[]" :key="index">
                           <span v-if="item && item!=undefined">
-                            <span class="base-info-text-list">{{item.key}}</span>
+                            <span class="base-info-text-list">{{item.key}}</span>:
                             <span class="base-info-text-content">{{item.value}}</span>
                           </span>
                         </span>
@@ -111,7 +111,7 @@
                            v-for="(item_data,index) in base_info.data.detail_info" :key="index">
                         <span v-for="(item,index) in item_data?item_data:[]" :key="index">
                           <span v-if="item && item!=undefined">
-                            <span class="base-info-text-list">{{item.key}}</span>
+                            <span class="base-info-text-list">{{item.key}}</span>:
                             <span class="base-info-text-content">{{item.value}}</span>
                           </span>
                         </span>
@@ -217,15 +217,15 @@
     },
     props: ['detailUrl', 'processUrl', 'row', 'popoverBtnData'],
     watch: {
-      detailUrl(newValue, oldValue) {
-        this.getProcessDetails(newValue)
-      },
-      processUrl(newValue, oldValue) {
-        this.getApprovalRecord(newValue)
-      },
-      row(newValue, oldValue) {
-        this.getHandleUser(newValue)
-      },
+      // detailUrl(newValue, oldValue) {
+      //   this.getProcessDetails(newValue)
+      // },
+      // processUrl(newValue, oldValue) {
+      //   this.getApprovalRecord(newValue)
+      // },
+      // row(newValue, oldValue) {
+      //   this.getHandleUser(newValue)
+      // },
       popoverBtnData(newValue, oldValue) {
         this.operateBtnData = newValue
       }
@@ -321,6 +321,8 @@
         this.load_user = true
         this.load_info = true
         this.load_record = true
+
+        this.$emit('clear-approval-row')
       },
       closeDialog() {
         this.close()
@@ -437,6 +439,9 @@
     },
     created() {
       this.init()
+      this.getProcessDetails(this.detailUrl)
+      this.getApprovalRecord(this.processUrl)
+      this.getHandleUser(this.row)
     }
   }
 </script>
