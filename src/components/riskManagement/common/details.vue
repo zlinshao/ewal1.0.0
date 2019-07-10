@@ -37,6 +37,14 @@
                       </p>
                     </div>
                   </div>
+                  <el-pagination
+                    :total="pages.total"
+                    layout="total,jumper,prev,pager,next"
+                    :current-page="pages.offset"
+                    :page-size="pages.limit"
+                    @current-change="current_change"
+                    v-if="classify_document.length>0"
+                  ></el-pagination>
                 </template>
                 <!-- <p class='nothing_mess' v-else style='width:100%;text-align:center;font-size:14px;color:#999;'>暂无数据</p> -->
               </div>
@@ -212,8 +220,12 @@ export default {
       },
       open_type: "",
       pre_id: "",
-      current_item: ""
-      // pre_data: '',
+      current_item: "",
+      pages: {
+        limit: 15,
+        offset: 1,
+        total: 0
+      }
     };
   },
   watch: {
@@ -284,12 +296,15 @@ export default {
       //文件列表
       this.$http
         .get(globalConfig.risk_sever + "/api/risk/classify_document", {
-          classify_id: this.pre_id
+          classify_id: this.pre_id,
+          limit: this.pages.limit,
+          offset: this.pages.offset
         })
         .then(res => {
           if (res.status === 200) {
-            if(Object.keys(res.data).length!=0){
+            if (Object.keys(res.data).length != 0) {
               this.classify_document = res.data.data;
+              this.pages.total = res.data.total;
             }
           }
         });
@@ -467,6 +482,10 @@ export default {
     onMousteOut: function(index) {
       this.seen = false; //鼠标移出隐藏
       this.current = null;
+    },
+    current_change(page) {
+      this.pages.offset = page;
+      this.getDataLists();
     }
   }
 };
