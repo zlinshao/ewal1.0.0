@@ -183,6 +183,20 @@ class Axios {
       });
     });
   }
+
+  /**根据用户ID获取用户信息 */
+  static getUserInfoById(user_id) {
+    return new Promise((resolve, reject) => {
+      this.get(`${url}staff/user/${user_id}?staff=0`)
+        .then(res => {
+          if (res.code.endsWith('0')) {
+            resolve(res.data)
+          } else {
+            resolve(null)
+          }
+        })
+    })
+  }
 }
 
 export default Axios

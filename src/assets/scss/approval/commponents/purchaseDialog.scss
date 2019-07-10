@@ -1,0 +1,40 @@
+@import '../../common.scss';
+
+#theme_name.theme1 {
+  #approval {
+    .purchase-apply-dialog {
+      .purchase-line {
+        width: 100%;
+        border-bottom: 2px dotted #DEDEDE;
+        padding-top: 20px;
+        margin-bottom: 20px;
+      }
+
+      .detail-content {
+        .detail-title {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+          position: relative;
+          width: 750px;
+          margin-bottom: 20px;
+
+          .detail-title-text {
+            font-size: 20px;
+            font-family: 'jingDianXingShu';
+            color: rgba(104, 104, 116, 1);
+            margin-left: 10px;
+          }
+
+        }
+      }
+
+      .purchase-approval-process {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+      }
+    }
+  }
+}
