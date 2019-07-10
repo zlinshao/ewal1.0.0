@@ -1004,7 +1004,7 @@
         },
         getCityList(){
             this.$http.get(this.url+'company/city').then(res=>{
-                console.log(res);
+                // console.log(res);
                 if(Number(res.code)%10===0){
                     this.city_options=res.data;
                 }
@@ -1064,7 +1064,7 @@
         this.check_info = '';
         this.departModule = false;
         this.show_depart_detail = false;
-        this.departForm.parent_id = [this.$storage.get('user_info').company_info?.id || 1];
+        this.departForm.parent_id = [this.$storage.get('user_info').company_info?.company_id || 1];
         this.departForm.parent = this.$storage.get('user_info').company_info?.name || '乐伽商业管理有限公司';
       },
       handleIconClick(direction){
@@ -1481,7 +1481,7 @@
         this.exportInfo += this.chooseTab;
       },
       handleOpenEditDepart(item, child) {
-        console.log(item);
+        // console.log(item);
         if (child) {
           this.is_child = true;
         } else {
@@ -1551,8 +1551,8 @@
           order:0
         };
         if (!this.show_depart_detail) {
-          this.departForm.parent_id = [this.$storage.get('user_info').company_info?.id || 1];
-          this.departForm.parent = this.$storage.get('user_info').company_info?.id || '乐伽商业管理有限公司';
+          this.departForm.parent_id = [this.$storage.get('user_info').company_info?.company_id || 1];
+          this.departForm.parent = this.$storage.get('user_info').company_info?.name || '乐伽商业管理有限公司';
         }
         if (this.show_depart_detail) {
           this.departForm.parent_id = [];
@@ -1640,7 +1640,7 @@
       changeTabs(id) {
         this.departModule = false;
         this.show_depart_detail = false;
-        console.log('id', id);
+        // console.log('id', id);
         this.chooseTab = id;
         this.$nextTick(function () {
           switch (id) {
@@ -1660,6 +1660,8 @@
       // 部门管理列表
       getDepartList() {
         if(!this.validatePermission('Organization-Index')) return;
+        this.params.parent_id=this.$storage.get('user_info').company_info?.company_id;
+                // console.log('this.params', this.params);
         this.$http.get(this.url+'organization/organization', this.params).then(res => {
           if (res.code === '20000') {
             this.departList = res.data.data;
@@ -1758,7 +1760,8 @@
                 });
               }else {
                 this.params=val;
-                this.params.parent_id=1;
+                this.params.parent_id=this.$storage.get('user_info').company_info?.company_id;
+                // console.log('this.params4444', this.params);
                 this.getDepartList();
               }
               break;
