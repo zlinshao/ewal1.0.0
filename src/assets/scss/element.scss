@@ -230,6 +230,14 @@ div.el-popover {
       border: none;
       background-color: $colorFFF !important;
     }
+
+    .el-input.is-disabled {
+      .el-input__inner,
+      .el-textarea__inner {
+        color: #606266;
+        background-color: #eef3fc !important;
+      }
+    }
   }
 
   .borderBgColor {
@@ -265,6 +273,7 @@ div.el-popover {
       background-color: $colorFFF !important;
     }
   }
+
 
   //input禁用
   .inputDisabled {
@@ -367,10 +376,9 @@ div.el-popover {
   #discussPolitics,
   #militaryOrganization,
   #departments,
-  //#humanResource,
+    //#humanResource,
   #todo_list,
   #personal_center,
-
   #intellectualPropertyProtection {
     .el-input__inner {
       transition: none;
@@ -505,13 +513,13 @@ div.el-popover {
 #theme_name.theme1 {
   .el-table {
     //注释掉 否则无法有全选按钮
-   /* thead {
-      tr th {
-        .el-checkbox__input {
-          display: none;
-        }
-      }
-    }*/
+    /* thead {
+       tr th {
+         .el-checkbox__input {
+           display: none;
+         }
+       }
+     }*/
     /*所有th头部居中*/
     thead {
       tr {
@@ -524,12 +532,14 @@ div.el-popover {
 
       }
     }
+
     tbody {
       tr.current-row {
         td {
           color: $colorE33;
         }
       }
+
       //selection居中
       .el-table-column--selection {
         .cell {

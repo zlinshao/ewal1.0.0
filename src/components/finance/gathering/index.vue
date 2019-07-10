@@ -84,8 +84,7 @@
           show-overflow-tooltip
           align="center"
           prop="remarks"
-          label="备注"
-        >
+          label="备注">
           <template slot-scope="scope">
            <!-- <div style="cursor: pointer" @click="openRemarksList(scope.row)">{{scope.row.remarks}}</div>-->
             <div style="cursor: pointer;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;" v-html="scope.row.remarks" @click="openRemarksList(scope.row)"></div>
@@ -1539,7 +1538,7 @@
 
         showData: {
           "pay_date": '收款时间',
-          "subject.title": '应收科目',
+          "subject": '应收科目',
           "customer.address": "地址",
           "amount_receivable": '应收金额',
           "amount_received": '实收金额',
