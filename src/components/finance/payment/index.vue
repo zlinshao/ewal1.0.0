@@ -227,7 +227,7 @@
                            :key="index"></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="客户账户">
+            <el-form-item label="客户账号">
               <el-input placeholder="请输入" v-model="transferForm.customer_account_num"
                         :disabled="true"></el-input>
             </el-form-item>
