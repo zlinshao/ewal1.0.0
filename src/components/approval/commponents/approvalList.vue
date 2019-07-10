@@ -27,7 +27,7 @@
         <!--        </div>-->
 
         <!--        高级搜索-->
-        <div class="search-btn" @click='highSearch'>
+        <div class="search-btn" @click='highSearch' v-if="is_show_search_btn">
           <i class='icons icons_search'></i>
         </div>
       </div>
@@ -159,6 +159,7 @@
     data() {
       return {
         /**高级搜索 */
+        is_show_search_btn: true,
         showSearch: false, // 高级搜索 显示隐藏
         searchHigh: {}, // 高级搜索 参数
         category_options: _.cloneDeep(dicties.category_options),
@@ -372,6 +373,7 @@
             this.searchHigh = searchHighData
             break;
           case 5:// 暂不处理
+            this.is_show_search_btn = false
             break;
         }
       },

@@ -36,12 +36,15 @@ import 'video.js/dist/video-js.css'
 import './assets/js/approval/dictionary.js'
 import './assets/js/approval/approval.js'
 
+import JsonForm from './components/common/universalForm/index.js'
+
 Vue.prototype.$echarts = echarts
 Vue.use(Boss)
 Vue.use(_);
 Vue.use(Vuex)
 Vue.use(fun)
 Vue.use(ElementUI)
+Vue.use(JsonForm)
 Vue.prototype.$echarts = echarts
 Vue.prototype.myUtils = myUtils
 Vue.prototype.$storage = storage;

@@ -26,14 +26,13 @@
     </div>
 
     <!--    动态组件-->
-    <component
-      ref="dialog"
-      v-if="dialog.component && user_info_all"
-      :is="dialog.component"
-      v-bind="dialog.props"
-      :user_info_all="user_info_all"
-      :size="size"
-      :addUrl="addUrl"
+    <component ref="dialog"
+               v-if="dialog.component && user_info_all"
+               :is="dialog.component"
+               v-bind="dialog.props"
+               :user_info_all="user_info_all"
+               :size="size"
+               :addUrl="addUrl"
     />
   </div>
 </template>
@@ -48,6 +47,7 @@
   import ReduceOfficeDialog from "./initiateApprovalDialog/ReduceOfficeDialog";
   import StayDialog from "./initiateApprovalDialog/StayDialog";
   import AwayDialog from "./initiateApprovalDialog/AwayDialog";
+  import PurchaseDialog from "./initiateApprovalDialog/PurchaseDialog";
 
   const dialogRequireContext = require.context(
     "./initiateApprovalDialog", // 搜索的文件夹
@@ -76,7 +76,7 @@
       const url = globalConfig.humanResource_server
       return {
         url,
-        addUrl: url + '/process/process',
+        addUrl: url + 'process/process',
         size: {
           width: '1400px',
           height: '800px'
@@ -196,16 +196,18 @@
               //   itemTitle: '用章申请',
               //   icon: 'yzsq'
               // },
-              // {
-              //   itemIndex: 2,
-              //   itemTitle: '采购申请',
-              //   icon: 'cgsq'
-              // },
-              // {
-              //   itemIndex: 3,
-              //   itemTitle: '物品领/借用',
-              //   icon: 'wpljy'
-              // },
+              {
+                itemIndex: 2,
+                itemTitle: '采购申请',
+                icon: 'cgsq',
+                component: PurchaseDialog,
+                props: {}
+              },
+              {
+                itemIndex: 3,
+                itemTitle: '物品领/借用',
+                icon: 'wpljy'
+              },
               {
                 itemIndex: 4,
                 itemTitle: '增加办公室/宿舍申请',
