@@ -4,7 +4,7 @@
       <div class="search-toolbar listTopRight">
         <!--        <div class="icons-font" @click="showPublishNoticeDialog"><b>发公告</b></div>-->
         <el-tooltip content="发公告" placement="top" :visible-arrow="false">
-          <div class="icons add" @click="showPublishNoticeDialog"><b>+</b></div>
+          <div v-if="$storage.get('VALIDATE_PERMISSION')['Bulletin-Add']" class="icons add" @click="showPublishNoticeDialog"><b>+</b></div>
         </el-tooltip>
 
         <!--<div class="icons add" @click="publish_notice_dialog_visible = true"><b>+</b></div>-->
@@ -56,7 +56,7 @@
           align="center"
           label="操作">
           <template slot-scope="scope">
-            <el-button @click="editNotice(scope.row)" type="primary" size="mini" plain>编辑再发布</el-button>
+            <el-button v-if="$storage.get('VALIDATE_PERMISSION')['Bulletin-Update']" @click="editNotice(scope.row)" type="primary" size="mini" plain>编辑再发布</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -586,6 +586,7 @@
 
       //获取公告列表
       getNoticeList(outerParams) {
+        if(!this.validatePermission('Bulletin-Select')) return;
         this.showLoading(true);
         let params = {
           ...outerParams,
@@ -648,7 +649,7 @@
               }
               if (index != 0) {
                 if (o.user_id && o.sanction_type && o.money) {
-                  debugger
+                  // debugger
                   //o.user_id = parseInt(o.user_id.join());
                 } else {
                   isReturn = true;

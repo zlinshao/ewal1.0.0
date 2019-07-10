@@ -6,7 +6,7 @@
         <div v-if="chooseTab==1" style="display: inline-flex;justify-content: flex-end">
           <month-choose v-model="monthValue"></month-choose>
           <!--          <el-button>导入报表</el-button>-->
-          <button-upload></button-upload>
+          <button-upload v-if="$storage.get('VALIDATE_PERMISSION')['Month-Summary-Import']"></button-upload>
         </div>
         <div v-if="chooseTab==2" style="display: inline-block;width:230px;margin-right: 0">
           <year-choose v-model="yearValue"></year-choose>
@@ -34,7 +34,7 @@
         </span>-->
         <el-checkbox v-model="tableSettingData.attence.isLeave">离职员工</el-checkbox>
         <org-choose num="1" width="200" title="请选择部门" v-model="tableSettingData.attence.departmentId"></org-choose>
-        <span @click="confirmAttence" class="colorE33">生成考勤确认表</span>
+        <span v-if="$storage.get('VALIDATE_PERMISSION')['Attendance-Confirmation-Form-Add']" @click="confirmAttence" class="colorE33">生成考勤确认表</span>
       </div>
       <div v-if="chooseTab==2" class="nav-right">
         <org-choose width="140" v-model="tableSettingData.confirm.departmentId" title="请选择部门"></org-choose>
@@ -706,7 +706,8 @@
               let obj = {
                 id: item.id,//人id
                 name: item.name || '-',//姓名
-                department: item.org[0]?.name || '-',//部门
+                //department: item.org[0]?.name || '-',//部门
+                department: _.find(item.org,{id:this.tableSettingData.attence.departmentId[0]})?.name || item.org[0]?.name || '-',
                 post: item.position[0]?.name || '-',//岗位
                 // attRest: `${item.attendance[0]?.attendance_day || '-'}/${item.attendance[0]?.rest_day || '-'}`,
                 attendance_day: item.attendance[0]?.attendance_day || '-',//出勤天数
@@ -874,7 +875,7 @@
           });
           return;
         }
-        this.$LjConfirm({icon: 'warning', content: '月度统计表将发送至对应部门待办中'}).then(() => {
+        this.$LjConfirm({icon: 'warning', content: '将生成考勤确认表'}).then(() => {
           let params = {
             org_id: org_id[0],
             month: this.myUtils.formatDate(this.monthValue, 'yyyy-MM'),
@@ -887,6 +888,7 @@
 
       //获取考勤确认表
       getAttenceConfirmList() {
+        if(!this.validatePermission('Month-Summary')) return;
         this.showLoading(true);
         this.tableSettingData['confirm'].tableData = [];
         let params = {
@@ -917,6 +919,8 @@
 
       //发送考勤确认单
       sendAttenceResult(item) {
+        if(!this.validatePermission('Attendance-Confirmation-Sent')) return;
+
         if (item.is_send) {
           return;
         }

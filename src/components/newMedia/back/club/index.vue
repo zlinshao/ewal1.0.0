@@ -57,7 +57,7 @@
 
     <media-list :module="showFinMenuList" @close="showFinMenuList = false"></media-list>
     <!--详情-->
-    <lj-dialog :visible="detail_visible" :size="{width:1200 + 'px',height: '620' + 'px'}" @close="detail_visible = false">
+    <lj-dialog :visible="detail_visible" :size="{width:1200 + 'px',height: '720' + 'px'}" @close="detail_visible = false">
       <div class="action_info">
         <h3 class="justify-start">活动详情</h3>
         <div>
@@ -80,8 +80,7 @@
           </div>
           <div class="action_name" style="border-bottom: 0">
             <div class="action_left" style="width: 70px;float: left">活动内容</div>
-            <div class="action_right action_address" style="width: 860px;text-align: left;float: left;height: 100px">{{showData.content}}
-            </div>
+            <div style="width: 860px;height: 300px;overflow: scroll;" v-html="showData.content"></div>
           </div>
 
         </div>
@@ -213,14 +212,9 @@ export default {
   },
   mounted () {
     this.getDataLists();
-    // this.$refs.viewBox.addEventListener('scroll', this.throttle(this.setpage, 200), false);
   },
 
   methods: {
-    // change(val) {
-    //     console.log(val);
-    //     this.showData.content = val
-    // },
     getContentChange (val) {
       this.showData.content = val.slice(3,val.length-4);
     },
@@ -298,17 +292,11 @@ export default {
       }
     },
     detail (item) {//详情
-      // for (let item of Object.keys(this.showData)) {
-      //     this.showData[item] = '';
-      // }
       let itemInfo = item;
       this.detail_visible = true;
       this.showData = itemInfo;
       let arr = [item.start_time, item.over_time];
       this.showData.actionTime = arr;
-      this.$http.get(globalConfig.newMedia_sever + '/api/club/event/' + item.id).then(res => {
-        this.getDataLists()
-      })
     },
 
     handleOkOver () {//提前结束
@@ -410,13 +398,11 @@ export default {
       this.showData.start_time = this.actionTime[0];
       this.showData.over_time = this.actionTime[1];
       this.showData.content = content;
-      console.log(content)
     },
 
     getDataLists () {//获取列表
       this.showLoading(true);
       this.$http.get(globalConfig.newMedia_sever + '/api/club/event', this.params).then(res => {
-        console.log(res)
         this.showLoading(false);
         if (res.status === 200) {
 
@@ -426,7 +412,6 @@ export default {
             }
           );
           this.count = res.data.total;
-            console.log(this.dataLists)
           for (let item of res.data.data) {
             // this.endTimes.push({over_time:item.over_time});
             var yourtime = item.over_time.replace("-", "/");
