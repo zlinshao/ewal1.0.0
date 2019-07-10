@@ -377,7 +377,7 @@
       <!-- 合同编号管理 -->
       <div v-if="activeIndex === 3" class="contractNumberEdit">
         <!-- 总合同数 -->
-        <el-table
+        <!-- <el-table
           highlight-current-row
           header-row-class-name="tableHeader"
           style="width: 100%"
@@ -397,6 +397,24 @@
           <el-table-column label="纸质" align="center"></el-table-column>
           <el-table-column label="剩余合同数(收)" align="center"></el-table-column>
           <el-table-column label="剩余合同数(租)" align="center"></el-table-column>
+        </el-table>-->
+        <el-table
+          highlight-current-row
+          header-row-class-name="tableHeader"
+          :data="bottomTable"
+          :border="true"
+          v-if="contractNumberEditChoosed === 0"
+          @row-dblclick="numberManageTotal_fun"
+        >
+          <el-table-column label="城市" align="center" prop="city_name"></el-table-column>
+          <el-table-column label="合同总数(收)" align="center" prop="collect_sum"></el-table-column>
+          <el-table-column label="电子" align="center"></el-table-column>
+          <el-table-column label="纸质" align="center"></el-table-column>
+          <el-table-column label="合同总数(租)" align="center" prop="rent_sum"></el-table-column>
+          <el-table-column label="电子" align="center"></el-table-column>
+          <el-table-column label="纸质" align="center"></el-table-column>
+          <el-table-column label="剩余合同数(收)" align="center" prop="collect_remain"></el-table-column>
+          <el-table-column label="剩余缴合同数(租)" align="center" prop="rent_remain"></el-table-column>
         </el-table>
         <!-- 总合同领取上限 -->
         <el-table
@@ -1966,7 +1984,7 @@
       </div>-->
     </lj-dialog>
 
-    <!-- 编号管理合同总数 -->
+    <!-- 合同编号管理/详情 -->
     <lj-dialog
       :visible="numberManageTotal_visible"
       :size="{width: 1700 + 'px',height: 900 + 'px'}"
@@ -2017,9 +2035,9 @@
           </el-table>
           <div class="page flex-center common-page">
             <el-pagination
-              :current-page="1"
-              :page-size="6"
-              :total="20"
+              :current-page="pages_ht_zong.page"
+              :page-size="pages_ht_zong.limit"
+              :total="pages_ht_zong.total"
               layout="total,jumper,prev,pager,next"
             ></el-pagination>
           </div>
@@ -2287,6 +2305,12 @@ export default {
         page: 1,
         total: 0
       },
+      // 合同编号管理/总合同数详情的分页
+      pages_ht_zong: {
+        limit: 10,
+        page: 1,
+        total: 0
+      },
       // 是否是高级搜索
       isHighSearch: false,
       // 汇总页是否是高级搜索
@@ -2365,7 +2389,7 @@ export default {
         //   department: 454
         // }
       ],
-      contractManageListTotal: [{ city: "南京" }],
+      // contractManageListTotal: [{ city: "南京" }],
       numberManageDialogTable: [{ name: "张三" }],
       //合同汇总列表上部分
       contractCollectList: [],
@@ -2423,40 +2447,57 @@ export default {
           this.getContractList();
           break;
         case 2:
+          this.contractNumberChoosed = 0;
           // 合同编号
           this.getContractCollectList();
           this.getBottomTable();
           break;
         case 3:
           // 合同编号管理
+          this.contractNumberEditChoosed = 0;
+          this.getBottomTable();
           break;
       }
     },
     //合同编号菜单切换
     chooseContartType(index) {
       this.contractNumberChoosed = index;
+      this.resetAllPages();
       switch (index) {
         case 0:
+          // 汇总
           this.getContractCollectList();
           this.getBottomTable();
           break;
         case 1:
+          // 领取
           this.getContractReceiveList();
           break;
         case 2:
+          // 作废
           this.getContractCancelList();
           break;
         case 3:
+          // 上缴
           this.getContractHandinList();
           break;
         case 4:
+          // 丢失
           this.getContractLoseList();
           break;
       }
     },
-    //合同编号菜单切换管理
+    //合同编号管理菜单切换
     chooseContartEditType(index) {
       this.contractNumberEditChoosed = index;
+      this.resetAllPages();
+      switch (index) {
+        case 0:
+          this.getBottomTable();
+          break;
+        case 1:
+          break;
+      }
     },
     //点击添加按钮处理函数
     add() {
@@ -2567,6 +2608,7 @@ export default {
       this.$http.get(`${this.url}eam/category`).then(res => {
         if (res.code == "20000") {
           for (let i = 0; i < res.data.data.length; i++) {
+            // type==5是合同的供应商
             if (res.data.data[i].type == 5) {
               let obj = {
                 id: res.data.data[i].id,
@@ -2677,7 +2719,7 @@ export default {
           for (let i = 0; i < res.data.data.length; i++) {
             this.contractCollectList.push(res.data.data[i]);
           }
-        } 
+        }
         // 如果没数据，初始化分页
         else {
           this.commonPages_huizong.total = 0;
@@ -2706,49 +2748,47 @@ export default {
         }
       });
     },
-    //获取合同编号领取
+    //获取合同编号领取列表
     getContractReceiveList() {
       this.contractReceiveList = [];
-      this.$http.get(`${this.url}contract/apply`, this.params).then(res => {
+      let data = this.commonPages;
+      this.$http.get(`${this.url}contract/apply`, data).then(res => {
         if (res.code === "20000") {
-          for (let i = 0; i < res.data.data.length; i++) {
-            this.contractReceiveList.push(res.data.data[i]);
-          }
+          this.contractReceiveList = res.data.data;
+          this.commonPages.total = res.data.count;
         }
       });
     },
-    //获取合同编号作废
+    //获取合同编号作废列表
     getContractCancelList() {
       this.contractCancelList = [];
-      this.$http
-        .get(`${this.url}contract/invalidate`, this.params)
-        .then(res => {
-          if (res.code === "20000") {
-            for (let i = 0; i < res.data.data.length; i++) {
-              this.contractCancelList.push(res.data.data[i]);
-            }
-          }
-        });
-    },
-    //获取合同编号上缴
-    getContractHandinList() {
-      this.contractHandinList = [];
-      this.$http.get(`${this.url}contract/handin`, this.params).then(res => {
+      let data = this.commonPages;
+      this.$http.get(`${this.url}contract/invalidate`, data).then(res => {
         if (res.code === "20000") {
-          for (let i = 0; i < res.data.data.length; i++) {
-            this.contractHandinList.push(res.data.data[i]);
-          }
+          this.contractCancelList = res.data.data;
+          this.commonPages.total = res.data.count;
         }
       });
     },
-    //获取合同编号丢失
+    //获取合同编号上缴列表
+    getContractHandinList() {
+      this.contractHandinList = [];
+      let data = this.commonPages;
+      this.$http.get(`${this.url}contract/handin`, data).then(res => {
+        if (res.code === "20000") {
+          this.contractHandinList = res.data.data;
+          this.commonPages.total = res.data.count;
+        }
+      });
+    },
+    //获取合同编号丢失列表
     getContractLoseList() {
       this.contractLoseList = [];
-      this.$http.get(`${this.url}contract/loss`, this.params).then(res => {
+      let data = this.commonPages;
+      this.$http.get(`${this.url}contract/loss`, data).then(res => {
         if (res.code === "20000") {
-          for (let i = 0; i < res.data.data.length; i++) {
-            this.contractLoseList.push(res.data.data[i]);
-          }
+          this.contractLoseList = res.data.data;
+          this.commonPages.total = res.data.count;
         }
       });
     },
@@ -3017,10 +3057,36 @@ export default {
     },
     // 普通分页事件
     changePages_common(val) {
+      this.commonPages.page = val;
+      if (this.activeIndex === 0) {
+        // 片区异动交接单分页
+        this.getContractList();
+        return;
+      }
       if (this.activeIndex === 1) {
-        this.commonPages.page = val;
         // 采购合同的分页
         this.getContractList();
+        return;
+      }
+      if (this.activeIndex === 2 && this.contractNumberChoosed === 1) {
+        // 合同编号的领取
+        this.getContractReceiveList();
+        return;
+      }
+      if (this.activeIndex === 2 && this.contractNumberChoosed === 2) {
+        // 合同编号的作废
+        this.getContractCancelList();
+        return;
+      }
+      if (this.activeIndex === 2 && this.contractNumberChoosed === 3) {
+        // 合同编号的上缴
+        this.getContractHandinList();
+        return;
+      }
+      if (this.activeIndex === 2 && this.contractNumberChoosed === 4) {
+        // 合同编号的丢失
+        this.getContractLoseList();
+        return;
       }
     },
     // 汇总的普通分页事件
@@ -3066,17 +3132,26 @@ export default {
         total: 0
       };
       // 汇总非搜索分页
-      (this.commonPages_huizong = {
+      this.commonPages_huizong = {
         limit: 10,
         page: 1,
         total: 0
-      }),
-        // 汇总搜索分页
-        (this.searchPages_huizong = {
-          limit: 10,
-          page: 1,
-          total: 0
-        });
+      };
+      // 汇总搜索分页
+      this.searchPages_huizong = {
+        limit: 10,
+        page: 1,
+        total: 0
+      };
+    },
+    // 合同编号管理/合同总数详情
+    numberManageTotal_fun(row) {
+      this.numberManageTotal_visible = true;
+      this.$http.get(`${this.url}contract/reserve/detail/${row.city_code}`).then(res => {
+        if (res.code === "20000") {
+          console.log(res);
+        }
+      });
     }
   }
 };
