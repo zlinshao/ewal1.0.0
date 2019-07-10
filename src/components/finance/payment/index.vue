@@ -219,7 +219,7 @@
                            :key="index"></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="付款账号">
+            <el-form-item label="付款账户">
               <el-select placeholder="请选择" v-model="transferForm.account_id"
                          :disabled="is_disabled">
                 <el-option v-for="(item,index) in accountLists" :label="item.name"
