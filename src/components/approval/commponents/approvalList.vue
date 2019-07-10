@@ -104,10 +104,12 @@
     </div>
 
     <ProcessDetails ref="processDetails"
+                    v-if="row"
                     :detailUrl="detailUrl"
                     :processUrl="processUrl"
                     :popoverBtnData="popoverBtnData"
                     :row="row"
+                    @clear-approval-row="row = null"
                     @operatePopoverClick="operatePopoverMethod">
     </ProcessDetails>
 
@@ -163,7 +165,7 @@
         showSearch: false, // 高级搜索 显示隐藏
         searchHigh: {}, // 高级搜索 参数
         category_options: _.cloneDeep(dicties.category_options),
-        row: {},
+        row: null,
         urlConfig: globalConfig.approval_sever,
         urlApi: null,
         operateApi: null,

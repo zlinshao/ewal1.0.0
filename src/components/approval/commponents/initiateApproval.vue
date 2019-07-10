@@ -48,6 +48,7 @@
   import StayDialog from "./initiateApprovalDialog/StayDialog";
   import AwayDialog from "./initiateApprovalDialog/AwayDialog";
   import PurchaseDialog from "./initiateApprovalDialog/PurchaseDialog";
+  import GoodsDialog from "./initiateApprovalDialog/GoodsDialog";
 
   const dialogRequireContext = require.context(
     "./initiateApprovalDialog", // 搜索的文件夹
@@ -206,7 +207,9 @@
               {
                 itemIndex: 3,
                 itemTitle: '物品领/借用',
-                icon: 'wpljy'
+                icon: 'wpljy',
+                component: GoodsDialog,
+                props: {}
               },
               {
                 itemIndex: 4,
