@@ -608,7 +608,7 @@ export default {
       this.$http.get(this.url + `v1.0/market/contract/${this.chooseTab}/${row.con_id}`).then(res => {
         if (res.code === 200) {
           this.recordDetail = res.data;
-          this.recordOption.is_agency_order = this.recordDetail.is_agency.toString();
+          this.recordOption.is_agency_order = this.recordDetail.is_agency?this.recordDetail.is_agency.toString() :'';
           this.add_visible = true;
         }
       })
