@@ -9,7 +9,7 @@
                           @click.stop="del(item)">删除</i></span>
           </div>
           <div class="video-box-middle">
-            <div class="video-border" style="pointer-events: none">
+            <div class="video-border">
               <div></div>
             </div>
             <div class="video-inner">
@@ -45,11 +45,11 @@
       </div>
     </footer>
 
-    <!--编辑视频or新增视频-->
+    <!--编辑视频or增加视频-->
     <lj-dialog :visible.sync="visible" :size="{width: 440 + 'px',height: 400 + 'px'}">
       <div class="dialog_container borderNone">
         <div class="dialog_header">
-          <h3>{{flag===1?'编辑视频':flag===2?'新增视频':flag===3?'视频详情':''}}</h3>
+          <h3>{{flag===1?'编辑视频':flag===2?'增加视频':flag===3?'视频详情':''}}</h3>
         </div>
         <div class="dialog_main">
           <el-form ref="form" :model="form" label-width="80px" size="small">
@@ -57,7 +57,7 @@
               <el-input placeholder="必填" v-model="form.name" size="small" :disabled="flag===3"></el-input>
             </el-form-item>
             <el-form-item label="可见岗位">
-              <post-choose title="必选" width="260" v-model="form.position" :disabled="flag===3"></post-choose>
+              <post-choose title="必选" width="300" v-model="form.position" :disabled="flag===3"></post-choose>
             </el-form-item>
 
             <el-form-item label="视频附件">
@@ -246,7 +246,7 @@
 
       //删除
       del(row) {
-        this.$LjConfirm({icon:'delete'}).then(()=> {
+        this.$LjConfirm({icon:'delete',content:'确定删除该视频吗？'}).then(()=> {
           this.$http.delete(this.url + '/api/video/study/' + row.id,).then(res => {
             //this.callbackSuccess(res);
             this.$LjNotifyEasy(res);

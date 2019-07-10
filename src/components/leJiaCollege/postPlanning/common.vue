@@ -26,12 +26,12 @@
         </div>
 
 
-        <!--新增视频-->
+        <!--增加视频-->
         <lj-dialog :visible="add_video" :size="{width: 400 + 'px',height: 400 + 'px'}"
                    @close="add_video = false">
             <div class="dialog_container">
                 <div class="dialog_header">
-                    <h3>新增视频</h3>
+                    <h3>增加视频</h3>
                 </div>
                 <div class="dialog_main">
                     <el-form ref="form" :model="videoForm" label-width="80px"  size="small">
@@ -159,7 +159,7 @@
                 chooseTab: 1,
                 showFinMenuList:false,
                 tabView:'examArrangement',
-                add_video:false,//新增视频
+                add_video:false,//增加视频
                 add_faculty:false,//新增讲师
                 videoForm:{
                     name:''

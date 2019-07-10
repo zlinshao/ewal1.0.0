@@ -56,7 +56,7 @@
                 chooseTab: 1,
                 showFinMenuList:false,
                 tabView:'videoLearning',//显示组件
-                add_video:false,//新增视频
+                add_video:false,//增加视频
                 add_faculty:false,//新增讲师
                 add_visible:false,
                 videoForm:{
