@@ -135,7 +135,7 @@
     </lj-dialog>
 
     <!--新增-->
-    <lj-dialog :visible="publish_visible" :size="{width: 1200 + 'px' ,height:800 + 'px'}" @close="publish_visible = false">
+    <lj-dialog :visible="publish_visible" :size="{width: 1200 + 'px' ,height:800 + 'px'}" @close="publish_visible = false;form= {type_id: '',title: '',content: '',file_info: [],is_open: ''};">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>{{chooseTab===1?'发布导读':chooseTab===2?'发布新闻':chooseTab===3?'发布公告':''}}</h3>
@@ -164,9 +164,9 @@
             <el-form-item label="标题">
               <el-input v-model="form.title"></el-input>
             </el-form-item>
-             <!-- <el-form-item label="封面图">
+             <el-form-item label="封面图">
               <lj-upload size="50"  v-model="form.file_info"></lj-upload>
-            </el-form-item> -->
+            </el-form-item>
             <el-form-item label="文章内容">
               <div class="item_content">
                 <lj-editor :editorContent="form.content" @changeContent="getContentChange"></lj-editor>
@@ -175,12 +175,38 @@
           </el-form>
         </div>
         <div class="dialog_footer">
-          <el-button size="small" type="warning" @click="getUEContent()">预览</el-button>
+          <el-button size="small" type="warning" @click="getUEContent">预览</el-button>
           <el-button size="small" type="danger" @click="submit">发布</el-button>
           <el-button size="small" type="info" @click="publish_visible = false">取消</el-button>
         </div>
       </div>
     </lj-dialog>
+     <!--详情-->
+    <lj-dialog :visible="detail_visible" :size="{width:1200 + 'px',height: '720' + 'px'}" @close="detail_visible = false">
+      <div class="dialog_container">
+        <div class="dialog_header">
+         <h3>{{chooseTab===1?'发布导读':chooseTab===2?'发布新闻':chooseTab===3?'发布公告':''}}</h3>
+        </div>
+        <div class="dialog_main borderNone">
+          <el-form label-width="80px">
+            <el-form-item label="标题">
+              <span>{{form.title}}</span>
+            </el-form-item>
+             <!-- <el-form-item label="封面图">{{form.file_info}} -->
+               <!-- <lj-upload size='50' v-if="form.file_info.length" v-model="form.file_info" disabled=true :download='false'></lj-upload> -->
+               <!-- <img v-if="item.cover&&item.cover[0]" :src="form.file_info[0].uri" class="card-top" style="height:150px"> -->
+              <!-- <lj-upload size="50"   v-model="form.file_info"></lj-upload> -->
+            <!-- </el-form-item> -->
+            <el-form-item label="文章内容">
+              <div class="item_content">
+                <div v-html="form.content"></div>
+              </div>
+            </el-form-item>
+          </el-form>
+        </div>
+      </div>
+    </lj-dialog>
+
 
     <!--举报列表-->
     <lj-dialog :visible="report_visible" :size="{width: 1200 + 'px',height: 650 + 'px'}" @close="report_visible = false">
@@ -240,6 +266,7 @@ export default {
         offset: 1,
         limit: 12,
         type_id: '',
+       
         is_top: '',
         is_great: '',
         org_ids: [],
@@ -247,6 +274,7 @@ export default {
         HotSearch,
         NewsSearch,
       searchData: {},//搜索项
+       detail_visible: false,
       form: {
         type_id: '',
         title: '',
@@ -345,13 +373,9 @@ export default {
     getContentChange (val) {
       this.form.content = val;
     },
-    getUEContent () {
-      let content = this.$refs.ue.getUEContent();
-      this.$notify({
-        title: '获取成功，可在控制台查看！',
-        message: content,
-        type: 'success'
-      });
+    getUEContent() {
+      // console.log('this.form.--------------------',this.form)
+      this.detail_visible=true;
     },
     changeTabs (id) {
       this.chooseTab = id;
@@ -522,37 +546,38 @@ export default {
       })
     },
     submit () {//发布
-      let paramsForm = {
-        title: this.form.title,
-        type_id: this.form.type_id,
-        content: this.form.content,
-        // cover: this.form.file_info,
-        is_open: 1,
-      };
-      if(paramsForm.title == ''){
+    // console.log('this.form.',this.form)
+      if(this.form.title == ''){
         this.$LjNotify('error', {
             title: '失败',
             message: '必须指定标题',
           });
-      }else if(this.type && paramsForm.type_id == undefined){
+      }else if(this.type && this.form.type_id == undefined){
         this.$LjNotify('error', {
             title: '失败',
             message: '必须指定导读类型',
           });
       }
-      // else if(paramsForm.is_open == undefined){
-      //   this.$LjNotify('error', {
-      //       title: '失败',
-      //       message: '必须指定',
-      //     });
-      // }
-      else if(paramsForm.content == ''){
+      else if(!this.form.file_info || this.form.file_info.length<1){
+        this.$LjNotify('error', {
+            title: '失败',
+            message: '封面必须指定',
+          });
+      }
+      else if(this.form.content == ''){
         this.$LjNotify('error', {
             title: '失败',
             message: '必须指定内容',
           });
       }
       else{
+        let paramsForm = {
+        title: this.form.title,
+        type_id: this.form.type_id,
+        content: this.form.content,
+        cover: this.form.file_info[0],
+        is_open: 1,
+      };
         this.$http.post(globalConfig.newMedia_sever + '/api/article/'+this.type, paramsForm).then(res => {
           if(res.status == 200){
             this.add_visible = false;
@@ -569,6 +594,13 @@ export default {
               message: '操作成功',
             });
             this.getDataLists();
+            this.form= {
+              type_id: '',
+              title: '',
+              content: '',
+              file_info: [],
+              is_open: '',//是否发布
+            };
             // this.callbackSuccess(res);
           }else {
             this.$LjNotify('error', {

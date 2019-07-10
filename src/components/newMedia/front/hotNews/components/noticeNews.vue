@@ -3,7 +3,8 @@
         <div class="water">
             <div class="piping" ref="piping0">
                 <div class="card" v-for="(item,index) in columnData0" @click.stop="routerLink('newsDetail',{type:chooseTab,id:item.id})" @mouseenter="chooseTabAlert(chooseTab)">
-                    <img src="../../../../../assets/image/newMedia/theme1/active.png" class="card-top">
+                    <img v-if="item.cover&&item.cover[0]" :src="item.cover[0].uri" class="card-top" style="height:150px">
+                    <img v-else src="../../../../../assets/image/newMedia/theme1/active.png" class="card-top" style="height:150px">
                     <div class="card-middle">
                         <h3>{{item.title}}</h3>
                         <p class="card-status">
@@ -32,7 +33,8 @@
             </div>
             <div class="piping" ref="piping1">
                 <div class="card" v-for="(item,index) in columnData1" @click.stop="routerLink('newsDetail',{type:chooseTab,id:item.id})">
-                    <img src="../../../../../assets/image/newMedia/theme1/active.png" class="card-top">
+                     <img v-if="item.cover&&item.cover[0]" :src="item.cover[0].uri" class="card-top" style="height:150px">
+                    <img v-else src="../../../../../assets/image/newMedia/theme1/active.png" class="card-top" style="height:150px">
                     <div class="card-middle">
                         <h3>{{item.title}}</h3>
                         <p class="card-status">
@@ -61,7 +63,8 @@
             </div>
             <div class="piping" ref="piping2">
                 <div class="card" v-for="(item,index) in columnData2" @click.stop="routerLink('newsDetail',{type:chooseTab,id:item.id})">
-                    <img src="../../../../../assets/image/newMedia/theme1/active.png" class="card-top">
+                     <img v-if="item.cover&&item.cover[0]" :src="item.cover[0].uri" class="card-top" style="height:150px">
+                    <img v-else src="../../../../../assets/image/newMedia/theme1/active.png" class="card-top" style="height:150px">
                     <div class="card-middle">
                         <h3>{{item.title}}</h3>
                         <p class="card-status">
@@ -90,7 +93,8 @@
             </div>
             <div class="piping" ref="piping3">
                 <div class="card" v-for="(item,index) in columnData3" @click.stop="routerLink('newsDetail',{type:chooseTab,id:item.id})">
-                    <img src="../../../../../assets/image/newMedia/theme1/active.png" class="card-top">
+                     <img v-if="item.cover&&item.cover[0]" :src="item.cover[0].uri" class="card-top" style="height:150px">
+                    <img v-else src="../../../../../assets/image/newMedia/theme1/active.png" class="card-top" style="height:150px">
                     <div class="card-middle">
                         <h3>{{item.title}}</h3>
                         <p class="card-status">
@@ -172,7 +176,7 @@
             },
 
             chooseTabAlert(val){
-                console.log(val)
+                console.log('333333333333',val)
             },
 
 

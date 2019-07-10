@@ -724,7 +724,7 @@ export default {
         if (res.code.toString().endsWith('0')) {
                 this.$LjNotify('success', {
                     title: '成功',
-                    message: res.msg || res.message,
+                    message:isTrue===null? '提交成功': res.msg || res.message,
                 });
                 this.$emit('getDateList');
             } else {

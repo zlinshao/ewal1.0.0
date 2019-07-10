@@ -2,7 +2,7 @@
     <div id="profile">
         <div class="listTopCss items-bet">
             <div class="items-center listTopLeft">
-                <p class="flex-center" @click="showFinMenuList = true">
+                <p class="flex-center" @click="showFinMenuList = false">
                     <b>...</b>
                 </p>
                 <h1>公司资料</h1>

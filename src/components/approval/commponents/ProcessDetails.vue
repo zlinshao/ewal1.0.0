@@ -91,18 +91,42 @@
                         <span class="base-info-text-left">{{item_data.key}}</span>：
                         <span>{{item_data.value}}</span>
                       </p>
+
                       <div
                         v-if="base_info.data && base_info.data.sanction_info && base_info.data.sanction_info.length > 0">
                         <p class="base-info-list"
                            v-for="(item_data,index) in base_info.data.sanction_info" :key="index">
-                        <span v-for="(item,index) in item_data" :key="index">
+                        <span v-for="(item,index) in item_data?item_data:[]" :key="index">
                           <span v-if="item && item!=undefined">
-                            <span class="base-info-text-list">{{item.key}}</span>
+                            <span class="base-info-text-list">{{item.key}}</span>:
                             <span class="base-info-text-content">{{item.value}}</span>
                           </span>
                         </span>
                         </p>
                       </div>
+
+                      <div
+                        v-if="base_info.data && base_info.data.detail_info && base_info.data.detail_info.length > 0">
+                        <p class="base-info-list"
+                           v-for="(item_data,index) in base_info.data.detail_info" :key="index">
+                        <span v-for="(item,index) in item_data?item_data:[]" :key="index">
+                          <span v-if="item && item!=undefined">
+                            <span class="base-info-text-list">{{item.key}}</span>:
+                            <span class="base-info-text-content">{{item.value}}</span>
+                          </span>
+                        </span>
+                        </p>
+                      </div>
+
+                      <div>
+                        <p class="base-info-text"
+                           v-for="(item_data,index) in base_info.data?base_info.data.total_number_price:[]"
+                           :key="index">
+                          <span class="base-info-text-left">{{item_data?item_data.key:''}}</span>：
+                          <span>{{item_data?item_data.value:''}}</span>
+                        </p>
+                      </div>
+
                       <!--                      附件-->
                       <p class="base-info-attachment" v-if="base_info.attachment && base_info.attachment.length > 0">
                         <span class="base-info-text-left">附件</span>：
@@ -193,15 +217,15 @@
     },
     props: ['detailUrl', 'processUrl', 'row', 'popoverBtnData'],
     watch: {
-      detailUrl(newValue, oldValue) {
-        this.getProcessDetails(newValue)
-      },
-      processUrl(newValue, oldValue) {
-        this.getApprovalRecord(newValue)
-      },
-      row(newValue, oldValue) {
-        this.getHandleUser(newValue)
-      },
+      // detailUrl(newValue, oldValue) {
+      //   this.getProcessDetails(newValue)
+      // },
+      // processUrl(newValue, oldValue) {
+      //   this.getApprovalRecord(newValue)
+      // },
+      // row(newValue, oldValue) {
+      //   this.getHandleUser(newValue)
+      // },
       popoverBtnData(newValue, oldValue) {
         this.operateBtnData = newValue
       }
@@ -227,7 +251,9 @@
           attachment: [],
           data: {
             more_data: [],
-            sanction_info: []
+            sanction_info: [],
+            detail_info: [],
+            total_number_price: [],
           },
           user: {
             avatar: "",
@@ -275,7 +301,9 @@
           attachment: [],
           data: {
             more_data: [],
-            sanction_info: []
+            sanction_info: [],
+            detail_info: [],
+            total_number_price: []
           },
           user: {
             avatar: "",
@@ -293,6 +321,8 @@
         this.load_user = true
         this.load_info = true
         this.load_record = true
+
+        this.$emit('clear-approval-row')
       },
       closeDialog() {
         this.close()
@@ -303,7 +333,9 @@
           attachment: [],
           data: {
             more_data: [],
-            sanction_info: []
+            sanction_info: [],
+            detail_info: [],
+            total_number_price: []
           },
           user: {
             avatar: "",
@@ -407,6 +439,9 @@
     },
     created() {
       this.init()
+      this.getProcessDetails(this.detailUrl)
+      this.getApprovalRecord(this.processUrl)
+      this.getHandleUser(this.row)
     }
   }
 </script>

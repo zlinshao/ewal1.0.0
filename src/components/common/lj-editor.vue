@@ -47,7 +47,6 @@ export default {
   },
   created () { },
   mounted () {
-    // console.log('2222222222',this)
     this.content= this.editorContent;
    },
   watch:{
@@ -59,7 +58,6 @@ export default {
     // },
     editorContent(val) {
       // handler (val) {
-      console.log('val=======================',val)
       this.content = val;
       // }, deep: true
     },
