@@ -44,6 +44,11 @@
     </div>
     <div class="mainListTable changeChoose" :style="{'height': mainListHeight(46) + 'px'}">
       <el-table
+        :empty-text='tableStatus'
+        v-loading="tableLoading"
+        element-loading-text="拼命加载中"
+        element-loading-spinner="el-icon-loading"
+        element-loading-background="rgba(255, 255, 255, 0)"
         :data="tableLists"
         :height="mainListHeight(76) + 'px'"
         highlight-current-row
@@ -567,12 +572,10 @@
     components: {SearchHigh, LjDialog, FinMenuList, LjSubject, CustomerLists, Customer, Upload},
     data() {
       return {
-
         url: globalConfig.temporary_server,
-
-
+        tableStatus: ' ',
+        tableLoading: false,
         is_table_choose: '',
-
         payableSum: '',
         paidSum: '',
         balanceSum: '',
@@ -1196,8 +1199,11 @@
         }
       },
       getPaymentList() {//加载应付款项列表
+        this.tableStatus = ' ';
+        this.tableLoading = true;
         if (!this.validatePermission('Payable-List')) return;
         this.showLoading(true);
+        this.tableLoading = false;
         this.$http.get(globalConfig.temporary_server + 'account_payable', this.params).then(async res => {
           this.showLoading(false);
           if (res.code === 200) {
@@ -1237,6 +1243,7 @@
             this.paidSum = res.data.paidSum;
             this.balanceSum = res.data.balanceSum;
           } else {
+            this.tableStatus = '暂无相关数据';
             this.tableLists = [];
             this.count = 0;
             this.balanceSum = 0;
@@ -1244,6 +1251,7 @@
             this.balanceSum = 0;
           }
         }).catch(err => {
+          this.tableStatus = '暂无相关数据';
           console.log(err);
         })
       },
@@ -1306,6 +1314,10 @@
         if (val !== 'close') {
           for (let item of Object.keys(this.params)) {
             this.params[item] = val[item];
+          }
+          if (val.gatherDate) {
+            this.params.date_min = val.gatherDate[0];
+            this.params.date_max = val.gatherDate[1];
           }
           this.params.staff_id = val.staff[0];
           this.params.department_id = val.department[0];
