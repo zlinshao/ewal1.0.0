@@ -111,6 +111,14 @@
                       </p>
                     </div>
                   </div>
+                  <el-pagination
+                    :total="pages.total"
+                    layout="total,jumper,prev,pager,next"
+                    :current-page="pages.offset"
+                    :page-size="pages.limit"
+                    @current-change="current_change"
+                    v-if="classify_document.length>0"
+                  ></el-pagination>
                 </template>
                 <!-- <p class='nothing_mess' v-else style='width:100%;text-align:center;font-size:14px;color:#999;'>暂无数据</p> -->
               </div>
