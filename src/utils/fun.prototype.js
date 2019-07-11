@@ -21,6 +21,38 @@ export default {
         Vue.prototype.GLOBAL_CONSTANT = GLOBAL_CONSTANT;
         Vue.component(HouseCommunity.name, HouseCommunity); //选部门
 
+        Vue.component('remote-script', {//index.html页面中不能直接引入 长时间会报错
+          render: function (createElement) {
+            let self = this;
+            return createElement('script', {
+              attrs: {
+                type: 'text/javascript',
+                src: this.src
+              },
+              on: {
+                load: function (event) {
+                  self.$emit('load', event);
+                },
+                error: function (event) {
+                  self.$emit('error', event);
+                },
+                readystatechange: function (event) {
+                  if (this.readyState == 'complete') {
+                    self.$emit('load', event);
+                  }
+                }
+              }
+            });
+          },
+
+          props: {
+            src: {
+              type: String,
+              required: true
+            }
+          }
+        });
+
 
         // 路由跳转
         Vue.prototype.routerLink = function(url, data, url_name) {
@@ -161,7 +193,7 @@ export default {
                 if (!form) {
                     return false;
                 }
-                for (var key in form) {
+                for (let key in form) {
                     if (typeof form[key] === 'string' || typeof form[key] === 'number') {
                         form[key] = '';
                     }

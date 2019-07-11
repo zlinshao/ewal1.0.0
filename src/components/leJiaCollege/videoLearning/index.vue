@@ -61,7 +61,7 @@
             </el-form-item>
 
             <el-form-item label="视频附件">
-              <lj-upload class="upload-offset" :disabled="flag===3" :limit-easy="['video']" v-model="form.file_info" :max-size="1" size="40"></lj-upload>
+              <lj-upload class="upload-offset" :disabled="flag===3" :limit-easy="['video']" v-model="form.file_info" :max-size="100" :num="1" size="40"></lj-upload>
             </el-form-item>
           </el-form>
         </div>

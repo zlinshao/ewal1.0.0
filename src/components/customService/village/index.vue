@@ -1,5 +1,6 @@
 <template>
   <div id="village">
+    <remote-script src="https://webapi.amap.com/maps?v=1.4.12&key=47a4c27ade03a2deefbbf60e4b01880c&plugin=AMap.CitySearch,AMap.Autocomplete,AMap.PlaceSearch,AMap.Marker"></remote-script>
     <div>
       <!--头部-->
       <div class="listTopCss items-bet">
@@ -733,8 +734,8 @@ import { constants } from 'zlib';
         this.current_choose_region = '';
         this.current_choose = '';
         _(this.address_filter).forEach((item)=>{
-            item.val=item.key=='city'?'选城市':item.val; 
-            item.val=item.key=='area'?'选区域':item.val; 
+            item.val=item.key=='city'?'选城市':item.val;
+            item.val=item.key=='area'?'选区域':item.val;
           });
         }
         this.initGetList();

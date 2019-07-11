@@ -109,6 +109,21 @@
           border-color: $colorE33;
         }
       }
+      .to-homepage {
+        display: inline-block;
+        width: 34px;
+        height: 34px;
+        cursor: pointer;
+        border: 1px solid #d2d2d2;
+        border-radius: 50%;
+        @include moduleImg('homepage.png','theme1');
+        background-size: 60% 60%;
+        &:hover {
+          border-color: $colorE33;
+          @include moduleImg('homepage_hover.png','theme1');
+          background-size: 60% 60%;
+        }
+      }
     }
     .items-center {
       .funTop {
