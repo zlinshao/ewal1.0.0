@@ -286,7 +286,7 @@
       </div>
     </lj-dialog>
 <!--发送短信-->
-    <lj-dialog :visible.sync="send_visible" :size="{width: 450 + 'px',height: 400 + 'px'}" @close="send_visible=false;">
+    <lj-dialog :visible.sync="send_visible" :size="{width: 450 + 'px',height: 270 + 'px'}" @close="send_visible=false;">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>发送短信</h3>
@@ -300,7 +300,7 @@
         </div>
         <div class="dialog_footer">
           <el-button type="danger" size="small" @click="handleSend">确定</el-button>
-          <el-button type="info" size="small" @click="handleCancel">取消</el-button>
+          <el-button type="info" size="small" @click="send_phone='';send_visible=false">取消</el-button>
         </div>
       </div>
     </lj-dialog>
@@ -879,7 +879,7 @@ export default {
       show_market: false,
 
       url: globalConfig.market_server,
-      contract_server:"",
+      contract_server: globalConfig.contract_server,
       //  globalConfig.contract_server,
       selects: [
         {
@@ -1011,9 +1011,9 @@ export default {
         is_number:1,
         phone: this.send_phone,
       }
-    this.$http.get(this.contract_server + '/fdd/contract/send/'+this.send_contractNo, params).then(res => {
+    this.$http.get(this.contract_server + 'fdd/contract/send/'+this.send_contractNo, params).then(res => {
         // console.log(res);
-        if (res.code === 40000) {
+        if (res.code.endsWith('0')) {
             this.$LjNotify('success', {
               title: '成功',
               message: res.message || res.msg
@@ -1032,6 +1032,7 @@ export default {
     showSend(num){
       this.send_visible=true;
       this.send_contractNo=num;
+      this.send_phone='';      // contractDetail
     },
     handleGetWorkOrderList () {
       this.$http.get(this.url + 'v1.0/csd/work_order', this.work_order).then(res => {
