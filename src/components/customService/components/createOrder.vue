@@ -170,7 +170,7 @@
               <el-col :span='moduleOrder == 78? 6 : createOrder_span'>
                 <p class='el-col-p'><i class='icon content'></i>工单内容</p>
                 <div class='input_box'>
-                  <el-input placeholder="请填写" v-model="createOrder.content"></el-input>
+                  <el-input placeholder="请填写" type="textarea" v-model="createOrder.content"></el-input>
                 </div>
               </el-col>
 
