@@ -196,8 +196,7 @@
       return {
         url: globalConfig.humanResource_server,
         second_entry_dialog_visible: false,
-        // TODO
-        isLoading: false,
+        isLoading: true,
         second_entry_form: createEmpty(),
         second_entry_form_rule: {
           entry_id: [
