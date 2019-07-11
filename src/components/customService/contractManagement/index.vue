@@ -26,7 +26,11 @@
           <el-table-column label="合同编号" prop="contract_number" align="center"></el-table-column>
           <el-table-column show-overflow-tooltip label="地址" prop="house_name" align="center"></el-table-column>
           <el-table-column show-overflow-tooltip label="合同性质" prop="type" align="center"></el-table-column>
-          <!--<el-table-column label="所属公司" prop="" align="center"></el-table-column>-->
+          <el-table-column label="合同状态" prop="contract_status" align="center">
+            <!-- <template slot-scope="scope">
+                <span>{{scope.row.contract_status===1?'生效中':scope.row.contract_status===2?'快到期':scope.row.contract_status===3?'已过期':scope.row.contract_status===4?'已结束':''}}</span>
+            </template> -->
+          </el-table-column>
           <el-table-column show-overflow-tooltip label="收房价格" prop="month_price" align="center">
             <template slot-scope="scope">
               <div v-if="scope.row.month_price && scope.row.month_price.length > 0">
