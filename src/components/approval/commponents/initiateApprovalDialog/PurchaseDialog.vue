@@ -29,7 +29,8 @@
               </el-form-item>
 
               <el-form-item required prop="procurement_id" label="采购人">
-                <user-choose ref="userChoose" v-model="purchase_form.procurement_id" num="1" width="650"></user-choose>
+                <user-choose ref="userChoose" v-model="purchase_form.procurement_id" num="1"
+                             width="650"></user-choose>
               </el-form-item>
 
               <el-form-item label="所属部门">
@@ -63,7 +64,8 @@
                 <span class="btn_add" style="position: absolute;right: 0px;top: 0px;"
                       v-if="index==0"
                       @click="handleDetailInfo(index)">+</span>
-                <span class="btn_add" style="position: absolute;right: 0px;top: 0px; background-color: #D2D2D2;"
+                <span class="btn_add"
+                      style="position: absolute;right: 0px;top: 0px; background-color: #D2D2D2;"
                       v-if="index>0"
                       @click="handleDetailInfo(index)">-</span>
               </div>
@@ -93,7 +95,7 @@
 
                 <el-form-item prop="unit_price" label="总价">
                   <el-input placeholder="请输入总价" style="width: 650px"
-                            v-model.number="detail[index].unit_price">
+                            v-model="detail[index].unit_price">
                   </el-input>
                 </el-form-item>
 
@@ -173,6 +175,15 @@
     }
   }
 
+  var validatorPass1 = (rule, value, callback) => {
+    let reg = /^(([1-9]{1}\d*)|(0{1}))(\.\d{2})$/
+    if (reg.test(value)) {
+      callback()
+    } else {
+      callback(new Error('请保留两位小数'))
+    }
+  }
+
   export default {
     name: "PurchaseApply",
     props: ['user_info_all', 'size', 'addUrl'],
@@ -229,7 +240,8 @@
             {required: true, message: '请输入数量', trigger: ['blur', 'change']}
           ],
           unit_price: [
-            {required: true, message: '请输入总价', trigger: ['blur', 'change']}
+            {required: true, message: '请输入总价', trigger: ['blur', 'change']},
+            {validator: validatorPass1, trigger: ['blur', 'change']}
           ],
           source_key: [
             {required: true, message: '请输入采购源', trigger: ['blur', 'change']}
