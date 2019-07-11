@@ -290,6 +290,15 @@
                 }
               }
             }
+            .el-pagination{
+              width: 100%;
+              height: auto;
+              display: block;
+              text-align: center;
+              .el-pager li.active,.el-pager li:hover{
+                color: #cf2e33;
+              }
+            }
             .bg-img {
               position: absolute;
               top: 50%;
