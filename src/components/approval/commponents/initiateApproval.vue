@@ -66,7 +66,7 @@
 
   const Dialogs = getDialogsFromContext(dialogRequireContext);
 
-  const {DemandDialog, TransferDialog, NoticeDialog} = Dialogs;
+  const {DemandDialog, TransferDialog, NoticeDialog, SecondEntry} = Dialogs;
 
   export default {
     name: "initiateApproval",
@@ -130,11 +130,13 @@
                 component: LeaveDialog,
                 props: {}
               },
-              // {
-              //   itemIndex: 7,
-              //   itemTitle: '二次入职审批',
-              //   icon: 'ecrz'
-              // },
+              {
+                itemIndex: 7,
+                itemTitle: '二次入职审批',
+                icon: 'ecrz',
+                component: SecondEntry,
+                props: {}
+              },
               // {
               //   itemIndex: 8,
               //   itemTitle: '花名册使用审批',
