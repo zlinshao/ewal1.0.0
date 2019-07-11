@@ -308,7 +308,7 @@
     methods: {
       //获取图片
       getPictureUrl(val) {
-        let params = {"id": val};
+        let params = {"ids": val};
         this.$http.post(`${globalConfig.upload_sever}api/v1/get_urls`,params).then(res=> {
           if (res.code.endsWith('0')) {
             this.sliders = res.data;
@@ -435,6 +435,8 @@
       height: 100%;
 
       .play {
+        z-index: 100;
+        position: absolute;
         width: 70px;
         height: 70px;
         @include sliderImg('5.png', 'theme1');

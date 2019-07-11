@@ -8,6 +8,8 @@
           <span>小雪</span>
           <label>-1～1.5°C</label>&ndash;&gt;
         </span>-->
+        <span @click="routerLink('/')" title="主页" class="to-homepage"></span>
+
         <span @click="showModules()" class="showButton">
           EWAL
         </span>
@@ -108,7 +110,6 @@
 </template>
 
 <script>
-  import _ from 'lodash';
 import TodoList from './components/todoList/index';
 import Approval from './components/approval/index';
 import AppIndexMore from './components/index/components/AppIndexMore';
