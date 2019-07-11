@@ -435,6 +435,8 @@
       height: 100%;
 
       .play {
+        z-index: 100;
+        position: absolute;
         width: 70px;
         height: 70px;
         @include sliderImg('5.png', 'theme1');

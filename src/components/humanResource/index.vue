@@ -62,9 +62,8 @@
         ],
         mark_choose: 1,
         work_down_data: [
-          {value: 50,name: '一般'},
-          {value: 30,name: '特殊'},
-          {value: 20,name: '紧急'},
+          {value: 30,name: '已完成'},
+          {value: 20,name: '未完成'},
         ],
         staff_time: {
           start_time: this.myUtils.formatDate(new Date(),'yyyy-MM-dd'),
@@ -148,12 +147,12 @@
       init_work_down_chart() {
         let event_chart = this.$echarts.init(document.getElementById('work_down_charts'));
         event_chart.setOption({
-          color: ['#DFDFDF','#9E9E9E','#B9292D'],
+          color: ['#9E9E9E','#B9292D'],
           legend: {
             orient: 'vertical',
             x: 'left',
             y: 'middle',
-            data: ['一般', '特殊', '紧急']
+            data: ['已完成', '未完成']
           },
           series: [
             {

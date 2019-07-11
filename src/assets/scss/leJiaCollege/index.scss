@@ -2,7 +2,7 @@
 
 #theme_name {
   #leJiaCollege {
-    > div {
+    .mainList {
       .leJiaCollege-menu {
         padding-right: 230px;
         padding-left: 230px;
@@ -43,5 +43,22 @@
       }
     }
 
+    .listTopRight{
+      >div{
+        background: #cf2e33;
+        border-radius: 4px;
+        padding: 5px 10px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        b{
+          display: inline-block;
+          font-size: 14px;
+          color:#ffffff
+
+        }
+      }
+
+    }
   }
 }

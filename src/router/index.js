@@ -107,14 +107,23 @@ const LeJiaHumanity = () => import('@/components/newMedia/back/lejiaHumanity/ind
 const BackClub = () => import('@/components/newMedia/back/club/index.vue')
 
 //乐伽大学
-const LeJiaCollege = () => import('@/components/leJiaCollege/index.vue')
+/*const LeJiaCollege = () => import('@/components/leJiaCollege/index.vue')
 const Train = () => import('@/components/leJiaCollege/components/common.vue') //考试安排
 const Faculty = () => import('@/components/leJiaCollege/components/common.vue') //师资力量
 const IndustryDynamic = () => import('@/components/leJiaCollege/components/common.vue') //行业动态
 const JobTraining = () => import('@/components/leJiaCollege/components/common.vue') //工作培训
 const PostPlanning = () => import('@/components/leJiaCollege/components/common.vue') //岗位规划
 const PracticalProblems = () => import('@/components/leJiaCollege/components/common.vue') //实践问题
-const VideoLearning = () => import('@/components/leJiaCollege/components/common.vue') //视频学习
+const VideoLearning = () => import('@/components/leJiaCollege/components/common.vue') //视频学习*/
+
+const LeJiaCollege = () => import('@/components/leJiaCollege/index.vue')
+const Train = () => import('@/components/leJiaCollege/train/index.vue') //考试安排
+const Faculty = () => import('@/components/leJiaCollege/faculty/index.vue') //师资力量
+const IndustryDynamic = () => import('@/components/leJiaCollege/industryDynamic/index.vue') //行业动态
+//const JobTraining = () => import('@/components/leJiaCollege/jobTraining/index.vue') //工作培训
+const PostPlanning = () => import('@/components/leJiaCollege/postPlanning/index.vue') //岗位规划
+const PracticalProblems = () => import('@/components/leJiaCollege/practicalProblems/index.vue') //实践问题
+const VideoLearning = () => import('@/components/leJiaCollege/videoLearning/index.vue') //视频学习
 
 // 岗位规划
 const Partner = () => import('@/components/leJiaCollege/components/common.vue') //合伙人
@@ -191,7 +200,7 @@ export default new Router({
       component: HomePage
     },
 
-    {
+    /*{
       path: '/faculty',
       name: '师资力量',
       component: Faculty
@@ -276,12 +285,44 @@ export default new Router({
       path: '/sales',
       name: '市场专员',
       component: Sales
-    },
+    },*/
 
     {
       path: '/leJiaCollege',
       name: '乐伽大学',
-      component: LeJiaCollege
+      component: LeJiaCollege,
+      children: [
+        {
+          path: '/leJiaCollege/faculty',
+          name: '师资力量',
+          component: Faculty,
+        },
+        {
+          path: '/leJiaCollege/train',
+          name: '考试安排',
+          component: Train,
+        },
+        {
+          path: '/leJiaCollege/industryDynamic',
+          name: '行业动态',
+          component: IndustryDynamic,
+        },
+        {
+          path: '/leJiaCollege/postPlanning',
+          name: '岗位规划',
+          component: PostPlanning,
+        },
+        {
+          path: '/leJiaCollege/practicalProblems',
+          name: '实践问题',
+          component: PracticalProblems,
+        },
+        {
+          path: '/leJiaCollege/videoLearning',
+          name: '视频学习',
+          component: VideoLearning,
+        },
+      ],
     },
     {
       path: '/staffDetail',
