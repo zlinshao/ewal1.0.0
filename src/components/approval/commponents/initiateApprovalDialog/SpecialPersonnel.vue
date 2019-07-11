@@ -130,8 +130,7 @@
     props: ['user_info_all', 'size', 'addUrl'],
     data() {
       return {
-        // TODO
-        isLoading: false,
+        isLoading: true,
         url: globalConfig.market_server,
         // 校验规则
         special_personnel_form_rule: {
@@ -176,7 +175,7 @@
           .validate((valid) => {
             if (valid) {
               let clone_form = _.cloneDeep(this.special_personnel_form)
-              let {cost_name, cost_count, date, remaks} = clone_form
+              let {cost_name, cost_count, date, remarks} = clone_form
               clone_form.cost_count = parseFloat(cost_count)
               let data = {
                 ...clone_form,
@@ -184,7 +183,7 @@
                   {key: '费用名称', value: cost_name},
                   {key: '金额', value: cost_count},
                   {key: '申请日期', value: date},
-                  {key: '备注', value: remaks}
+                  {key: '备注', value: remarks}
                 ]
               }
               this.showLoading2(true)
