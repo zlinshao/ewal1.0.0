@@ -37,10 +37,15 @@
 
       </div>
     </div>
-    <div class="mainListTable changeChoose" :style="{'height': this.mainListHeight() + 'px'}">
+    <div class="mainListTable changeChoose" :style="{'height': mainListHeight(46) + 'px'}">
       <el-table
+        :empty-text='tableStatus'
+        v-loading="tableLoading"
+        element-loading-text="拼命加载中"
+        element-loading-spinner="el-icon-loading"
+        element-loading-background="rgba(255, 255, 255, 0)"
         :data="accountData"
-        :height="this.mainListHeight(30) + 'px'"
+        :height="mainListHeight(76) + 'px'"
         highlight-current-row
         :row-class-name="tableChooseRow"
         @cell-click="tableClickRow"
@@ -189,8 +194,7 @@
           </el-form>
         </div>
         <div class="dialog_footer">
-          <el-button size="small" type="danger" @click="submitAdd('addAccount')">{{ current_row ? '更新' :
-            '新增'}}
+          <el-button size="small" type="danger" @click="submitAdd('addAccount')">{{ current_row ? '更新' : '新增'}}
           </el-button>
           <el-button size="small" @click="handleCancelAdd">取消</el-button>
         </div>
@@ -258,7 +262,7 @@
         </div>
         <div class="dialog_footer">
           <el-button size="small" type="danger" @click="handleInitialAccount">确定</el-button>
-          <el-button size="small" @click="initial_visible = false;current_row = ''">取消</el-button>
+          <el-button size="small" @click="initial_visible = false">取消</el-button>
         </div>
       </div>
     </lj-dialog>
@@ -278,8 +282,9 @@
     components: {SearchHigh, FinMenuList, LjDialog},
     data() {
       return {
+        tableStatus: ' ',
+        tableLoading: false,
         is_table_choose: '',
-
         choose: '',
         accountSearchList,
         //查看记录
@@ -385,6 +390,12 @@
     watch: {},
     computed: {},
     methods: {
+      hiddenModules() {
+        this.action_visible = false;
+        this.is_table_choose = '';
+        this.current_row = '';
+        this.getInfoList();
+      },
       handleCloseInfo() {
         this.info_params.operation = '';
         this.info_params.account_id = '';
@@ -423,8 +434,8 @@
       handleInitialAccount() {
         this.$http.put(globalConfig.temporary_server + `account/archive/${this.current_row.id}`).then(res => {
           this.callbackSuccess(res);
-          this.current_row = '';
           this.initial_visible = false;
+          this.getAccountList();
         }).catch(err => {
           console.log(err);
         })
@@ -436,10 +447,6 @@
             this.account_recharge_visible = false;
             this.getAccountList();
           });
-          /*this.callbackSuccess(res);
-          this.current_row = '';
-          this.recharge.amount = '';
-          this.account_recharge_visible = false;*/
         }).catch(err => {
           console.log(err);
         })
@@ -451,7 +458,7 @@
       handleDelAccount() {
         this.$http.delete(globalConfig.temporary_server + `account/delete/${this.current_row.id}`).then(res => {
           this.callbackSuccess(res);
-          this.current_row = '';
+          this.hiddenModules();
           this.del_account_visible = false;
         }).catch(err => {
           console.log(err);
@@ -531,7 +538,9 @@
             subMessage: '',
           });
           this.getAccountList();
-          callback();
+          if (callback) {
+            callback();
+          }
         } else {
           this.$LjNotify('error', {
             title: '失败',
@@ -544,19 +553,24 @@
       //获取账户列表
       getAccountList() {
         if (!this.validatePermission('Account-List')) return;
+        this.tableStatus = ' ';
+        this.tableLoading = true;
         this.$http.get(globalConfig.temporary_server + 'account', this.params).then(res => {
+          this.tableLoading = false;
           if (res.code === 200) {
             this.cate = res.data.cate;
             this.banks = res.data.banks;
             this.account_count = res.data.count;
             this.accountData = res.data.data;
           } else {
+            this.tableStatus = '暂无相关数据';
             this.cate = {};
             this.banks = [];
             this.account_count = 0;
             this.accountData = [];
           }
         }).catch(err => {
+          this.tableStatus = '暂无相关数据';
           console.log(err);
         })
       },

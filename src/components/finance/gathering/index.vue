@@ -40,14 +40,14 @@
         <!--<el-checkbox>全选</el-checkbox>-->
         <!--<span class="check-count">已选中 <i>{{multipleSelection.length}}</i> 项</span>-->
         <span class="action-bar-name">
-                    <span v-for="(item,index) in btn_group"
-                          v-show="item.show"
-                          :key="index"
-                          :class="item.class"
-                          @click="handleClickBtn(item.key,current_row)">
-                        {{item.val}}
-                    </span>
-                </span>
+          <span v-for="(item,index) in btn_group"
+                v-show="item.show"
+                :key="index"
+                :class="item.class"
+                @click="handleClickBtn(item.key,current_row)">
+            {{item.val}}
+          </span>
+        </span>
       </div>
       <div class="action-bar-right">
         <span style="margin-right: 15px">应收金额（元） <i class="edit">{{ receivable_sum }}</i></span>
@@ -55,10 +55,10 @@
         <span style="margin-right: 15px">剩余款项（元） <i class="delete">{{ balance_sum }}</i></span>
       </div>
     </div>
-    <div v-if="chooseTab!=5" class="mainListTable changeChoose" :style="{'height': this.mainListHeight() + 'px'}">
+    <div v-if="chooseTab!=5" class="mainListTable changeChoose" :style="{'height': mainListHeight(46) + 'px'}">
       <el-table
         :data="tableData"
-        :height="this.mainListHeight(30) + 'px'"
+        :height="mainListHeight(76) + 'px'"
         highlight-current-row
         :row-class-name="tableChooseRow"
         @selection-change="handleSelectionChange($event,'index')"
@@ -1538,7 +1538,7 @@
 
         showData: {
           "pay_date": '收款时间',
-          "subject": '应收科目',
+          "subject.title": '应收科目',
           "customer.address": "地址",
           "amount_receivable": '应收金额',
           "amount_received": '实收金额',
@@ -1651,20 +1651,20 @@
         bankDetailPageParams:{  //银行流水详情的分页
           limit: 10,
           page: 1,
-        },  
+        },
         import_template:{  //导入时需要的传参
           doc_id:[],
           account:'',
           bank_template:''
         },
-       
+
 
       }
     },
     mounted() {
       this.chooseTabI = this.compareParams.status;
       this.getReceiveList();
-    
+
     },
     computed: {},
     methods: {
@@ -2425,8 +2425,8 @@
             endTag = val.tagDate[1];
           }
           if (val.gatherDate) {
-            endRange = val.gatherDate[0];
-            startRange = val.gatherDate[1];
+            startRange = val.gatherDate[0];
+            endRange = val.gatherDate[1];
           }
 
           let paramsData = {
@@ -2639,7 +2639,7 @@
         this.$http.get(`${globalConfig.temporary_server}bank_batch_count`,this.bankListPageParams).then(res => {
           if(res.code === 200){
               this.bankTabelList=res.data.data;
-              this.bankListcount= res.data.count;   
+              this.bankListcount= res.data.count;
           }
         });
       },
@@ -2685,7 +2685,7 @@
            if(res.code === 200){
              this.bankTemplateData=res.data.data;
            }else{
-              
+
            }
          });
       },
@@ -2726,10 +2726,10 @@
           console.log(err);
         })
       }
-    
-     
 
-       
+
+
+
     },
   }
 </script>
@@ -2828,6 +2828,19 @@
         color: #FFFFFF;
       }
 
+    }
+  }
+</style>
+<style lang="scss">
+  #theme_name.theme1 {
+    #gathering {
+      .el-table__body {
+        .el-table__row {
+          .cell {
+            white-space: pre-wrap;
+          }
+        }
+      }
     }
   }
 </style>

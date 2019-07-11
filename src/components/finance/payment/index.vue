@@ -27,14 +27,14 @@
         <!--<span class="check-count">已选中 <i>{{multipleSelection.length}}</i> 项</span>-->
 
         <span class="action-bar-name">
-                    <span v-for="(item,index) in btnData"
-                          v-show="item.show"
-                          :key="index"
-                          :class="item.class"
-                          @click="handleClickBtn(item.methods,current_row,index,item.key)">
-                        {{item.content}}
-                    </span>
-                </span>
+          <span v-for="(item,index) in btnData"
+                v-show="item.show"
+                :key="index"
+                :class="item.class"
+                @click="handleClickBtn(item.methods,current_row,index,item.key)">
+            {{item.content}}
+          </span>
+        </span>
       </div>
       <div class="action-bar-right">
         <span style="margin-right: 20px">应付金额（元） <i class="edit">{{ payableSum }}</i></span>
@@ -42,10 +42,10 @@
         <span style="margin-right: 20px">剩余款项（元） <i class="delete">{{ balanceSum }}</i></span>
       </div>
     </div>
-    <div class="mainListTable changeChoose" :style="{'height': this.mainListHeight() + 'px'}">
+    <div class="mainListTable changeChoose" :style="{'height': mainListHeight(46) + 'px'}">
       <el-table
         :data="tableLists"
-        :height="this.mainListHeight(30) + 'px'"
+        :height="mainListHeight(76) + 'px'"
         highlight-current-row
         header-row-class-name="tableHeader"
         @selection-change="selectionChange"
@@ -73,8 +73,7 @@
           show-overflow-tooltip
           align="center"
           prop="remarks"
-          label="备注"
-        >
+          label="备注">
           <template slot-scope="scope">
             <div style="cursor: pointer;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;"
                  v-html="scope.row.remarks" @click="openRemarksList(scope.row)"></div>
@@ -122,14 +121,15 @@
           <el-form :model="formData" label-width="80px">
             <el-form-item prop="name" label="应付金额">
               <el-input placeholder="请输入" v-model="formData.amount_payable"
-                        :disabled="current_row.is_rank===1?true:false"></el-input>
+                        :disabled="current_row.is_rank==1?true:false"></el-input>
             </el-form-item>
           </el-form>
         </div>
         <div class="dialog_footer">
-          <el-button type="danger" size="small" @click="handleOkPay(current_row,formData.amount_payable)">确定
+          <el-button type="danger" size="small" v-if="current_row.is_rank==1?false:true"
+                     @click="handleOkPay(current_row,formData.amount_payable)">确定
           </el-button>
-          <el-button type="info" size="small" @click="pay_visible = false;current_row = ''">取消</el-button>
+          <el-button type="info" size="small" @click="pay_visible = false">取消</el-button>
         </div>
       </div>
     </lj-dialog>
@@ -150,7 +150,7 @@
         <div class="dialog_footer">
           <el-button type="danger" size="small" @click="handleOkSubject(current_row,formData.subject_id)">确定
           </el-button>
-          <el-button type="info" size="small" @click="show_subject = false;current_row = ''">取消</el-button>
+          <el-button type="info" size="small" @click="show_subject = false">取消</el-button>
         </div>
       </div>
     </lj-dialog>
@@ -174,7 +174,7 @@
           <el-button type="danger" size="small"
                      @click="handleOkCompleteData(current_row)">确定
           </el-button>
-          <el-button type="info" size="small" @click="complete_visible = false;current_row = ''">取消
+          <el-button type="info" size="small" @click="complete_visible = false">取消
           </el-button>
         </div>
       </div>
@@ -199,7 +199,7 @@
         <div class="dialog_footer">
           <el-button type="danger" size="small" @click="handleOkPayDate(current_row)">确定
           </el-button>
-          <el-button type="info" size="small" @click="payData_visible = false;current_row = ''">取消</el-button>
+          <el-button type="info" size="small" @click="payData_visible = false">取消</el-button>
         </div>
       </div>
     </lj-dialog>
@@ -403,7 +403,7 @@
         </div>
         <div class="dialog_footer">
           <el-button type="danger" size="small" @click="handleOkDel(current_row)">确定</el-button>
-          <el-button type="info" size="small" @click="delete_visible = false;current_row = ''">取消</el-button>
+          <el-button type="info" size="small" @click="delete_visible = false">取消</el-button>
         </div>
       </div>
     </lj-dialog>
@@ -413,7 +413,7 @@
 
     <!--回滚-->
     <lj-dialog :visible="recall_visible" :size="{width: 900 + 'px',height: 560 + 'px'}"
-               @close="recall_visible = false;current_row = ''">
+               @close="recall_visible = false">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>回滚</h3>
@@ -438,7 +438,7 @@
         </div>
         <div class="dialog_footer">
           <el-button type="danger" size="small" @click="handleOkRecall">确定</el-button>
-          <el-button type="info" size="small" @click="recall_visible = false;current_row = '';">取消</el-button>
+          <el-button type="info" size="small" @click="recall_visible = false;">取消</el-button>
         </div>
       </div>
     </lj-dialog>
@@ -447,7 +447,7 @@
 
     <!--批量入账-->
     <lj-dialog :visible="batchEntry_visible" :size="{width: 900 + 'px',height: 560 + 'px'}"
-               @close="batchEntry_visible = false;current_row = ''">
+               @close="batchEntry_visible = false">
       <div class="dialog_container">
         <div class="dialog_header justify-bet">
           <h3>批量入账</h3>
@@ -848,6 +848,12 @@
     },
     computed: {},
     methods: {
+      hiddenModules() {
+        this.action_visible = false;
+        this.is_table_choose = '';
+        this.current_row = '';
+        this.getPaymentList();
+      },
       importOk() {
         this.$http.post(globalConfig.temporary_server + 'batch_payable/import', {doc_id: this.import_file}).then(res => {
           if (res.code === 200) {
@@ -990,7 +996,7 @@
         this.$http.put(globalConfig.temporary_server + "account_payable/edit_pay_amount/" + row.id, {amount_payable: val}).then(res => {
           this.callbackSuccess(res);
           this.pay_visible = false;
-          this.current_row = '';
+          this.hiddenModules();
         }).catch(err => {
           console.log(err);
         })
@@ -1029,10 +1035,7 @@
           this.current_row = '';*/
           this.$LjMessageEasy(res, () => {
             this.show_subject = false;
-            this.action_visible = false;
-            this.is_table_choose = '';
-            this.current_row = '';
-
+            this.hiddenModules();
           });
         });
       },
@@ -1046,7 +1049,7 @@
           this.callbackSuccess(res, function () {
           });
           this.complete_visible = false;
-          this.current_row = '';
+          this.hiddenModules();
         }).catch(err => {
           console.log(err);
         })
@@ -1093,10 +1096,8 @@
         this.$http.put(globalConfig.temporary_server + "account_payable/transfer/" + row.id, paramsForm).then(res => {
           this.callbackSuccess(res);
           if (res.code === 200) {
-            this.is_table_choose = '';
-            this.action_visible = false;
             this.transfer_visible = false;
-            this.current_row = '';
+            this.hiddenModules();
           }
         }).catch(err => {
           console.log(err);
@@ -1119,9 +1120,7 @@
               subMessage: '',
             });
             this.recall_visible = false;
-            this.action_visible = false;
-            this.is_table_choose = '';
-            this.current_row = '';
+            this.hiddenModules();
             this.getPaymentList();
           } else {
             this.$LjNotify('error', {
@@ -1350,6 +1349,19 @@
         }
       }
 
+    }
+  }
+</style>
+<style lang="scss">
+  #theme_name.theme1 {
+    #payment {
+      .el-table__body {
+        .el-table__row {
+          .cell {
+            white-space: pre-wrap;
+          }
+        }
+      }
     }
   }
 </style>

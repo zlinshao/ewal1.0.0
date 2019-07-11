@@ -20,6 +20,19 @@
       }
     }
 
+    .action-bar {
+      justify-content: flex-end;
+      position: relative;
+
+      .action-bar-left {
+        position: absolute;
+        left: 40px;
+      }
+
+      .action-bar-right {
+      }
+    }
+
     .address {
       font-size: 18px;
     }
