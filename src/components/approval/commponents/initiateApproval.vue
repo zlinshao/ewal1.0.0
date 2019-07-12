@@ -75,7 +75,8 @@
     SpecialPersonnel,
     CarLoan,
     UseChapter,
-    WorkInstructions
+    WorkInstructions,
+    updateUserInfo
   } = Dialogs;
 
   export default {
@@ -165,11 +166,13 @@
                   type: 'secret_roster'
                 }
               },
-              // {
-              //   itemIndex: 10,
-              //   itemTitle: '个人信息修改审批',
-              //   icon: 'grxxxg'
-              // }
+              {
+                itemIndex: 10,
+                itemTitle: '个人信息修改审批',
+                icon: 'grxxxg',
+                component: updateUserInfo,
+                props: {}
+              }
             ]
           },
           {
