@@ -1325,6 +1325,7 @@ export const balanceSearch = {
 export const gatheringSearchList = {
   status: 'gatheringSearchList',
   keywords: 'search',
+  limit: 12,
   data: [{
     keyType: 'dateRange',
     title: '应收时间',
@@ -1442,6 +1443,7 @@ export const accountSearchList = {
 //付款
 export const paySearchList = {
   status: 'paySearchList',
+  limit: 12,
   keywords: 'search',
   data: [
     {
