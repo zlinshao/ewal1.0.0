@@ -8,7 +8,7 @@
                 <h1>企业头条</h1>
                 <h2 class="items-center">
           <span v-for="item in selects" @click="changeTabs(item.id,item.url)" class="items-column"
-                :class="{'chooseTab': chooseTab === item.id}">
+                :class="{'chooseTab': chooseTab == item.id}">
             {{item.title}}<i></i>
           </span>
                 </h2>
@@ -64,11 +64,12 @@
         methods:{
             getPath(){
                 this.chooseTab = this.$route.query.type;
-                this.changeTabs(this.$route.query.type, this.$route.query.type===1 ? 'hotNews' :this.$route.query.type===2 ? 'leJiaNews':'noticeNews')
+                this.changeTabs(this.$route.query.type, this.$route.query.type==1 ? 'hotNews' :this.$route.query.type==2 ? 'leJiaNews':'noticeNews')
             },
             changeTabs(id,url) {
                 this.chooseTab = id;
                 this.tabView  = url;
+                this.$forceUpdate()
             },
         }
     }
