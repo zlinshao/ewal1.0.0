@@ -33,6 +33,7 @@ export default async function getPermission() {
     }
   };
   async function getUserInfo() {
+    if(!storage.get('Authorization')) return;
     let result =await Axios.get(`${globalConfig.shield_server}api/auth/user`);
         if (result.success === true) {
           await storage.set('user_info', {
