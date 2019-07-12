@@ -26,7 +26,7 @@
                   </el-form-item>
 
                   <el-form-item required prop="chapter_name" label="用章名称">
-                    <el-input v-model="use_chapter_form.chapter_name" placeholder="自动获取"
+                    <el-input v-model="use_chapter_form.chapter_name" placeholder="请输入用章名称"
                               style="width: 220px">
                     </el-input>
                   </el-form-item>
