@@ -45,15 +45,14 @@
           <h3>{{flag===1?'编辑讲师':flag===2?'新增讲师':flag===3?'讲师详情':''}}</h3>
         </div>
         <div class="dialog_main borderNone">
-          <el-form v-model="form" label-width="80px">
-            <el-form-item label="讲师头像">
-              <lj-upload size="40" :max-size="1" :limit-easy="['image']" :disabled="flag===3" v-model="form.file_info"></lj-upload>
+          <el-form :model="form" ref="form" :rules="rules" label-width="80px">
+            <el-form-item label="讲师头像" prop="file_info" required>
+              <lj-upload class="upload-offset" size="40" :max-size="5" :num="1" :limit-easy="['image']" :disabled="flag===3" v-model="form.file_info" :download="false"></lj-upload>
             </el-form-item>
-            <el-form-item label="讲师姓名" prop="name">
+            <el-form-item label="讲师姓名" prop="user_id" required>
               <user-choose width="360" num="1" v-model="form.user_id" :disabled="flag===3"></user-choose>
-<!--              <el-input v-model="form.name" :disabled="flag===3" @focus="staffModule=true"></el-input>-->
             </el-form-item>
-            <el-form-item label="点评摘要" prop="abstract">
+            <el-form-item label="点评摘要" prop="comment">
               <el-input v-model="form.comment" :disabled="flag===3"></el-input>
             </el-form-item>
             <el-form-item label="讲师介绍" prop="desc">
@@ -79,6 +78,22 @@
     name: "faculty",
     data() {
       return {
+
+        rules: {
+          file_info: [
+            {required: true, message: '请选择讲师头像', trigger: ['blur', 'change']},
+          ],
+          user_id: [
+            {required: true, message: '请选择讲师', trigger: ['blur', 'change']},
+          ],
+          comment:[
+            {min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur'}
+          ],
+          desc: [
+            {min: 1, max: 100, message: '长度在 1 到 100 个字符', trigger: 'blur'}
+          ]
+        },
+
         url:globalConfig.leJiaCollege_server,
         count: 0,
         seen: true,
@@ -112,9 +127,6 @@
     created() {
       this.$bus.on('add', this.getVal)
     },
-    beforeDestroy() {
-      this.$bus.off('add', this.getVal);
-    },
     watch: {
       form: {
         handler(val) {
@@ -129,15 +141,13 @@
         if (res.status === 200) {
           this.$LjNotify('success', {
             title: '成功',
-            message: res.msg,
-            subMessage: '',
+            message: res.message,
           });
           this.getDataList();
         } else {
           this.$LjNotify('error', {
             title: '失败',
-            message: res.msg,
-            subMessage: '',
+            message: res.message,
           });
         }
       },
@@ -216,35 +226,38 @@
       },
       //提交
       submit(type) {
-        let paramsForm = {
-          user_id: this.form.user_id[0],
-          cover: this.form.file_info[0],
-          comment: this.form.comment,
-          desc: this.form.desc,
-        };
-        if (type === 1) {
-          this.$http.put(this.url + '/api/teachers/lecturer/' + this.current_item.id, paramsForm).then(res => {
-            this.callbackSuccess(res);
-            this.visible = false;
-            this.current_item = '';
-          })
-        } else if (type === 2) {
-          this.$http.post(this.url + '/api/teachers/lecturer', paramsForm).then(res => {
-            this.callbackSuccess(res);
-            this.visible = false;
-            this.current_item = '';
-          })
-        }
-
+        this.$refs['form'].validate(valid=> {
+          if(valid) {
+            let paramsForm = {
+              user_id: this.form.user_id[0],
+              cover: this.form.file_info[0],
+              comment: this.form.comment,
+              desc: this.form.desc,
+            };
+            if (type === 1) {
+              this.$http.put(this.url + '/api/teachers/lecturer/' + this.current_item.id, paramsForm).then(res => {
+                this.callbackSuccess(res);
+                this.visible = false;
+                this.current_item = '';
+              })
+            } else if (type === 2) {
+              this.$http.post(this.url + '/api/teachers/lecturer', paramsForm).then(res => {
+                this.callbackSuccess(res);
+                this.visible = false;
+                this.current_item = '';
+              })
+            }
+          }
+        });
       },
 
       //鼠标移入
-      onMouseIn: function (index) {
+      onMouseIn (index) {
         this.seen = true; //鼠标移入显示
         this.current_type = index;
       },
       //鼠标移出
-      onMouseOut: function (index) {
+      onMouseOut (index) {
         this.seen = false; //鼠标移出隐藏
         this.current_type = null;
       },
