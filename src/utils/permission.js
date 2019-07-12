@@ -20,7 +20,7 @@ export default async function getPermission() {
     if(result.code==88800 || result.code==888888) {
       storage.remove('Authorization');
       storage.remove('VALIDATE_PERMISSION');
-      return;
+      return;   
     }
 
     if (result.code.endsWith('0')) {
@@ -31,7 +31,23 @@ export default async function getPermission() {
       });
       return true;
     }
-  }
+  };
+  async function getUserInfo() {
+    let result =await Axios.get(`${globalConfig.shield_server}api/auth/user`);
+        if (result.success === true) {
+          await storage.set('user_info', {
+            id: result.data.id,
+            name: result.data.name,
+            org:result.data.detail?.org||[],
+            position:result.data.detail?.position||[],
+            avatar: result.data.detail?.avatar,
+            position_level: result.data.detail?.staff?.position_level||null,//职位等级
+            company_info: result.data.detail?.company_info || {},//公司信息
+          });
+        }
+  };
   await permission();
+  await getUserInfo();
   setInterval(permission, 1000 * 60 * 5);
+  setInterval(getUserInfo, 1000 * 60 * 5);
 }
