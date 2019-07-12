@@ -230,9 +230,10 @@
                   <el-col :span="8">
                     <el-form-item label="政治面貌">
                       <el-select v-model="interview_info_detail.political_status" placeholder="请选择">
-                        <el-option :value="0" label="群众"></el-option>
-                        <el-option :value="1" label="团员"></el-option>
-                        <el-option :value="2" label="党员"></el-option>
+                        <el-option :value="1" label="群众"></el-option>
+                        <el-option :value="2" label="团员"></el-option>
+                        <el-option :value="3" label="党员"></el-option>
+                        <el-option :value="4" label="其他"></el-option>
                       </el-select>
                     </el-form-item>
                   </el-col>
