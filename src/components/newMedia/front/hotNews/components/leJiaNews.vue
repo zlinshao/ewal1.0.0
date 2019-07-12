@@ -162,7 +162,7 @@
         },
         methods: {
             getDataLists() {// 请求接口方法
-                this.$http.get(globalConfig.newMedia_sever + '/api/article/news').then(res => {
+                this.$http.get(globalConfig.newMedia_sever + '/api/article/news',{is_open:1}).then(res => {
                     if(res.status===200){
                         this.newsData = res.data.data;
                         this.sort(0);// 分配数据到指定管道
@@ -174,7 +174,7 @@
             },
 
             chooseTabAlert(val){
-                console.log('2222222222',val)
+                console.log(val)
             },
 
 
