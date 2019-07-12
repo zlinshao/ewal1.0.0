@@ -185,7 +185,6 @@
         if (res) {
           this.$http.get(`${this.url}api/auth/user`).then(async res2 => {
             if (res2.success === true) {
-              debugger
               await this.$storage.set('user_info', {
                 id: res2.data.id,
                 name: res2.data.name,

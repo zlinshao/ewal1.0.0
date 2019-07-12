@@ -1,16 +1,42 @@
 <template>
   <div id="postPlanning">
-    <div class="mainList justify-bet" :style="{'height': this.mainListHeight(-9) + 'px'}" v-if="getTab===1">
+
+    <div id="menu" v-if="current_page===0">
+      <div class="mainList" :style="{'height': this.mainListHeight(-9) + 'px','padding-left':0 }">
+        <div class="menu-list flex-center">
+                <span
+                  v-for="item in selects"
+                  class="flex-center"
+                  @click="verticalListRouterDirect(item)"
+                >
+                    <i class="writingMode">{{item.title}}</i>
+                </span>
+        </div>
+
+
+        <div class="right-tab">
+          <div v-for="item in tabs"
+               @click="rightListRouterDirect(item)">
+                    <span>
+                        <i class="writingMode">{{item.title}}</i>
+                    </span>
+            <span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mainList justify-bet" :style="{'height': this.mainListHeight(-9) + 'px'}" v-if="current_page===1">
       <div class="edit_btn">
         <span @click="openEdit">编 辑</span>
       </div>
-      <div class="tab" v-if="tab===1">
+      <div class="tab" v-if="tab===8">
         <div class="slogan">
           <span><i class="writingMode">共 创 未 来。</i></span>
           <span><i class="writingMode">携 手 并 进，</i></span>
         </div>
       </div>
-      <div class="tab" v-if="tab===2">
+      <div class="tab" v-if="tab===7">
         <div class="main-middle flex-center">
           <div>
             <span class="spacial-tab">业绩提成</span>
@@ -18,32 +44,7 @@
           </div>
         </div>
       </div>
-      <div class="tab" v-if="tab===3">
-        <div class="main-left">
-          <div class="left-top">
-            <div class="flex-center"><span class="writingMode flex-center">职位晋升</span></div>
-            <div>
-              <span>{{levelDataDetail.promote.level_standard}}</span>
-              <span>{{levelDataDetail.promote.promote_direction}}</span>
-            </div>
-          </div>
-          <div class="left-bottom">
-            <div class="flex-center"><span class="writingMode flex-center">职位贬罚</span></div>
-            <div>
-              <span>{{levelDataDetail.down.level_standard}}</span>
-              <span>{{levelDataDetail.down.substandard_measure}}</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="main-middle flex-center">
-          <div>
-            <span>业绩提成</span>
-            <span>{{levelDataDetail.achievement_desc}}</span>
-          </div>
-        </div>
-      </div>
-      <div class="tab" v-if="tab===4">
+      <div class="tab" v-if="tab===6">
         <div class="main-left">
           <div class="left-top">
             <div class="flex-center"><span class="writingMode flex-center">职位晋升</span></div>
@@ -93,7 +94,7 @@
           </div>
         </div>
       </div>
-      <div class="tab" v-if="tab===6">
+      <div class="tab" v-if="tab===4">
         <div class="main-left">
           <div class="left-top">
             <div class="flex-center"><span class="writingMode flex-center">职位晋升</span></div>
@@ -118,7 +119,7 @@
           </div>
         </div>
       </div>
-      <div class="tab" v-if="tab===7">
+      <div class="tab" v-if="tab===3">
         <div class="main-left">
           <div class="left-top">
             <div class="flex-center"><span class="writingMode flex-center">职位晋升</span></div>
@@ -143,7 +144,32 @@
           </div>
         </div>
       </div>
-      <div class="tab" v-if="tab===8">
+      <div class="tab" v-if="tab===2">
+        <div class="main-left">
+          <div class="left-top">
+            <div class="flex-center"><span class="writingMode flex-center">职位晋升</span></div>
+            <div>
+              <span>{{levelDataDetail.promote.level_standard}}</span>
+              <span>{{levelDataDetail.promote.promote_direction}}</span>
+            </div>
+          </div>
+          <div class="left-bottom">
+            <div class="flex-center"><span class="writingMode flex-center">职位贬罚</span></div>
+            <div>
+              <span>{{levelDataDetail.down.level_standard}}</span>
+              <span>{{levelDataDetail.down.substandard_measure}}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="main-middle flex-center">
+          <div>
+            <span>业绩提成</span>
+            <span>{{levelDataDetail.achievement_desc}}</span>
+          </div>
+        </div>
+      </div>
+      <div class="tab" v-if="tab===1">
         <div class="main-left">
           <div class="left-top">
             <div class="flex-center"><span class="writingMode flex-center">职位晋升</span></div>
@@ -170,14 +196,17 @@
       </div>
       <div class="main-right">
         <div class="right-list">
-          <span v-for="(item,index) in selects" :class="{'active':tab === item.id,'default': tab != item.id}" @click="selectTab(item.id,index)">{{item.title}}</span>
+          <span v-for="(item,index) in selects" :class="{'active':tab === item.id,'default': tab != item.id}"
+                @click="selectTab(item.id,index)">{{item.title}}</span>
         </div>
       </div>
     </div>
     <!--新人训储备培训-->
-    <div class="mainList justify-bet mainList-train" :style="{'height': this.mainListHeight(-9) + 'px'}" v-if="getTab===2">
+    <div class="mainList justify-bet mainList-train" :style="{'height': this.mainListHeight(-9) + 'px'}"
+         v-if="current_page===2">
       <div class="train_btn">
-        <span v-for="item in tabSelects" @click="changeTabs(item.id)" :class="chooseTab === item.id ? 'chooseTab':'defaultTab'">
+        <span v-for="item in tabSelects" @click="changeTabs(item.id)"
+              :class="chooseTab === item.id ? 'chooseTab':'defaultTab'">
           <i class="writingMode">{{item.title}}</i>
         </span>
       </div>
@@ -197,7 +226,7 @@
     <lj-dialog :visible="edit_visible" :size="{width: 460 + 'px',height: 700 + 'px'}" @close="edit_visible = false">
       <div class="dialog_container borderNone">
         <div class="dialog_header">
-          <h3>{{'p'+(tab-1)}}</h3>
+          <h3>{{'p'+(tab)}}</h3>
         </div>
         <div class="dialog_main">
           <el-form ref="form" :model="levelDataDetail" label-width="68px">
@@ -228,7 +257,8 @@
       </div>
     </lj-dialog>
 
-    <lj-dialog :visible="newTraining_visible" :size="{width: 460 + 'px',height: 550 + 'px'}" @close="newTraining_visible = false">
+    <lj-dialog :visible="newTraining_visible" :size="{width: 460 + 'px',height: 550 + 'px'}"
+               @close="newTraining_visible = false">
       <div class="dialog_container borderNone">
         <div class="dialog_header">
           <h3>{{chooseTab===1?'新人训':'储备培训'}}</h3>
@@ -252,213 +282,231 @@
 </template>
 
 <script>
-import LjDialog from '../../common/lj-dialog.vue';
-export default {
-  name: "postPlanningLists",
-  components: {
-    LjDialog
-  },
-  props: ['tabId', 'getTab', 'switchTab'],
-  data () {
-    return {
-      tab: this.tabId,
-      edit_visible: false,
-      chooseTab: this.switchTab,//chooseTab初始值
-      tabSelects: [
-        { id: 1, title: '新人训' },
-        { id: 2, title: '储备培训' },
-      ],
-      form: {
-        name: ''
-      },
-      newTrainData: [
-        { id: 1, title: '企业介绍及条例宣贯' },
-        { id: 2, title: '薪酬计算及晋升' },
-        { id: 3, title: '跑盘技巧及实际操作' },
-        { id: 4, title: '合同填写规范' },
-        { id: 5, title: '租房谈判技巧及渠道维护' },
-      ],
-      storeData: [
-        { id: 1, title: '企业文化' },
-        { id: 2, title: '财务实务' },
-        { id: 3, title: '储备片区经理实务' },
-        { id: 4, title: '初级管理技巧' },
-        { id: 5, title: '客诉处理' },
-      ],
-      selects: [
-        { id: 1, title: '合伙人' },
-        { id: 2, title: '城市总' },
-        { id: 3, title: '城市副总' },
-        { id: 4, title: '区域经理' },
-        { id: 5, title: '储备区域经理' },
-        { id: 6, title: '片区经理' },
-        { id: 7, title: '储备片区经理' },
-        { id: 8, title: '市场专员' },
-      ],
-
-      levelData: [],
-      levelDataDetail: {
-        achievement_desc: '',//溢出业绩介绍
-        down: {
-          level_standard: '',//等级标准介绍
-          substandard_measure: '',//未达措施介绍
+  export default {
+    name: "postPlanningLists",
+    //props: ['tabId', 'getTab', 'switchTab'],
+    data() {
+      return {
+        current_page:0,
+        tab: 1,//p1-p7 tab
+        edit_visible: false,
+        chooseTab: 1,//chooseTab初始值 新人训1/储备培训2
+        tabSelects: [
+          {id: 1, title: '新人训'},
+          {id: 2, title: '储备培训'},
+        ],
+        form: {
+          name: ''
         },
-        promote: {
-          level_standard: '',//等级标准介绍
-          promote_direction: '',//晋升方向介绍
-        }
-      },
-      newTraining_visible: false,//新人训储备培训
-    }
-  },
-  computed: {
-  },
-  mounted () {
-    this.getDataLists();
-  },
+        newTrainData: [
+          {id: 1, title: '企业介绍及条例宣贯'},
+          {id: 2, title: '薪酬计算及晋升'},
+          {id: 3, title: '跑盘技巧及实际操作'},
+          {id: 4, title: '合同填写规范'},
+          {id: 5, title: '租房谈判技巧及渠道维护'},
+        ],
+        storeData: [
+          {id: 1, title: '企业文化'},
+          {id: 2, title: '财务实务'},
+          {id: 3, title: '储备片区经理实务'},
+          {id: 4, title: '初级管理技巧'},
+          {id: 5, title: '客诉处理'},
+        ],
+        selects: [
+          {id: 1, title: '市场专员'},
+          {id: 2, title: '储备片区经理'},
+          {id: 3, title: '片区经理'},
+          {id: 4, title: '储备区域经理'},
+          {id: 5, title: '区域经理'},
+          {id: 6, title: '城市副总'},
+          {id: 7, title: '城市总'},
+          {id: 8, title: '合伙人'},
+        ],
+        tabs: [
+          {id: 1, title: '新人训', url: 'newTraining', tab: 1},
+          {id: 2, title: '储备培训', url: 'reserveTraining', tab: 2},
+        ],
 
-  watch: {
-    switchTab: {
-      handler (newVal, oldVal) {
-        console.log(newVal);
-        this.chooseTab = newVal;
-      },
-      deep: true
-    },
-    "$route": "getPath",
-
-  },
-
-  methods: {
-    openEdit () {
-      this.edit_visible = true;
-    },
-    openEditNewTraining () {
-      this.newTraining_visible = true;
-    },
-    selectTab (val, index) {//切换menu
-      this.tab = val;
-      // this.levelDataDetail = this.levelData[index];
-      for (let item of Object.keys(this.levelDataDetail)) {
-        this.levelDataDetail[item] = this.levelData[index][item];
+        levelData: [],
+        levelDataDetail: {
+          achievement_desc: '',//溢出业绩介绍
+          down: {
+            level_standard: '',//等级标准介绍
+            substandard_measure: '',//未达措施介绍
+          },
+          promote: {
+            level_standard: '',//等级标准介绍
+            promote_direction: '',//晋升方向介绍
+          }
+        },
+        newTraining_visible: false,//新人训储备培训
       }
+    },
+    computed: {},
+    mounted() {
+      this.getDataList();
+    },
 
-      console.log(this.levelDataDetail);
-
-    },
-    getPath () {//获取路由参数
-      this.tab = this.$route.query.id;
-    },
-    changeTabs (id) {//切换tab
-      this.chooseTab = id;
-    },
-    getDataLists () {
-      this.showLoading(true);
-      this.$http.get(globalConfig.leJiaCollege_server + '/api/position/level', this.params).then(res => {
-        this.showLoading(false);
-        if (res.status === 200) {
-          this.levelData = res.data.sort(
-            function (a, b) {
-              return a.id - b.id
-            }
-          );
-          console.log(this.levelData)
+    methods: {
+      openEdit() {
+        this.edit_visible = true;
+      },
+      openEditNewTraining() {
+        this.newTraining_visible = true;
+      },
+      selectTab(val, index) {//切换menu
+        this.tab = val;
+        for (let item of Object.keys(this.levelDataDetail)) {
+          this.levelDataDetail[item] = this.levelData[index][item];
         }
-      })
-    }
-  },
+
+      },
+      changeTabs(id) {//切换tab
+        this.chooseTab = id;
+      },
+      getDataList() {
+        this.showLoading(true);
+        this.$http.get(globalConfig.leJiaCollege_server + '/api/position/level', this.params).then(res => {
+          this.showLoading(false);
+          if (res.status === 200) {
+            this.levelData = res.data.sort(
+              function (a, b) {
+                return a.id - b.id
+              }
+            );
+          }
+        })
+      },
+      //岗位规划首页跳转
+      verticalListRouterDirect(item) {
+        this.current_page = 1;
+        this.tab = item.id;
+      },
+      //右侧新人训/储备培训跳转
+      rightListRouterDirect(item) {
+        this.current_page = 2;
+        this.chooseTab = item.id;
+      },
+    },
 
 
-}
+  }
 </script>
 
 <style scoped lang="scss">
-@import "../../../assets/scss/leJiaCollege/postPlanning/index.scss";
+  @import "../../../assets/scss/leJiaCollege/postPlanning/index.scss";
 
-@mixin leJiaCollegeImg($n, $m) {
-  $url: "../../../assets/image/leJiaCollege/" + $n + "/" + $m;
-  @include bgImage($url);
-}
-#theme_name.theme1 {
-  #postPlanning {
-    > div {
-    }
+  @mixin leJiaCollegeImg($n, $m) {
+    $url: "../../../assets/image/leJiaCollege/" + $n + "/" + $m;
+    @include bgImage($url);
+  }
 
-    .mainList {
-      @include leJiaCollegeImg("theme1", "postPlanning-bg.png");
-      .train_btn {
-        span {
-          &:hover {
-            @include leJiaCollegeImg("theme1", "new-train-red.png");
-          }
-        }
+  #theme_name.theme1 {
+    #postPlanning {
 
-        .chooseTab {
-          @include leJiaCollegeImg("theme1", "new-train-red.png");
-          color: #ffffff;
-        }
-        .defaultTab {
-          @include leJiaCollegeImg("theme1", "new-train-grey.png");
-        }
-      }
+      .mainList {
+        @include leJiaCollegeImg("theme1", "postPlanning-bg.png");
 
-      .train-box {
-        span {
-          @include leJiaCollegeImg("theme1", "new-train-tab-grey.png");
-          &:hover {
-            @include leJiaCollegeImg("theme1", "new-train-tab.png");
-          }
-        }
-      }
-
-      .right-list {
-        span {
-          &:hover {
-            @include leJiaCollegeImg("theme1", "right-list-red.png");
-          }
-        }
-      }
-      .active {
-        @include leJiaCollegeImg("theme1", "right-list-red.png");
-        color: #ffffff;
-        -webkit-transform: scale(1.5);
-        -moz-transform: scale(1.5);
-        -o-transform: scale(1.5);
-        @include leJiaCollegeImg("theme1", "right-list-red.png");
-      }
-      .default {
-        @include leJiaCollegeImg("theme1", "right-list-grey.png");
-      }
-
-      .main-left {
-        .left-top,
-        .left-bottom {
-          div:nth-child(1) {
-            span {
-              @include leJiaCollegeImg("theme1", "tab-red.png");
+        .train_btn {
+          span {
+            &:hover {
+              @include leJiaCollegeImg("theme1", "new-train-red.png");
             }
           }
-          div:nth-child(2) {
+
+          .chooseTab {
+            @include leJiaCollegeImg("theme1", "new-train-red.png");
+            color: #ffffff;
           }
-          i {
+
+          .defaultTab {
+            @include leJiaCollegeImg("theme1", "new-train-grey.png");
           }
-          p {
+        }
+
+        .train-box {
+          span {
+            @include leJiaCollegeImg("theme1", "new-train-tab-grey.png");
+
+            &:hover {
+              @include leJiaCollegeImg("theme1", "new-train-tab.png");
+            }
+          }
+        }
+
+        .right-list {
+          span {
+            &:hover {
+              @include leJiaCollegeImg("theme1", "right-list-red.png");
+            }
+          }
+        }
+
+        .active {
+          @include leJiaCollegeImg("theme1", "right-list-red.png");
+          color: #ffffff;
+          -webkit-transform: scale(1.5);
+          -moz-transform: scale(1.5);
+          -o-transform: scale(1.5);
+          @include leJiaCollegeImg("theme1", "right-list-red.png");
+        }
+
+        .default {
+          @include leJiaCollegeImg("theme1", "right-list-grey.png");
+        }
+
+        .main-left {
+          .left-top,
+          .left-bottom {
+            div:nth-child(1) {
+              span {
+                @include leJiaCollegeImg("theme1", "tab-red.png");
+              }
+            }
+
+            div:nth-child(2) {
+            }
+
+            i {
+            }
+
+            p {
+            }
+          }
+        }
+
+        .main-middle {
+          div {
+            @include leJiaCollegeImg("theme1", "text-border.png");
+
+            .spacial-tab {
+              @include leJiaCollegeImg("theme1", "spacial-tab.png");
+            }
           }
         }
       }
 
-      .main-middle {
-        div {
-          @include leJiaCollegeImg("theme1", "text-border.png");
-          .spacial-tab {
-            @include leJiaCollegeImg("theme1", "spacial-tab.png");
+      .mainList-train {
+        @include leJiaCollegeImg("theme1", "train-bg.png");
+      }
+    }
+
+    #menu{
+      .mainList{
+        @include leJiaCollegeImg('theme1','train-bg.png');
+        .menu-list{
+          @for $i from 1 through 8{
+            span:nth-child(#{$i}){
+              @include leJiaCollegeImg('theme1','post#{$i}.png');
+              &:hover{
+                @include leJiaCollegeImg('theme1','hoverpost#{$i}.png');
+                color:#FFFFFF;
+              }
+            }
           }
+
         }
       }
     }
-    .mainList-train {
-      @include leJiaCollegeImg("theme1", "train-bg.png");
-    }
   }
-}
 </style>

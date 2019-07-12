@@ -2,7 +2,7 @@
   <div id="lj_upload">
     <div class="upload-container">
       <span v-if="title" class="upload-title">{{title}}</span>
-      <upload :max-size="maxSize" :download="download" :view-file="viewFile" show :limit="limit_origin"
+      <upload :num="num" :max-size="maxSize" :download="download" :view-file="viewFile" show :limit="limit_origin"
               :limitEasy="limitEasy" :disabled="disabled" :file="photoData" @success="handleSuccess" @uploaded="isUploaded"></upload>
     </div>
   </div>
@@ -20,6 +20,9 @@
       value: {},
       size: {},
       data: {},
+      num: {//上传个数
+        type:Number
+      },
       limit: {},
       limitEasy: {//
         type: Array,
