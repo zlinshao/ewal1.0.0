@@ -103,17 +103,17 @@
                 </el-col>
               </el-row>
 
-              <el-row>
-                <el-col :span="24">
-                  <el-form-item required prop="change_receipt" label="交接单">
-                    <el-input type="textarea"
-                              v-model="second_entry_form.change_receipt"
-                              :autosize="{ minRows: 2, maxRows: 14}"
-                              placeholder="请输入交接单">
-                    </el-input>
-                  </el-form-item>
-                </el-col>
-              </el-row>
+              <!--              <el-row>-->
+              <!--                <el-col :span="24">-->
+              <!--                  <el-form-item required prop="change_receipt" label="交接单">-->
+              <!--                    <el-input type="textarea"-->
+              <!--                              v-model="second_entry_form.change_receipt"-->
+              <!--                              :autosize="{ minRows: 2, maxRows: 14}"-->
+              <!--                              placeholder="请输入交接单">-->
+              <!--                    </el-input>-->
+              <!--                  </el-form-item>-->
+              <!--                </el-col>-->
+              <!--              </el-row>-->
 
               <el-row>
                 <el-col :span="24">
@@ -231,9 +231,9 @@
             {required: true, message: '请输入手机号', trigger: ['blur', 'change']},
             {validator: validatorPass1, trigger: 'blur'}
           ],
-          change_receipt: [
-            {required: true, message: '请输入交接单', trigger: ['blur', 'change']}
-          ]
+          // change_receipt: [
+          //   {required: true, message: '请输入交接单', trigger: ['blur', 'change']}
+          // ]
         },
         // 用户信息
         user_info: null
@@ -324,7 +324,7 @@
                   {key: '二次入职原因', value: second_entry_reason},
                   {key: '担保人', value: guarantor_id.name},
                   {key: '手机号', value: phone},
-                  {key: '交接单', value: change_receipt},
+                  // {key: '交接单', value: change_receipt},
                 ]
               }
               this.showLoading2(true)
