@@ -36,11 +36,11 @@
           <h3>{{current===1?'编辑行业动态':current===2?'新增行业动态':current===3?'详情':''}}</h3>
         </div>
         <div class="dialog_main borderNone">
-          <el-form label-width="80px" v-model="form" :rules="rules" ref="form">
-            <el-form-item label="标题" prop="title">
+          <el-form label-width="80px" :model="form" :rules="rules" ref="form">
+            <el-form-item label="标题" prop="title" required>
               <el-input v-model="form.title" placeholder="请输入标题" :disabled="current===3"></el-input>
             </el-form-item>
-            <el-form-item label="动态内容" prop="content">
+            <el-form-item label="动态内容" prop="content" required>
               <el-input v-model="form.content" type="textarea" :rows="12"
                         placeholder="请输入动态内容" :disabled="current===3"></el-input>
             </el-form-item>
@@ -57,38 +57,30 @@
       </div>
     </lj-dialog>
 
-    <!--删除行业动态-->
-    <lj-dialog :visible="delete_visible" :size="{width: 400 + 'px',height: 250 + 'px'}"
-               @close="delete_visible = false">
-      <div class="dialog_container">
-        <div class="dialog_header">
-          <h3>删除</h3>
-        </div>
-        <div class="dialog_main">
-          <div class="unUse-txt">确定删除这条行业动态吗？</div>
-        </div>
-        <div class="dialog_footer">
-          <el-button type="danger" size="small" @click="delOk">确定</el-button>
-          <el-button type="info" size="small" @click="delete_visible = false;current_id = ''">取消</el-button>
-        </div>
-      </div>
-    </lj-dialog>
   </div>
 </template>
 
 <script>
-  import LjDialog from '../../common/lj-dialog.vue';
-
   export default {
     name: "industryDynamic",
-    components: {
-      LjDialog,
-    },
     data() {
       return {
+
+        rules: {
+          title: [
+            {required: true, message: '请输入标题', trigger: ['blur', 'change']},
+            {min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: 'blur'}
+          ],
+          content: [
+            {required: true, message: '请输入内容', trigger: ['blur', 'change']},
+            {min: 1, max: 100, message: '长度在 1 到 100 个字符', trigger: 'blur'}
+          ],
+        },
+
+        url:globalConfig.leJiaCollege_server,
+
         count: 0,
         visible: false,
-        delete_visible: false,
         is_add: false,
         is_disabled: false,
         is_check: false,
@@ -111,9 +103,6 @@
           title: '',
           content: '',
         },
-        rules: {}
-
-
       }
     },
     mounted() {
@@ -176,15 +165,12 @@
         }
       },
       //删除弹窗
-      del(id, index) {
-        this.delete_visible = true;
-        this.current_id = id;
-      },
-      //确认删除
-      delOk() {
-        this.$http.delete(globalConfig.leJiaCollege_server + '/api/trade/dynamic/' + this.current_id).then(res => {
-          this.callbackSuccess(res);
-          this.delete_visible = false;
+      del(id) {
+        this.$LjConfirm({icon:'delete',content:'确定删除这条行业动态吗？'}).then(()=> {
+          this.current_id = id;
+          this.$http.delete(globalConfig.leJiaCollege_server + '/api/trade/dynamic/' + this.current_id).then(res => {
+            this.callbackSuccess(res);
+          })
         })
       },
       //获取列表
@@ -203,18 +189,22 @@
       },
       //提交表单
       submit(type) {
-        if (type === 1) {//编辑
-          this.$http.put(globalConfig.leJiaCollege_server + '/api/trade/dynamic/' + this.current_id, this.form).then(res => {
-            this.callbackSuccess(res);
-            this.visible = false;
-          })
-        } else if (type === 2) {//新增
-          this.$http.post(globalConfig.leJiaCollege_server + '/api/trade/dynamic', this.form).then(res => {
-            this.callbackSuccess(res);
-            this.visible = false;
-          })
-        }
 
+        this.$refs['form'].validate(valid=> {
+          if(valid) {
+            if (type === 1) {//编辑
+              this.$http.put(globalConfig.leJiaCollege_server + '/api/trade/dynamic/' + this.current_id, this.form).then(res => {
+                this.callbackSuccess(res);
+                this.visible = false;
+              })
+            } else if (type === 2) {//新增
+              this.$http.post(globalConfig.leJiaCollege_server + '/api/trade/dynamic', this.form).then(res => {
+                this.callbackSuccess(res);
+                this.visible = false;
+              })
+            }
+          }
+        });
       },
     }
   }
@@ -247,17 +237,11 @@
                   @include leJiaCollegeImg('theme1', 'btn-red.png');
                 }
               }
-
-
             }
           }
-
-
         }
       }
-
     }
-
   }
 
 
