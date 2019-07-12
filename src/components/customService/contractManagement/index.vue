@@ -807,8 +807,8 @@ export default {
         album: [],
       },
       mark_status: [
-        { id: 1, val: '续租' },
-        { id: 2, val: '退租' },
+        { id: 1, val: '退租' },
+        { id: 2, val: '续租' },
       ],
 
       show_control: '',

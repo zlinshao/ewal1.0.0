@@ -589,7 +589,7 @@ export default {
         is_open: 1,
       };
       if(this.form.id){
-        this.$http.PUT(globalConfig.newMedia_sever + '/api/article/'+this.type+'/'+this.form.id, paramsForm).then(res => {
+        this.$http.put(globalConfig.newMedia_sever + '/api/article/'+this.type+'/'+this.form.id, paramsForm).then(res => {
           if(res.status == 200){
             // this.add_visible = false;
             this.form={
