@@ -49,6 +49,7 @@
   import AwayDialog from "./initiateApprovalDialog/AwayDialog";
   import PurchaseDialog from "./initiateApprovalDialog/PurchaseDialog";
   import GoodsDialog from "./initiateApprovalDialog/GoodsDialog";
+  import SecretRoster from "./initiateApprovalDialog/SecretRoster";
 
   const dialogRequireContext = require.context(
     "./initiateApprovalDialog", // 搜索的文件夹
@@ -66,7 +67,15 @@
 
   const Dialogs = getDialogsFromContext(dialogRequireContext);
 
-  const {DemandDialog, TransferDialog, NoticeDialog, SecondEntry} = Dialogs;
+  const {
+    DemandDialog,
+    TransferDialog,
+    NoticeDialog,
+    SecondEntry,
+    SpecialPersonnel,
+    CarLoan,
+    UseChapter
+  } = Dialogs;
 
   export default {
     name: "initiateApproval",
@@ -137,16 +146,24 @@
                 component: SecondEntry,
                 props: {}
               },
-              // {
-              //   itemIndex: 8,
-              //   itemTitle: '花名册使用审批',
-              //   icon: 'hmc'
-              // },
-              // {
-              //   itemIndex: 9,
-              //   itemTitle: '绝密花名册使用审批',
-              //   icon: 'jmhmc'
-              // },
+              {
+                itemIndex: 8,
+                itemTitle: '花名册使用审批',
+                icon: 'hmc',
+                component: SecretRoster,
+                props: {
+                  type: 'roster'
+                }
+              },
+              {
+                itemIndex: 9,
+                itemTitle: '绝密花名册使用审批',
+                icon: 'jmhmc',
+                component: SecretRoster,
+                props: {
+                  type: 'secret_roster'
+                }
+              },
               // {
               //   itemIndex: 10,
               //   itemTitle: '个人信息修改审批',
@@ -158,16 +175,20 @@
             index: 2,
             module: '人事专用',
             Item: [
-              // {
-              //   itemIndex: 1,
-              //   itemTitle: '人事专用',
-              //   icon: 'rszy'
-              // },
-              // {
-              //   itemIndex: 2,
-              //   itemTitle: '还车贷专用申请',
-              //   icon: 'hcdsp'
-              // },
+              {
+                itemIndex: 1,
+                itemTitle: '人事专用',
+                icon: 'rszy',
+                component: SpecialPersonnel,
+                props: {}
+              },
+              {
+                itemIndex: 2,
+                itemTitle: '还车贷专用申请',
+                icon: 'hcdsp',
+                component: CarLoan,
+                props: {}
+              },
               {
                 itemIndex: 3,
                 itemTitle: '薪资调整申请',
@@ -194,11 +215,13 @@
             index: 4,
             module: '行政',
             Item: [
-              // {
-              //   itemIndex: 1,
-              //   itemTitle: '用章申请',
-              //   icon: 'yzsq'
-              // },
+              {
+                itemIndex: 1,
+                itemTitle: '用章申请',
+                icon: 'yzsq',
+                component: UseChapter,
+                props: {}
+              },
               {
                 itemIndex: 2,
                 itemTitle: '采购申请',
