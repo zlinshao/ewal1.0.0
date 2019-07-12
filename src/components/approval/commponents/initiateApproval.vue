@@ -74,7 +74,8 @@
     SecondEntry,
     SpecialPersonnel,
     CarLoan,
-    UseChapter
+    UseChapter,
+    WorkInstructions
   } = Dialogs;
 
   export default {
@@ -266,17 +267,19 @@
               }
             ]
           },
-          // {
-          //   index: 5,
-          //   module: '其他',
-          //   Item: [
-          //     {
-          //       itemIndex: 1,
-          //       itemTitle: '工作指示',
-          //       icon: 'gzqs'
-          //     }
-          //   ]
-          // }
+          {
+            index: 5,
+            module: '其他',
+            Item: [
+              {
+                itemIndex: 1,
+                itemTitle: '工作指示',
+                icon: 'gzqs',
+                component: WorkInstructions,
+                props: {}
+              }
+            ]
+          }
         ],
         // 个人信息
         user_info_all: null,
