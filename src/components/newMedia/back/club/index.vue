@@ -272,17 +272,17 @@ export default {
       this.getDataLists();
     },
     callbackSuccess (res) {//回调
-      if (res.status === 200) {
+      if (res.status === 200 && res.message==='success') {
         this.$LjNotify('success', {
           title: '成功',
-          message: res.msg,
+          message: '操作成功',
           subMessage: '',
         });
         this.getDataLists();
       } else {
         this.$LjNotify('error', {
           title: '失败',
-          message: res.msg,
+          message: res.message,
           subMessage: '',
         });
       }
