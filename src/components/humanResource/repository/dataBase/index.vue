@@ -380,23 +380,20 @@
         <el-table
           highlight-current-row
           header-row-class-name="tableHeader"
-          style="width: 100%"
+          :data="bottomTable"
+          :border="true"
           v-if="contractNumberEditChoosed === 0"
-          :data="contractManageListTotal"
+          @row-dblclick="numberManageTotal_fun"
         >
-          <el-table-column label="城市" align="center" prop="city">
-            <template slot-scope="scope">
-              <div @click="numberManageTotal_visible = true">{{scope.row.city}}</div>
-            </template>
-          </el-table-column>
-          <el-table-column label="合同总数(收)" align="center"></el-table-column>
+          <el-table-column label="城市" align="center" prop="city_name"></el-table-column>
+          <el-table-column label="合同总数(收)" align="center" prop="collect_sum"></el-table-column>
           <el-table-column label="电子" align="center"></el-table-column>
           <el-table-column label="纸质" align="center"></el-table-column>
-          <el-table-column label="合同总数(租)" align="center"></el-table-column>
+          <el-table-column label="合同总数(租)" align="center" prop="rent_sum"></el-table-column>
           <el-table-column label="电子" align="center"></el-table-column>
           <el-table-column label="纸质" align="center"></el-table-column>
-          <el-table-column label="剩余合同数(收)" align="center"></el-table-column>
-          <el-table-column label="剩余合同数(租)" align="center"></el-table-column>
+          <el-table-column label="剩余合同数(收)" align="center" prop="collect_remain"></el-table-column>
+          <el-table-column label="剩余缴合同数(租)" align="center" prop="rent_remain"></el-table-column>
         </el-table>
         <!-- 总合同领取上限 -->
         <el-table
@@ -404,12 +401,13 @@
           header-row-class-name="tableHeader"
           style="width: 100%"
           v-if="contractNumberEditChoosed === 1"
+          :data="htlqsxList"
         >
-          <el-table-column label="操作对象" align="center"></el-table-column>
-          <el-table-column label="部门" align="center"></el-table-column>
-          <el-table-column label="领取上限(收/租)" align="center"></el-table-column>
-          <el-table-column label="操作人" align="center"></el-table-column>
-          <el-table-column label="操作时间" align="center"></el-table-column>
+          <el-table-column prop="simple_staff.real_name" label="操作对象" align="center"></el-table-column>
+          <el-table-column prop="name" label="部门" align="center"></el-table-column>
+          <el-table-column prop="max_count" label="领取上限(收/租)" align="center"></el-table-column>
+          <el-table-column prop="operator.real_name" label="操作人" align="center"></el-table-column>
+          <el-table-column prop="operate_time" label="操作时间" align="center"></el-table-column>
         </el-table>
       </div>
 
@@ -1966,7 +1964,7 @@
       </div>-->
     </lj-dialog>
 
-    <!-- 编号管理合同总数 -->
+    <!-- 合同编号管理/详情 -->
     <lj-dialog
       :visible="numberManageTotal_visible"
       :size="{width: 1700 + 'px',height: 900 + 'px'}"
@@ -1982,11 +1980,11 @@
             <div class="items-center listTopLeft">
               <div class="city">
                 城市
-                <span>南京市</span>
+                <span>{{numberManageDialogTable.length>0?numberManageDialogTable[0].city_name:" "}}</span>
               </div>
             </div>
             <div class="items-center listTopRight">
-              <div class="icons add" @click="numberManageAddF_visible = true">
+              <div class="icons add" @click="numberManageAddF_visible=true">
                 <b>+</b>
               </div>
             </div>
@@ -1998,34 +1996,36 @@
             height="570px"
             :data="numberManageDialogTable"
           >
-            <el-table-column label="入库时间" align="center"></el-table-column>
-            <el-table-column label="数量(收)" align="center"></el-table-column>
-            <el-table-column label="数量(租)" align="center"></el-table-column>
-            <el-table-column label="操作人" align="center" prop="name"></el-table-column>
-            <el-table-column label="现剩余(收)" align="center"></el-table-column>
-            <el-table-column label="现剩余(租)" align="center"></el-table-column>
+            <el-table-column prop="created_at" label="入库时间" align="center"></el-table-column>
+            <el-table-column prop="collect_amount" label="数量(收)" align="center"></el-table-column>
+            <el-table-column prop="rent_amount" label="数量(租)" align="center"></el-table-column>
+            <el-table-column prop="operator.real_name" label="操作人" align="center"></el-table-column>
+            <el-table-column prop="collect_remain" label="现剩余(收)" align="center"></el-table-column>
+            <el-table-column prop="rent_remain" label="现剩余(租)" align="center"></el-table-column>
             <el-table-column label="操作" align="center">
               <template slot-scope="scope">
                 <el-button
                   class="contractNumberButton"
-                  @click="numberManageModify_visible=true"
+                  @click="openNumberManageModify(scope.row)"
                   type="primary"
                   plain
+                  v-if="scope.$index==0"
                 >修改</el-button>
               </template>
             </el-table-column>
           </el-table>
           <div class="page flex-center common-page">
             <el-pagination
-              :current-page="1"
-              :page-size="6"
-              :total="20"
+              :current-page="pages_ht_zong.page"
+              :page-size="pages_ht_zong.limit"
+              :total="pages_ht_zong.total"
               layout="total,jumper,prev,pager,next"
+              @current-change="changePages_ht_zong"
             ></el-pagination>
           </div>
           <div class="dialog_footer">
-            <el-button type="danger" size="small">确定</el-button>
-            <el-button type="info" size="small">取消</el-button>
+            <el-button type="danger" size="small" @click="numberManageTotal_visible=false">确定</el-button>
+            <el-button type="info" size="small" @click="numberManageTotal_visible=false">取消</el-button>
           </div>
         </div>
       </div>
@@ -2041,7 +2041,7 @@
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>新增</h3>
-          <h4>操作人：当前登录人 操作时间：当前日期</h4>
+          <h4>操作人：{{numberManageAdd_form.operate_name.name}} 操作时间：{{numberManageAdd_form.operate_time}}</h4>
         </div>
         <div class="dialog_main">
           <div class="left">
@@ -2051,11 +2051,20 @@
               <h3>数量(租)</h3>
             </div>
             <div class="value">
-              <el-select placeholder="请选择">
-                <el-option></el-option>
+              <el-select
+                placeholder="请选择"
+                v-model="numberManageAdd_form.city_code"
+                @change="remainder_ht"
+              >
+                <el-option
+                  v-for="(city,index) in cityList"
+                  :key="index"
+                  :label="city.dictionary_name"
+                  :value="city.variable.city_code"
+                ></el-option>
               </el-select>
-              <el-input placeholder="请输入"></el-input>
-              <el-input placeholder="请输入"></el-input>
+              <el-input placeholder="请输入" v-model="numberManageAdd_form.collect_amount"></el-input>
+              <el-input placeholder="请输入" v-model="numberManageAdd_form.rent_amount"></el-input>
             </div>
           </div>
           <div class="right">
@@ -2064,14 +2073,14 @@
               <h3>现剩余：</h3>
             </div>
             <div class="value">
-              <h3>10</h3>
-              <h3>10</h3>
+              <h3>{{numberManageAdd_form.collect_remain}}</h3>
+              <h3>{{numberManageAdd_form.rent_remain}}</h3>
             </div>
           </div>
         </div>
         <div class="dialog_footer">
-          <el-button type="danger" size="small">确定</el-button>
-          <el-button type="info" size="small">取消</el-button>
+          <el-button type="danger" size="small" @click="numberManageAddF_fun">确定</el-button>
+          <el-button type="info" size="small" @click="numberManageAddF_visible=false">取消</el-button>
         </div>
       </div>
     </lj-dialog>
@@ -2085,8 +2094,8 @@
     >
       <div class="dialog_container">
         <div class="dialog_header">
-          <h3>新增</h3>
-          <h4>操作人：当前登录人 操作时间：当前日期</h4>
+          <h3>修改</h3>
+          <h4>操作人：{{numberManageMerge_form.operate_name.name}} 操作时间：{{numberManageMerge_form.operate_time}}</h4>
         </div>
         <div class="dialog_main">
           <div class="left">
@@ -2096,11 +2105,16 @@
               <h3>数量(租)</h3>
             </div>
             <div class="value">
-              <el-select placeholder="请选择">
-                <el-option></el-option>
+              <el-select placeholder="请选择" v-model="numberManageMerge_form.city_code" disabled>
+                <!-- <el-option
+                  v-for="(city,index) in cityList"
+                  :key="index"
+                  :label="city.dictionary_name"
+                  :value="city.variable.city_code"
+                ></el-option>-->
               </el-select>
-              <el-input placeholder="请输入"></el-input>
-              <el-input placeholder="请输入"></el-input>
+              <el-input placeholder="请输入" v-model="numberManageMerge_form.collect_amount"></el-input>
+              <el-input placeholder="请输入" v-model="numberManageMerge_form.rent_amount"></el-input>
             </div>
           </div>
           <div class="right">
@@ -2109,14 +2123,14 @@
               <h3>现剩余：</h3>
             </div>
             <div class="value">
-              <h3>10</h3>
-              <h3>10</h3>
+              <h3>{{numberManageMerge_form.collect_remain}}</h3>
+              <h3>{{numberManageMerge_form.rent_remain}}</h3>
             </div>
           </div>
         </div>
         <div class="dialog_footer">
-          <el-button type="danger" size="small">确定</el-button>
-          <el-button type="info" size="small">取消</el-button>
+          <el-button type="danger" size="small" @click="numberManageMergeF_fun">确定</el-button>
+          <el-button type="info" size="small" @click="numberManageModify_visible=false">取消</el-button>
         </div>
       </div>
     </lj-dialog>
@@ -2182,6 +2196,7 @@
           layout="total,jumper,prev,pager,next"
           :current-page="searchPages.page"
           :page-size="searchPages.limit"
+          @current-change="changePages_search"
         ></el-pagination>
       </div>
     </footer>
@@ -2287,6 +2302,12 @@ export default {
         page: 1,
         total: 0
       },
+      // 合同编号管理/总合同数详情的分页
+      pages_ht_zong: {
+        limit: 10,
+        page: 1,
+        total: 0
+      },
       // 是否是高级搜索
       isHighSearch: false,
       // 汇总页是否是高级搜索
@@ -2365,8 +2386,9 @@ export default {
         //   department: 454
         // }
       ],
-      contractManageListTotal: [{ city: "南京" }],
-      numberManageDialogTable: [{ name: "张三" }],
+      // contractManageListTotal: [{ city: "南京" }],
+      // 合同编号管理的详情
+      numberManageDialogTable: [],
       //合同汇总列表上部分
       contractCollectList: [],
       //合同汇总列表底部
@@ -2399,7 +2421,31 @@ export default {
         }
       ],
       // 创建任务的收房合同上缴循环数据
-      sf_create: []
+      sf_create: [],
+      numberManageAdd_form: {
+        city_code: "",
+        operate_name: this.$storage.get("user_info"),
+        operate_time: this.getDate(),
+        collect_remain: "", //收的现剩余
+        rent_remain: "", //租的现剩余
+        collect_amount: "", //数量收
+        rent_amount: "" //数量租
+      },
+      numberManageMerge_form: {
+        city_code: "",
+        operate_name: this.$storage.get("user_info"),
+        operate_time: this.getDate(),
+        collect_remain: "", //收的现剩余
+        rent_remain: "", //租的现剩余
+        collect_amount: "", //数量收
+        rent_amount: "", //数量租
+        id: ""
+      },
+      numberManageTotalListRowData: {}, //合同编号管理总合同数的row数据
+      // 合同领取上限的列表
+      htlqsxList: [],
+      // 合同领取上限的搜索数据
+      searchData_htlqsx:{}
     };
   },
   mounted() {
@@ -2423,40 +2469,58 @@ export default {
           this.getContractList();
           break;
         case 2:
+          this.contractNumberChoosed = 0;
           // 合同编号
           this.getContractCollectList();
           this.getBottomTable();
           break;
         case 3:
           // 合同编号管理
+          this.contractNumberEditChoosed = 0;
+          this.getBottomTable();
           break;
       }
     },
     //合同编号菜单切换
     chooseContartType(index) {
       this.contractNumberChoosed = index;
+      this.resetAllPages();
       switch (index) {
         case 0:
+          // 汇总
           this.getContractCollectList();
           this.getBottomTable();
           break;
         case 1:
+          // 领取
           this.getContractReceiveList();
           break;
         case 2:
+          // 作废
           this.getContractCancelList();
           break;
         case 3:
+          // 上缴
           this.getContractHandinList();
           break;
         case 4:
+          // 丢失
           this.getContractLoseList();
           break;
       }
     },
-    //合同编号菜单切换管理
+    //合同编号管理菜单切换
     chooseContartEditType(index) {
       this.contractNumberEditChoosed = index;
+      this.resetAllPages();
+      switch (index) {
+        case 0:
+          this.getBottomTable();
+          break;
+        case 1:
+          this.getHtlqsxList();
+          break;
+      }
     },
     //点击添加按钮处理函数
     add() {
@@ -2509,6 +2573,7 @@ export default {
           for (let i = 0; i < res.data.city.length; i++) {
             this.cityList.push(res.data.city[i]);
           }
+          console.log("城市列表", this.cityList);
         }
       });
     },
@@ -2567,6 +2632,7 @@ export default {
       this.$http.get(`${this.url}eam/category`).then(res => {
         if (res.code == "20000") {
           for (let i = 0; i < res.data.data.length; i++) {
+            // type==5是合同的供应商
             if (res.data.data[i].type == 5) {
               let obj = {
                 id: res.data.data[i].id,
@@ -2677,7 +2743,7 @@ export default {
           for (let i = 0; i < res.data.data.length; i++) {
             this.contractCollectList.push(res.data.data[i]);
           }
-        } 
+        }
         // 如果没数据，初始化分页
         else {
           this.commonPages_huizong.total = 0;
@@ -2706,49 +2772,47 @@ export default {
         }
       });
     },
-    //获取合同编号领取
+    //获取合同编号领取列表
     getContractReceiveList() {
       this.contractReceiveList = [];
-      this.$http.get(`${this.url}contract/apply`, this.params).then(res => {
+      let data = this.commonPages;
+      this.$http.get(`${this.url}contract/apply`, data).then(res => {
         if (res.code === "20000") {
-          for (let i = 0; i < res.data.data.length; i++) {
-            this.contractReceiveList.push(res.data.data[i]);
-          }
+          this.contractReceiveList = res.data.data;
+          this.commonPages.total = res.data.count;
         }
       });
     },
-    //获取合同编号作废
+    //获取合同编号作废列表
     getContractCancelList() {
       this.contractCancelList = [];
-      this.$http
-        .get(`${this.url}contract/invalidate`, this.params)
-        .then(res => {
-          if (res.code === "20000") {
-            for (let i = 0; i < res.data.data.length; i++) {
-              this.contractCancelList.push(res.data.data[i]);
-            }
-          }
-        });
-    },
-    //获取合同编号上缴
-    getContractHandinList() {
-      this.contractHandinList = [];
-      this.$http.get(`${this.url}contract/handin`, this.params).then(res => {
+      let data = this.commonPages;
+      this.$http.get(`${this.url}contract/invalidate`, data).then(res => {
         if (res.code === "20000") {
-          for (let i = 0; i < res.data.data.length; i++) {
-            this.contractHandinList.push(res.data.data[i]);
-          }
+          this.contractCancelList = res.data.data;
+          this.commonPages.total = res.data.count;
         }
       });
     },
-    //获取合同编号丢失
+    //获取合同编号上缴列表
+    getContractHandinList() {
+      this.contractHandinList = [];
+      let data = this.commonPages;
+      this.$http.get(`${this.url}contract/handin`, data).then(res => {
+        if (res.code === "20000") {
+          this.contractHandinList = res.data.data;
+          this.commonPages.total = res.data.count;
+        }
+      });
+    },
+    //获取合同编号丢失列表
     getContractLoseList() {
       this.contractLoseList = [];
-      this.$http.get(`${this.url}contract/loss`, this.params).then(res => {
+      let data = this.commonPages;
+      this.$http.get(`${this.url}contract/loss`, data).then(res => {
         if (res.code === "20000") {
-          for (let i = 0; i < res.data.data.length; i++) {
-            this.contractLoseList.push(res.data.data[i]);
-          }
+          this.contractLoseList = res.data.data;
+          this.commonPages.total = res.data.count;
         }
       });
     },
@@ -3012,15 +3076,75 @@ export default {
         }
       }
     },
-    closeSearchContractNumberEdit() {
+    closeSearchContractNumberEdit(val) {
       this.searchContractNumberEdit_visiable = false;
+      if (typeof val === "object") {
+        let searchData = JSON.parse(JSON.stringify(val));
+        // 如果筛选了部门
+        // if ("department_id" in searchData) {
+        //   searchData.department_id = searchData.department_id[0];
+        // }
+        // 如果筛选了人员
+        if ("follow_id" in searchData) {
+          searchData.follow_id = searchData.follow_id[0];
+        }
+        this.searchData_htlqsx = searchData;
+        if (Object.keys(searchData).length > 0) {
+          // 有数据就执行高级搜索
+          this.isHighSearch = true;
+          this.getHtlqsxList(searchData);
+        } else {
+          this.isHighSearch = false;
+          this.getHtlqsxList();
+        }
+      }
     },
     // 普通分页事件
     changePages_common(val) {
+      this.commonPages.page = val;
+      if (this.activeIndex === 0) {
+        // 片区异动交接单分页
+        this.getContractList();
+        return;
+      }
       if (this.activeIndex === 1) {
-        this.commonPages.page = val;
         // 采购合同的分页
         this.getContractList();
+        return;
+      }
+      if (this.activeIndex === 2 && this.contractNumberChoosed === 1) {
+        // 合同编号的领取
+        this.getContractReceiveList();
+        return;
+      }
+      if (this.activeIndex === 2 && this.contractNumberChoosed === 2) {
+        // 合同编号的作废
+        this.getContractCancelList();
+        return;
+      }
+      if (this.activeIndex === 2 && this.contractNumberChoosed === 3) {
+        // 合同编号的上缴
+        this.getContractHandinList();
+        return;
+      }
+      if (this.activeIndex === 2 && this.contractNumberChoosed === 4) {
+        // 合同编号的丢失
+        this.getContractLoseList();
+        return;
+      }
+      if (this.activeIndex === 3 && this.contractNumberEditChoosed === 1) {
+        // 总合同领取上限
+        this.getHtlqsxList();
+        return;
+      }
+    },
+    // 搜索分页事件
+    changePages_search(val) {
+      this.searchPages.page = val;
+      if (this.activeIndex === 3 && this.contractNumberEditChoosed === 1) {
+        // 总合同领取上限
+        this.getHtlqsxList(this.searchData_htlqsx);
+        return;
       }
     },
     // 汇总的普通分页事件
@@ -3032,6 +3156,11 @@ export default {
     changePages_huizong_search(val) {
       this.searchPages_huizong.page = val;
       this.getContractCollectList(this.searchData_huizong);
+    },
+    // 合同总数详情的分页事件
+    changePages_ht_zong(val) {
+      this.pages_ht_zong.page = val;
+      this.numberManageTotal_fun();
     },
     // 删除租房合同编号（自选）事件
     reduceRent_extra(index) {
@@ -3066,17 +3195,192 @@ export default {
         total: 0
       };
       // 汇总非搜索分页
-      (this.commonPages_huizong = {
+      this.commonPages_huizong = {
         limit: 10,
         page: 1,
         total: 0
-      }),
-        // 汇总搜索分页
-        (this.searchPages_huizong = {
-          limit: 10,
-          page: 1,
-          total: 0
+      };
+      // 汇总搜索分页
+      this.searchPages_huizong = {
+        limit: 10,
+        page: 1,
+        total: 0
+      };
+    },
+    // 合同编号管理/合同总数详情
+    numberManageTotal_fun(row) {
+      this.numberManageTotal_visible = true;
+      this.numberManageTotalListRowData = row;
+      this.getNumberManageTotalList();
+    },
+    // 获取合同总数详情列表
+    getNumberManageTotalList() {
+      this.numberManageDialogTable = [];
+      this.$http
+        .get(
+          `${this.url}contract/reserve/detail/${this.numberManageTotalListRowData.city_code}`,
+          this.pages_ht_zong
+        )
+        .then(res => {
+          if (res.code === "20000") {
+            for (let i = 0; i < res.data.data.length; i++) {
+              let obj = res.data.data[i];
+              for (let j = 0; j < this.cityList.length; j++) {
+                if (obj.city_code == this.cityList[j].variable.city_code) {
+                  obj.city_name = this.cityList[j].dictionary_name;
+                }
+              }
+              this.numberManageDialogTable.push(obj);
+            }
+            // console.log(this.numberManageDialogTable)
+            this.pages_ht_zong.total = res.data.count;
+          }
         });
+    },
+    // 合同编号管理/合同总数详情/新增
+    numberManageAddF_fun() {
+      if (this.numberManageAdd_form.collect_amount == "") {
+        this.$LjNotify("error", {
+          title: "失败",
+          message: "请输入数量（收）"
+        });
+        return;
+      }
+      if (this.numberManageAdd_form.rent_amount == "") {
+        this.$LjNotify("error", {
+          title: "失败",
+          message: "请输入数量（租）"
+        });
+        return;
+      }
+      this.$http
+        .post(`${this.url}contract/reserve`, this.numberManageAdd_form)
+        .then(res => {
+          if (res.code === "20010") {
+            if (res.data) {
+              this.$LjNotify("success", {
+                title: "成功",
+                message: "新增成功"
+              });
+              this.numberManageAddF_visible = false;
+              this.numberManageAdd_form.city_code = "";
+              this.numberManageAdd_form.collect_remain = "";
+              this.numberManageAdd_form.rent_remain = "";
+              this.numberManageAdd_form.rent_amount = "";
+              this.getNumberManageTotalList();
+            }
+          }
+        });
+    },
+    // 合同编号管理/合同总数详情/修改
+    numberManageMergeF_fun() {
+      if (this.numberManageMerge_form.collect_amount == "") {
+        this.$LjNotify("error", {
+          title: "失败",
+          message: "请输入数量（收）"
+        });
+        return;
+      }
+      if (this.numberManageMerge_form.rent_amount == "") {
+        this.$LjNotify("error", {
+          title: "失败",
+          message: "请输入数量（租）"
+        });
+        return;
+      }
+      this.$http
+        .put(`${this.url}contract/reserve/${this.numberManageMerge_form.id}`, {
+          collect_amount: this.numberManageMerge_form.collect_amount,
+          rent_amount: this.numberManageMerge_form.rent_amount
+        })
+        .then(res => {
+          if (res.code === "20030") {
+            if (res.data) {
+              this.$LjNotify("success", {
+                title: "成功",
+                message: "修改成功"
+              });
+              this.numberManageModify_visible = false;
+              this.numberManageMerge_form.city_code = "";
+              this.numberManageMerge_form.collect_remain = "";
+              this.numberManageMerge_form.rent_remain = "";
+              this.numberManageMerge_form.collect_amount = "";
+              this.numberManageMerge_form.rent_amount = "";
+              this.numberManageMerge_form.id = "";
+              this.getNumberManageTotalList();
+            }
+          }
+        });
+    },
+    // 获取城市总合同数的现在剩余合同书
+    remainder_ht() {
+      this.$http
+        .get(
+          `${this.url}contract/reserve/remain/${this.numberManageAdd_form.city_code}`
+        )
+        .then(res => {
+          if (res.code === "20000") {
+            this.numberManageAdd_form.collect_remain = res.data.collect_remain;
+            this.numberManageAdd_form.rent_remain = res.data.rent_remain;
+          }
+        });
+    },
+    // 合同总数的修改
+    openNumberManageModify(row) {
+      this.numberManageModify_visible = true;
+      this.numberManageMerge_form.city_code = row.city_code;
+      this.numberManageMerge_form.collect_amount = row.collect_amount;
+      this.numberManageMerge_form.rent_amount = row.rent_amount;
+      this.numberManageMerge_form.collect_remain = row.collect_remain;
+      this.numberManageMerge_form.rent_remain = row.rent_remain;
+      this.numberManageMerge_form.id = row.id;
+    },
+    // 获取当前日期
+    getDate() {
+      let date = new Date();
+      let y = date.getFullYear();
+      let m = date.getMonth() + 1;
+      m < 10 ? (m = "0" + m) : (m = m);
+      let d = date.getDate();
+      d < 10 ? (d = "0" + d) : (d = d);
+      return y.toString() + "-" + m.toString() + "-" + d.toString();
+    },
+    // 获取总合同领取上线的列表
+    getHtlqsxList(searchData) {
+      this.htlqsxList = [];
+      let data;
+      switch (arguments.length) {
+        // 非高级搜索
+        case 0:
+          data = this.commonPages;
+          break;
+        // 高级搜索
+        case 1:
+          data = Object.assign({}, this.searchPages, searchData);
+          break;
+      }
+      // console.log(data);
+      this.$http.get(`${this.url}contract/policy`, data).then(res => {
+        if (res.code === "20000") {
+          console.log(res.data);
+          switch (arguments.length) {
+            case 0:
+              this.commonPages.total = res.data.count;
+              break;
+            case 1:
+              this.searchPages.total = res.data.count;
+              break;
+          }
+          this.htlqsxList = res.data.data;
+        }
+        // 如果没数据，初始化分页
+        // else {
+        //   this.commonPages.total = 0;
+        //   this.commonPages.page = 1;
+        //   this.searchPages.total = 0;
+        //   this.searchPages.page = 1;
+        // }
+      });
     }
   }
 };
