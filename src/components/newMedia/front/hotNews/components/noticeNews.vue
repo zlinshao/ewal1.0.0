@@ -158,13 +158,12 @@
             this.getDataLists();
         },
         mounted() {
-            // console.log(this.chooseTab);
             // 用来监听滚轮
             window.addEventListener("scroll", this.handleScroll);
         },
         methods: {
             getDataLists() {// 请求接口方法
-                this.$http.get(globalConfig.newMedia_sever + '/api/article/announcement').then(res => {
+                this.$http.get(globalConfig.newMedia_sever + '/api/article/announcement',{is_open:1}).then(res => {
                     if(res.status===200){
                         this.newsData = res.data.data;
                         this.sort(0);// 分配数据到指定管道
@@ -176,7 +175,7 @@
             },
 
             chooseTabAlert(val){
-                console.log('333333333333',val)
+                console.log(val)
             },
 
 
