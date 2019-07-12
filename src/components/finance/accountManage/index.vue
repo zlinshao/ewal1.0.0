@@ -168,7 +168,7 @@
             </el-form-item>
             <el-form-item v-if="add_account.cate === 1" label="银行">
               <el-select class="all_width" v-model="add_account.bank" placeholder="请选择">
-                <el-option v-for="(item,key) in banks" :value="item" :key="key"
+                <el-option v-for="(item,key) in banks" :value="key" :key="key"
                            :label="item"></el-option>
               </el-select>
             </el-form-item>
@@ -514,6 +514,10 @@
       },
       handleUpdateAccount() {
         this.$http.put(globalConfig.temporary_server + `account/${this.current_row.id}`, this.add_account).then(res => {
+          if (res.code === 200) {
+            this.is_table_choose = '';
+            this.action_visible = false;
+          }
           this.callbackSuccess(res, () => {
             this.handleCancelAdd();
           });
