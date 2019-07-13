@@ -219,6 +219,7 @@
   #theme_name {
     height: 100%;
     padding-top: 81px;
+
     > div {
       &:before {
         content: '';
@@ -226,7 +227,9 @@
       }
     }
   }
-
+  #theme_name.headerOpacity{
+    padding-top: 0;
+  }
   #moduleList {
     position: fixed;
     top: 80px;
@@ -399,6 +402,10 @@
   header {
     background-color: $colorFFF;
     border-bottom: $color2F2;
+  }
+
+  .headerOpacity {
+    background-color: transparent;
   }
   select {
     color: $colorFFF;
