@@ -118,10 +118,6 @@
 
       bigger() {
         this.orgChart.bigger();
-        /*        let result = this.data;
-                let strResult = JSON.stringify(result);
-                debugger
-                console.log(JSON.stringify(result));*/
       },
       smaller() {
         this.orgChart.smaller()

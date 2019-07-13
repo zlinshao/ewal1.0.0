@@ -412,6 +412,7 @@
         this.$http.put(`${this.url}api/position/level/${id}`,params).then(res=> {
           this.$LjNotifyEasy(res,()=> {
             this.edit_visible = false;
+            this.getDataList();
           });
         });
       },
