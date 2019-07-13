@@ -135,7 +135,6 @@
   import echarts from 'echarts';
   import './officeComponent/js/marketing.js';       //引入js
   import './officeComponent/js/finance.js';       //引入js
-  import './officeComponent/js/home.js';       //引入js
 
   export default {
     components: {ClockTime, TabsRouter,TotalNum,Earth},

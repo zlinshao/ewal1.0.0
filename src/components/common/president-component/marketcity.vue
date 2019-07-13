@@ -4,13 +4,13 @@
       <!--中间最上面的大圆      -->
       <span class="outcircle first_circle" :style="{width:selectObj.r*2+'px',height:selectObj.r*2+'px',bottom:(selectObj.y-selectObj.r)+'px',left:(selectObj.x-selectObj.r)+'px'}">
         <span class="innerCircle first_circle_inner ">
-          <span class="first_circle_info">{{selectObj.name ||'--'}}</span>
+          <span class="nameCircle first_circle_info">{{selectObj.name ||'--'}}</span>
         </span>
        </span>
       <!--小圆的集合-->
       <span class="outcircle new_Circle" :style="{width:item.r*2+'px',height:item.r*2+'px',bottom:(item.y-item.r)+'px',left:(item.x-item.r)+'px'}" v-for="(item,index) in newCityList" @click="chooseCityClick(item,index)">
         <span class="innerCircle new_circle_inner">
-          <span class="new_circle_info">{{item.name || '--'}}</span>
+          <span class="nameCircle new_circle_info">{{item.name || '--'}}</span>
         </span>
        </span>
     </div>
@@ -187,6 +187,8 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        padding: 10px;
+        animation:circleBgRoate 16s infinite linear ;
         .innerCircle{
           width: 100%;
           height: 100%;
@@ -195,40 +197,37 @@
           align-items: center;
           justify-content: center;
           padding: 0 20px;
+          animation:circleInnerRoate 8s infinite linear ;
+          .nameCircle{
+            display: block;
+            animation:circleRouterName 16s infinite linear ;
+          }
         }
       }
       //除最大圆以外的圆
       .new_Circle{
-        background: url("../../../assets/image/president/marketing/chengshi_0.png") no-repeat;
+        background: url("../../../assets/image/president/marketing/y_other_2.png") no-repeat;
         background-size: 100% 100%;
-        animation:circleBgRoate 8s infinite linear ;
         .new_circle_inner{
-          background: url("../../../assets/image/president/marketing/chengshi_0.png") no-repeat;
+          background: url("../../../assets/image/president/marketing/y_other_1.png") no-repeat;
           background-size: 100% 100%;
-          animation:circleInnerRoate 4s infinite linear ;
           .new_circle_info{
-            display: block;
             font-size:16px;
             color: #FFFFFF;
-            animation:circleRouterName 8s infinite linear ;
           }
         }
       }
       //最大圆的样式
       .first_circle{
-        background: url("../../../assets/image/president/marketing/chengshi_1.png") no-repeat;
+        background: url("../../../assets/image/president/marketing/y_max_2.png") no-repeat;
         background-size: 100% 100%;
-        animation:circleBgRoate 8s infinite linear ;
         .first_circle_inner{
-          background: url("../../../assets/image/president/marketing/chengshi_1.png") no-repeat;
+          background: url("../../../assets/image/president/marketing/y_max_1.png") no-repeat;
           background-size: 100% 100%;
-          animation:circleInnerRoate 4s infinite linear ;
           .first_circle_info{
-            display: block;
             font-size:28px ;
             font-weight: bold;
             color:#00FFFF;
-            animation:circleRouterName 8s infinite linear ;
           }
         }
       }

@@ -2,15 +2,16 @@
   <div id="choosecityComponent">
     <div id="choosecity">
       <div class="outCircle" :style="outCircleStyle">
-        <div class="centerCircle" :style="centerCircleStyle" >{{cityName}}</div>
+        <div class="centerCircle" :style="centerCircleStyle" >
+          <span>{{cityName}}</span>
+        </div>
         <div class="innerCircle"
              v-for="(item,index) in outerCityList"
              :style="[{ top: (Math.sin(angle*(index+1)) * r +x0)+'px',left:(Math.cos(angle*(index+1)) * r +x0)+'px'},innerCircleStyle]"
              @click="chooseCityClick(item,index)"
         >
-          {{item}}
+          <span>{{item}}</span>
         </div>
-
       </div>
     </div>
   </div>
@@ -67,7 +68,6 @@
         this.$emit('selectedCity',this.cityName);
       },
 
-
       //计算外圆的宽高,小圆的所在位置
       dealWithStyle(){
         //获取最外层容器的高度,作为外圆的宽高
@@ -96,15 +96,12 @@
           height:this.r + 'px',
           top:this.r/2 + 'px',
           left:this.r/2 + 'px',
-          lineHeight:this.r+ 'px'
         };
         this.innerCircleStyle = {  //外围小圆样式
           width:imgWidth+'px',
           height:imgWidth+'px',
-          lineHeight:imgWidth+ 'px',
         }
       },
-
 
     }
 
@@ -127,12 +124,20 @@
       .outCircle{
         border-radius: 50%;
         position: relative;
+
       }
       .centerCircle, .innerCircle{
         position: absolute;
         border-radius: 50%;
         color: #20296A;
         text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        span{
+          display: block;
+        }
       }
       .innerCircle{
         background: url('../../../assets/image/president/finance/chengshi_0.png') no-repeat;
@@ -142,7 +147,22 @@
         background: url('../../../assets/image/president/finance/chengshi_1.png') no-repeat;
         background-size: cover;
         font-size: 28px;
+        font-weight: bold;
       }
+
+      @keyframes circleOutRoate{
+        from{transform: rotate(0deg);}
+        to{transform: rotate(360deg);}
+      }
+      @keyframes circleInnerRoate{
+        from{transform: rotate(0deg);}
+        to{transform: rotate(-360deg);}
+      }
+      @keyframes circleCenterName{
+        from{transform: rotate(0deg);}
+        to{transform: rotate(360deg);}
+      }
+
   }
 
 
