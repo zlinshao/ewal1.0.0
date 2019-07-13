@@ -60,7 +60,11 @@
 
                   <el-form-item prop="change_date" label="离职日期">
                     <div class="items-center iconInput" style="width: 220px">
-                      <el-date-picker v-model="leave_form.change_date" type="date" placeholder="必填"></el-date-picker>
+                      <el-date-picker v-model="leave_form.change_date"
+                                      value-format="yyyy-MM-dd"
+                                      type="date"
+                                      placeholder="必填">
+                      </el-date-picker>
                     </div>
                   </el-form-item>
                 </el-col>
@@ -87,6 +91,21 @@
                               :autosize="{ minRows: 2, maxRows: 14}"
                               placeholder="必填">
                     </el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+
+              <el-row>
+                <el-col :span="24">
+                  <el-form-item required prop="change_receipt" label="异动申请单以及异动交接单">
+                    <el-select v-model="leave_form.change_receipt" clearable placeholder="请选择交接单">
+                      <el-option
+                        v-for="item in change_receipt_options"
+                        :key="item.id"
+                        :label="item.contract_number"
+                        :value="item.id">
+                      </el-option>
+                    </el-select>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -191,6 +210,7 @@
         },
         leave_dialog_visible: false,
         leave_form: createEmpty(),
+        change_receipt_options: [],
         user_info: null
       }
     },
@@ -230,11 +250,10 @@
                   {key: '入职时间', value: enroll},
                   {key: '工作交接人', value: this.$refs.userChoose.user_name.join(' ')},
                   {key: '所属部门', value: org},
-                  {key: '工龄', value: seniority},
                   {key: '所属岗位', value: position},
+                  {key: '工龄', value: seniority},
                   {key: '离职日期', value: change_date},
-                  {key: '离职原因', value: change_reason},
-                  {key: '交接单', value: change_receipt}
+                  {key: '离职原因', value: change_reason}
                 ]
               }
               this.showLoading2(true)
@@ -255,11 +274,23 @@
       cancelLeave() {
         this.leave_dialog_visible = false;
         this.reset()
-      }
+      },
+      /**获取交接单下来选项 */
+      getChangeReceipt() {
+        let url = `${globalConfig.contract_server}fdd/contract/get_info_by_staff/${this.user_info.user_id}`
+        this.$http.get(url, {scene: 20})//合同场景
+          .then(res => {
+            if (res.code.endsWith('0')) {
+              this.change_receipt_options = res.data
+            } else {
+              this.change_receipt_options = []
+            }
+          })
+      },
     },
     created() {
       this.getUserInfo()
-
+      this.getChangeReceipt()
     }
   }
 </script>

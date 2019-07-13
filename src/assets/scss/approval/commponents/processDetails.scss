@@ -156,6 +156,22 @@
                   text-align: justify;
                   text-align-last: justify;
                 }
+
+                .base-info-text-url {
+                  padding: 5px;
+                  margin-right: 5px;
+
+                  &:hover {
+                    color: #FFAD0D;
+                    text-decoration: underline;
+                  }
+
+                  a {
+                    i:nth-child(2) {
+                      font-style: normal;
+                    }
+                  }
+                }
               }
             }
 
