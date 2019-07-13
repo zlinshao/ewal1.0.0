@@ -9,6 +9,9 @@
       </div>
       <div class="items-center listTopRight" v-show="!action_visible">
         <!--<div class="icons upLoad"></div>-->
+         <el-tooltip content="批量打款" placement="bottom" :visible-arrow="false">
+          <div class="icons allInsert" @click="openPaymentBulk"></div>
+        </el-tooltip>
         <el-tooltip content="批量入账" placement="bottom" :visible-arrow="false">
           <div class="icons allInsert" @click="openBatchEntry"></div>
         </el-tooltip>
@@ -467,7 +470,50 @@
         </div>
       </div>
     </lj-dialog>
-
+  <!-- 批量打款 -->
+<lj-dialog :visible="paymentbulk_visible" :size="{width: 900 + 'px',height: 560 + 'px'}"
+               @close="paymentbulk_visible = false;paymentData=[];paymentDataCount=0;">
+      <div class="dialog_container">
+        <div class="dialog_header justify-bet">
+          <h3>批量打款</h3>
+          <!-- <h3 class="batchEntry-icon">
+            <i class="" v-if="$storage.get('VALIDATE_PERMISSION')['Batch-Payable-Export']"
+               @click="out_account_visible = true"></i>
+            <i class="" v-if="$storage.get('VALIDATE_PERMISSION')['Batch-Payable-Import']"
+               @click="import_account_visible = true"></i>
+          </h3> -->
+          <h4 style="float:right">共{{paymentDataCount}}条记录</h4>
+        </div>
+        <div class="dialog_main changeChoose">
+          <el-table
+            :data="paymentData"
+            v-loading="paymenttableLoading"
+            element-loading-text="拼命加载中"
+            element-loading-spinner="el-icon-loading"
+            element-loading-background="rgba(255, 255, 255, 0)"
+            header-row-class-name="tableHeader"
+          >
+            <el-table-column align="center" label="付款账户" prop="customer_account_num"></el-table-column>
+            <el-table-column align="center" label="付款账户开户行" prop="customer_account_bank"></el-table-column>
+            <el-table-column align="center" label="付款账户开户人" prop="customer_account_owner"></el-table-column>
+            <el-table-column align="center" label="科目信息" prop="subject.title">
+              <template slot-scope="scope">
+                <span>{{(scope.row.subject && scope.row.subject.parent_subject && scope.row.subject.parent_subject.title) ? 
+                  scope.row.subject.parent_subject.title+'-'+scope.row.subject.title : scope.row.subject && scope.row.subject.title ? 
+                  scope.row.subject.title : ""}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column align="center" label="地址 " prop="customer.address"></el-table-column>
+            <el-table-column align="center" label="剩余款项" prop="balance"></el-table-column>
+          </el-table>
+        </div>
+        <div class="dialog_footer">
+          <el-button size="mini" type="danger" @click="paymentSubmit">提交</el-button>
+          <!-- <el-button size="mini"  @click="outAccountCtrl">提交</el-button> -->
+          <el-button size="mini" type="info" @click="paymentbulk_visible=false;paymentData=[];paymentDataCount=0;">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
     <!--批量入账导出-->
     <lj-dialog :visible="out_account_visible" @close="cancelOutAccount" :size="{width: 450 + 'px',height: 500 + 'px'}">
       <div class="dialog_container">
@@ -550,6 +596,7 @@
         url: globalConfig.temporary_server,
         tableStatus: ' ',
         tableLoading: false,
+        paymenttableLoading: false,
         is_table_choose: '',
         payableSum: '',
         paidSum: '',
@@ -802,8 +849,12 @@
         customerModule: false,//
 
         batchEntry_visible: false,//批量入账
+        paymentbulk_visible: false, //批量打款
         batchEntryData: [],
         batchEntryCount: 0,
+        paymentData: [],
+        paymentDataCount:0,
+        paymentRequest_id: '',
         batchEntryParams: {
           limit: 12,
           page: 1,
@@ -830,6 +881,8 @@
         this.action_visible = false;
         this.is_table_choose = '';
         this.current_row = '';
+        this.paymentDataCount=0;
+        this.paymentData=[];
         this.getPaymentList();
       },
       importOk() {
@@ -853,6 +906,27 @@
           if (res.code === 200) {
             window.location.href = res.data.url;
             this.cancelOutAccount();
+          } else {
+            this.$LjNotify('warning', {
+              title: '失败',
+              message: res.msg
+            })
+          }
+        })
+      },
+      //批量打款提交
+      paymentSubmit() {
+        
+        this.$http.post(globalConfig.temporary_server + 'account_payable/batchPayFund', {request_id: this.paymentRequest_id}).then(res => {
+          if (res.code === 200) {
+            this.$LjNotify('success', {
+              title: '成功',
+              message: res.msg
+            });
+            this.request_id='';
+            this.paymentData=[];
+            this.paymentDataCount=0;
+            this.paymentbulk_visible=false;
           } else {
             this.$LjNotify('warning', {
               title: '失败',
@@ -891,6 +965,11 @@
         this.batchEntry_visible = true;
         this.getBatchEntryList();
       },
+      //批量打款
+      openPaymentBulk() {
+        this.paymentbulk_visible = true;
+        this.paymentList();
+      },
       //获取应付批量入账列表
       getBatchEntryList() {
         if (!this.validatePermission('Batch-Payable-List')) return;
@@ -901,6 +980,25 @@
           } else {
             this.batchEntryData = [];
             this.batchEntryCount = 0;
+          }
+        }).catch(err => {
+          console.log(err);
+        })
+      },
+      //获取应付批量打款列表
+      paymentList() {
+        if (!this.validatePermission('Payable-List')) return;
+        this.params.disable_page=1;
+         this.paymenttableLoading = true;
+        this.$http.get(globalConfig.temporary_server + "account_payable", this.params).then(res => {
+          this.paymenttableLoading = false;
+          if (res.code === 200) {
+            this.paymentData = res.data.data;
+            this.paymentDataCount=res.data.count;
+            this.paymentRequest_id=res.request_id;
+          } else {
+            this.paymentDataCount=0;
+            this.paymentData = [];
           }
         }).catch(err => {
           console.log(err);
