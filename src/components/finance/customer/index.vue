@@ -16,7 +16,7 @@
 
       <div class="items-center listTopRight" v-show="!action_visible">
         <!--<p class="status-icon" v-for="item in statusBar" v-if="chooseTab===1||chooseTab===2">-->
-          <!--<span style="margin-left: 16px"><i :class="item.class"></i><span>{{item.iconText}}</span></span>-->
+        <!--<span style="margin-left: 16px"><i :class="item.class"></i><span>{{item.iconText}}</span></span>-->
         <!--</p>-->
         <!--<div class="icons btn_output"></div>-->
         <el-tooltip content="高级搜索" placement="bottom" :visible-arrow="false">
@@ -42,8 +42,11 @@
           </div>-->
           <!--房东-->
           <div v-show='chooseTab == 1'>
-            <span class="edit" v-show="$storage.get('VALIDATE_PERMISSION')['Lord-Edit']" @click="action_status.details_visible=true;action_status.is_check=false">编辑</span>
-            <span class="edit" v-show="$storage.get('VALIDATE_PERMISSION')['Lord-Is-Ignore']" @click="cancelOrRecoverRemark(chooseTab,current_row,current_row.prefix_suppress_dup)" style="color: #FFAB40">{{current_row.prefix_suppress_dup?'恢复重复标记':'忽略重复标记'}}</span>
+            <span class="edit" v-show="$storage.get('VALIDATE_PERMISSION')['Lord-Edit']"
+                  @click="action_status.details_visible=true;action_status.is_check=false">编辑</span>
+            <span class="edit" v-show="$storage.get('VALIDATE_PERMISSION')['Lord-Is-Ignore']"
+                  @click="cancelOrRecoverRemark(chooseTab,current_row,current_row.prefix_suppress_dup)"
+                  style="color: #FFAB40">{{current_row.prefix_suppress_dup?'恢复重复标记':'忽略重复标记'}}</span>
             <span class="edit" style="color: orangered"
                   v-show="$storage.get('VALIDATE_PERMISSION')['Lord-Pending']"
                   @click="current_row.freeze===0 ? handleProcess(chooseTab,current_row):handleCancelProcess(chooseTab,current_row)">
@@ -52,8 +55,11 @@
           </div>
           <!--租客-->
           <div v-show='chooseTab == 2'>
-            <span class="edit" v-show="$storage.get('VALIDATE_PERMISSION')['Renter-Edit']" @click="action_status.details_visible=true;action_status.is_check=false">编辑</span>
-            <span class="edit" v-show="$storage.get('VALIDATE_PERMISSION')['Renter-Is-Ignore']" @click="cancelOrRecoverRemark(chooseTab,current_row,current_row.prefix_suppress_dup)" style="color: #FFAB40">{{current_row.prefix_suppress_dup?'恢复重复标记':'忽略重复标记'}}</span>
+            <span class="edit" v-show="$storage.get('VALIDATE_PERMISSION')['Renter-Edit']"
+                  @click="action_status.details_visible=true;action_status.is_check=false">编辑</span>
+            <span class="edit" v-show="$storage.get('VALIDATE_PERMISSION')['Renter-Is-Ignore']"
+                  @click="cancelOrRecoverRemark(chooseTab,current_row,current_row.prefix_suppress_dup)"
+                  style="color: #FFAB40">{{current_row.prefix_suppress_dup?'恢复重复标记':'忽略重复标记'}}</span>
             <span class="edit" style="color: orangered"
                   v-show="$storage.get('VALIDATE_PERMISSION')['Renter-Pending']"
                   @click="current_row.freeze===0 ? handleProcess(chooseTab,current_row):handleCancelProcess(chooseTab,current_row)">
@@ -89,10 +95,10 @@
     <!--租房预定-->
     <div v-if="chooseTab === 3">
       <rent-order @getMultipleSelection="getSelectionVal"
-              ref="rentOrder"
-              :searchParams="search_params"
-              :status="action_status"
-              :current_row_info="current_row">
+                  ref="rentOrder"
+                  :searchParams="search_params"
+                  :status="action_status"
+                  :current_row_info="current_row">
       </rent-order>
     </div>
 
@@ -113,7 +119,12 @@
   import LordForm from "./lord/lordForm.vue";
   import renterForm from "./renter/renterForm.vue";
   import rentOrderForm from "./rent-order/rentOrderForm.vue";
-  import {pendingSearchList, lordSearchList,RenterSearchList,RenterOrderSearchList} from "../../../assets/js/allSearchData.js";
+  import {
+    pendingSearchList,
+    lordSearchList,
+    RenterSearchList,
+    RenterOrderSearchList
+  } from "../../../assets/js/allSearchData.js";
   import PostOrgan from '../../common/postOrgan.vue';
   import HouseFilter from '../../marketCentre/components/house-filter.vue';
 
@@ -234,9 +245,9 @@
           "cate": "",
         },
         action_status: {//操作条状态
-          delete_visible: false, 
-          edit_visible: false,    
-          details_visible: false,  
+          delete_visible: false,
+          edit_visible: false,
+          details_visible: false,
           is_check: false,
         },
         current_row: '',//选中的行
@@ -305,11 +316,11 @@
         this.action_visible = false;
       },
       //取消或恢复重复标记  取消type 0 恢复type 1
-      cancelOrRecoverRemark(tab, val,type) {
+      cancelOrRecoverRemark(tab, val, type) {
         if (tab === 1) {
-          this.$refs.lord.handleRemark(val,type);
+          this.$refs.lord.handleRemark(val, type);
         } else if (tab === 2) {
-          this.$refs.renter.handleRemarkRenter(val,type);
+          this.$refs.renter.handleRemarkRenter(val, type);
         }
       },
       //生成处理项
@@ -399,10 +410,10 @@
         // console.log(house);
         // console.log(type);
         this.commonModule.house_filter_visible = false;
-        if (house!='close') {
+        if (house != 'close') {
           this.commonModuleData.address_name = '';
           this.commonModuleData.address_id = [];
-          if(house.length>0){
+          if (house.length > 0) {
             house.map(item => {
               this.commonModuleData.address_name += item.house_name + ',';
               if (type === 'house') {
@@ -418,7 +429,7 @@
           }
         }
         // else{
-          // this.commonModule.house_filter_visible = false;
+        // this.commonModule.house_filter_visible = false;
         // }
 
       },
@@ -445,15 +456,19 @@
           margin-left: 4px;
         }
       }
+
       .btn_output {
         @include financeImg('upLoad.png', 'theme1')
       }
+
       .phone {
         @include financeImg('dianhua.png', 'theme1')
       }
+
       .name {
         @include financeImg('kehu.png', 'theme1')
       }
+
       .address {
         @include financeImg('dizhi.png', 'theme1')
       }

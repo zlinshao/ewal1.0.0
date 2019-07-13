@@ -498,8 +498,8 @@
             <el-table-column align="center" label="付款账户开户人" prop="customer_account_owner"></el-table-column>
             <el-table-column align="center" label="科目信息" prop="subject.title">
               <template slot-scope="scope">
-                <span>{{(scope.row.subject && scope.row.subject.parent_subject && scope.row.subject.parent_subject.title) ? 
-                  scope.row.subject.parent_subject.title+'-'+scope.row.subject.title : scope.row.subject && scope.row.subject.title ? 
+                <span>{{(scope.row.subject && scope.row.subject.parent_subject && scope.row.subject.parent_subject.title) ?
+                  scope.row.subject.parent_subject.title+'-'+scope.row.subject.title : scope.row.subject && scope.row.subject.title ?
                   scope.row.subject.title : ""}}</span>
               </template>
             </el-table-column>
@@ -916,7 +916,7 @@
       },
       //批量打款提交
       paymentSubmit() {
-        
+
         this.$http.post(globalConfig.temporary_server + 'account_payable/batchPayFund', {request_id: this.paymentRequest_id}).then(res => {
           if (res.code === 200) {
             this.$LjNotify('success', {
@@ -1448,7 +1448,7 @@
   }
 </style>
 <style lang="scss">
-  #theme_name.theme1 {
+  #theme_name {
     #payment {
       .el-table__body {
         .el-table__row {
