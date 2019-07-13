@@ -2299,7 +2299,7 @@ export const areaChangeOrderHighSearch={
 // 合同编号的高级搜索
 export const contractNumberHighSearch={
     status: 'contractNumberHighSearch',
-    keywords: 'keyWord',
+    keywords: 'search',
     placeholder: '请输入搜索内容',
     data: [
         {
@@ -2342,7 +2342,7 @@ export const contractNumberEditHighSearch={
             keyType: 'staff',
             title: '操作对象',
             placeholder: '请选择人员',
-            keyName: 'staff',
+            keyName: 'follow_id',
             dataType: [],
             value: {
                 num: 1
@@ -2363,14 +2363,14 @@ export const contractNumberEditHighSearch={
             keyType: 'input',
             title: '领取上限范围',
             placeholder: '最小值',
-            keyName: 'price_min',
+            keyName: 'from',
             dataType: '',
         },
         {
             keyType: 'input',
             title: '',
             placeholder: '最大值',
-            keyName: 'price_max',
+            keyName: 'to',
             dataType: '',
         },
     ]

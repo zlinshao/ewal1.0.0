@@ -21,7 +21,7 @@
     <div class="mainList">
       <div class="mainListTable" :style="{'height': this.mainListHeight() + 'px'}">
         <el-table :data="tableData" :height="this.mainListHeight(30) + 'px'" highlight-current-row
-          header-row-class-name="tableHeader" style="width: 100%">
+          header-row-class-name="tableHeader" style="width: 100%" @row-dblclick="showEdite">
           <el-table-column label="类型" prop="type" align="center">
             <template slot-scope="scope">
               <span>{{scope.row.type==='hot'?'热门导读':scope.row.type==='news'?'乐伽新闻':scope.row.type==='announcement'?'公告':''}}</span>
@@ -135,7 +135,7 @@
     </lj-dialog>
 
     <!--新增-->
-    <lj-dialog :visible="publish_visible" :size="{width: 1200 + 'px' ,height:800 + 'px'}" @close="publish_visible = false;form= {type_id: '',title: '',content: '',file_info: [],is_open: ''};">
+    <lj-dialog :visible="publish_visible" :size="{width: 1200 + 'px' ,height:800 + 'px'}" @close="publish_visible = false;form= {type_id: '',title: '',content: '',file_info: [],is_open: '',id:''};">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>{{chooseTab===1?'发布导读':chooseTab===2?'发布新闻':chooseTab===3?'发布公告':''}}</h3>
@@ -145,19 +145,16 @@
             <el-form-item label="类型" v-show="chooseTab===1">
               <el-select v-model="form.type_id" placeholder="请选择">
                 <el-option
-                  key="1"
                   label="研发类"
-                  value="1">
+                  value='1'>
                 </el-option>
                  <el-option
-                  key="2"
                   label="财务类"
-                  value="2">
+                  value='2'>
                 </el-option>
                  <el-option
-                  key="3"
                   label="人力资源类"
-                  value="3">
+                  value='3'>
                 </el-option>
               </el-select>
             </el-form-item>
@@ -177,7 +174,7 @@
         <div class="dialog_footer">
           <el-button size="small" type="warning" @click="getUEContent">预览</el-button>
           <el-button size="small" type="danger" @click="submit">发布</el-button>
-          <el-button size="small" type="info" @click="publish_visible = false">取消</el-button>
+          <el-button size="small" type="info" @click="publish_visible = false;form= {type_id: '',title: '',content: '',file_info: [],is_open: '',id:''};">取消</el-button>
         </div>
       </div>
     </lj-dialog>
@@ -266,7 +263,6 @@ export default {
         offset: 1,
         limit: 12,
         type_id: '',
-       
         is_top: '',
         is_great: '',
         org_ids: [],
@@ -370,12 +366,26 @@ export default {
             break;
         }
       },
+      //获得富文本数据
     getContentChange (val) {
       this.form.content = val;
     },
+    //预览
     getUEContent() {
-      // console.log('this.form.--------------------',this.form)
       this.detail_visible=true;
+    },
+    //显示编辑
+     showEdite (row) {
+       console.log('row---------------',row);
+       this.form.id=row.id;
+       this.form.content=row.content;
+       this.form.file_info=[row.cover[0].id];
+       this.form.title=row.title;
+       this.form.type_id=row.type_id?row.type_id.toString():'';
+       console.log(' this.form.type_id--', row.type_id+'');
+       this.publish_visible=true;
+      //  type_id: this.form.type_id,
+      // this.form.content = val;
     },
     changeTabs (id) {
       this.chooseTab = id;
@@ -395,7 +405,6 @@ export default {
     readTab (id) {
       this.read_type = id;
     },
-    
     handleChangePage (page) {
       this.params.offset = page;
       this.getDataLists();
@@ -572,17 +581,19 @@ export default {
       }
       else{
         let paramsForm = {
+        id: this.form.id,
         title: this.form.title,
         type_id: this.form.type_id,
         content: this.form.content,
         cover: this.form.file_info[0],
         is_open: 1,
       };
-        this.$http.post(globalConfig.newMedia_sever + '/api/article/'+this.type, paramsForm).then(res => {
+      if(this.form.id){
+        this.$http.put(globalConfig.newMedia_sever + '/api/article/'+this.type+'/'+this.form.id, paramsForm).then(res => {
           if(res.status == 200){
-            this.add_visible = false;
-            // this.callbackSuccess(res);
+            // this.add_visible = false;
             this.form={
+              id: '',
               title: '',
               type_id: '',
               content: '',
@@ -609,6 +620,40 @@ export default {
             });
           }
         })
+      }else {
+        this.$http.post(globalConfig.newMedia_sever + '/api/article/'+this.type, paramsForm).then(res => {
+          if(res.status == 200){
+            // this.add_visible = false;
+            // this.callbackSuccess(res);
+            this.form={
+              id: '',
+              title: '',
+              type_id: '',
+              content: '',
+              is_open: '',
+            }
+          this.publish_visible = false;
+           this.$LjNotify('success', {
+              title: '成功',
+              message: '操作成功',
+            });
+            this.getDataLists();
+            this.form= {
+              type_id: '',
+              title: '',
+              content: '',
+              file_info: [],
+              is_open: '',//是否发布
+            };
+            // this.callbackSuccess(res);
+          }else {
+            this.$LjNotify('error', {
+              title: '失败',
+              message: res.message,
+            });
+          }
+        })
+      }
       }
     },
    

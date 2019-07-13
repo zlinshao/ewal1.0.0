@@ -126,6 +126,9 @@
           return [];
         }
       },
+      num: {//上传个数
+        type:Number,
+      },
       maxSize: {
         type: [Number],
       },
@@ -275,6 +278,14 @@
       startUpload() {
         let that = this;
         let files = document.getElementById(that.file.keyName).files;
+        let length = files.length + that.showFile.length;
+        if(length > that.num) {
+          this.$LjMessage('warning', {
+            title: '警告',
+            msg: `超过最大上传个数:${this.num}`,
+          });
+          return;
+        }
         for (let file of files) {
           let reader = new FileReader();//构造FileReader对象
           let fileType = '';

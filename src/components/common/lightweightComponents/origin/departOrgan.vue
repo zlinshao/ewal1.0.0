@@ -143,7 +143,7 @@
       handleCloseLjDialog() {
         this.$emit('close', 'close');
       },
-      getList(org = 1) {
+      getList(org = this.$storage.get('user_info').company_info?.company_id) {
         this.departList = [];
         this.fullLoading = true;
         this.$http.getOrganization(org).then(res => {

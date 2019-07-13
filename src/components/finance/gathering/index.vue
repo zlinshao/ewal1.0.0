@@ -15,16 +15,17 @@
       </div>
       <!-- 银行流水时展示的图标 -->
       <div class="items-center listTopRight" v-show="bankFlowFlag">
-         <el-tooltip content="导入" placement="bottom" :visible-arrow="false">
+        <el-tooltip content="导入" placement="bottom" :visible-arrow="false">
           <div class="icons bankImport" @click="openBankFlowTempalte"></div>
         </el-tooltip>
       </div>
-        <!-- 非银行流水时展示的图标 -->
+      <!-- 非银行流水时展示的图标 -->
       <div class="items-center listTopRight" v-show="!action_visible && !bankFlowFlag">
         <el-tooltip content="批量入账" placement="bottom" :visible-arrow="false">
           <div class="icons allInsert" @click="openBatchEntry"></div>
         </el-tooltip>
-        <el-tooltip v-show="$storage.get('VALIDATE_PERMISSION')['Receivable-Save']" content="新增应收款项" placement="bottom" :visible-arrow="false">
+        <el-tooltip v-show="$storage.get('VALIDATE_PERMISSION')['Receivable-Save']" content="新增应收款项" placement="bottom"
+                    :visible-arrow="false">
           <div class="icons add" @click="openAdd"><b>+</b></div>
         </el-tooltip>
         <el-tooltip content="收款记录" placement="bottom" :visible-arrow="false">
@@ -40,14 +41,14 @@
         <!--<el-checkbox>全选</el-checkbox>-->
         <!--<span class="check-count">已选中 <i>{{multipleSelection.length}}</i> 项</span>-->
         <span class="action-bar-name">
-                    <span v-for="(item,index) in btn_group"
-                          v-show="item.show"
-                          :key="index"
-                          :class="item.class"
-                          @click="handleClickBtn(item.key,current_row)">
-                        {{item.val}}
-                    </span>
-                </span>
+          <span v-for="(item,index) in btn_group"
+                v-show="item.show"
+                :key="index"
+                :class="item.class"
+                @click="handleClickBtn(item.key,current_row)">
+            {{item.val}}
+          </span>
+        </span>
       </div>
       <div class="action-bar-right">
         <span style="margin-right: 15px">应收金额（元） <i class="edit">{{ receivable_sum }}</i></span>
@@ -55,10 +56,10 @@
         <span style="margin-right: 15px">剩余款项（元） <i class="delete">{{ balance_sum }}</i></span>
       </div>
     </div>
-    <div v-if="chooseTab!=5" class="mainListTable changeChoose" :style="{'height': this.mainListHeight() + 'px'}">
+    <div v-if="chooseTab!=5" class="mainListTable changeChoose" :style="{'height': mainListHeight(46) + 'px'}">
       <el-table
         :data="tableData"
-        :height="this.mainListHeight(30) + 'px'"
+        :height="mainListHeight(76) + 'px'"
         highlight-current-row
         :row-class-name="tableChooseRow"
         @selection-change="handleSelectionChange($event,'index')"
@@ -86,8 +87,9 @@
           prop="remarks"
           label="备注">
           <template slot-scope="scope">
-           <!-- <div style="cursor: pointer" @click="openRemarksList(scope.row)">{{scope.row.remarks}}</div>-->
-            <div style="cursor: pointer;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;" v-html="scope.row.remarks" @click="openRemarksList(scope.row)"></div>
+            <!-- <div style="cursor: pointer" @click="openRemarksList(scope.row)">{{scope.row.remarks}}</div>-->
+            <div style="cursor: pointer;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;"
+                 v-html="scope.row.remarks" @click="openRemarksList(scope.row)"></div>
           </template>
         </el-table-column>
         <el-table-column label="状态" prop="" align="center" width="100">
@@ -119,27 +121,28 @@
     <!-- 银行流水的列表 -->
     <div v-if="chooseTab==5">
       <div class="bankTabelList">
-          <el-table :data="bankTabelList" @cell-click="tableClickBankRow"   header-row-class-name="tableHeader" style="width: 100%">
-            <el-table-column label="导入时间" prop="create_time" align="center"></el-table-column>
-            <el-table-column label="流水导入批次" prop="id" align="center" show-overflow-tooltip ></el-table-column>
-            <el-table-column label="包含账户数量" prop="account_num" align="center" ></el-table-column>
-            <el-table-column label="流水数量" prop="bank_flow_num" align="center"></el-table-column>
-            <el-table-column label="操作人" prop="operator" align="center"></el-table-column>
-          </el-table>
-          <footer class="flex-center bottomPage">
-            <div class="develop flex-center">
-              <i class="el-icon-d-arrow-right"></i>
-            </div>
-            <div class="page">
-              <el-pagination
-                :total="bankListcount"
-                :current-page="bankListPageParams.page"
-                :page-size="bankListPageParams.limit"
-                layout="total,jumper,prev,pager,next"
-                @current-change="handleChangebankListPage"
-              ></el-pagination>
-            </div>
-          </footer>
+        <el-table :data="bankTabelList" @cell-click="tableClickBankRow" header-row-class-name="tableHeader"
+                  style="width: 100%">
+          <el-table-column label="导入时间" prop="create_time" align="center"></el-table-column>
+          <el-table-column label="流水导入批次" prop="id" align="center" show-overflow-tooltip></el-table-column>
+          <el-table-column label="包含账户数量" prop="account_num" align="center"></el-table-column>
+          <el-table-column label="流水数量" prop="bank_flow_num" align="center"></el-table-column>
+          <el-table-column label="操作人" prop="operator" align="center"></el-table-column>
+        </el-table>
+        <footer class="flex-center bottomPage">
+          <div class="develop flex-center">
+            <i class="el-icon-d-arrow-right"></i>
+          </div>
+          <div class="page">
+            <el-pagination
+              :total="bankListcount"
+              :current-page="bankListPageParams.page"
+              :page-size="bankListPageParams.limit"
+              layout="total,jumper,prev,pager,next"
+              @current-change="handleChangebankListPage"
+            ></el-pagination>
+          </div>
+        </footer>
       </div>
     </div>
 
@@ -171,12 +174,16 @@
         </div>
         <div class="dialog_main changeChoose">
           <el-table
+            :empty-text='tableStatus'
+            v-loading="tableLoading"
+            element-loading-text="拼命加载中"
+            element-loading-spinner="el-icon-loading"
+            element-loading-background="rgba(255, 255, 255, 0)"
             :data="running_account_record"
             :row-class-name="tableChooseRow"
             @cell-click="tableClickRow"
             header-row-class-name="tableHeader"
-            @selection-change="handleSelectionChange"
-          >
+            @selection-change="handleSelectionChange">
             <el-table-column
               type="selection"
               width="55">
@@ -235,9 +242,9 @@
                 class="all_width"
                 disabled
                 v-model="receive_form.pay_date"
-                placeholder="请选择付款时间"
-                type="datetime"
-              ></el-date-picker>
+                placeholder="请选择时间"
+                type="datetime">
+              </el-date-picker>
             </el-form-item>
             <el-form-item label="客户姓名">
               <el-input v-model="receive_form.customer_name" disabled></el-input>
@@ -250,8 +257,7 @@
             </el-form-item>
             <el-form-item label="账户">
               <el-select class="all_width" v-model="receive_form.account_id">
-                <el-option v-for="(item,index) in accountLists" :label="item.name"
-                           :value="item.id"
+                <el-option v-for="(item,index) in accountLists" :label="item.name" :value="item.id"
                            :key="index"></el-option>
               </el-select>
             </el-form-item>
@@ -259,7 +265,7 @@
               <el-input v-model="receive_form.amount_receivable" type="number" disabled></el-input>
             </el-form-item>
             <el-form-item label="收款金额">
-              <el-input v-model="receive_form.amount_received" type="number"></el-input>
+              <el-input v-model="receive_form.amount_received" type="number" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="剩余款项">
               <el-input v-model="receive_form.balance" type="number" disabled></el-input>
@@ -267,19 +273,9 @@
             <el-form-item label="补齐时间">
               <el-date-picker
                 class="all_width"
-                disabled
                 v-model="receive_form.complete_date"
-                placeholder="请选择付款时间"
-                type="datetime"
-              ></el-date-picker>
-            </el-form-item>
-            <el-form-item label="付款时间">
-              <el-date-picker
-                class="all_width"
-                v-model="receive_form.pay_date"
-                placeholder="请选择付款时间"
-                type="datetime"
-              ></el-date-picker>
+                placeholder="请选择时间"
+                type="datetime"></el-date-picker>
             </el-form-item>
             <el-form-item label="收款人员">
               <el-input v-model="receive_form.staff_name" disabled></el-input>
@@ -290,8 +286,8 @@
                 v-model="receive_form.remark"
                 type="textarea"
                 placeholder="请输入"
-                :rows="4"
-              ></el-input>
+                :rows="4">
+              </el-input>
             </el-form-item>
           </el-form>
         </div>
@@ -587,7 +583,9 @@
           <iframe :src="receipt_detail_dialog_data.view_uri"></iframe>
         </div>
         <div class="dialog_footer">
-          <el-button v-if="$storage.get('VALIDATE_PERMISSION')['Receivable-Receipt-Name']" size="small" type="warning" @click="editUserName">修改姓名</el-button>
+          <el-button v-if="$storage.get('VALIDATE_PERMISSION')['Receivable-Receipt-Name']" size="small" type="warning"
+                     @click="editUserName">修改姓名
+          </el-button>
           <el-button size="small" type="danger" @click="beforeSend">发送</el-button>
           <el-button size="small" @click="receipt_detail_dialog_visible=false">取消</el-button>
         </div>
@@ -1010,8 +1008,10 @@
         <div class="dialog_header justify-bet">
           <h3>批量入账</h3>
           <h3 class="batchEntry-icon">
-            <i class="" v-if="$storage.get('VALIDATE_PERMISSION')['Batch-Receivable-Export']" @click="out_account_visible = true"></i>
-            <i class="" v-if="$storage.get('VALIDATE_PERMISSION')['Batch-Receivable-Import']" @click="import_account_visible = true"></i>
+            <i class="" v-if="$storage.get('VALIDATE_PERMISSION')['Batch-Receivable-Export']"
+               @click="out_account_visible = true"></i>
+            <i class="" v-if="$storage.get('VALIDATE_PERMISSION')['Batch-Receivable-Import']"
+               @click="import_account_visible = true"></i>
           </h3>
         </div>
         <div class="dialog_main changeChoose">
@@ -1114,10 +1114,10 @@
           </div>
         </div>
         <div>
-          <el-table :data="bankDetailList"   header-row-class-name="tableHeader" style="width: 100%">
+          <el-table :data="bankDetailList" header-row-class-name="tableHeader" style="width: 100%">
             <el-table-column label="打款时间" prop="create_time" align="center"></el-table-column>
-            <el-table-column label="支出金额" prop="expend_amount" align="center" show-overflow-tooltip ></el-table-column>
-            <el-table-column label="收入金额" prop="income_amount" align="center" ></el-table-column>
+            <el-table-column label="支出金额" prop="expend_amount" align="center" show-overflow-tooltip></el-table-column>
+            <el-table-column label="收入金额" prop="income_amount" align="center"></el-table-column>
             <el-table-column label="备注" prop="remark" align="center"></el-table-column>
             <el-table-column label="所属银行" prop="bank.name" align="center"></el-table-column>
           </el-table>
@@ -1137,53 +1137,59 @@
     <!-- 银行流水导入模态框 -->
     <lj-dialog :visible="bankflow_upload_visible" @close="bankflow_upload_visible=false"
                :size="{width: 600 + 'px',height: 500 + 'px'}">
-       <div class="dialog_container">
-          <div class="dialog_header">
-            <h3>导入</h3>
-          </div>
-          <div class="dialog_main borderNone">
-            <el-form :mode="import_template" label-width="80px" >
-               <el-form-item label="流水模板" prop="import_template">
-                  <div class="bank_template_select">
-                    <el-select   placeholder="请选择流水模板" v-model="import_template.bank_template" style="width: 200px" @change="import_template.account=''">
-                        <el-option  v-for="(item,index) in bankTemplateData" :label="item.name" :value="item.id" :key="index"></el-option>
-                    </el-select>
-                  </div>
-              </el-form-item>
-              <!-- 当流水模板为南京银行、农业银行(对公账户)、宁波银行、招商银行时需要选择账户类型和选择账户 -->
-              <div v-if='import_template.bank_template==3 || import_template.bank_template==9||import_template.bank_template==11||import_template.bank_template==12'>
-                <el-form-item label="账户类型" prop="import_template">
-                    <div class="bank_template_select">
-                      <el-select   placeholder="请选择账户类型" v-model="bank_account_type" style="width: 200px"  @change="getBankAccount">
-                          <el-option  v-for="(item,index) in cate" :label="item.title" :value="item.value" :key="index"></el-option>
-                      </el-select>
-                    </div>
-                </el-form-item>
-                <el-form-item label="选择账户"  prop="import_template">
-                    <div class="bank_template_select">
-                      <el-select   placeholder="请选择账户" v-model="import_template.account" style="width: 200px">
-                          <el-option  v-for="(item,index) in BankAccountLists" :label="item.name" :value="item.id" :key="index"></el-option>
-                      </el-select>
-                    </div>
-                </el-form-item>
-              </div>
-              <el-form-item align="center" label="上传附件"  prop="import_template">
-                  <div class="upload_imgVideo">
-                      <lj-upload
-                          v-model="import_template.doc_id"
-                          size="50"
-                          :limit="['xls','xlsx']"
-                          class="upload-offset"
-                      ></lj-upload>
-                  </div>
-              </el-form-item>
-            </el-form>
-          </div>
-          <div class="dialog_footer">
-            <el-button size="small" type="danger" @click="uploadBankFundFlowFun">确定</el-button>
-            <el-button size="small" @click="bankflow_upload_visible=false;">取消</el-button>
-          </div>
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>导入</h3>
         </div>
+        <div class="dialog_main borderNone">
+          <el-form :mode="import_template" label-width="80px">
+            <el-form-item label="流水模板" prop="import_template">
+              <div class="bank_template_select">
+                <el-select placeholder="请选择流水模板" v-model="import_template.bank_template" style="width: 200px"
+                           @change="import_template.account=''">
+                  <el-option v-for="(item,index) in bankTemplateData" :label="item.name" :value="item.id"
+                             :key="index"></el-option>
+                </el-select>
+              </div>
+            </el-form-item>
+            <!-- 当流水模板为南京银行、农业银行(对公账户)、宁波银行、招商银行时需要选择账户类型和选择账户 -->
+            <div
+              v-if='import_template.bank_template==3 || import_template.bank_template==9||import_template.bank_template==11||import_template.bank_template==12'>
+              <el-form-item label="账户类型" prop="import_template">
+                <div class="bank_template_select">
+                  <el-select placeholder="请选择账户类型" v-model="bank_account_type" style="width: 200px"
+                             @change="getBankAccount">
+                    <el-option v-for="(item,index) in cate" :label="item.title" :value="item.value"
+                               :key="index"></el-option>
+                  </el-select>
+                </div>
+              </el-form-item>
+              <el-form-item label="选择账户" prop="import_template">
+                <div class="bank_template_select">
+                  <el-select placeholder="请选择账户" v-model="import_template.account" style="width: 200px">
+                    <el-option v-for="(item,index) in BankAccountLists" :label="item.name" :value="item.id"
+                               :key="index"></el-option>
+                  </el-select>
+                </div>
+              </el-form-item>
+            </div>
+            <el-form-item align="center" label="上传附件" prop="import_template">
+              <div class="upload_imgVideo">
+                <lj-upload
+                  v-model="import_template.doc_id"
+                  size="50"
+                  :limit="['xls','xlsx']"
+                  class="upload-offset"
+                ></lj-upload>
+              </div>
+            </el-form-item>
+          </el-form>
+        </div>
+        <div class="dialog_footer">
+          <el-button size="small" type="danger" @click="uploadBankFundFlowFun">确定</el-button>
+          <el-button size="small" @click="bankflow_upload_visible=false;">取消</el-button>
+        </div>
+      </div>
     </lj-dialog>
   </div>
 </template>
@@ -1228,15 +1234,63 @@
                 phone: val[0].customer?.contact || '',
               };
               this.btn_group = [
-                {val: '催缴备注', key: 'mark', type: 'danger', class: 'edit',show:this.$storage.get('VALIDATE_PERMISSION')['Receivable-Urgetag']},
-                {val: '登记收款', key: 'register', type: 'warning', class: 'edit',show:true},
-                {val: '应收入账', key: 'should_receive', type: 'success', class: 'edit',show:this.$storage.get('VALIDATE_PERMISSION')['Receivable-Receive']},
-                {val: '开收据', key: 'receipt', type: 'edit', class: 'edit',show:this.$storage.get('VALIDATE_PERMISSION')['Receivable-Receipt']},
-                {val: '回滚', key: 'handleProcess', type: 'success', class: 'edit',show:this.$storage.get('VALIDATE_PERMISSION')['Receivable-Revert']},
-                {val: '生成违约金日期', key: 'generate', type: 'success', class: 'edit',show:this.$storage.get('VALIDATE_PERMISSION')['Receivable-Liquid']},
-                {val: '修改补齐时间', key: 'editTime', type: 'success', class: 'edit',show:this.$storage.get('VALIDATE_PERMISSION')['Receivable-Complete-Date']},
-                {val: '发送短信', key: 'sendMessage', type: 'danger', class: 'edit',show:this.$storage.get('VALIDATE_PERMISSION')['Receivable-Notify']},
-                {val: '删除', key: 'handleDelete', type: 'success', class: 'delete',show:this.$storage.get('VALIDATE_PERMISSION')['Receivable-Delete']}]
+                {
+                  val: '催缴备注',
+                  key: 'mark',
+                  type: 'danger',
+                  class: 'edit',
+                  show: this.$storage.get('VALIDATE_PERMISSION')['Receivable-Urgetag']
+                },
+                {val: '登记收款', key: 'register', type: 'warning', class: 'edit', show: true},
+                {
+                  val: '应收入账',
+                  key: 'should_receive',
+                  type: 'success',
+                  class: 'edit',
+                  show: this.$storage.get('VALIDATE_PERMISSION')['Receivable-Receive']
+                },
+                {
+                  val: '开收据',
+                  key: 'receipt',
+                  type: 'edit',
+                  class: 'edit',
+                  show: this.$storage.get('VALIDATE_PERMISSION')['Receivable-Receipt']
+                },
+                {
+                  val: '回滚',
+                  key: 'handleProcess',
+                  type: 'success',
+                  class: 'edit',
+                  show: this.$storage.get('VALIDATE_PERMISSION')['Receivable-Revert']
+                },
+                {
+                  val: '生成违约金日期',
+                  key: 'generate',
+                  type: 'success',
+                  class: 'edit',
+                  show: this.$storage.get('VALIDATE_PERMISSION')['Receivable-Liquid']
+                },
+                {
+                  val: '修改补齐时间',
+                  key: 'editTime',
+                  type: 'success',
+                  class: 'edit',
+                  show: this.$storage.get('VALIDATE_PERMISSION')['Receivable-Complete-Date']
+                },
+                {
+                  val: '发送短信',
+                  key: 'sendMessage',
+                  type: 'danger',
+                  class: 'edit',
+                  show: this.$storage.get('VALIDATE_PERMISSION')['Receivable-Notify']
+                },
+                {
+                  val: '删除',
+                  key: 'handleDelete',
+                  type: 'success',
+                  class: 'delete',
+                  show: this.$storage.get('VALIDATE_PERMISSION')['Receivable-Delete']
+                }]
 
             } else if (val.length == 0) {
               this.action_visible = false;
@@ -1244,8 +1298,20 @@
               this.current_row = '';
               this.action_visible = true;
               this.btn_group = [
-                {val: '发送短信', key: 'sendMessage', type: 'danger', class: 'edit',show:this.$storage.get('VALIDATE_PERMISSION')['Receivable-Notify']},
-                {val: '删除', key: 'handleDelete', type: 'success', class: 'delete',show:this.$storage.get('VALIDATE_PERMISSION')['Receivable-Delete']},]
+                {
+                  val: '发送短信',
+                  key: 'sendMessage',
+                  type: 'danger',
+                  class: 'edit',
+                  show: this.$storage.get('VALIDATE_PERMISSION')['Receivable-Notify']
+                },
+                {
+                  val: '删除',
+                  key: 'handleDelete',
+                  type: 'success',
+                  class: 'delete',
+                  show: this.$storage.get('VALIDATE_PERMISSION')['Receivable-Delete']
+                },]
             }
           }
         },
@@ -1254,6 +1320,8 @@
     },
     data() {
       return {
+        tableStatus: ' ',
+        tableLoading: false,
         rules: {
           editUserName: {
             name: [
@@ -1538,7 +1606,7 @@
 
         showData: {
           "pay_date": '收款时间',
-          "subject": '应收科目',
+          "subject.title": '应收科目',
           "customer.address": "地址",
           "amount_receivable": '应收金额',
           "amount_received": '实收金额',
@@ -1551,15 +1619,63 @@
         },
         btn_group: [
           // {val: '跟进列表', key: 'record', type: 'success',class:'edit'},
-          {val: '催缴备注', key: 'mark', type: 'danger', class: 'edit',show:this.$storage.get('VALIDATE_PERMISSION')['Receivable-Urgetag']},
-          {val: '登记收款', key: 'register', type: 'warning', class: 'edit',show:true},
-          {val: '应收入账', key: 'should_receive', type: 'success', class: 'edit',show:this.$storage.get('VALIDATE_PERMISSION')['Receivable-Receive']},
-          {val: '开收据', key: 'receipt', type: 'edit', class: 'edit',show:this.$storage.get('VALIDATE_PERMISSION')['Receivable-Receipt']},
-          {val: '回滚', key: 'handleProcess', type: 'success', class: 'edit',show:this.$storage.get('VALIDATE_PERMISSION')['Receivable-Revert']},
-          {val: '生成违约金日期', key: 'generate', type: 'success', class: 'edit',show:this.$storage.get('VALIDATE_PERMISSION')['Receivable-Liquid']},
-          {val: '修改补齐时间', key: 'editTime', type: 'success', class: 'edit',show:this.$storage.get('VALIDATE_PERMISSION')['Receivable-Complete-Date']},
-          {val: '发送短信', key: 'sendMessage', type: 'danger', class: 'edit',show:this.$storage.get('VALIDATE_PERMISSION')['Receivable-Notify']},
-          {val: '删除', key: 'handleDelete', type: 'success', class: 'delete',show:this.$storage.get('VALIDATE_PERMISSION')['Receivable-Delete']}
+          {
+            val: '催缴备注',
+            key: 'mark',
+            type: 'danger',
+            class: 'edit',
+            show: this.$storage.get('VALIDATE_PERMISSION')['Receivable-Urgetag']
+          },
+          {val: '登记收款', key: 'register', type: 'warning', class: 'edit', show: true},
+          {
+            val: '应收入账',
+            key: 'should_receive',
+            type: 'success',
+            class: 'edit',
+            show: this.$storage.get('VALIDATE_PERMISSION')['Receivable-Receive']
+          },
+          {
+            val: '开收据',
+            key: 'receipt',
+            type: 'edit',
+            class: 'edit',
+            show: this.$storage.get('VALIDATE_PERMISSION')['Receivable-Receipt']
+          },
+          {
+            val: '回滚',
+            key: 'handleProcess',
+            type: 'success',
+            class: 'edit',
+            show: this.$storage.get('VALIDATE_PERMISSION')['Receivable-Revert']
+          },
+          {
+            val: '生成违约金日期',
+            key: 'generate',
+            type: 'success',
+            class: 'edit',
+            show: this.$storage.get('VALIDATE_PERMISSION')['Receivable-Liquid']
+          },
+          {
+            val: '修改补齐时间',
+            key: 'editTime',
+            type: 'success',
+            class: 'edit',
+            show: this.$storage.get('VALIDATE_PERMISSION')['Receivable-Complete-Date']
+          },
+          {
+            val: '发送短信',
+            key: 'sendMessage',
+            type: 'danger',
+            class: 'edit',
+            show: this.$storage.get('VALIDATE_PERMISSION')['Receivable-Notify']
+          },
+          {
+            val: '删除',
+            key: 'handleDelete',
+            type: 'success',
+            class: 'delete',
+            show: this.$storage.get('VALIDATE_PERMISSION')['Receivable-Delete']
+          }
 
         ],
         searchData: {},
@@ -1633,45 +1749,53 @@
         collect_img: '',
         is_disabled: true,
         //银行流水
-        bankFlowFlag:false,  //当点击银行流水时，只展示导入的图标
-        bankTabelList:[],    //银行流水列表
-        bankDetailList:[],    //银行流水详情
-        bankTemplateData:[],  //银行流水模板
-        bankflow_detail_visible:false,  //银行流水详情模态框
-        bankflow_upload_visible:false,  //银行流水上传模态框
-        bankListcount:0,   //列表总条数
-        bankDetailcount:0, //详情总条数
-        bank_list_row:{}, //当前被选中的列表数据
-        bank_account_type:'',  //账户类型的v-model
-        BankAccountLists:[] ,//根据支付方式查询到的账户
-        bankListPageParams:{   //银行流水列表的分页
+        bankFlowFlag: false,  //当点击银行流水时，只展示导入的图标
+        bankTabelList: [],    //银行流水列表
+        bankDetailList: [],    //银行流水详情
+        bankTemplateData: [],  //银行流水模板
+        bankflow_detail_visible: false,  //银行流水详情模态框
+        bankflow_upload_visible: false,  //银行流水上传模态框
+        bankListcount: 0,   //列表总条数
+        bankDetailcount: 0, //详情总条数
+        bank_list_row: {}, //当前被选中的列表数据
+        bank_account_type: '',  //账户类型的v-model
+        BankAccountLists: [],//根据支付方式查询到的账户
+        bankListPageParams: {   //银行流水列表的分页
           limit: 12,
           page: 1,
         },
-        bankDetailPageParams:{  //银行流水详情的分页
+        bankDetailPageParams: {  //银行流水详情的分页
           limit: 10,
           page: 1,
-        },  
-        import_template:{  //导入时需要的传参
-          doc_id:[],
-          account:'',
-          bank_template:''
         },
-       
+        import_template: {  //导入时需要的传参
+          doc_id: [],
+          account: '',
+          bank_template: ''
+        },
+
 
       }
     },
     mounted() {
       this.chooseTabI = this.compareParams.status;
       this.getReceiveList();
-    
+      this.getAccount(1);
     },
     computed: {},
     methods: {
-      getAccount() {//获取账户字典
+      hiddenModules() {
+        this.action_visible = false;
+        this.is_table_choose = '';
+        this.current_row = '';
+        this.getReceiveList();
+      },
+      getAccount(val) {//获取账户字典
         this.accountLists = [];
         this.out_form.account = [];
+        this.receive_form.account_id = '';
         this.out_form.account_name = '';
+        this.params.cate = val;
         this.$http.get(globalConfig.temporary_server + "account", this.params).then(res => {
           if (res.code === 200) {
             this.accountLists = res.data.data;
@@ -1735,7 +1859,7 @@
       },
       //获取批量入账列表
       getBatchEntryList() {
-        if(!this.validatePermission('Batch-Receivable-List')) return;
+        if (!this.validatePermission('Batch-Receivable-List')) return;
         this.$http.get(globalConfig.temporary_server + "batch_receivable", this.batchEntryParams).then(res => {
           if (res.code === 200) {
             this.batchEntryData = res.data.data;
@@ -1867,7 +1991,7 @@
         this.chooseTab = id;
         this.is_table_choose = '';
         this.action_visible = false;
-        this.bankFlowFlag=false;  //银行流水
+        this.bankFlowFlag = false;  //银行流水
         switch (id) {
           case 1:
             this.params.is_deposit = '';//定金
@@ -1898,7 +2022,7 @@
             this.getReceiveList();
             break;
           case 5:  //银行流水
-            this.bankFlowFlag=true;
+            this.bankFlowFlag = true;
             this.bankTabelList = [];
             this.getBankFlowList();  //获取银行流水的列表
             this.getBankTemplateFun(); //获取银行流水的所有银行模板
@@ -2268,10 +2392,13 @@
       },*/
 
       getReceiveList() {//加载应收款列表
-        if(!this.validatePermission('Receivable-List')) return;
+        if (!this.validatePermission('Receivable-List')) return;
+        this.tableStatus = ' ';
+        this.tableLoading = true;
         this.showLoading(true);
         this.$http.get(globalConfig.temporary_server + 'account_receivable', this.params).then(async res => {
           this.showLoading(false);
+          this.tableLoading = false;
           if (res.code === 200) {
             let resultData = res.data.data;
             let fund_id = _.map(resultData, 'id');
@@ -2284,17 +2411,17 @@
             if (tags.code == 200) {
               tagsResult = tags.data.data;
 
-            }else {
-              _.forEach(resultData,(o)=> {
+            } else {
+              _.forEach(resultData, (o) => {
                 o.remarks = '暂无备注';
               });
             }
             _.forEach(tagsResult, (o) => {
               let id = Number(o.id);
-              if(o.data.count==0) {
-                _.find(resultData,{id:id}).remarks = '暂无备注';
-              }else {
-                _.find(resultData,{id:id}).remarks = _.map(o.data.data,'content').join(',');
+              if (o.data.count == 0) {
+                _.find(resultData, {id: id}).remarks = '暂无备注';
+              } else {
+                _.find(resultData, {id: id}).remarks = _.map(o.data.data, 'content').join(',');
               }
             });
 
@@ -2305,12 +2432,16 @@
             this.receivable_sum = res.data.receivable_sum;
             this.received_sum = res.data.received_sum;
           } else {
+            this.tableStatus = '暂无相关数据';
             this.tableData = [];
             this.count = 0;
             this.balance_sum = 0;
             this.receivable_sum = 0;
             this.received_sum = 0;
           }
+        }).catch(err => {
+          this.tableStatus = '暂无相关数据';
+          console.log(err);
         })
       },
 
@@ -2348,27 +2479,41 @@
         };
         this.new_remark_dialog_visible = false;
         this.$http.post(`${this.url}account_should_tag/tags`, params).then(res => {
-            if(res.code==200) {
-              let list = res.data.data[0]?.data?.data||[];
-              for (let item of list) {
-                let obj = {
-                  id:item.id,
-                  create_time: item.create_time,
-                  content:item.content,
-                  staff_name:item.operator.name,
-                };
-                this.tableSettingData.remarks.tableData.push(obj);
-              }
+          if (res.code == 200) {
+            let list = res.data.data[0]?.data?.data || [];
+            for (let item of list) {
+              let obj = {
+                id: item.id,
+                create_time: item.create_time,
+                content: item.content,
+                staff_name: item.operator.name,
+              };
+              this.tableSettingData.remarks.tableData.push(obj);
             }
+          }
         });
       },
 
       handleClickBtn(key, row) {//表单操作栏
         if (key === 'should_receive') {//应收入账
           this.receive_visible = true;
-          this.receive_form = row;
-          this.receive_form.customer_name = row.customer.customer_name;
-          this.receive_form.staff_name = row.staff.name;
+          console.log(row);
+          this.receive_form = {
+            identity: row.identity || '暂无',
+            customer_name: row.customer.customer_name || '暂无',
+            pay_type: '',
+            pay_date: row.pay_date || '暂无',
+            account_id: '',
+            amount_receivable: row.amount_receivable || '暂无',
+            amount_received: '',
+            balance: row.balance || '暂无',
+            complete_date: '',
+            staff_name: row.staff.name || '暂无',
+            remark: '',
+          }
+          // this.receive_form = row;
+          // this.receive_form.customer_name = row.customer.customer_name;
+          // this.receive_form.staff_name = row.staff.name;
         }
         if (key === 'record') {
           this.record_visible = true;
@@ -2425,8 +2570,8 @@
             endTag = val.tagDate[1];
           }
           if (val.gatherDate) {
-            endRange = val.gatherDate[0];
-            startRange = val.gatherDate[1];
+            startRange = val.gatherDate[0];
+            endRange = val.gatherDate[1];
           }
 
           let paramsData = {
@@ -2636,64 +2781,64 @@
        */
       // 获取银行流水列表（lili）
       getBankFlowList() {
-        this.$http.get(`${globalConfig.temporary_server}bank_batch_count`,this.bankListPageParams).then(res => {
-          if(res.code === 200){
-              this.bankTabelList=res.data.data;
-              this.bankListcount= res.data.count;   
+        this.$http.get(`${globalConfig.temporary_server}bank_batch_count`, this.bankListPageParams).then(res => {
+          if (res.code === 200) {
+            this.bankTabelList = res.data.data;
+            this.bankListcount = res.data.count;
           }
         });
       },
       // 银行列表分页
-      handleChangebankListPage(page){
-        this.bankListPageParams.page=page;
+      handleChangebankListPage(page) {
+        this.bankListPageParams.page = page;
         this.getBankFlowList();
       },
       // 点击银行列表中的某一条
-      tableClickBankRow(row){
-        this.bank_list_row=row;
-        this.bankflow_detail_visible=true;
+      tableClickBankRow(row) {
+        this.bank_list_row = row;
+        this.bankflow_detail_visible = true;
         this.getBankFlowDetail();
       },
       // 某一批次的银行流水(详情)
       getBankFlowDetail() {
-        this.bankDetailPageParams['batch_flow_code']=this.bank_list_row.id;
-         this.$http.get(`${globalConfig.temporary_server}/bank_fund_flow`,this.bankDetailPageParams).then(res => {
-           if(res.code === 200){
-              this.bankDetailList = res.data.data;
-              this.bankDetailcount = res.data.count;
-           }
-         });
+        this.bankDetailPageParams['batch_flow_code'] = this.bank_list_row.id;
+        this.$http.get(`${globalConfig.temporary_server}/bank_fund_flow`, this.bankDetailPageParams).then(res => {
+          if (res.code === 200) {
+            this.bankDetailList = res.data.data;
+            this.bankDetailcount = res.data.count;
+          }
+        });
       },
       // 银行详情分页
-      handleChangebankDetailPage(page){
+      handleChangebankDetailPage(page) {
         this.bankDetailPageParams.page = page;
         this.getBankFlowDetail();
       },
       // 导入图标的点击事件
-      openBankFlowTempalte(){
-        this.import_template.doc_id=[];
-        this.import_template.bank_template='';
-        this.bankflow_upload_visible=true;
+      openBankFlowTempalte() {
+        this.import_template.doc_id = [];
+        this.import_template.bank_template = '';
+        this.bankflow_upload_visible = true;
       },
       //获取银行模板
       getBankTemplateFun() {
-         let params={
-           page:1,
-           limit:999  //传100,可以返回所有数据
-         };
-         this.$http.get(`${globalConfig.temporary_server}/bank_template`,params).then(res => {
-           if(res.code === 200){
-             this.bankTemplateData=res.data.data;
-           }else{
-              
-           }
-         });
+        let params = {
+          page: 1,
+          limit: 999  //传100,可以返回所有数据
+        };
+        this.$http.get(`${globalConfig.temporary_server}/bank_template`, params).then(res => {
+          if (res.code === 200) {
+            this.bankTemplateData = res.data.data;
+          } else {
+
+          }
+        });
       },
       //导入银行流水
       uploadBankFundFlowFun() {
-        this.$http.post(`${globalConfig.temporary_server}/bank_fund_flow?`,this.import_template).then(res => {
+        this.$http.post(`${globalConfig.temporary_server}/bank_fund_flow?`, this.import_template).then(res => {
           if (res.code === 200) {
-            this.bankflow_upload_visible=false;
+            this.bankflow_upload_visible = false;
             this.getBankFlowList();
             this.$LjNotify('success', {
               title: '成功',
@@ -2701,7 +2846,7 @@
               subMessage: '',
             });
           } else {
-             this.bankflow_upload_visible=false;
+            this.bankflow_upload_visible = false;
             this.$LjNotify('error', {
               title: '失败',
               message: res.msg,
@@ -2711,13 +2856,13 @@
         });
       },
       // 根据账户类型查找账户
-      getBankAccount(){
-          let params={
-            cate:this.bank_account_type,
-            limit: 999,
-            page: 1,
-          }
-          this.$http.get(globalConfig.temporary_server + "account", params).then(res => {
+      getBankAccount() {
+        let params = {
+          cate: this.bank_account_type,
+          limit: 999,
+          page: 1,
+        }
+        this.$http.get(globalConfig.temporary_server + "account", params).then(res => {
           // debugger
           if (res.code === 200) {
             this.BankAccountLists = res.data.data;
@@ -2726,10 +2871,8 @@
           console.log(err);
         })
       }
-    
-     
 
-       
+
     },
   }
 </script>
@@ -2828,6 +2971,19 @@
         color: #FFFFFF;
       }
 
+    }
+  }
+</style>
+<style lang="scss">
+  #theme_name.theme1 {
+    #gathering {
+      .el-table__body {
+        .el-table__row {
+          .cell {
+            white-space: pre-wrap;
+          }
+        }
+      }
     }
   }
 </style>

@@ -9,7 +9,7 @@
                           @click.stop="del(item)">删除</i></span>
           </div>
           <div class="video-box-middle">
-            <div class="video-border" style="pointer-events: none">
+            <div class="video-border">
               <div></div>
             </div>
             <div class="video-inner">
@@ -45,23 +45,24 @@
       </div>
     </footer>
 
-    <!--编辑视频or新增视频-->
+    <!--编辑视频or增加视频-->
     <lj-dialog :visible.sync="visible" :size="{width: 440 + 'px',height: 400 + 'px'}">
       <div class="dialog_container borderNone">
         <div class="dialog_header">
-          <h3>{{flag===1?'编辑视频':flag===2?'新增视频':flag===3?'视频详情':''}}</h3>
+          <h3>{{flag===1?'编辑视频':flag===2?'增加视频':flag===3?'视频详情':''}}</h3>
         </div>
         <div class="dialog_main">
-          <el-form ref="form" :model="form" label-width="80px" size="small">
-            <el-form-item label="视频名称">
+          <el-form ref="form" :model="form" :rules="rules" label-width="80px" size="small">
+            <el-form-item label="视频名称" prop="name" required>
               <el-input placeholder="必填" v-model="form.name" size="small" :disabled="flag===3"></el-input>
             </el-form-item>
-            <el-form-item label="可见岗位">
-              <post-choose title="必选" width="260" v-model="form.position" :disabled="flag===3"></post-choose>
+            <el-form-item label="可见岗位" prop="position" required>
+              <post-choose title="必选" width="300" v-model="form.position" :disabled="flag===3"></post-choose>
             </el-form-item>
 
-            <el-form-item label="视频附件">
-              <lj-upload class="upload-offset" :disabled="flag===3" :limit-easy="['video']" v-model="form.file_info" :max-size="1" size="40"></lj-upload>
+            <el-form-item label="视频附件" prop="file_info" required>
+              <lj-upload class="upload-offset" :disabled="flag===3" :limit-easy="['video']" v-model="form.file_info"
+                         :max-size="1024" :num="1" size="40" :download="false"></lj-upload>
             </el-form-item>
           </el-form>
         </div>
@@ -90,6 +91,20 @@
     },
     data() {
       return {
+
+        rules: {
+          name: [
+            {required: true, message: '请输入视频名称', trigger: ['blur', 'change']},
+            {min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: 'blur'}
+          ],
+          position: [
+            {required: true, message: '请选择可见岗位', trigger: ['blur', 'change']},
+          ],
+          file_info: [
+            {required: true, message: '请选择视频附件', trigger: ['blur', 'change']},
+          ],
+        },
+
         url: globalConfig.leJiaCollege_server,
         leJiaCollegeMenu,
         count: 0,
@@ -224,36 +239,38 @@
       },
       //提交
       submit(type) {
-        let paramsForm = {
-          name: this.form.name,
-          file_id: this.form.file_info[0],
-          position: this.form.position
-        };
-        if (type === 1) {
-          this.$http.put(this.url + '/api/video/study/' + this.current_item.id, paramsForm).then(res => {
-            this.callbackSuccess(res);
-            this.visible = false;
-            this.current_item = '';
-          })
-        } else if (type === 2) {
-          this.$http.post(this.url + '/api/video/study', paramsForm).then(res => {
-            this.callbackSuccess(res);
-            this.visible = false;
-            this.current_item = '';
-          })
-        }
+        this.$refs['form'].validate(valid => {
+          if (valid) {
+            let paramsForm = {
+              name: this.form.name,
+              file_id: this.form.file_info[0],
+              position: this.form.position
+            };
+            if (type === 1) {
+              this.$http.put(this.url + '/api/video/study/' + this.current_item.id, paramsForm).then(res => {
+                this.callbackSuccess(res);
+                this.visible = false;
+                this.current_item = '';
+              })
+            } else if (type === 2) {
+              this.$http.post(this.url + '/api/video/study', paramsForm).then(res => {
+                this.callbackSuccess(res);
+                this.visible = false;
+                this.current_item = '';
+              })
+            }
+          }
+        });
       },
 
       //删除
       del(row) {
-        this.$LjConfirm({icon:'delete'}).then(()=> {
+        this.$LjConfirm({icon: 'delete', content: '确定删除该视频吗？'}).then(() => {
           this.$http.delete(this.url + '/api/video/study/' + row.id,).then(res => {
-            //this.callbackSuccess(res);
             this.$LjNotifyEasy(res);
           })
         });
       },
-
 
       //获取视频列表
       getDataList() {
@@ -270,12 +287,12 @@
         })
       },
 
-      onMouseIn: function (index) {
+      onMouseIn(index) {
         this.is_show = true; //鼠标移入显示
         this.current = index;
       },
 
-      onMouseOut: function (index) {
+      onMouseOut() {
         this.is_show = false; //鼠标移出隐藏
         this.current = null;
       },
@@ -285,10 +302,12 @@
 
 <style scoped lang="scss">
   @import "../../../assets/scss/leJiaCollege/videoLearning/index.scss";
+
   @mixin leJiaCollegeImg($n, $m) {
     $url: '../../../assets/image/leJiaCollege/' + $n + '/' + $m;
     @include bgImage($url);
   }
+
   #theme_name.theme1 {
     #videoLearning {
       .video-lists {
@@ -303,6 +322,7 @@
                 }
               }
             }
+
             .video-box-middle {
               &:hover {
                 + div {
@@ -311,11 +331,14 @@
                   }
                 }
               }
+
               .video-border {
                 > div {
                   @include leJiaCollegeImg('theme1', 'video-border-grey.png');
+
                   &:hover {
                     @include leJiaCollegeImg('theme1', 'video-border-red.png');
+
                     + div {
                       div {
                         span {
@@ -326,6 +349,7 @@
                   }
                 }
               }
+
               .video-inner {
                 div {
                   span {
@@ -334,6 +358,7 @@
                 }
               }
             }
+
             .video-box-bottom {
               span:nth-child(3) {
                 .view {

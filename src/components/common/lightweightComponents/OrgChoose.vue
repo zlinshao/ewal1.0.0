@@ -1,11 +1,13 @@
 <template>
   <div id="orgChoose" :style="{width:`${this.dropdownListWidth}px`}">
     <div :title="inputContent" class="input-container">
-      <el-input :size="size" :disabled="disabled" readonly @focus="departModule = true" v-model="inputContent" :placeholder="title"></el-input>
+      <el-input :size="size" :disabled="disabled" readonly @focus="departModule = true" v-model="inputContent"
+                :placeholder="title"></el-input>
       <p v-if="showIcon" class="icons organization"></p>
     </div>
 
-    <DepartOrgan :initial="initial_value" :module="departModule" :organ-data="organData" @close="hiddenOrgan"></DepartOrgan>
+    <DepartOrgan :initial="initial_value" :module="departModule" :organ-data="organData"
+                 @close="hiddenOrgan"></DepartOrgan>
   </div>
 </template>
 
@@ -16,11 +18,11 @@
   export default {
     name: "OrgChoose",
     //props: ['value', 'width', 'num', 'title'],
-    props:{
-      value:{},
-      width:{},
-      num:{},
-      title:{},
+    props: {
+      value: {},
+      width: {},
+      num: {},
+      title: {},
       size: {
         default() {
           return null;
@@ -48,10 +50,10 @@
         url: globalConfig.humanResource_server,
         departModule: false,
         organData: {
-          num:Infinity,
+          num: Infinity,
         },// 组织架构配置 选择数量 num
         inputContent: '',
-        org_name:[],
+        org_name: [],
         dropdownListWidth: 320,
         initial_value: null,
       }
@@ -60,19 +62,21 @@
       value: {
         handler(val, oldVal) {
           this.initial_value = val;
-          if(val && !Array.isArray(val)) {
+          if (val && !Array.isArray(val)) {
             val = [val];
           }
           if (val && val.constructor === Array && val.length > 0) {
             let params = {
-              org_id:val,
+              org_id: val,
               is_enable: 1,
             };
-            this.$http.get(`${this.url}organization/organization`,params).then(res=> {
-              this.org_name = _.map(res.data.data,'name');
-              this.inputContent = this.org_name.join(',');
+            this.$http.get(`${this.url}organization/organization`, params).then(res => {
+              if (res.data) {
+                this.org_name = _.map(res.data.data, 'name');
+                this.inputContent = this.org_name.join(',');
+              }
             });
-          }else {
+          } else {
             this.org_name = [];
             this.inputContent = '';
           }
@@ -80,12 +84,12 @@
         immediate: true,
       },
       initial_value: {
-        handler(val,oldVal) {
-          if(val && !Array.isArray(val)) {
+        handler(val, oldVal) {
+          if (val && !Array.isArray(val)) {
             this.initial_value = [val];
           }
         },
-        immediate:true,
+        immediate: true,
       },
       width: {
         handler(val, oldVal) {
@@ -99,7 +103,7 @@
         handler(val, oldVal) {
           if (val) {
             this.organData.num = parseInt(val);
-          }else {
+          } else {
             this.organData.num = Infinity;
           }
         },
@@ -112,7 +116,7 @@
         this.departModule = false;
         if (ids !== 'close') {
           this.inputContent = names;
-          if(ids.length == 1 && this.dataType =='int') {
+          if (ids.length == 1 && this.dataType == 'int') {
             ids = ids[0];
           }
           this.$emit('input', ids);

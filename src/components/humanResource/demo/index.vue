@@ -181,7 +181,7 @@
       },
 
       //获取组织架构数据
-      async getOrganizationData(parent_id = 1, currentData) {
+      async getOrganizationData(parent_id = this.$storage.get('user_info').company_info?.company_id, currentData) {
         this.count++;
         let temp = currentData;
         let params = {

@@ -5,7 +5,7 @@
     <!--列表-->
     <el-table
       :data="lordLists"
-      :height="this.mainListHeight() + 'px'"
+      :height="this.mainListHeight(46) + 'px'"
       highlight-current-row
       header-row-class-name="tableHeader"
       :cell-class-name="tableCell"

@@ -9,6 +9,9 @@
       </div>
       <div class="items-center listTopRight" v-show="!action_visible">
         <!--<div class="icons upLoad"></div>-->
+         <el-tooltip content="批量打款" placement="bottom" :visible-arrow="false">
+          <div class="icons allInsert" @click="openPaymentBulk"></div>
+        </el-tooltip>
         <el-tooltip content="批量入账" placement="bottom" :visible-arrow="false">
           <div class="icons allInsert" @click="openBatchEntry"></div>
         </el-tooltip>
@@ -27,14 +30,14 @@
         <!--<span class="check-count">已选中 <i>{{multipleSelection.length}}</i> 项</span>-->
 
         <span class="action-bar-name">
-                    <span v-for="(item,index) in btnData"
-                          v-show="item.show"
-                          :key="index"
-                          :class="item.class"
-                          @click="handleClickBtn(item.methods,current_row,index,item.key)">
-                        {{item.content}}
-                    </span>
-                </span>
+          <span v-for="(item,index) in btnData"
+                v-show="item.show"
+                :key="index"
+                :class="item.class"
+                @click="handleClickBtn(item.methods,current_row,index,item.key)">
+            {{item.content}}
+          </span>
+        </span>
       </div>
       <div class="action-bar-right">
         <span style="margin-right: 20px">应付金额（元） <i class="edit">{{ payableSum }}</i></span>
@@ -42,10 +45,15 @@
         <span style="margin-right: 20px">剩余款项（元） <i class="delete">{{ balanceSum }}</i></span>
       </div>
     </div>
-    <div class="mainListTable changeChoose" :style="{'height': this.mainListHeight() + 'px'}">
+    <div class="mainListTable changeChoose" :style="{'height': mainListHeight(46) + 'px'}">
       <el-table
+        :empty-text='tableStatus'
+        v-loading="tableLoading"
+        element-loading-text="拼命加载中"
+        element-loading-spinner="el-icon-loading"
+        element-loading-background="rgba(255, 255, 255, 0)"
         :data="tableLists"
-        :height="this.mainListHeight(30) + 'px'"
+        :height="mainListHeight(76) + 'px'"
         highlight-current-row
         header-row-class-name="tableHeader"
         @selection-change="selectionChange"
@@ -73,8 +81,7 @@
           show-overflow-tooltip
           align="center"
           prop="remarks"
-          label="备注"
-        >
+          label="备注">
           <template slot-scope="scope">
             <div style="cursor: pointer;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;"
                  v-html="scope.row.remarks" @click="openRemarksList(scope.row)"></div>
@@ -122,14 +129,15 @@
           <el-form :model="formData" label-width="80px">
             <el-form-item prop="name" label="应付金额">
               <el-input placeholder="请输入" v-model="formData.amount_payable"
-                        :disabled="current_row.is_rank===1?true:false"></el-input>
+                        :disabled="current_row.is_rank==1?true:false"></el-input>
             </el-form-item>
           </el-form>
         </div>
         <div class="dialog_footer">
-          <el-button type="danger" size="small" @click="handleOkPay(current_row,formData.amount_payable)">确定
+          <el-button type="danger" size="small" v-if="current_row.is_rank==1?false:true"
+                     @click="handleOkPay(current_row,formData.amount_payable)">确定
           </el-button>
-          <el-button type="info" size="small" @click="pay_visible = false;current_row = ''">取消</el-button>
+          <el-button type="info" size="small" @click="pay_visible = false">取消</el-button>
         </div>
       </div>
     </lj-dialog>
@@ -150,7 +158,7 @@
         <div class="dialog_footer">
           <el-button type="danger" size="small" @click="handleOkSubject(current_row,formData.subject_id)">确定
           </el-button>
-          <el-button type="info" size="small" @click="show_subject = false;current_row = ''">取消</el-button>
+          <el-button type="info" size="small" @click="show_subject = false">取消</el-button>
         </div>
       </div>
     </lj-dialog>
@@ -174,7 +182,7 @@
           <el-button type="danger" size="small"
                      @click="handleOkCompleteData(current_row)">确定
           </el-button>
-          <el-button type="info" size="small" @click="complete_visible = false;current_row = ''">取消
+          <el-button type="info" size="small" @click="complete_visible = false">取消
           </el-button>
         </div>
       </div>
@@ -199,7 +207,7 @@
         <div class="dialog_footer">
           <el-button type="danger" size="small" @click="handleOkPayDate(current_row)">确定
           </el-button>
-          <el-button type="info" size="small" @click="payData_visible = false;current_row = ''">取消</el-button>
+          <el-button type="info" size="small" @click="payData_visible = false">取消</el-button>
         </div>
       </div>
     </lj-dialog>
@@ -220,10 +228,8 @@
               </el-select>
             </el-form-item>
             <el-form-item label="付款账户">
-              <el-select placeholder="请选择" v-model="transferForm.account_id"
-                         :disabled="is_disabled">
-                <el-option v-for="(item,index) in accountLists" :label="item.name"
-                           :value="item.id"
+              <el-select placeholder="请选择" v-model="transferForm.account_id">
+                <el-option v-for="(item,index) in accountLists" :label="item.name" :value="item.id"
                            :key="index"></el-option>
               </el-select>
             </el-form-item>
@@ -246,18 +252,12 @@
                         type="textarea"></el-input>
             </el-form-item>
             <el-form-item label="付款时间">
-              <el-date-picker
-                v-model="transferForm.pay_date" type="date">
-              </el-date-picker>
+              <el-date-picker v-model="transferForm.pay_date" type="date" placeholder="请选择"></el-date-picker>
             </el-form-item>
-
             <el-form-item label="补齐时间">
-              <el-date-picker
-                v-model="transferForm.complete_date" type="date">
-              </el-date-picker>
+              <el-date-picker v-model="transferForm.complete_date" type="date" placeholder="请选择"></el-date-picker>
             </el-form-item>
           </el-form>
-
         </div>
         <div class="dialog_footer">
           <el-button type="danger" size="small" @click="handleOkTransfer(current_row)">确定
@@ -267,11 +267,8 @@
       </div>
     </lj-dialog>
 
-
     <!--应收款项备注列表dialog-->
-    <lj-dialog :visible.sync="remarks_dialog_visible"
-               :size="'small'"
-    >
+    <lj-dialog :visible.sync="remarks_dialog_visible" :size="'small'">
       <div class="dialog_container">
         <div class="dialog_header flex">
           <h3>备注</h3>
@@ -281,8 +278,7 @@
           <div class="address">{{tableSettingData.remarks.current_address}}</div>
           <div class="record">
             <el-table
-              :data="tableSettingData.remarks.tableData"
-            >
+              :data="tableSettingData.remarks.tableData">
               <el-table-column label="备注时间" prop="create_time" align="center"></el-table-column>
               <el-table-column label="备注内容" show-overflow-tooltip prop="content" align="center"
                                width="200"></el-table-column>
@@ -303,7 +299,6 @@
         </div>-->
       </div>
     </lj-dialog>
-
 
     <!--新增备注-->
     <lj-dialog
@@ -328,7 +323,6 @@
       </div>
     </lj-dialog>
 
-
     <!--新增应付款项-->
     <lj-dialog :visible="add_visible" :size="{width: 600 + 'px',height: 700 + 'px'}" @close="add_visible = false">
       <div class="dialog_container">
@@ -336,7 +330,6 @@
           <h3>新增</h3>
         </div>
         <div class="dialog_main borderNone">
-
           <el-form :model="ruleForm" label-width="80px">
             <el-form-item prop="name" label="客户名称">
               <el-input placeholder="请点击选择客户名称" v-model="ruleForm.customer_name"
@@ -371,19 +364,15 @@
               </el-select>
             </el-form-item>
             <el-form-item prop="name" label="付款时间">
-              <el-date-picker
-                v-model="ruleForm.pay_date" type="date" placeholder="请输入">
-              </el-date-picker>
+              <el-date-picker v-model="ruleForm.pay_date" type="date" placeholder="请输入"></el-date-picker>
             </el-form-item>
             <el-form-item prop="name" label="详情">
-              <el-input placeholder="请输入" v-model="ruleForm.description"
-                        type="textarea"></el-input>
+              <el-input placeholder="请输入" v-model="ruleForm.description" type="textarea"></el-input>
             </el-form-item>
             <el-form-item prop="name" label="备注">
               <el-input placeholder="请输入" v-model="ruleForm.remark" type="textarea"></el-input>
             </el-form-item>
           </el-form>
-
         </div>
         <div class="dialog_footer">
           <el-button type="danger" size="small" @click="handleOkAdd()">确定</el-button>
@@ -392,8 +381,7 @@
       </div>
     </lj-dialog>
     <!--删除lord-->
-    <lj-dialog :visible="delete_visible" :size="{width: 400 + 'px',height: 250 + 'px'}"
-               @close="delete_visible = false">
+    <lj-dialog :visible="delete_visible" :size="{width: 400 + 'px',height: 250 + 'px'}" @close="delete_visible = false">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>删除</h3>
@@ -403,17 +391,16 @@
         </div>
         <div class="dialog_footer">
           <el-button type="danger" size="small" @click="handleOkDel(current_row)">确定</el-button>
-          <el-button type="info" size="small" @click="delete_visible = false;current_row = ''">取消</el-button>
+          <el-button type="info" size="small" @click="delete_visible = false">取消</el-button>
         </div>
       </div>
     </lj-dialog>
     <!--科目-->
     <lj-subject :visible="subject_visible" @close="subject_visible = false" @confirm="handleConfirmSubject"
                 style="z-index:1000"></lj-subject>
-
     <!--回滚-->
     <lj-dialog :visible="recall_visible" :size="{width: 900 + 'px',height: 560 + 'px'}"
-               @close="recall_visible = false;current_row = ''">
+               @close="recall_visible = false">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>回滚</h3>
@@ -423,13 +410,11 @@
             :data="running_account_record"
             :row-class-name="tableChooseRow"
             header-row-class-name="tableHeader"
-            @selection-change="handleSelectionChange"
-          >
+            @selection-change="handleSelectionChange">
             <el-table-column
               type="selection"
               width="55">
             </el-table-column>
-
             <el-table-column align="center" label="ID" prop="id">
             </el-table-column>
             <el-table-column align="center" label="明细" prop="desc">
@@ -438,7 +423,7 @@
         </div>
         <div class="dialog_footer">
           <el-button type="danger" size="small" @click="handleOkRecall">确定</el-button>
-          <el-button type="info" size="small" @click="recall_visible = false;current_row = '';">取消</el-button>
+          <el-button type="info" size="small" @click="recall_visible = false;">取消</el-button>
         </div>
       </div>
     </lj-dialog>
@@ -447,7 +432,7 @@
 
     <!--批量入账-->
     <lj-dialog :visible="batchEntry_visible" :size="{width: 900 + 'px',height: 560 + 'px'}"
-               @close="batchEntry_visible = false;current_row = ''">
+               @close="batchEntry_visible = false">
       <div class="dialog_container">
         <div class="dialog_header justify-bet">
           <h3>批量入账</h3>
@@ -463,8 +448,7 @@
             :data="batchEntryData"
             :row-class-name="tableChooseRow"
             header-row-class-name="tableHeader"
-            @selection-change="handleSelectionChange"
-          >
+            @selection-change="handleSelectionChange">
             <el-table-column align="center" label="操作时间" prop="create_time"></el-table-column>
             <el-table-column align="center" label="入账账户" prop="account_snapshot[0].name"></el-table-column>
             <el-table-column align="center" label="初始金额" prop="account_snapshot[0].value"></el-table-column>
@@ -486,9 +470,51 @@
         </div>
       </div>
     </lj-dialog>
-
+  <!-- 批量打款 -->
+<lj-dialog :visible="paymentbulk_visible" :size="{width: 900 + 'px',height: 560 + 'px'}"
+               @close="paymentbulk_visible = false;paymentData=[];paymentDataCount=0;">
+      <div class="dialog_container">
+        <div class="dialog_header justify-bet">
+          <h3>批量打款</h3>
+          <!-- <h3 class="batchEntry-icon">
+            <i class="" v-if="$storage.get('VALIDATE_PERMISSION')['Batch-Payable-Export']"
+               @click="out_account_visible = true"></i>
+            <i class="" v-if="$storage.get('VALIDATE_PERMISSION')['Batch-Payable-Import']"
+               @click="import_account_visible = true"></i>
+          </h3> -->
+          <h4 style="float:right">共{{paymentDataCount}}条记录</h4>
+        </div>
+        <div class="dialog_main changeChoose">
+          <el-table
+            :data="paymentData"
+            v-loading="paymenttableLoading"
+            element-loading-text="拼命加载中"
+            element-loading-spinner="el-icon-loading"
+            element-loading-background="rgba(255, 255, 255, 0)"
+            header-row-class-name="tableHeader"
+          >
+            <el-table-column align="center" label="付款账户" prop="customer_account_num"></el-table-column>
+            <el-table-column align="center" label="付款账户开户行" prop="customer_account_bank"></el-table-column>
+            <el-table-column align="center" label="付款账户开户人" prop="customer_account_owner"></el-table-column>
+            <el-table-column align="center" label="科目信息" prop="subject.title">
+              <template slot-scope="scope">
+                <span>{{(scope.row.subject && scope.row.subject.parent_subject && scope.row.subject.parent_subject.title) ? 
+                  scope.row.subject.parent_subject.title+'-'+scope.row.subject.title : scope.row.subject && scope.row.subject.title ? 
+                  scope.row.subject.title : ""}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column align="center" label="地址 " prop="customer.address"></el-table-column>
+            <el-table-column align="center" label="剩余款项" prop="balance"></el-table-column>
+          </el-table>
+        </div>
+        <div class="dialog_footer">
+          <el-button size="mini" type="danger" @click="paymentSubmit">提交</el-button>
+          <!-- <el-button size="mini"  @click="outAccountCtrl">提交</el-button> -->
+          <el-button size="mini" type="info" @click="paymentbulk_visible=false;paymentData=[];paymentDataCount=0;">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
     <!--批量入账导出-->
-
     <lj-dialog :visible="out_account_visible" @close="cancelOutAccount" :size="{width: 450 + 'px',height: 500 + 'px'}">
       <div class="dialog_container">
         <div class="dialog_header">
@@ -567,12 +593,11 @@
     components: {SearchHigh, LjDialog, FinMenuList, LjSubject, CustomerLists, Customer, Upload},
     data() {
       return {
-
         url: globalConfig.temporary_server,
-
-
+        tableStatus: ' ',
+        tableLoading: false,
+        paymenttableLoading: false,
         is_table_choose: '',
-
         payableSum: '',
         paidSum: '',
         balanceSum: '',
@@ -824,8 +849,12 @@
         customerModule: false,//
 
         batchEntry_visible: false,//批量入账
+        paymentbulk_visible: false, //批量打款
         batchEntryData: [],
         batchEntryCount: 0,
+        paymentData: [],
+        paymentDataCount:0,
+        paymentRequest_id: '',
         batchEntryParams: {
           limit: 12,
           page: 1,
@@ -839,7 +868,7 @@
     },
     mounted() {
       this.getPaymentList();
-
+      this.getAccount(1);
     },
     activated() {
     },
@@ -848,6 +877,14 @@
     },
     computed: {},
     methods: {
+      hiddenModules() {
+        this.action_visible = false;
+        this.is_table_choose = '';
+        this.current_row = '';
+        this.paymentDataCount=0;
+        this.paymentData=[];
+        this.getPaymentList();
+      },
       importOk() {
         this.$http.post(globalConfig.temporary_server + 'batch_payable/import', {doc_id: this.import_file}).then(res => {
           if (res.code === 200) {
@@ -869,6 +906,27 @@
           if (res.code === 200) {
             window.location.href = res.data.url;
             this.cancelOutAccount();
+          } else {
+            this.$LjNotify('warning', {
+              title: '失败',
+              message: res.msg
+            })
+          }
+        })
+      },
+      //批量打款提交
+      paymentSubmit() {
+        
+        this.$http.post(globalConfig.temporary_server + 'account_payable/batchPayFund', {request_id: this.paymentRequest_id}).then(res => {
+          if (res.code === 200) {
+            this.$LjNotify('success', {
+              title: '成功',
+              message: res.msg
+            });
+            this.request_id='';
+            this.paymentData=[];
+            this.paymentDataCount=0;
+            this.paymentbulk_visible=false;
           } else {
             this.$LjNotify('warning', {
               title: '失败',
@@ -907,6 +965,11 @@
         this.batchEntry_visible = true;
         this.getBatchEntryList();
       },
+      //批量打款
+      openPaymentBulk() {
+        this.paymentbulk_visible = true;
+        this.paymentList();
+      },
       //获取应付批量入账列表
       getBatchEntryList() {
         if (!this.validatePermission('Batch-Payable-List')) return;
@@ -917,6 +980,25 @@
           } else {
             this.batchEntryData = [];
             this.batchEntryCount = 0;
+          }
+        }).catch(err => {
+          console.log(err);
+        })
+      },
+      //获取应付批量打款列表
+      paymentList() {
+        if (!this.validatePermission('Payable-List')) return;
+        this.params.disable_page=1;
+         this.paymenttableLoading = true;
+        this.$http.get(globalConfig.temporary_server + "account_payable", this.params).then(res => {
+          this.paymenttableLoading = false;
+          if (res.code === 200) {
+            this.paymentData = res.data.data;
+            this.paymentDataCount=res.data.count;
+            this.paymentRequest_id=res.request_id;
+          } else {
+            this.paymentDataCount=0;
+            this.paymentData = [];
           }
         }).catch(err => {
           console.log(err);
@@ -990,7 +1072,7 @@
         this.$http.put(globalConfig.temporary_server + "account_payable/edit_pay_amount/" + row.id, {amount_payable: val}).then(res => {
           this.callbackSuccess(res);
           this.pay_visible = false;
-          this.current_row = '';
+          this.hiddenModules();
         }).catch(err => {
           console.log(err);
         })
@@ -1029,10 +1111,7 @@
           this.current_row = '';*/
           this.$LjMessageEasy(res, () => {
             this.show_subject = false;
-            this.action_visible = false;
-            this.is_table_choose = '';
-            this.current_row = '';
-
+            this.hiddenModules();
           });
         });
       },
@@ -1046,7 +1125,7 @@
           this.callbackSuccess(res, function () {
           });
           this.complete_visible = false;
-          this.current_row = '';
+          this.hiddenModules();
         }).catch(err => {
           console.log(err);
         })
@@ -1066,10 +1145,12 @@
         })
       },
 
-      getAccount() {//获取账户字典
+      getAccount(val) {//获取账户字典
         this.accountLists = [];
         this.out_form.account = [];
+        this.transferForm.account_id = '';
         this.out_form.account_name = '';
+        this.params.cate = val;
         this.$http.get(globalConfig.temporary_server + "account", this.params).then(res => {
           if (res.code === 200) {
             this.accountLists = res.data.data;
@@ -1093,10 +1174,8 @@
         this.$http.put(globalConfig.temporary_server + "account_payable/transfer/" + row.id, paramsForm).then(res => {
           this.callbackSuccess(res);
           if (res.code === 200) {
-            this.is_table_choose = '';
-            this.action_visible = false;
             this.transfer_visible = false;
-            this.current_row = '';
+            this.hiddenModules();
           }
         }).catch(err => {
           console.log(err);
@@ -1119,9 +1198,7 @@
               subMessage: '',
             });
             this.recall_visible = false;
-            this.action_visible = false;
-            this.is_table_choose = '';
-            this.current_row = '';
+            this.hiddenModules();
             this.getPaymentList();
           } else {
             this.$LjNotify('error', {
@@ -1192,13 +1269,24 @@
         }
         if (key === "transfer_visible") {//应付入账
           this.transfer_visible = true;
-          console.log(row);
-          this.transferForm = row;
+          console.log(row)
+          this.transferForm = {
+            customer_account_num: row.customer_account_num,
+            customer_account_type: row.customer_account_type,
+            account_id: '',
+            amount_paid: '',
+            remark: '',
+            pay_date: '',
+            complete_date: '',
+          };
         }
       },
       getPaymentList() {//加载应付款项列表
+        this.tableStatus = ' ';
+        this.tableLoading = true;
         if (!this.validatePermission('Payable-List')) return;
         this.showLoading(true);
+        this.tableLoading = false;
         this.$http.get(globalConfig.temporary_server + 'account_payable', this.params).then(async res => {
           this.showLoading(false);
           if (res.code === 200) {
@@ -1238,6 +1326,7 @@
             this.paidSum = res.data.paidSum;
             this.balanceSum = res.data.balanceSum;
           } else {
+            this.tableStatus = '暂无相关数据';
             this.tableLists = [];
             this.count = 0;
             this.balanceSum = 0;
@@ -1245,6 +1334,7 @@
             this.balanceSum = 0;
           }
         }).catch(err => {
+          this.tableStatus = '暂无相关数据';
           console.log(err);
         })
       },
@@ -1308,6 +1398,10 @@
           for (let item of Object.keys(this.params)) {
             this.params[item] = val[item];
           }
+          if (val.gatherDate) {
+            this.params.date_min = val.gatherDate[0];
+            this.params.date_max = val.gatherDate[1];
+          }
           this.params.staff_id = val.staff[0];
           this.params.department_id = val.department[0];
           this.getPaymentList();
@@ -1350,6 +1444,19 @@
         }
       }
 
+    }
+  }
+</style>
+<style lang="scss">
+  #theme_name.theme1 {
+    #payment {
+      .el-table__body {
+        .el-table__row {
+          .cell {
+            white-space: pre-wrap;
+          }
+        }
+      }
     }
   }
 </style>

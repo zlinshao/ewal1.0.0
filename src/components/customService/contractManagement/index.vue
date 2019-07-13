@@ -26,7 +26,11 @@
           <el-table-column label="合同编号" prop="contract_number" align="center"></el-table-column>
           <el-table-column show-overflow-tooltip label="地址" prop="house_name" align="center"></el-table-column>
           <el-table-column show-overflow-tooltip label="合同性质" prop="type" align="center"></el-table-column>
-          <!--<el-table-column label="所属公司" prop="" align="center"></el-table-column>-->
+          <el-table-column label="合同状态" prop="contract_status" align="center">
+            <!-- <template slot-scope="scope">
+                <span>{{scope.row.contract_status===1?'生效中':scope.row.contract_status===2?'快到期':scope.row.contract_status===3?'已过期':scope.row.contract_status===4?'已结束':''}}</span>
+            </template> -->
+          </el-table-column>
           <el-table-column show-overflow-tooltip label="收房价格" prop="month_price" align="center">
             <template slot-scope="scope">
               <div v-if="scope.row.month_price && scope.row.month_price.length > 0">
@@ -285,7 +289,25 @@
         </div>
       </div>
     </lj-dialog>
-
+<!--发送短信-->
+    <lj-dialog :visible.sync="send_visible" :size="{width: 450 + 'px',height: 270 + 'px'}" @close="send_visible=false;">
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>发送短信</h3>
+        </div>
+        <div class="dialog_main borderNone">
+          <el-form label-width="100px" class="showPadding">
+            <el-form-item label="手机号">
+              <el-input v-model="send_phone" placeholder="请输入"></el-input>
+            </el-form-item>
+          </el-form>
+        </div>
+        <div class="dialog_footer">
+          <el-button type="danger" size="small" @click="handleSend">确定</el-button>
+          <el-button type="info" size="small" @click="send_phone='';send_visible=false">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
     <!--合同详情-->
     <lj-dialog :visible.sync="contract_detail_visible" :size="{width: 1200 + 'px',height: 800 + 'px'}" @close="handleCloseDetail">
       <div class="dialog_container contract-detail">
@@ -462,12 +484,15 @@
                 </el-col>
                 <el-col  v-if="contractDetail.e_contract" :span="8">
                   <el-form-item label="电子合同">
-                    <span class="form-item-content"><a target="_blank" style="color: #1069FF" :href="contractDetail.e_contract">链接</a></span>
+                    <span class="form-item-content"><a target="_blank" style="color: #1069FF" :href="contractDetail.e_contract">链接</a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank" style="color: #1069FF" @click="showSend(contractDetail.contract_number)">发送</a>
+                    </span>
                   </el-form-item>
                 </el-col>
                 <el-col  v-if="contractDetail.handover" :span="8">
                   <el-form-item label="交接单">
-                    <span class="form-item-content"><a target="_blank" style="color: #1069FF" :href="contractDetail.handover">链接</a></span>
+                    <span class="form-item-content"><a target="_blank" style="color: #1069FF" :href="contractDetail.handover">链接</a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank" style="color: #1069FF" @click="showSend(contractDetail.handover_number)">发送</a></span>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -748,7 +773,9 @@ export default {
         },
       ],
       activeName: 'first',
-
+      send_visible: false,
+      send_phone: '',
+      send_contractNo: '',
       customService,
       //附件信息
       other_pictures: {
@@ -780,8 +807,8 @@ export default {
         album: [],
       },
       mark_status: [
-        { id: 1, val: '续租' },
-        { id: 2, val: '退租' },
+        { id: 1, val: '退租' },
+        { id: 2, val: '续租' },
       ],
 
       show_control: '',
@@ -856,6 +883,8 @@ export default {
       show_market: false,
 
       url: globalConfig.market_server,
+      contract_server: globalConfig.contract_server,
+      //  globalConfig.contract_server,
       selects: [
         {
           id: 1,
@@ -980,6 +1009,34 @@ export default {
           this.list_count = 0;
         }
       })
+    },
+    handleSend(){
+      let params={
+        is_number:1,
+        phone: this.send_phone,
+      }
+    this.$http.get(this.contract_server + 'fdd/contract/send/'+this.send_contractNo, params).then(res => {
+        // console.log(res);
+        if (res.code.endsWith('0')) {
+            this.$LjNotify('success', {
+              title: '成功',
+              message: res.message || res.msg
+            });
+          this.send_phone='';
+          this.send_visible=false;
+        } else {
+          this.$LjNotify('warning', {
+              title: '失败',
+              message: res.message || res.msg
+            });
+        }
+      })
+    },
+    //发送链接
+    showSend(num){
+      this.send_visible=true;
+      this.send_contractNo=num;
+      this.send_phone='';      // contractDetail
     },
     handleGetWorkOrderList () {
       this.$http.get(this.url + 'v1.0/csd/work_order', this.work_order).then(res => {

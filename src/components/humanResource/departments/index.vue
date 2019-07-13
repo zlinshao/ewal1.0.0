@@ -874,7 +874,7 @@
         params: {
           page: 1,
           limit: 7,
-          parent_id: 1,
+          parent_id: this.$storage.get('user_info').company_info?.company_id,
           is_enable: 1,
         },
         OrgSearch,
@@ -920,7 +920,7 @@
         departForm: {
           name: '',
           leader_id: [],
-          parent_id: [1],
+          parent_id: [this.$storage.get('user_info').company_info?.company_id],
           position_id: [],
           order:0,
           city_id:'',

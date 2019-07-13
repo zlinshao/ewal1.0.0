@@ -242,7 +242,7 @@
             this.getStaffInfo([val.assignee]).then(res => {
               this.allDetail.assignee_name = res[0].name;
             });
-            this.handleData(val, val.bulletin_type);
+            this.handleData(val);
             this.getDetailForm(val.bm_detail_request_url);
           }
         },
@@ -274,7 +274,7 @@
         })
       },
       // 报备类型
-      divisionBulletinType(type, val) {
+      divisionBulletinType(type, val, rwc) {
         let data, title;
         switch (type) {
           case 'bulletin_collect_basic'://收房
@@ -418,9 +418,9 @@
         });
       },
       // 处理相关显示数据
-      handleData(val, type) {
+      handleData(val) {
         this.drawSlither = {};
-        let bulletinData = this.divisionBulletinType(type, val);
+        let bulletinData = this.divisionBulletinType(val.bulletin_type, val, val.finish_RWC);
         let data = this.jsonData(bulletinData.data);
         this.allBulletin = data;
         this.titleTips = bulletinData.title;

@@ -253,11 +253,6 @@ export default {
     },
     selectPerson (item) {//选择寿星
       let selectItem = this.selectedBirthday;
-      // if(selectItem.length){
-      //     if(selectItem.includes(item.id)){
-      //
-      //     }
-      // }
       if (selectItem.length) {
         if (selectItem.includes(item.id)) {
           let index = selectItem.indexOf(item.id);
@@ -345,7 +340,7 @@ export default {
             this.add_wishes = false;
             this.getDataLists();
           } else {
-            this.$LjNotify('error', {
+            this.$LjNotify('warning', {
               title: '失败',
               message: res.msg,
               subMessage: '',
@@ -353,7 +348,10 @@ export default {
           }
         })
       } else {
-
+        this.$LjNotify('error', {
+            title: '提示',
+            message: '请先选择寿星',
+        });
       }
 
 

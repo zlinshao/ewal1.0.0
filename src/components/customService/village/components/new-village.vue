@@ -1,5 +1,6 @@
 <template>
   <div id="new-village">
+    <remote-script src="https://webapi.amap.com/maps?v=1.4.12&key=47a4c27ade03a2deefbbf60e4b01880c&plugin=AMap.CitySearch,AMap.Autocomplete,AMap.PlaceSearch,AMap.Marker"></remote-script>
     <lj-dialog :visible="new_village_visible" :size="{width: 1200 + 'px',height: 850 + 'px'}"
                @close="handleCloseAddVillage">
       <div class="dialog_container">

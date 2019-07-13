@@ -190,7 +190,7 @@
         });
       },
       // 部门
-      getList(org = 1) {
+      getList(org = this.$storage.get('user_info').company_info?.company_id) {
         this.departList = [];
         this.staffList = [];
         this.fullLoading = true;

@@ -216,11 +216,7 @@ export default {
 
   methods: {
     getContentChange (val) {
-      this.showData.content = val.slice(3,val.length-4);
-    },
-
-    catchData (val) {
-      this.showData.content = val
+      this.showData.content = val;
     },
     // throttle(fn, delay, atleast) {
     //     /**函数节流方法
@@ -276,17 +272,17 @@ export default {
       this.getDataLists();
     },
     callbackSuccess (res) {//回调
-      if (res.status === 200) {
+      if (res.status === 200 && res.message==='success') {
         this.$LjNotify('success', {
           title: '成功',
-          message: res.msg,
+          message: '操作成功',
           subMessage: '',
         });
         this.getDataLists();
       } else {
         this.$LjNotify('error', {
           title: '失败',
-          message: res.msg,
+          message: res.message,
           subMessage: '',
         });
       }
@@ -397,7 +393,7 @@ export default {
       this.detail_visible = true;
       this.showData.start_time = this.actionTime[0];
       this.showData.over_time = this.actionTime[1];
-      this.showData.content = content;
+      // this.showData.content = content;
     },
 
     getDataLists () {//获取列表
@@ -406,23 +402,24 @@ export default {
         this.showLoading(false);
         if (res.status === 200) {
 
-          this.dataLists = res.data.data.sort(
-            function (a, b) {
-              return Date.parse(b.created_at) - Date.parse(a.created_at) 
-            }
-          );
+          this.dataLists = res.data.data;
+          // .sort(
+          //   function (a, b) {
+          //     return Date.parse(b.created_at) - Date.parse(a.created_at) 
+          //   }
+          // );
           this.count = res.data.total;
-          for (let item of res.data.data) {
-            // this.endTimes.push({over_time:item.over_time});
-            var yourtime = item.over_time.replace("-", "/");
-            var d2 = new Date();
-            var d1 = new Date(Date.parse(yourtime));
-            if (d1 > d2) {
-              this.endTimes.push(1);
-            } else {
-              this.endTimes.push(2);
-            }
-          }
+          // for (let item of res.data.data) {
+          //   // this.endTimes.push({over_time:item.over_time});
+          //   var yourtime = item.over_time.replace("-", "/");
+          //   var d2 = new Date();
+          //   var d1 = new Date(Date.parse(yourtime));
+          //   if (d1 > d2) {
+          //     this.endTimes.push(1);
+          //   } else {
+          //     this.endTimes.push(2);
+          //   }
+          // }
 
         }
       })
