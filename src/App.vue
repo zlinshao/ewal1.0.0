@@ -35,7 +35,7 @@
             </p>
           </app-index-more>
           <span>{{$storage.get('user_info').name||'乐伽'}}</span>
-<!--          <span class="icon3024 icon_mess" @click="routerLink('/messageCenter')"></span>-->
+          <!--          <span class="icon3024 icon_mess" @click="routerLink('/messageCenter')"></span>-->
           <!-- <span title="个人中心" @click="routerLink('/personalCenter')" class="icon3024 icon-personal-center"></span> -->
         </div>
         <!--皮肤切换-->
@@ -111,9 +111,9 @@
 </template>
 
 <script>
-import TodoList from './components/todoList/index';
-import Approval from './components/approval/index';
-import AppIndexMore from './components/index/components/AppIndexMore';
+  import TodoList from './components/todoList/index';
+  import Approval from './components/approval/index';
+  import AppIndexMore from './components/index/components/AppIndexMore';
 
   export default {
     name: 'App',
@@ -213,7 +213,7 @@ import AppIndexMore from './components/index/components/AppIndexMore';
 
       }
     },
-    activated(){
+    activated() {
 
     },
     watch: {
@@ -246,6 +246,9 @@ import AppIndexMore from './components/index/components/AppIndexMore';
       all_loading() {
         return this.$store.state.app.loading;
       },
+      all_loading2 () {
+        return this.$store.state.app.loading2;
+      },
       global_notify() {
         return this.$store.state.app.globalNotify;
       },
@@ -259,17 +262,14 @@ import AppIndexMore from './components/index/components/AppIndexMore';
         return this.$store.state.todo.todo_list_badge_count;
       },
       user_name() {
-        //let name  = this.$storage.get()
         return this.$storage.get('user_info').name || '乐伽';
       },
       computedPhotoUrl() {
-        //let url = this.$storage.get('user_info').avatar||'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552912676050&di=fd46be51272d18ea8ffc89e2956a8d4c&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F8d64400852949b685670d52be88910a57e2e1542.jpg';
         return this.$storage.get('user_info').avatar;
       }
     },
     created() {
       this.theme_name = '1';
-      //this.getPerson()
     },
     mounted() {
       this.listenPhotoUrl();
@@ -279,15 +279,8 @@ import AppIndexMore from './components/index/components/AppIndexMore';
       } else {
         this.isPresidentFlag = '';
       }
-      //this.getWeather();
     },
     methods: {
-      /*获取天气*/
-      /*getWeather() {
-        this.$http.get(`https://www.tianqiapi.com/api/?version=v1`).then(res=> {
-          debugger
-        });
-      },*/
 
       /*监听头像变动*/
       listenPhotoUrl() {
@@ -295,84 +288,79 @@ import AppIndexMore from './components/index/components/AppIndexMore';
           this.photoUrl = val;
         });
       },
-      // changeTheme(a) {
-      //   console.log(a)
-      // },
+
+      //重定向到主页
+      redirectToHomePage() {
+        this.clearVisible();
+        this.routerLink('/');
+      },
+
+
       // 路由跳转
       toPath(url) {
         this.url = url
         this.theme_name = this.themeKey
         this.$router.push({path: url})
       },
-      getPerson() {
-        this.$http.get(`${this.market_server}v1.0/market/dictionary/parent_son`).then(res => {
-          if (res.success) {
-            let params = res.data
-            dicties.decorate = params[404] // 装修
-            dicties.property_type = params[410] // 房屋类型
-            dicties.card_type = params[409] //证件类型
-          }
-        })
-      },
+
       todoListHandler() {
-        //this.routerLink('/todoList');
         this.$store.dispatch('change_todo_list_visible');
         this.clearVisible('todo')
       },
 
-    openMessage () {
-      this.$store.dispatch('change_message_visible');
-      this.clearVisible('approval')
-    },
-    showModules () {
-      this.moduleList = !this.moduleList;
-      this.clearVisible('moduleList')
-    },
-    clearVisible (val) {
-      val != 'approval' && this.$store.state.approval.approval_message_visible && this.$store.dispatch('change_message_visible');
-      val != 'todo' && this.$store.state.todo.todo_list_visible && this.$store.dispatch('change_todo_list_visible');
-      val != 'moduleList' && (this.moduleList = false)
-    },
-    //关闭提示
-    handleCloseNotify () {
-      this.$store.dispatch('close_notify', false);
-    },
-    handleChangeTheme(item) {
-      this.$store.dispatch('theme_name',item.key);
-      this.themeKey = item.key;
-      this.theme_name = item.key;
+      openMessage() {
+        this.$store.dispatch('change_message_visible');
+        this.clearVisible('approval')
+      },
+      showModules() {
+        this.moduleList = !this.moduleList;
+        this.clearVisible('moduleList')
+      },
+      clearVisible(val) {
+        val != 'approval' && this.$store.state.approval.approval_message_visible && this.$store.dispatch('change_message_visible');
+        val != 'todo' && this.$store.state.todo.todo_list_visible && this.$store.dispatch('change_todo_list_visible');
+        val != 'moduleList' && (this.moduleList = false)
+      },
+      //关闭提示
+      handleCloseNotify() {
+        this.$store.dispatch('close_notify', false);
+      },
+      handleChangeTheme(item) {
+        this.$store.dispatch('theme_name', item.key);
+        this.themeKey = item.key;
+        this.theme_name = item.key;
 
-      // 判断是否是手动选择主题2
-      if(item.key=='2'){
-        this.theme_name_Two=true;
-      }else{
-        this.theme_name_Two=false;
-      }
+        // 判断是否是手动选择主题2
+        if (item.key == '2') {
+          this.theme_name_Two = true;
+        } else {
+          this.theme_name_Two = false;
+        }
 
-      this.changeLoad = true;
-      let that = this;
-      setTimeout(function () {
-        that.changeLoad = false;
-      }, 2000);
+        this.changeLoad = true;
+        let that = this;
+        setTimeout(function () {
+          that.changeLoad = false;
+        }, 2000);
+      },
     },
-  },
-}
+  }
 </script>
 
 <style lang="scss">
-#app {
-  .funTop {
-    .el-badge__content.is-fixed {
-      top: -2px;
-      right: 5px;
-      background-color: #cf2e33;
+  #app {
+    .funTop {
+      .el-badge__content.is-fixed {
+        top: -2px;
+        right: 5px;
+        background-color: #cf2e33;
+      }
     }
   }
-}
 </style>
 
 <style lang="scss" scoped>
-@import "./assets/scss/app/index.scss";
+  @import "./assets/scss/app/index.scss";
 
   @mixin notifyImg($m, $n) {
     $url: "./assets/image/common/" + $n + "/" + $m;
@@ -422,34 +410,34 @@ import AppIndexMore from './components/index/components/AppIndexMore';
       @include notifyImg("bg.png", "theme1/notify");
     }
 
-  .notify_icon__success {
-    @include notifyImg("success.png", "theme1/notify");
-  }
+    .notify_icon__success {
+      @include notifyImg("success.png", "theme1/notify");
+    }
 
-  .notify_icon__error {
-    @include notifyImg("error.png", "theme1/notify");
-  }
+    .notify_icon__error {
+      @include notifyImg("error.png", "theme1/notify");
+    }
 
-  .notify_icon__info {
-    @include notifyImg("info.png", "theme1/notify");
-  }
+    .notify_icon__info {
+      @include notifyImg("info.png", "theme1/notify");
+    }
 
-  .notify_icon__warning {
-    @include notifyImg("warning.png", "theme1/notify");
-  }
+    .notify_icon__warning {
+      @include notifyImg("warning.png", "theme1/notify");
+    }
 
-  .global_message {
-    @include notifyImg("message_bg.png", "theme1/notify");
-  }
+    .global_message {
+      @include notifyImg("message_bg.png", "theme1/notify");
+    }
 
-  .icon-personal-center {
-    @include notifyImg("personal_center.png", "theme1");
-  }
+    .icon-personal-center {
+      @include notifyImg("personal_center.png", "theme1");
+    }
 
-  .loading2 {
-    .loading2-img {
-      @include notifyImg('loading2.png','theme1')
+    .loading2 {
+      .loading2-img {
+        @include notifyImg('loading2.png', 'theme1')
+      }
     }
   }
-}
 </style>
