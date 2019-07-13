@@ -1,13 +1,14 @@
 <template>
-  <div class="demo-container" style="width: 800px">
-
+  <div class="demo-container">
+    <div id="demo_demo"  style="width: 800px;height: 400px;background-color: #ccc"></div>
     <div @click="demo">测试</div>
+    <div @click="demo2">测试2</div>
 <!--  <app-index-more :visible.sync="more_visible"></app-index-more>-->
 
 <!--    <el-button @click="demo">清空</el-button>-->
     <!--    <lj-upload v-model="list" :limit="['png']"></lj-upload>-->
 <!--        <post-choose v-model="post_list" num="1"></post-choose>-->
-        <user-choose ref="user" v-model="user_list"></user-choose>
+<!--        <user-choose ref="user" v-model="user_list"></user-choose>-->
 <!--        <org-choose v-model="org_list"></org-choose>-->
     <!--<el-button>测试</el-button>
     <search-high></search-high>-->
@@ -42,6 +43,9 @@
 
 
   </div>
+
+
+
 
   <!--<div id="org-chart-container">
     <div class="menu-container">
@@ -154,9 +158,10 @@
     methods: {
 
       demo() {
-        console.log(this.$refs['user']);
-        console.log(this.$refs['user'].user_name);
-
+        this.$LjLoading({el:'#demo_demo',loading:true});
+      },
+      demo2() {
+        this.$LjLoading({el:'#demo_demo',loading:false});
       },
 
       async getTopPosition() {

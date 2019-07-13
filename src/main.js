@@ -24,6 +24,7 @@ import './assets/scss/partical.scss'
 //import './assets/magnify/jquery.magnify.css'
 //import './assets/magnify/jquery.magnify.js'
 import Confirm from '@/components/common/lightweightComponents/confirm/index.js'
+import Loading from '@/components/common/lightweightComponents/loading/index.js'
 
 import '../static/UE/ueditor.config.js'
 import '../static/UE/ueditor.all.min.js'
@@ -53,6 +54,7 @@ Vue.config.productionTip = false
 Vue.prototype.$http = Axios
 
 Vue.prototype.$LjConfirm = Confirm.install
+Vue.prototype.$LjLoading = Loading.install
 
 Vue.prototype.$video = Video
 import getPermission from './utils/permission';
