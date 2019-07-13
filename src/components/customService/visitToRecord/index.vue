@@ -147,7 +147,7 @@
             <el-col :span="6" class='record-user'>
               <p><i class='icon'></i><span>是否中介单</span></p>
               <div class='input_box'>
-                <el-select v-model="recordOption.is_agency_order"  disabled clearable>
+                <el-select v-model="recordOption.is_agency_order" disabled clearable>
                   <el-option value="1" label="是"></el-option>
                   <el-option value="0" label="否"></el-option>
                 </el-select>
@@ -608,7 +608,7 @@ export default {
       this.$http.get(this.url + `v1.0/market/contract/${this.chooseTab}/${row.con_id}`).then(res => {
         if (res.code === 200) {
           this.recordDetail = res.data;
-          this.recordOption.is_agency_order = this.recordDetail.is_agency?this.recordDetail.is_agency.toString() :'';
+          this.recordOption.is_agency_order = String(res.data.is_agency) ? String(res.data.is_agency) : '';
           this.add_visible = true;
         }
       })
