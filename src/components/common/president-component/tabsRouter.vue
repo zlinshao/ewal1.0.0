@@ -220,6 +220,7 @@
         .tab{
           display: flex;
           justify-content: flex-start;
+          cursor: pointer;
           .tab_label{
             padding: 0 30px;
             text-align: center;

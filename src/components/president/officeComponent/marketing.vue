@@ -36,7 +36,7 @@
           <div class="aveprice_card yellow_card">
             <li>
               <p class="card_label"><span>平均差价</span><span class="unit_white">(元)</span></p>
-              <span class="card_val">{{recvPrice-rentPrice}}</span>
+              <span class="card_val">{{averagePrice}}</span>
             </li>
           </div>
       </div>
@@ -141,6 +141,7 @@
         lowQual:'--',     //低质量房源
         recvPrice:'--',    //平均收房价
         rentPrice:'--',    //平均租房价
+        averagePrice:'--',   //平均差价
         // 总数
         recvTotal:'--',       // 收房总数
         rentTotal:'--',       //租房总数
@@ -199,6 +200,7 @@
             this.rentTotal = this.recvRentDetail.rent_total;           //租房总数
             this.recvPrice = this.recvRentDetail.recv_price;         //平均收房价
             this.rentPrice = this.recvRentDetail.rent_price;         //平均租房价
+            this.averagePrice = this.recvPrice - this.rentPrice;     //平均差价
             this.drawEchartsRecvRent();
           }
         })
