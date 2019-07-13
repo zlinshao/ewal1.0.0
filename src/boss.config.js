@@ -9,8 +9,7 @@ globalConfig = {
     newMedia_sever: 'http://test.new_media.api.ewal.lejias.cn', //新媒体  http://test.new_media.api.ewal.lejias.cn/  测试地址  http://ewal_new_media.test
     // president_sever: 'http://bmzy67.natappfree.cc/', // 梁晓东
     // president_sever: '  http://ta6xxr.natappfree.cc/', // 梁晓东
-    president_sever: 'http://39grt4.natappfree.cc', // 梁晓东
-
+    president_sever: 'http://i34gua.natappfree.cc', // 梁晓东
     network_sever: ' http://test.monitor.api.ewal.lejias.cn/', // 方圆
     organ_server: 'http://gml.vaiwan.com/ewal/public/',
     upload_sever: 'http://test.file.api.ewal.lejias.cn/',
