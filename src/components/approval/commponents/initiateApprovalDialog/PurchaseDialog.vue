@@ -117,11 +117,15 @@
             <el-form :model="purchase_form"
                      style="text-align: left" size="small" label-width="100px">
               <el-form-item label="总数量">
-                <span v-if="purchase_form_number">{{purchase_form.number}}</span>
+                <span v-if="purchase_form_number">
+                  {{purchase_form.number}}
+                </span>
               </el-form-item>
 
               <el-form-item label="总价">
-                <span v-if="purchase_form_total_price">{{purchase_form.total_price}}</span>
+                <span v-if="purchase_form_total_price">
+                  {{purchase_form.total_price}}
+                </span>
               </el-form-item>
             </el-form>
 
@@ -252,8 +256,8 @@
           {
             category_id: null,
             name: null,
-            number: null,
-            unit_price: null,
+            number: 0,
+            unit_price: 0,
             source_key: null,
             source_id: {
               id: null,
@@ -267,11 +271,11 @@
     },
     computed: {
       purchase_form_number() {
-        return this.purchase_form.number ? true : false
+        return this.purchase_form.number && this.purchase_form.number !== 0 ? true : false
       },
 
       purchase_form_total_price() {
-        return this.purchase_form.total_price ? true : false
+        return this.purchase_form.total_price && this.purchase_form.total_price !== 0 ? true : false
       },
 
     },
@@ -375,8 +379,8 @@
         let item = {
           category_id: null,
           name: null,
-          number: null,
-          unit_price: null,
+          number: 0,
+          unit_price: 0,
           source_id: {
             id: null,
             name: null
@@ -394,7 +398,7 @@
         this.purchase_form.total_price = 0
         detail.forEach(item => {
           this.purchase_form.number += item.number
-          this.purchase_form.total_price += item.unit_price
+          this.purchase_form.total_price += parseFloat(item.unit_price)
         })
       },
       /**获取采购人员信息 */

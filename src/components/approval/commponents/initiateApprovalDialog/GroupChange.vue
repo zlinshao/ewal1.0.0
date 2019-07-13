@@ -64,11 +64,14 @@
               <el-row>
                 <el-col :span="24">
                   <el-form-item required prop="change_receipt" label="异动申请单以及异动交接单">
-                    <el-input type="textarea"
-                              v-model="group_change_form.change_receipt"
-                              :autosize="{ minRows: 2, maxRows: 14}"
-                              placeholder="必填">
-                    </el-input>
+                    <el-select v-model="group_change_form.change_receipt" clearable placeholder="请选择交接单">
+                      <el-option
+                        v-for="item in change_receipt_options"
+                        :key="item.id"
+                        :label="item.contract_number"
+                        :value="item.id">
+                      </el-option>
+                    </el-select>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -163,8 +166,7 @@
             {min: 1, max: 300, message: '长度在 1 到 300 个字符', trigger: 'blur'}
           ],
           change_receipt: [
-            {required: true, message: '请输入异动申请单以及异动交接单', trigger: ['blur', 'change']},
-            {min: 1, max: 300, message: '长度在 1 到 300 个字符', trigger: 'blur'}
+            {required: true, message: '请选择异动申请单以及异动交接单', trigger: ['blur', 'change']}
           ],
           date: [
             {required: true, message: '请输入调岗日期', trigger: ['blur', 'change']}
@@ -175,6 +177,7 @@
         },
         group_change_dialog_visible: false,
         group_change_form: createEmpty(),
+        change_receipt_options: [],
         user_info: null
       }
     },
@@ -196,6 +199,18 @@
           org_id: this.user_info_all.org[0].id,
         }
       },
+      /**获取交接单下来选项 */
+      getChangeReceipt() {
+        let url = `${globalConfig.contract_server}fdd/contract/get_info_by_staff/${this.user_info.user_id}`
+        this.$http.get(url, {scene: 19})//合同场景
+          .then(res => {
+            if (res.code.endsWith('0')) {
+              this.change_receipt_options = res.data
+            } else {
+              this.change_receipt_options = []
+            }
+          })
+      },
       /**提交*/
       submitGroupChange() {
         this.$refs['groupChangeForm']
@@ -213,8 +228,7 @@
                   {key: '原部门', value: this.$refs.oldOrgChoose.org_name.join(' ')},
                   {key: '转入部门', value: this.$refs.orgChoose.org_name.join(' ')},
                   {key: '调岗日期', value: date},
-                  {key: '调岗原因', value: change_reason},
-                  {key: '交接单', value: change_receipt}
+                  {key: '调岗原因', value: change_reason}
                 ]
               }
               this.showLoading2(true)
@@ -239,6 +253,7 @@
     },
     created() {
       this.getUserInfo()
+      this.getChangeReceipt()
     }
   }
 </script>

@@ -487,7 +487,7 @@
               this.$LjNotify('success', {title: '成功', message: `撤销成功`});
               // 刷新列表
               this.getApprovalList(this.tabKey, this.activeName, this.page_info.page_current)
-              this.$refs.processDetails.close()
+              this.$refs.processDetails && this.$refs.processDetails.close()
             } else {
               this.$LjNotify('error', {title: '失败', message: `撤销失败`});
             }
@@ -508,7 +508,7 @@
               this.$LjNotify('success', {title: '成功', message: `${btnType}成功`});
               // 刷新列表
               this.getApprovalList(this.tabKey, this.activeName, this.page_info.page_current)
-              this.$refs.processDetails.close()
+              this.$refs.processDetails && this.$refs.processDetails.close()
             } else {
               this.$LjNotify('error', {title: '失败', message: `${btnType}失败`});
             }
@@ -542,7 +542,7 @@
               this.$LjNotify('success', {title: '成功', message: `${btnType}成功`});
               // 刷新列表
               this.getApprovalList(this.tabKey, this.activeName, this.page_info.page_current)
-              this.$refs.processDetails.close()
+              this.$refs.processDetails && this.$refs.processDetails.close()
             } else {
               this.$LjNotify('error', {title: '失败', message: `${btnType}失败`});
             }

@@ -80,11 +80,14 @@
               <el-row>
                 <el-col :span="24">
                   <el-form-item required prop="change_receipt" label="异动申请单以及异动交接单">
-                    <el-input type="textarea"
-                              v-model="transfer_form.change_receipt"
-                              :autosize="{ minRows: 2, maxRows: 14}"
-                              placeholder="必填">
-                    </el-input>
+                    <el-select v-model="transfer_form.change_receipt" clearable placeholder="请选择交接单">
+                      <el-option
+                        v-for="item in change_receipt_options"
+                        :key="item.id"
+                        :label="item.contract_number"
+                        :value="item.id">
+                      </el-option>
+                    </el-select>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -180,8 +183,7 @@
             {min: 1, max: 300, message: '长度在 1 到 300 个字符', trigger: 'blur'}
           ],
           change_receipt: [
-            {required: true, message: '请输入异动申请单以及异动交接单', trigger: ['blur', 'change']},
-            {min: 1, max: 300, message: '长度在 1 到 300 个字符', trigger: 'blur'}
+            {required: true, message: '请选择异动申请单以及异动交接单', trigger: ['blur', 'change']}
           ]
         },
 
@@ -195,6 +197,7 @@
           user_id: null,
           org_id: null,
         },
+        change_receipt_options: []
       }
     },
     methods: {
@@ -217,6 +220,18 @@
         }
         this.transfer_form.enroll = this.user_info_all.staff.enroll
       },
+      /**获取交接单下来选项 */
+      getChangeReceipt() {
+        let url = `${globalConfig.contract_server}fdd/contract/get_info_by_staff/${this.user_info.user_id}`
+        this.$http.get(url, {scene: 19})//合同场景
+          .then(res => {
+            if (res.code.endsWith('0')) {
+              this.change_receipt_options = res.data
+            } else {
+              this.change_receipt_options = []
+            }
+          })
+      },
       /**提交 */
       submitTransfer() {
         this.$refs['transferForm']
@@ -224,7 +239,7 @@
             if (valid) {
               this.transfer_form.enroll = this.myUtils.formatDate(this.transfer_form.enroll, 'yyyy-MM-dd')
               let {name, enroll, org} = this.user_info
-              let {change_reason, change_receipt, attachment} = this.transfer_form
+              let {change_reason, change_receipt} = this.transfer_form
               let data = {
                 ...this.transfer_form,
                 more_data: [
@@ -233,8 +248,7 @@
                   {key: '原部门', value: org},
                   {key: '转入部门', value: this.$refs.orgChoose.org_name.join(' ')},
                   {key: '转入岗位', value: this.$refs.postChoose.post_name.join(' ')},
-                  {key: '调岗原因', value: change_reason},
-                  {key: '交接单', value: change_receipt}
+                  {key: '调岗原因', value: change_reason}
                 ]
               }
               this.showLoading2(true)
@@ -259,6 +273,7 @@
     },
     created() {
       this.getUserInfo()
+      this.getChangeReceipt()
     }
   }
 </script>
