@@ -80,7 +80,7 @@
           ]
         },
         progressList: [                //进度条
-          {key:'vacancy_fee',name:'朝置空房源',color: '#BA25DC', value: 0},
+          {key:'vacancy_fee',name:'超置空房源',color: '#BA25DC', value: 0},
           {key:'liquidated',name:'公司违约',color: '#8047CC', value: 0},
           {key:'responsibility_fee',name:'公司认责费用',color: '#3262EC', value: 0},
           {key:'recv_rent_gap',name:'收租差价',color: '#FF564F', value: 0},

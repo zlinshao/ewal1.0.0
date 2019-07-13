@@ -37,7 +37,7 @@
     </div>
     <!--中间部分-->
     <div class="human_middle">
-      <ChooseCity :citylist="cityDepatment" @selectedCity="chooseCityFun"></ChooseCity>
+      <HumanCity :citylist="cityDepatment" @selectedCity="chooseCityFun"></HumanCity>
     </div>
    <!--右边部分-->
     <div class="human_right ">
@@ -45,9 +45,9 @@
       <div class="retention_rates border_bg">
          <span class="label">7天留存率</span>
         <div class="echarts">
-          <div id="civilianEcharts" v-if="this.remainDetail[0] !== -1"></div>
+          <div id="civilianEcharts" v-show="this.remainDetail[0] !== -1"></div>
           <span class="line" v-if="this.remainDetail[0] !== -1 && this.remainDetail[1] !== -1"></span>
-          <div id="marketingEcharts" v-if="this.remainDetail[1] !== -1"></div>
+          <div id="marketingEcharts" v-show="this.remainDetail[1] !== -1"></div>
         </div>
       </div>
      <!-- 学历统计,年龄结构,工作年限,性别比例-->
@@ -87,12 +87,12 @@
 
 <script>
   import DatePicker from '../../common/president-component/datePicker.vue';   //日历
-  import ChooseCity from  '../../common/president-component/choosecity.vue';   //城市
+  import HumanCity from  '../../common/president-component/humancity';   //城市
   import echarts from 'echarts';
   import './js/marketing.js';       //引入js
 
   export default {
-    components: { DatePicker, ChooseCity },
+    components: { DatePicker, HumanCity},
     name: "human",
     data() {
       return {
@@ -143,9 +143,7 @@
 
     },
     activated() {
-      this.$nextTick(()=>{
-        // this.drawEchartsWarn();
-      })
+
 
     },
     watch: {},
@@ -157,6 +155,7 @@
         this.end = val.end_date;
         this.getStaffDetail();
         if(this.cityName !== ''){
+          this.dealStaffData();
           this.getEntryExitDetail();
         }
       },
@@ -170,16 +169,12 @@
       //一.获取详情:学历分部统计、年龄结构统计、性别分布、工作年限分布
       getStaffDetail(){
         let param={
-          start:this.start,
           end:this.end,
         };
         this.$http.post(globalConfig.president_sever + "/v1.0/hr/staff_details", param).then(res => {
           if(res.code === 200){
             this.staffDetail = res.data;
-            this.cityDepatment = Object.keys(this.staffDetail.education);   //获取所有的城市
-            this.cityName = this.cityDepatment[0];      //默认选择第一个城市
-            this.getEntryExitDetail();
-            this.dealStaffData();
+            this.cityDepatment =  this.staffDetail.keys;   //获取所有的城市
           }
         })
       },
@@ -245,10 +240,10 @@
           type:'twoline',
           color1:['#FFEC7F','#FF8A30'],
           color2:['#76FFF6','#298AC1'],
-          xData1: this.EntryExitDetail.entry_exit_detail.x,
-          xData2: this.EntryExitDetail.entry_exit_detail.x,
-          yData1: this.EntryExitDetail.entry_exit_detail.entry_staff_num,
-          yData2: this.EntryExitDetail.entry_exit_detail.quit_staff_num,
+          xData1:this.EntryExitDetail.entry_exit_detail.x,
+          xData2:this.EntryExitDetail.entry_exit_detail.x,
+          yData1:this.EntryExitDetail.entry_exit_detail.entry_staff_num,
+          yData2:this.EntryExitDetail.entry_exit_detail.quit_staff_num,
         };
         this.optionLineEntryLeave = JSON.parse(JSON.stringify(optionEntryLeave));
         this.setOptionsFun(this.optionLineEntryLeave, param3 ,'entryLeaveEcharts');

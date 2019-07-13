@@ -1,13 +1,14 @@
 <template>
   <div id="marketing">
-    <div class="marketing_left border_bg">
+    <div class="marketing_left">
       <div class="date_location">
         <DatePicker @confirmDate="comfirm"></DatePicker>
          <div class="location">
-           <span>{{"南京"}}</span>
+           <span>{{cityName}}</span>
            <img src="../../../assets/image/president/common/didian.png" alt="">
          </div>
       </div>
+      <MarketCity :citylist="cityArr" @selectedCity="chooseCityFun"></MarketCity>
     </div>
     <div class="marketing_right">
      <!-- 上面部分     -->
@@ -101,19 +102,21 @@
 
 <script>
   import DatePicker from '../../common/president-component/datePicker.vue';   //日历
+  import MarketCity from '../../common/president-component/marketcity.vue';    //城市选择
   import echarts from 'echarts';
   import './js/marketing.js';       //引入js
 
   export default {
-    components: { DatePicker },
+    components: { DatePicker, MarketCity },
     name: "marketing",
     data() {
       return {
         params:{
-          city: "南京市",
+          city: "",
           start: '',
           end: ''
         },
+        cityName:'--',    //被选城市
         warningList:[
           {name:'1-7天',id:1},
           {name:'8-14天',id:2},
@@ -143,24 +146,44 @@
         rentTotal:'--',       //租房总数
         vacancyTotal:'--',   //空置房源总数
         achieveTotal:'--',     //实际业绩总数
+        cityArr:[],             //城市列表
       };
     },
     mounted() {
 
     },
     activated() {
-      this.$nextTick(() => {
-        // this.drawEcharts();
-        // this.drawEchartsWarn();
-      })
+      this.getCommonCitys();   //获取城市列表
     },
     watch: {},
     computed: {},
     methods: {
+
+      //获取城市
+      getCommonCitys(){
+        this.$http.post(globalConfig.president_sever + "/v1.0/common/get_citys").then(res => {
+          if(res) {
+            this.cityArr = res;
+          }
+        })
+      },
+
       //选择时间
       comfirm(val) {
         this.params.start = val.start_date;
         this.params.end = val.end_date;
+        //调后台接口获取详情
+        if( this.params.city !== ''){
+          this.getRecvRentDetail();
+          this.getWarningDetail();
+          this.getAchievementDetail();
+        }
+      },
+
+      //选择城市
+      chooseCityFun(val){
+        this.cityName = val;
+        this.params.city = this.cityName;
         //调后台接口获取详情
         this.getRecvRentDetail();
         this.getWarningDetail();
@@ -177,7 +200,6 @@
             this.recvPrice = this.recvRentDetail.recv_price;         //平均收房价
             this.rentPrice = this.recvRentDetail.rent_price;         //平均租房价
             this.drawEchartsRecvRent();
-           console.log(res);
           }
         })
       },
@@ -189,7 +211,7 @@
           type:'linearea',
           color1:'#E5FF7D',
           color2:'#30D5A9',
-          xData:this.recvRentDetail.date,
+          xData:this.recvRentDetail.x,
           yData:this.recvRentDetail.recv,
         };
         this.optionCollet = JSON.parse(JSON.stringify(optionColletRent));
@@ -200,7 +222,7 @@
           type:'linearea',
           color1:'#FF9874',
           color2:'#FE5785',
-          xData: this.recvRentDetail.date,
+          xData: this.recvRentDetail.x,
           yData:this.recvRentDetail.rent,
         };
         this.optionRent = JSON.parse(JSON.stringify(optionColletRent));

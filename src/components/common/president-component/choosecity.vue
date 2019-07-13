@@ -18,7 +18,7 @@
 
 <script>
   export default {
-    name: "ChooseCity",
+    name: "ChooseCity",   //圆形的城市选择
     props:['citylist'],
     components:{},
     data(){
@@ -112,6 +112,7 @@
 </script>
 
 <style scoped lang="scss">
+  @import "../../../assets/scss/president/common.scss";
   #choosecityComponent{
     width: 60%;
     height: 100%;

@@ -11,7 +11,7 @@
 <script>
   import Clock from "vue-clock2";
   export default {
-    name: "ClockTime",
+    name: "ClockTime",    //时钟
     components:{Clock},
     data(){
       return{
@@ -58,6 +58,7 @@
 </script>
 
 <style scoped lang="scss">
+  @import "../../../assets/scss/president/common.scss";
   #clockTime{
     display: flex;
     justify-content: flex-start;

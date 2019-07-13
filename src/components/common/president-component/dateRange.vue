@@ -16,7 +16,7 @@
 
 <script>
   export default {
-    name: "dateRange",
+    name: "dateRange",   //网络页面的时间组件
     props:[],
     data(){
       return{

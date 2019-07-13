@@ -1,4 +1,8 @@
-
+@import "../common.scss";
+//字体设置
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, input, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {
+  font-family: 'DIN-Medium' !important;
+}
 //城市选择的地址
 .location{
   padding-left: 50px;
@@ -97,6 +101,53 @@ li{
     }
     .square_iocn4{
       background:#F90505;
+    }
+  }
+}
+//进度条
+.progress{
+  .progress_list{
+    display: flex;
+    justify-content: space-between;
+    span{
+      display: inline-block;
+      font-size:16px;
+    }
+    .progress_label{
+      width: 100px;
+      text-align: right;
+    }
+    .progress_bar{
+      flex: 1;
+      background:rgba(255,255,255,0.1);
+      border-radius:10px;
+      margin: 0 18px ;
+      display: flex;
+      .progress_bar_active{
+        height: 100%;
+        border-radius:10px;
+      }
+      .progress_bar_active0{
+        background:linear-gradient(225deg,rgba(255,119,136,1) 0%,rgba(182,32,224,1) 100%);
+      }
+      .progress_bar_active1{
+        background:linear-gradient(90deg,rgba(128,70,204,1) 0%,rgba(131,162,255,1) 100%);
+      }
+      .progress_bar_active2{
+        background:linear-gradient(270deg,rgba(50,197,255,1) 0%,rgba(49,32,224,1) 100%);
+      }
+      .progress_bar_active3{
+        background:linear-gradient(225deg,rgba(255,161,119,1) 0%,rgba(255,71,71,1) 100%);
+      }
+      .progress_bar_active4{
+        background:linear-gradient(225deg,rgba(115,255,246,1) 0%,rgba(77,179,16,1) 100%);
+      }
+    }
+    .progress_value{
+      display: inline-block;
+      width: 65px;
+      color: #fff;
+      text-align: left;
     }
   }
 }

@@ -12,7 +12,7 @@
 
 <script>
   export default {
-    name: "DatePicker",
+    name: "DatePicker",    //选择的时间周期为一周的时间组件
     props:[],
     data(){
       return{

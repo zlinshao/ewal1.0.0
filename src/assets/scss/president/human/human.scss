@@ -1,4 +1,6 @@
 #human{
+  width: 100%;
+  padding: 45px  50px 30px 50px ;
   flex: 1;
   display: flex;
   justify-content: space-between;
@@ -38,10 +40,12 @@
           .onjob{
             display: flex;
             align-items: center;
+            font-size: 16px;
             .uint{
               font-size: 12px;
             }
             .job_num{
+              display: block;
               font-size:50px;
               color: #fff;
             }
