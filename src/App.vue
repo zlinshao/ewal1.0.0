@@ -1,6 +1,6 @@
 <template>
-  <div id="app" class="scroll_bar" :class="'app' + theme_name">
-    <header class="items-bet">
+  <div id="app" class="scroll_bar" :class="['app' + theme_name]">
+    <header class="items-bet" :class="[moduleList ? '': isPresidentFlag]">
       <div class="headLeft items-center">
         <!--<span class="items-center" style="width: 220px">
           &lt;!&ndash;<span>南京</span>
@@ -15,7 +15,7 @@
         </span>
       </div>
       <div class="items-center">
-        <div class="items-center funTop ">
+        <div class="items-center funTop " v-if="moduleList || !isPresidentFlag">
           <span @click="todoListHandler">
             <el-badge v-if="todo_list_badge_count>0" :value="todo_list_badge_count">待办</el-badge>
             <span v-else>待办</span>
@@ -50,8 +50,9 @@
     </header>
     <div id="moduleList" :class="{'moduleList':moduleList}" style="z-index: 1000">
       <div class="justify-around">
-        <div class="list items-column" :class="'list-' + (index + 1)" v-for="(item,index) in modules" @click="toPath(item.url);moduleList = false"
-          :key='index'>
+        <div class="list items-column" :class="'list-' + (index + 1)" v-for="(item,index) in modules"
+             @click="toPath(item.url);moduleList = false"
+             :key='index'>
           <p></p>
           <div class="justify-center">
             <h1 class="writingMode items-center">
@@ -64,7 +65,7 @@
         </div>
       </div>
     </div>
-    <div id="theme_name" :class="'theme' + theme_name">
+    <div id="theme_name" :class="['theme' + theme_name,isPresidentFlag]">
       <keep-alive>
         <router-view/>
       </keep-alive>
@@ -114,204 +115,210 @@ import TodoList from './components/todoList/index';
 import Approval from './components/approval/index';
 import AppIndexMore from './components/index/components/AppIndexMore';
 
-export default {
-  name: 'App',
-  components: {
-    TodoList,
-    Approval,
-    AppIndexMore,
-  },
-  data () {
-    return {
-      more_list:[
-        {id:1,name:'新建会议',router:'/discussPolitics'},
-        {id:2,name:'新建公告',router:'/noticeQuestionnaire/notice'},
-        {id:3,name:'新建问卷',router:'/noticeQuestionnaire/questionnaire'},
-      ],
+  export default {
+    name: 'App',
+    components: {
+      TodoList,
+      Approval,
+      AppIndexMore,
+    },
+    data() {
+      return {
+        more_list: [
+          {id: 1, name: '新建会议', router: '/discussPolitics'},
+          {id: 2, name: '新建公告', router: '/noticeQuestionnaire/notice'},
+          {id: 3, name: '新建问卷', router: '/noticeQuestionnaire/questionnaire'},
+        ],
 
-      personal_center_list: [
-        {id:1,name:'我的收藏',router:'/personalCenter/myFavorite'},
-        {id:2,name:'我的回复',router:'/personalCenter/myResponse'},
-        {id:3,name:'下属日志',router:'/personalCenter/subLog'},
-        {id:4,name:'我的考勤',router:'/personalCenter/myAttendance'},
-        {id:5,name:'成长轨迹',router:'/personalCenter/growthProcess'},
-        {id:6,name:'工作日志',router:'/personalCenter/workLog'},
-        {id:7,name:'我的KPI',router:'/personalCenter/myKPI'},
-        {id:8,name:'退出',router:'/login'},
-      ],
+        personal_center_list: [
+          {id: 1, name: '我的收藏', router: '/personalCenter/myFavorite'},
+          {id: 2, name: '我的回复', router: '/personalCenter/myResponse'},
+          {id: 3, name: '下属日志', router: '/personalCenter/subLog'},
+          {id: 4, name: '我的考勤', router: '/personalCenter/myAttendance'},
+          {id: 5, name: '成长轨迹', router: '/personalCenter/growthProcess'},
+          {id: 6, name: '工作日志', router: '/personalCenter/workLog'},
+          {id: 7, name: '我的KPI', router: '/personalCenter/myKPI'},
+          {id: 8, name: '退出', router: '/login'},
+        ],
 
 
-      theme_list: [
-        {key: '1',val: '极简中国风',color: 'color-1'},
-        {key: '3',val: '活泼孟菲斯',color: 'color-2'},
-        {key: '4',val: '文艺森系风',color: 'color-3'},
-        {key: '2',val: '炫酷科技风',color: 'color-4'},
-        {key: '5',val: '特色中国风',color: 'color-1'},
-      ],
-      url: '',
-      theme_visible: false,
-      theme_name: '1',
-      themeKey: '1',
-      moduleList: false,
-      more_visible: false,
-      changeLoad: false,
+        theme_list: [
+          {key: '1', val: '极简中国风', color: 'color-1'},
+          {key: '3', val: '活泼孟菲斯', color: 'color-2'},
+          {key: '4', val: '文艺森系风', color: 'color-3'},
+          {key: '2', val: '炫酷科技风', color: 'color-4'},
+          {key: '5', val: '特色中国风', color: 'color-1'},
+        ],
+        url: '',
+        theme_visible: false,
+        theme_name: '1',
+        themeKey: '1',
+        moduleList: false,
+        more_visible: false,
+        changeLoad: false,
 
-      photoUrl:'',
-      showPersonal:false,//是否显示个人中心下拉框
+        photoUrl: '',
+        showPersonal: false,//是否显示个人中心下拉框
 
-      modules: [
-        /*{
-          url: '/president',
-          title: '总裁办',
-          English: 'Presidents',
-        },*/
-        {
-          url: '/finance',
-          title: '财务中心',
-          English: 'Finacial Center',
-        },
-        {
-          url: '/humanResource',
-          title: '人力资源中心',
-          English: 'Personal Adminstration',
-        },
-        {
-          url: '/mediaCenter',
-          title: '新媒体运营中心',
-          English: 'Social Media Center',
-        },
-        {
-          url: '/marketCentre',
-          title: '营销中心',
-          English: 'Marketing Center',
-        },
-        {
-          url: '/customService',
-          title: '运维中心',
-          English: 'Customer Service',
-        },
-        {
-          url: '/leJiaCollege',
-          title: '乐伽大学',
-          English: 'Lejia College',
-        },
-        {
-          url: '/riskManagement',
-          title: '风险控制',
-          English: 'Risk Management',
-        },
-        {
-          url: '/intellectualPropertyProtection',
-          title: '知识产权保护',
-          English: 'Intellectual Property Protection',
-        },
-      ],
-      messageTable: [],
-      market_server: globalConfig.market_server,
-      theme_name_Two:false,  //是否是自己选择第二主题
-    }
-  },
-  watch: {
-    $route: {
-      handler (val, oldVal) {
-        this.moduleList = false;
-        this.showLoading(false);
-        this.$store.dispatch('route_animation');
+        modules: [
+          {
+            url: '/president',
+            title: '总裁办',
+            English: 'Presidents',
+          },
+          {
+            url: '/finance',
+            title: '财务中心',
+            English: 'Finacial Center',
+          },
+          {
+            url: '/humanResource',
+            title: '人力资源中心',
+            English: 'Personal Adminstration',
+          },
+          {
+            url: '/mediaCenter',
+            title: '新媒体运营中心',
+            English: 'Social Media Center',
+          },
+          {
+            url: '/marketCentre',
+            title: '营销中心',
+            English: 'Marketing Center',
+          },
+          {
+            url: '/customService',
+            title: '运维中心',
+            English: 'Customer Service',
+          },
+          {
+            url: '/leJiaCollege',
+            title: '乐伽大学',
+            English: 'Lejia College',
+          },
+          {
+            url: '/riskManagement',
+            title: '风险控制',
+            English: 'Risk Management',
+          },
+          {
+            url: '/intellectualPropertyProtection',
+            title: '知识产权保护',
+            English: 'Intellectual Property Protection',
+          },
+        ],
+        messageTable: [],
+        market_server: globalConfig.market_server,
+        isPresidentFlag: '',       //进入总裁办时的样式
 
-       // 处理总裁办进入后的页面的皮肤只能用2的问题
-        if(val.fullPath.indexOf('/president') !=-1){
-          localStorage.setItem('president_theme_name', '2');
-        }else {
-          localStorage.removeItem('president_theme_name');
-          if(!this.theme_name_Two && this.theme_name != '2'){
-             localStorage.setItem('theme_name', this.theme_name);
-          }else if(this.theme_name_Two){
-            localStorage.setItem('theme_name', '2');
-          }
-        }
-        if(localStorage.getItem("president_theme_name")){
-          this.theme_name = '2';
-        }else{
-          this.theme_name = localStorage.getItem('theme_name');
-        }
-
-      },
-      deep: true// 深度观察监听
-    },
-    computedPhotoUrl: {
-      handler(val,oldVal) {
-        this.photoUrl = val;
-      },
-      immediate:true,
-    },
-  },
-  computed: {
-    routeAnimation () {
-      return this.$store.state.app.routeAnimation;
-    },
-    all_loading () {
-      return this.$store.state.app.loading;
-    },
-    all_loading2 () {
-      return this.$store.state.app.loading2;
-    },
-    global_notify () {
-      return this.$store.state.app.globalNotify;
-    },
-    global_message () {
-      return this.$store.state.app.globalMessage;
-    },
-    showMessage_visible () {
-      return this.$store.state.approval.approval_message_visible
-    },
-    todo_list_badge_count () {
-      return this.$store.state.todo.todo_list_badge_count;
-    },
-    user_name() {
-      return this.$storage.get('user_info').name||'乐伽';
-    },
-    computedPhotoUrl() {
-      return this.$storage.get('user_info').avatar;
-    }
-  },
-  created () {
-    this.theme_name = '1';
-  },
-  mounted() {
-    this.listenPhotoUrl();
-  },
-  methods: {
-
-    //重定向到主页
-    redirectToHomePage() {
-      this.clearVisible();
-      this.routerLink('/');
-    },
-
-    /*监听头像变动*/
-    listenPhotoUrl() {
-      this.$bus.on('photo-url',(val)=> {
-        this.photoUrl = val;
-      });
-    },
-    changeTheme(a) {
-      console.log(a)
-    },
-    // 路由跳转
-    toPath(url) {
-      this.url = url
-      if (url === '/president') {
-        this.theme_name = '2'
-      } else {
-        this.theme_name = this.themeKey
       }
-      this.$router.push({path: url})
     },
+    activated(){
 
-    todoListHandler () {
-      this.$store.dispatch('change_todo_list_visible');
-      this.clearVisible('todo')
     },
+    watch: {
+      $route: {
+        handler(val, oldVal) {
+          this.moduleList = false;
+          this.showLoading(false);
+          this.$store.dispatch('route_animation');
+
+          // 处理总裁办不使用主题色
+          if (val.fullPath.indexOf('/president') != -1) {
+            this.isPresidentFlag = 'headerOpacity';
+          } else {
+            this.isPresidentFlag = '';
+          }
+        },
+        deep: true// 深度观察监听
+      },
+      computedPhotoUrl: {
+        handler(val, oldVal) {
+          this.photoUrl = val;
+        },
+        immediate: true,
+      },
+    },
+    computed: {
+      routeAnimation() {
+        return this.$store.state.app.routeAnimation;
+      },
+      all_loading() {
+        return this.$store.state.app.loading;
+      },
+      global_notify() {
+        return this.$store.state.app.globalNotify;
+      },
+      global_message() {
+        return this.$store.state.app.globalMessage;
+      },
+      showMessage_visible() {
+        return this.$store.state.approval.approval_message_visible
+      },
+      todo_list_badge_count() {
+        return this.$store.state.todo.todo_list_badge_count;
+      },
+      user_name() {
+        //let name  = this.$storage.get()
+        return this.$storage.get('user_info').name || '乐伽';
+      },
+      computedPhotoUrl() {
+        //let url = this.$storage.get('user_info').avatar||'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552912676050&di=fd46be51272d18ea8ffc89e2956a8d4c&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F8d64400852949b685670d52be88910a57e2e1542.jpg';
+        return this.$storage.get('user_info').avatar;
+      }
+    },
+    created() {
+      this.theme_name = '1';
+      //this.getPerson()
+    },
+    mounted() {
+      this.listenPhotoUrl();
+      // 处理总裁办进入后的页面的皮肤只能用2的问题
+      if (this.$route.fullPath.indexOf('/president') != -1) {
+        this.isPresidentFlag = 'headerOpacity';
+      } else {
+        this.isPresidentFlag = '';
+      }
+      //this.getWeather();
+    },
+    methods: {
+      /*获取天气*/
+      /*getWeather() {
+        this.$http.get(`https://www.tianqiapi.com/api/?version=v1`).then(res=> {
+          debugger
+        });
+      },*/
+
+      /*监听头像变动*/
+      listenPhotoUrl() {
+        this.$bus.on('photo-url', (val) => {
+          this.photoUrl = val;
+        });
+      },
+      // changeTheme(a) {
+      //   console.log(a)
+      // },
+      // 路由跳转
+      toPath(url) {
+        this.url = url
+        this.theme_name = this.themeKey
+        this.$router.push({path: url})
+      },
+      getPerson() {
+        this.$http.get(`${this.market_server}v1.0/market/dictionary/parent_son`).then(res => {
+          if (res.success) {
+            let params = res.data
+            dicties.decorate = params[404] // 装修
+            dicties.property_type = params[410] // 房屋类型
+            dicties.card_type = params[409] //证件类型
+          }
+        })
+      },
+      todoListHandler() {
+        //this.routerLink('/todoList');
+        this.$store.dispatch('change_todo_list_visible');
+        this.clearVisible('todo')
+      },
 
     openMessage () {
       this.$store.dispatch('change_message_visible');
@@ -367,45 +374,53 @@ export default {
 <style lang="scss" scoped>
 @import "./assets/scss/app/index.scss";
 
-@mixin notifyImg($m, $n) {
-  $url: "./assets/image/common/" + $n + "/" + $m;
-  @include bgImage($url);
-}
-
-#app {
-  .change_theme {
-    @include notifyImg('hd.png','theme1');
-    &:hover {
-      @include notifyImg('hd2.png','theme1');
-    }
+  @mixin notifyImg($m, $n) {
+    $url: "./assets/image/common/" + $n + "/" + $m;
+    @include bgImage($url);
   }
-  .change_theme_content {
-    > div {
-      text-align: center;
-      line-height: 100px;
-      cursor: pointer;
-    }
-    .color-1 {
-      color: $colorE33;
-    }
-    .color-2 {
-      color: #F2AE4A;
-    }
-    .color-3 {
-      color: #20998C;
-    }
-    .color-4 {
-      color: #009BAB;
-    }
-    @for $i from 1 to 6 {
-      .theme-bg-#{$i} {
-        @include notifyImg('theme' + $i + '.png','theme1');
+
+  #app {
+    .change_theme {
+      @include notifyImg('hd.png', 'theme1');
+
+      &:hover {
+        @include notifyImg('hd2.png', 'theme1');
       }
     }
-  }
-  .global_notify {
-    @include notifyImg("bg.png", "theme1/notify");
-  }
+
+    .change_theme_content {
+      > div {
+        text-align: center;
+        line-height: 100px;
+        cursor: pointer;
+      }
+
+      .color-1 {
+        color: $colorE33;
+      }
+
+      .color-2 {
+        color: #F2AE4A;
+      }
+
+      .color-3 {
+        color: #20998C;
+      }
+
+      .color-4 {
+        color: #009BAB;
+      }
+
+      @for $i from 1 to 6 {
+        .theme-bg-#{$i} {
+          @include notifyImg('theme' + $i + '.png', 'theme1');
+        }
+      }
+    }
+
+    .global_notify {
+      @include notifyImg("bg.png", "theme1/notify");
+    }
 
   .notify_icon__success {
     @include notifyImg("success.png", "theme1/notify");

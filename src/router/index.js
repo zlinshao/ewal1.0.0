@@ -3,11 +3,16 @@ import Router from 'vue-router'
 
 const HomePage = () => import('@/components/index.vue') //首页
 const Login = () => import('@/components/login.vue') //登录
-const President = () => import('@/components/president/index.vue') //总裁办
-const Markting = () => import('@/components/president/markting.vue') //市场
-const Humanbing = () => import('@/components/president/humanbing.vue') //人事
-const Fincene = () => import('@/components/president/fincene.vue') //财务
-const Network = () => import('@/components/president/network.vue') //网络
+
+//总裁办
+const President = () => import('@/components/president/index.vue')
+const Office = () => import('@/components/president/office.vue')
+
+// const Markting = () => import('@/components/president/markting.vue') //市场
+// const Humanbing = () => import('@/components/president/humanbing.vue') //人事
+// const Fincene = () => import('@/components/president/fincene.vue') //财务
+// const Network = () => import('@/components/president/network.vue') //网络
+
 const Jurisdiction = () => import('@/components/jurisdiction.vue') //无权限
 const NetWork_error = () => import('@/components/network_error.vue') //网络已断开
 
@@ -376,25 +381,31 @@ export default new Router({
       component: President
     },
     {
-      path: '/president/markting',
-      name: '市场',
-      component: Markting,
+      path: '/president/office',
+      name: '总裁办部门',
+      component: Office
     },
-    {
-      path: '/president/humanbing',
-      name: '人事',
-      component: Humanbing
-    },
-    {
-      path: '/president/fincene',
-      name: '财务',
-      component: Fincene
-    },
-    {
-      path: '/president/network',
-      name: '网络',
-      component: Network
-    },
+
+    // {
+    //   path: '/president/markting',
+    //   name: '市场',
+    //   component: Markting,
+    // },
+    // {
+    //   path: '/president/humanbing',
+    //   name: '人事',
+    //   component: Humanbing
+    // },
+    // {
+    //   path: '/president/fincene',
+    //   name: '财务',
+    //   component: Fincene
+    // },
+    // {
+    //   path: '/president/network',
+    //   name: '网络',
+    //   component: Network
+    // },
     {
       path: '/riskManagement',
       name: '风险控制',

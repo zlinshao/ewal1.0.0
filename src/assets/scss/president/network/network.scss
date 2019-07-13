@@ -1,0 +1,250 @@
+#network {
+  padding: 90px  50px 30px 50px ;
+  display: flex;
+  justify-content: space-between;
+  /*左边样式*/
+  .left {
+    width: 28%;
+    .base_info {
+      width: 100%;
+      height: auto;
+      margin-top: 15px;
+      padding: 15px 18px 15px 42px;
+      ul {
+        .label_li {
+          display: flex;
+          justify-content: space-between;
+          vertical-align: middle;
+          font-size: 16px;
+          color: #fff;
+          padding-bottom: 5px;
+          img {
+            width: 20px;
+            height: 23px;
+          }
+        }
+        .info_li {
+          font-size: 14px;
+          padding-top: 10px;
+          display: flex;
+          justify-content: flex-start;
+          span:nth-child(1) {
+            display: block;
+            width: 180px;
+            color: #33C8FF;
+            word-break:break-all;
+          }
+          span:nth-child(2) {
+            display: block;
+            flex: 1;
+            color: #fff;
+            word-break:break-all;
+          }
+        }
+      }
+    }
+  }
+  /*右边样式*/
+  .right {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    /*状态和卡片样式*/
+    .status_card {
+      display: flex;
+      justify-content: space-between;
+      /*右：状态*/
+      .status {
+        width: 63%;
+        display: flex;
+        justify-content: flex-start;
+        margin-right: 20px;
+        position: relative;
+        .status_computer{
+          width:122px;
+          height:122px;
+          position: absolute;
+          right: 64px;
+          top:-61px;
+          span{
+            display: block;
+            width: 100%;
+            text-align: center;
+            position: absolute;
+            top: 80px;
+            font-size: 14px;
+          }
+        }
+        .status_left {
+          margin: 60px 0 60px 60px;
+          padding-right: 40px;
+          border-right: 1px dashed #33C8FF;
+          li {
+            .span1 {
+              color: #33C8FF;
+            }
+            img {
+              width: 13px;
+              height: 13px;
+              margin-right: 10px;
+            }
+          }
+        }
+        .status_right {
+          margin: 60px 0 60px 60px;
+          li {
+            .span1 {
+              color: #A1B3D4;
+            }
+          }
+        }
+        li {
+          font-size: 14px;
+          padding-bottom: 10px;
+          .span1 {
+            display: inline-block;
+            width: 100px;
+          }
+          .span2 {
+            color: #fff;
+          }
+        }
+      }
+
+      /*右：卡片*/
+      .card {
+        flex: 1;
+        ul {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          li {
+            width: 49%;
+            border-radius: 5px;
+            padding: 10px;
+            color: #fff;
+            text-align: center;
+
+            img {
+              width: 50px;
+              height: 54px;
+            }
+            p {
+              text-align: left;
+              padding-bottom: 10px;
+              font-size: 16px;
+            }
+            span {
+              font-size: 50px;
+              font-weight: 500;
+            }
+          }
+          .card_li1 {
+            margin-bottom: 10px;
+          }
+          .card_li2 {
+            margin-bottom: 10px;
+            p{
+              display: flex;
+              justify-content: space-between;
+              span{
+                display: inline-block;
+                font-size: 16px;
+              }
+              img{
+                width:14px;
+                height:14px;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    /* 图表*/
+    .monitor_info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      /*图标的label*/
+      .monitor_label {
+        margin: 30px 0 5px 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .monitor_label_left{
+          font-size:16px;
+          color:#33C8FF;
+        }
+        .monitor_label_right{
+          font-size:14px;
+          color:#fff;
+          vertical-align: middle;
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          .look, .setting{
+            display: inline-block;
+            margin-right: 40px;
+          }
+          .look{
+            img{
+              width: 19px;
+              height: 14px;
+              margin-right: 7px;
+              vertical-align: middle;
+            }
+          }
+          .setting{
+            img{
+              width: 16px;
+              height: 15px;
+              margin-right: 7px;
+              vertical-align: middle;
+            }
+          }
+        }
+      }
+      /*三个图表样式*/
+      .echarts {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        .mychart{
+          height: 32%;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          .mychart_title{
+            display: flex;
+            justify-content: space-between;
+            color:#fff;
+            padding: 5px  20px  0 20px;
+            span{
+              display: block;
+            }
+            .title_name{
+              font-size:24px;
+              font-weight:bold;
+            }
+            .title_legend{
+              margin: auto 0;
+              display: flex;
+              align-items: center;
+              .legend_icon1{
+                background:linear-gradient(90deg,rgba(255,243,176,1) 0%,rgba(255,138,48,1) 100%);
+              }
+              .legend_icon2{
+                background:linear-gradient(59deg,rgba(255,186,175,1) 0%,rgba(254,87,133,1) 100%);
+                margin-left: 30px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

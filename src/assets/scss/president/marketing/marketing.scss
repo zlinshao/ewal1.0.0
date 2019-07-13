@@ -1,0 +1,183 @@
+#marketing{
+  width: 100%;
+  padding: 45px  50px 30px 50px ;
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  //左半部分
+  .marketing_left{
+    width: 24%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    .date_location{
+      display: flex;
+      justify-content: flex-start;
+    }
+  }
+  //右半部分
+  .marketing_right{
+    width: 75%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    //上面
+    .colletrent_card{
+      width: 100%;
+      height: 22%;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      //收房量
+      .collet_num , .rent_num{
+        width: 34%;
+        display: flex;
+        justify-content: space-between;
+        //margin-right: 15px;
+        .num_left{
+          margin:20px 0px 20px 20px;
+          padding-right: 20px;
+          border-right: 1px dashed #00FFFF;
+          .num_label{
+            font-size: 16px;
+            color:#33C8FF;
+          }
+          .num_val{
+            font-size:50px;
+            color:#fff;
+          }
+        }
+        .num_echarts{
+          flex: 1;
+          height: 100%;
+        }
+      }
+      //租房量
+      .rent_num{
+        //width: 35%;
+        //margin-left: 15px;
+      }
+    }
+    //中间
+    .ring_discount_card{
+      width: 100%;
+      height: 28%;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      //环形图
+      .ring{
+        width: 34%;
+        display: flex;
+        justify-content: flex-start;
+        //margin-right: 15px;
+        .warning{
+          width: 50%;
+          display: flex;
+          flex-direction: column;
+          border-right: 1px dashed #00FFFF;
+          margin: 12px 18px;
+          #warnEcharts{
+            flex:1;
+          }
+        }
+        .house_status{
+          width: 50%;
+          height: 100%;
+          display: flex;
+          justify-content: space-around;
+          flex-wrap: wrap;
+          padding: 5px;
+          >div{
+            width: 45%;
+            height: 45%;
+          }
+        }
+      }
+      //折线图
+      .discount{
+        width: 34%;
+        //margin-left: 15px;
+        //margin-right: 15px;
+        display: flex;
+        flex-direction: column;
+        .title_legend{
+          display: block;
+          height: 20px;
+          padding: 5px;
+          .legend_icon1{
+            background:#9ECD68;
+          }
+          .legend_icon2{
+            background:#337BFF;
+            margin-left: 30px;
+          }
+        }
+        .scatter_echarts{
+          width: 100%;
+          flex: 1;
+        }
+      }
+    }
+    //卡片
+    .lowquality_card , .aveprice_card, .collet_card , .rent_card {
+      width: 14%;
+      height: 100%;
+      //margin-left: 15px;
+      padding: 0px 0 0 20px ;
+      display: flex;
+      >li{
+        margin: auto 0;
+        style-list:none;
+      }
+      .card_label{
+        font-size:16px;
+      }
+      .card_val{
+        font-size:50px;
+        margin: auto;
+      }
+    }
+    .lowquality_card, .collet_card{
+      //margin-right: 15px;
+    }
+
+
+    //底部
+    .scatter_info{
+      width: 100%;
+      height: 50%;
+      display: flex;
+      justify-content: space-between;
+      //空置房源
+      .vacancy_house{
+        width: 50%;
+        margin-right: 15px;
+        display: flex;
+        flex-direction: column;
+      }
+      //实际业绩
+      .actual_perform{
+        width: 50%;
+        display: flex;
+        flex-direction: column;
+      }
+      .num{
+        margin:10px 0px 0px 20px;
+        .num_label{
+          font-size: 16px;
+          color:#33C8FF;
+        }
+        .num_val{
+          font-size:30px;
+          color:#fff;
+        }
+      }
+      .scatter_echarts{
+        width: 100%;
+        flex: 1;
+      }
+    }
+  }
+}

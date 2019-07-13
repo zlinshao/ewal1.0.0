@@ -1,0 +1,364 @@
+#chairman{
+  padding-top: 80px;
+  color: #00FFFF;
+  //width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  //顶部样式
+  .chairman_top{
+    height: 20%;
+    img{
+      width: 100%;
+      height: 90px;
+    }
+    .clock_router{
+      margin-top: -90px;
+      padding: 0 35px;
+      height: 100%;
+      display: flex;
+      justify-content: space-between;
+    }
+    #tabsRouter{
+      width: 28%;
+    }
+  }
+  //下半部分图表
+  .chairman_info{
+    width: 100%;
+    height: 80%;
+    display: flex;
+    justify-content: space-between;
+    padding:15px  35px 23px 35px;
+    //左边
+    .chairman_left{
+      width: 24%;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      //业绩排名
+      .achieve{
+        position: relative;
+        .achieve_title{
+          display: flex;
+          justify-content: space-between;
+          font-size: 16px;
+          color:#33C8FF;
+          margin-bottom: 10px;
+        }
+        //业绩排名更多列表
+        .achieve_list{
+          width:260px;
+          height:400px;
+          color: #fff;
+          position: absolute;
+          right: -260px;
+          top: 0;
+          background:rgba(6,7,56,0.9);
+          z-index:99;
+          padding:20px  20px  5px 20px;
+          border-radius:5px;
+          ul{
+            width: 100%;
+            height: 100%;
+            overflow-y: scroll;
+            .label_num{
+              display: flex;
+              justify-content: space-between;
+              margin-bottom: 7px;
+            }
+            .progress{
+              width: 100%;
+              height: 3px;
+              background:rgba(255,255,255,0.3);
+              margin-bottom: 22px;
+              border-radius: 3px;
+              .progress_bar_active{
+                display: block;
+                background: #fff;
+                height: 3px;
+                border-radius: 3px;
+              }
+            }
+            .achieve_li0{
+              color:#FF4247;
+              .progress_bar_active{
+                background: #FF4247;
+              }
+            }
+            .achieve_li1{
+              color:#FFAA2F;
+              .progress_bar_active{
+                background: #FFAA2F;
+              }
+            }
+            .achieve_li2{
+              color:#00FFFF;
+              .progress_bar_active{
+                background: #00FFFF;
+              }
+            }
+          }
+          ul::-webkit-scrollbar {
+            display: none;
+          }
+        }
+      }
+      //业绩排名卡片
+      .order_list{
+        width: 100%;
+        height: 20%;
+        margin-bottom: 15px;
+        display: flex;
+        justify-content: space-between;
+        .order_num{
+          width: 32%;
+          height: 100%;
+          color: #fff;
+          padding: 15px 10px ;
+          position: relative;
+          border-radius: 5px;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          .order_icon{
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            text-align: right;
+            img{
+              width: 24px;
+              height: 17px;
+            }
+          }
+          ul{
+            .label_order{
+              font-size:22px;
+              font-weight:bold;
+            }
+            .label_city{
+              font-size:16px;
+              margin-bottom: 10px;
+            }
+            .label_num{
+              font-size:22px;
+            }
+            .label_progress{
+              .progress{
+                display: block;
+                width: 100%;
+                height: 3px;
+                background:rgba(255,255,255,0.3);
+                border-radius:2px;
+                .progress_bar{
+                  display: block;
+                  //width: 50%;
+                  height: 3px;
+                  background:#fff;
+                  border-radius: 3px;
+                }
+              }
+            }
+          }
+        }
+        .order_num0{
+          background:linear-gradient(225deg,rgba(253,111,88,1) 0%,rgba(254,87,133,1) 100%);
+        }
+        .order_num1{
+          background:linear-gradient(45deg,rgba(255,158,29,1) 0%,rgba(255,222,128,1) 100%);
+        }
+        .order_num2{
+          background:linear-gradient(225deg,rgba(101,230,221,1) 0%,rgba(41,138,193,1) 100%);
+         }
+      }
+      //收房，租房量
+      .collote_today, .rent_today{
+        width: 100%;
+        height: 18%;
+        margin-bottom: 15px;
+        padding: 14px 0px 12px 30px;
+        display: flex;
+        justify-content: space-between;
+        .today_left{
+          color: #33C8FF;
+          font-size:16px;
+          padding-right: 22px;
+          border-right: 1px dashed #00FFFF;
+          .num_val{
+            color: #fff;
+            font-size:50px;
+          }
+        }
+        #colletNumEcharts, #rentNumEcharts{
+          flex: 1;
+        }
+      }
+      //网络监控
+      .net_work{
+        width: 100%;
+        height: 38%;
+        padding: 15px 28px;
+        display: flex;
+        flex-direction: column;
+        .net_work_label{
+          color: #33C8FF;
+          font-size:16px;
+          margin-bottom: 15px;
+        }
+        .net_work_info{
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          p{
+            display: flex;
+            justify-content: space-around;
+            font-size:12px;
+            color: #fff;
+            margin-bottom: 10px;
+          }
+          ul{
+            flex: 1;
+            overflow-y: scroll;
+            //-ms-overflow-style: none;   //IE 10+
+            //overflow: -moz-scrollbars-none; //Firefox
+            li{
+              width: 100%;
+              height: 20px;
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              margin-bottom: 15px;
+              .instance{
+                display: block;
+                width: 50%;
+                height: 100%;
+                overflow: hidden;
+                text-overflow :ellipsis;
+                color:#8FE1FF;
+                font-size:12px;
+                text-align: center;
+              }
+              .status{
+                display: block;
+                width: 50%;
+                height: 100%;
+                .running{
+                  height: 100%;
+                }
+                .stopping{
+                  height: 2px;
+                }
+              }
+            }
+          }
+          //隐藏滚动条
+          ul::-webkit-scrollbar {
+            display: none;
+          }
+        }
+      }
+    }
+    //中间
+    .chairman_middle{
+      width: 50%;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    //右边
+    .chairman_right{
+      width: 26%;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      //今日入职离职占比
+      .entry_today,.leave_today{
+        width: 100%;
+        height: 22%;
+        margin-bottom: 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 40px;
+        #entryRingEcharts, #leaveRingEcharts{
+          width: 25%;
+          height: 100%;
+        }
+        .label_num{
+          width: 40%;
+          border-right: 1px dashed #00FFFF;
+          color: #33C8FF;
+          font-size: 16px;
+          //padding-left: 30px;
+          padding: 0 40px  0 30px;
+          .uint{
+            font-size: 12px;
+          }
+          .num{
+            font-size:50px;
+            color:#fff;
+          }
+        }
+        .staff_info{
+          width: 35%;
+          height: 100%;
+          padding-left: 40px;
+          li{
+            margin-bottom: 10px;
+          }
+        }
+      }
+       //今日亏损额度
+      .loss_today{
+        width: 100%;
+        flex: 1;
+        padding:15px  12px  20px 12px;
+        display: flex;
+        flex-direction: column;
+         #amountlossEcharts{
+           width: 100%;
+           height: 50%;
+           //flex: 1;
+         }
+        .progress{
+          width: 100%;
+          height: 30%;
+          display: flex;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          .progress_list{
+            width: 50%;
+            height: 17px;
+            margin-bottom: 15px;
+            span{
+              display: inline-block;
+              height: 100%;
+            }
+          }
+        }
+      }
+    }
+
+    //公共样式
+    .label_num{
+      .label{
+        display: block;
+        font-size:14px;
+        color: #33C8FF;
+      }
+      .num{
+        display: block;
+        font-size:50px;
+        color: #fff;
+      }
+    }
+  }
+
+
+
+
+
+
+}
