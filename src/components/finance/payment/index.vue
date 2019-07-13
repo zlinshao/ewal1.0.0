@@ -225,10 +225,8 @@
               </el-select>
             </el-form-item>
             <el-form-item label="付款账户">
-              <el-select placeholder="请选择" v-model="transferForm.account_id"
-                         :disabled="is_disabled">
-                <el-option v-for="(item,index) in accountLists" :label="item.name"
-                           :value="item.id"
+              <el-select placeholder="请选择" v-model="transferForm.account_id">
+                <el-option v-for="(item,index) in accountLists" :label="item.name" :value="item.id"
                            :key="index"></el-option>
               </el-select>
             </el-form-item>
@@ -251,18 +249,12 @@
                         type="textarea"></el-input>
             </el-form-item>
             <el-form-item label="付款时间">
-              <el-date-picker
-                v-model="transferForm.pay_date" type="date">
-              </el-date-picker>
+              <el-date-picker v-model="transferForm.pay_date" type="date" placeholder="请选择"></el-date-picker>
             </el-form-item>
-
             <el-form-item label="补齐时间">
-              <el-date-picker
-                v-model="transferForm.complete_date" type="date">
-              </el-date-picker>
+              <el-date-picker v-model="transferForm.complete_date" type="date" placeholder="请选择"></el-date-picker>
             </el-form-item>
           </el-form>
-
         </div>
         <div class="dialog_footer">
           <el-button type="danger" size="small" @click="handleOkTransfer(current_row)">确定
@@ -272,11 +264,8 @@
       </div>
     </lj-dialog>
 
-
     <!--应收款项备注列表dialog-->
-    <lj-dialog :visible.sync="remarks_dialog_visible"
-               :size="'small'"
-    >
+    <lj-dialog :visible.sync="remarks_dialog_visible" :size="'small'">
       <div class="dialog_container">
         <div class="dialog_header flex">
           <h3>备注</h3>
@@ -286,8 +275,7 @@
           <div class="address">{{tableSettingData.remarks.current_address}}</div>
           <div class="record">
             <el-table
-              :data="tableSettingData.remarks.tableData"
-            >
+              :data="tableSettingData.remarks.tableData">
               <el-table-column label="备注时间" prop="create_time" align="center"></el-table-column>
               <el-table-column label="备注内容" show-overflow-tooltip prop="content" align="center"
                                width="200"></el-table-column>
@@ -308,7 +296,6 @@
         </div>-->
       </div>
     </lj-dialog>
-
 
     <!--新增备注-->
     <lj-dialog
@@ -333,7 +320,6 @@
       </div>
     </lj-dialog>
 
-
     <!--新增应付款项-->
     <lj-dialog :visible="add_visible" :size="{width: 600 + 'px',height: 700 + 'px'}" @close="add_visible = false">
       <div class="dialog_container">
@@ -341,7 +327,6 @@
           <h3>新增</h3>
         </div>
         <div class="dialog_main borderNone">
-
           <el-form :model="ruleForm" label-width="80px">
             <el-form-item prop="name" label="客户名称">
               <el-input placeholder="请点击选择客户名称" v-model="ruleForm.customer_name"
@@ -376,19 +361,15 @@
               </el-select>
             </el-form-item>
             <el-form-item prop="name" label="付款时间">
-              <el-date-picker
-                v-model="ruleForm.pay_date" type="date" placeholder="请输入">
-              </el-date-picker>
+              <el-date-picker v-model="ruleForm.pay_date" type="date" placeholder="请输入"></el-date-picker>
             </el-form-item>
             <el-form-item prop="name" label="详情">
-              <el-input placeholder="请输入" v-model="ruleForm.description"
-                        type="textarea"></el-input>
+              <el-input placeholder="请输入" v-model="ruleForm.description" type="textarea"></el-input>
             </el-form-item>
             <el-form-item prop="name" label="备注">
               <el-input placeholder="请输入" v-model="ruleForm.remark" type="textarea"></el-input>
             </el-form-item>
           </el-form>
-
         </div>
         <div class="dialog_footer">
           <el-button type="danger" size="small" @click="handleOkAdd()">确定</el-button>
@@ -397,8 +378,7 @@
       </div>
     </lj-dialog>
     <!--删除lord-->
-    <lj-dialog :visible="delete_visible" :size="{width: 400 + 'px',height: 250 + 'px'}"
-               @close="delete_visible = false">
+    <lj-dialog :visible="delete_visible" :size="{width: 400 + 'px',height: 250 + 'px'}" @close="delete_visible = false">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>删除</h3>
@@ -415,7 +395,6 @@
     <!--科目-->
     <lj-subject :visible="subject_visible" @close="subject_visible = false" @confirm="handleConfirmSubject"
                 style="z-index:1000"></lj-subject>
-
     <!--回滚-->
     <lj-dialog :visible="recall_visible" :size="{width: 900 + 'px',height: 560 + 'px'}"
                @close="recall_visible = false">
@@ -428,13 +407,11 @@
             :data="running_account_record"
             :row-class-name="tableChooseRow"
             header-row-class-name="tableHeader"
-            @selection-change="handleSelectionChange"
-          >
+            @selection-change="handleSelectionChange">
             <el-table-column
               type="selection"
               width="55">
             </el-table-column>
-
             <el-table-column align="center" label="ID" prop="id">
             </el-table-column>
             <el-table-column align="center" label="明细" prop="desc">
@@ -468,8 +445,7 @@
             :data="batchEntryData"
             :row-class-name="tableChooseRow"
             header-row-class-name="tableHeader"
-            @selection-change="handleSelectionChange"
-          >
+            @selection-change="handleSelectionChange">
             <el-table-column align="center" label="操作时间" prop="create_time"></el-table-column>
             <el-table-column align="center" label="入账账户" prop="account_snapshot[0].name"></el-table-column>
             <el-table-column align="center" label="初始金额" prop="account_snapshot[0].value"></el-table-column>
@@ -493,7 +469,6 @@
     </lj-dialog>
 
     <!--批量入账导出-->
-
     <lj-dialog :visible="out_account_visible" @close="cancelOutAccount" :size="{width: 450 + 'px',height: 500 + 'px'}">
       <div class="dialog_container">
         <div class="dialog_header">
@@ -842,7 +817,7 @@
     },
     mounted() {
       this.getPaymentList();
-
+      this.getAccount(1);
     },
     activated() {
     },
@@ -1072,10 +1047,12 @@
         })
       },
 
-      getAccount() {//获取账户字典
+      getAccount(val) {//获取账户字典
         this.accountLists = [];
         this.out_form.account = [];
+        this.transferForm.account_id = '';
         this.out_form.account_name = '';
+        this.params.cate = val;
         this.$http.get(globalConfig.temporary_server + "account", this.params).then(res => {
           if (res.code === 200) {
             this.accountLists = res.data.data;
@@ -1194,8 +1171,16 @@
         }
         if (key === "transfer_visible") {//应付入账
           this.transfer_visible = true;
-          console.log(row);
-          this.transferForm = row;
+          console.log(row)
+          this.transferForm = {
+            customer_account_num: row.customer_account_num,
+            customer_account_type: row.customer_account_type,
+            account_id: '',
+            amount_paid: '',
+            remark: '',
+            pay_date: '',
+            complete_date: '',
+          };
         }
       },
       getPaymentList() {//加载应付款项列表

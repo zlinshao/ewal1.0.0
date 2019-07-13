@@ -242,9 +242,9 @@
                 class="all_width"
                 disabled
                 v-model="receive_form.pay_date"
-                placeholder="请选择付款时间"
-                type="datetime"
-              ></el-date-picker>
+                placeholder="请选择时间"
+                type="datetime">
+              </el-date-picker>
             </el-form-item>
             <el-form-item label="客户姓名">
               <el-input v-model="receive_form.customer_name" disabled></el-input>
@@ -257,8 +257,7 @@
             </el-form-item>
             <el-form-item label="账户">
               <el-select class="all_width" v-model="receive_form.account_id">
-                <el-option v-for="(item,index) in accountLists" :label="item.name"
-                           :value="item.id"
+                <el-option v-for="(item,index) in accountLists" :label="item.name" :value="item.id"
                            :key="index"></el-option>
               </el-select>
             </el-form-item>
@@ -266,7 +265,7 @@
               <el-input v-model="receive_form.amount_receivable" type="number" disabled></el-input>
             </el-form-item>
             <el-form-item label="收款金额">
-              <el-input v-model="receive_form.amount_received" type="number"></el-input>
+              <el-input v-model="receive_form.amount_received" type="number" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="剩余款项">
               <el-input v-model="receive_form.balance" type="number" disabled></el-input>
@@ -274,19 +273,9 @@
             <el-form-item label="补齐时间">
               <el-date-picker
                 class="all_width"
-                disabled
                 v-model="receive_form.complete_date"
-                placeholder="请选择付款时间"
-                type="datetime"
-              ></el-date-picker>
-            </el-form-item>
-            <el-form-item label="付款时间">
-              <el-date-picker
-                class="all_width"
-                v-model="receive_form.pay_date"
-                placeholder="请选择付款时间"
-                type="datetime"
-              ></el-date-picker>
+                placeholder="请选择时间"
+                type="datetime"></el-date-picker>
             </el-form-item>
             <el-form-item label="收款人员">
               <el-input v-model="receive_form.staff_name" disabled></el-input>
@@ -297,8 +286,8 @@
                 v-model="receive_form.remark"
                 type="textarea"
                 placeholder="请输入"
-                :rows="4"
-              ></el-input>
+                :rows="4">
+              </el-input>
             </el-form-item>
           </el-form>
         </div>
@@ -1791,6 +1780,7 @@
     mounted() {
       this.chooseTabI = this.compareParams.status;
       this.getReceiveList();
+      this.getAccount(1);
     },
     computed: {},
     methods: {
@@ -1800,10 +1790,12 @@
         this.current_row = '';
         this.getReceiveList();
       },
-      getAccount() {//获取账户字典
+      getAccount(val) {//获取账户字典
         this.accountLists = [];
         this.out_form.account = [];
+        this.receive_form.account_id = '';
         this.out_form.account_name = '';
+        this.params.cate = val;
         this.$http.get(globalConfig.temporary_server + "account", this.params).then(res => {
           if (res.code === 200) {
             this.accountLists = res.data.data;
@@ -2505,9 +2497,23 @@
       handleClickBtn(key, row) {//表单操作栏
         if (key === 'should_receive') {//应收入账
           this.receive_visible = true;
-          this.receive_form = row;
-          this.receive_form.customer_name = row.customer.customer_name;
-          this.receive_form.staff_name = row.staff.name;
+          console.log(row);
+          this.receive_form = {
+            identity: row.identity || '暂无',
+            customer_name: row.customer.customer_name || '暂无',
+            pay_type: '',
+            pay_date: row.pay_date || '暂无',
+            account_id: '',
+            amount_receivable: row.amount_receivable || '暂无',
+            amount_received: '',
+            balance: row.balance || '暂无',
+            complete_date: '',
+            staff_name: row.staff.name || '暂无',
+            remark: '',
+          }
+          // this.receive_form = row;
+          // this.receive_form.customer_name = row.customer.customer_name;
+          // this.receive_form.staff_name = row.staff.name;
         }
         if (key === 'record') {
           this.record_visible = true;
