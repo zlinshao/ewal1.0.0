@@ -495,11 +495,11 @@
       </div>
     </lj-dialog>
   <!-- 批量打款 -->
-<lj-dialog :visible="paymentbulk_visible" :size="{width: 900 + 'px',height: 560 + 'px'}"
-               @close="paymentbulk_visible = false;paymentData=[];paymentDataCount=0;">
+  <lj-dialog :visible="paymentbulk_visible" :size="{width: 900 + 'px',height: 800 + 'px'}"
+               @close="paymentbulk_visible = false;paymentData=[];paymentDataCount=0;paymentRemoveData=[];paymentRemoveDataId=[];paymentRemoveDataCount=0;">
       <div class="dialog_container">
         <div class="dialog_header justify-bet">
-          <h3>批量打款</h3>
+          <h3>应付款项</h3>
           <!-- <h3 class="batchEntry-icon">
             <i class="" v-if="$storage.get('VALIDATE_PERMISSION')['Batch-Payable-Export']"
                @click="out_account_visible = true"></i>
@@ -529,17 +529,45 @@
             </el-table-column>
             <el-table-column align="center" label="地址 " prop="customer.address"></el-table-column>
             <el-table-column align="center" label="剩余款项" prop="balance"></el-table-column>
+            <el-table-column align="center" label="操作" prop="balance"><template slot-scope="scope"><a style="color:#0c66ff" @click="removePaymentData(scope.row)">暂不支付</a></template></el-table-column>
+          </el-table>
+        </div>
+        <div class="dialog_header justify-bet" v-if="paymentRemoveDataCount>0">
+          <h3>暂不支付</h3>
+          <h4 style="float:right">共{{paymentRemoveDataCount}}条记录</h4>
+        </div>
+        <div class="dialog_main changeChoose" v-if="paymentRemoveDataCount>0">
+           <el-table
+            :data="paymentRemoveData"
+            v-loading="paymenttableLoading"
+            element-loading-text="拼命加载中"
+            element-loading-spinner="el-icon-loading"
+            element-loading-background="rgba(255, 255, 255, 0)"
+            header-row-class-name="tableHeader"
+          >
+            <el-table-column align="center" label="付款账户" prop="customer_account_num"></el-table-column>
+            <el-table-column align="center" label="付款账户开户行" prop="customer_account_bank"></el-table-column>
+            <el-table-column align="center" label="付款账户开户人" prop="customer_account_owner"></el-table-column>
+            <el-table-column align="center" label="科目信息" prop="subject.title">
+              <template slot-scope="scope">
+                <span>{{(scope.row.subject && scope.row.subject.parent_subject && scope.row.subject.parent_subject.title) ? 
+                  scope.row.subject.parent_subject.title+'-'+scope.row.subject.title : scope.row.subject && scope.row.subject.title ? 
+                  scope.row.subject.title : ""}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column align="center" label="地址 " prop="customer.address"></el-table-column>
+            <el-table-column align="center" label="剩余款项" prop="balance"></el-table-column>
+            <el-table-column align="center" label="操作" prop="balance"><template slot-scope="scope"><a style="color:#0c66ff" @click="addPaymentData(scope.row)">立即支付</a></template></el-table-column>
           </el-table>
         </div>
         <div class="dialog_footer">
           <el-button size="mini" type="danger" @click="paymentSubmit">提交</el-button>
           <!-- <el-button size="mini"  @click="outAccountCtrl">提交</el-button> -->
-          <el-button size="mini" type="info" @click="paymentbulk_visible=false;paymentData=[];paymentDataCount=0;">取消</el-button>
+          <el-button size="mini" type="info" @click="paymentbulk_visible=false;paymentData=[];paymentDataCount=0;paymentRemoveData=[];paymentRemoveDataId=[];paymentRemoveDataCount=0;">取消</el-button>
         </div>
       </div>
     </lj-dialog>
     <!--批量入账导出-->
-
     <lj-dialog :visible="out_account_visible" @close="cancelOutAccount" :size="{width: 450 + 'px',height: 500 + 'px'}">
       <div class="dialog_container">
         <div class="dialog_header">
@@ -878,6 +906,9 @@
         batchEntryData: [],
         batchEntryCount: 0,
         paymentData: [],
+        paymentRemoveData: [],// 移除的批量打款
+        paymentRemoveDataId: [],// 移除的批量打款 id
+        paymentRemoveDataCount: 0,
         paymentDataCount:0,
         paymentRequest_id: '',
         batchEntryParams: {
@@ -939,10 +970,25 @@
           }
         })
       },
+      //移动到暂不支付列表
+      removePaymentData(row){
+        this.paymentData=this.paymentData.filter((item)=> item.id !=row.id);
+        this.paymentRemoveData.push(row);
+        this.paymentRemoveDataId.push(row.id);
+        this.paymentRemoveDataCount +=1;
+        this.paymentDataCount -=1;
+      },
+      //从暂不支付列表移动到支付列表
+      addPaymentData(row){
+        this.paymentRemoveData=this.paymentRemoveData.filter((item)=> item.id !=row.id);
+        this.paymentData.push(row);
+        this.paymentRemoveDataId=this.paymentRemoveDataId.filter((item)=> row.id !=item);
+        this.paymentDataCount +=1;
+        this.paymentRemoveDataCount -=1;
+      },
       //批量打款提交
       paymentSubmit() {
-        
-        this.$http.post(globalConfig.temporary_server + 'account_payable/batchPayFund', {request_id: this.paymentRequest_id}).then(res => {
+        this.$http.post(globalConfig.temporary_server + 'account_payable/batchPayFund', {request_id: this.paymentRequest_id,exclude: this.paymentRemoveDataId}).then(res => {
           if (res.code === 200) {
             this.$LjNotify('success', {
               title: '成功',
@@ -952,6 +998,9 @@
             this.paymentData=[];
             this.paymentDataCount=0;
             this.paymentbulk_visible=false;
+            this.paymentRemoveData=[];
+            this.paymentRemoveDataId=[];
+            this.paymentRemoveDataCount=0;
           } else {
             this.$LjNotify('warning', {
               title: '失败',
