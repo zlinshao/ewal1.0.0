@@ -1,0 +1,26 @@
+@import "../../common.scss";
+
+#theme_name {
+  #lj_white_dialog {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+
+    .dialog-container {
+      width: 428px;
+      height: 385px;
+      background: rgba(255, 255, 255, 1);
+      box-shadow: 2px 0 8px 0 rgba(0, 0, 0, 0.1);
+      border-radius: 4px;
+      padding: 20px;
+      position: fixed;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      margin: auto;
+    }
+  }
+}

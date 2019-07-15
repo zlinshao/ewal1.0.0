@@ -181,6 +181,7 @@ export default {
 
         /*截取字符串方法*/
         Vue.prototype.substringPlugin = function(content, limit = 10) {
+                if (!content) {return};
                 if (content.constructor !== String) return;
                 if (content.length <= limit) {
                     return content;

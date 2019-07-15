@@ -26,7 +26,7 @@
             <div class="work-log-input-list-item-footer">
               <div class="footer-upload">
                 上传附件:
-                <lj-upload style="display: inline-block;margin-left: 30px" size="50" v-model="file_info"></lj-upload>
+                <lj-upload class="upload-offset" ref="workLogUploadRef" size="50" v-model="file_info"></lj-upload>
               </div>
               <div class="footer-user-choose">
                 通知人:
@@ -45,11 +45,14 @@
             <el-timeline-item :timestamp="item.time" placement="top" v-for="(item, index) in worklogList" :key="index">
               <el-collapse v-model="item.activeNames" accordion class="collapseContainer">
                 <el-collapse-item name="1" class="collapseItem">
-                  <h3 class="logTitle">今日完成工作:</h3>
+                  <template slot="title">
+                    {{item.type=='day'?'今日':item.type=='week'?'本周':item.type=='month'?'本月':'业绩日报'}}完成工作:
+                  </template>
                   <p>{{item.complete_work}}</p>
-                  <p>备注：{{item.ps}}</p>
+                  <h3 class="logTitle">备注:</h3>
+                  <p>{{item.ps}}</p>
                   <div class="readAvatar">
-                    <div class="read-icon" width="14px;" height="14px;"></div>
+                    <div :style="{'visibility':item.choose_ids.length == item.read_ids.length?'visible':'hidden'}" class="read-icon" width="14px;" height="14px;"></div>
                     <h6>全部已读</h6>
                     <img :src="items" v-for="(items, index) in item.read_avatar" :key="index" height="40px" width="40px"
                          border-radius="20px"/>
@@ -231,7 +234,7 @@
 
       //重置表单
       resetForm() {
-        this.file_info = [];
+        this.$refs['workLogUploadRef'].reset();
         this.conformUser = [];
         this.inputList= {
           day: [
@@ -421,15 +424,18 @@
           page: 1,
           limit: 7,
         };
-        this.$http.get(`${this.url}/staff/log`, params).then(res => {
+        this.$http.get(`${this.url}staff/log`, params).then(res => {
           if (res.code === "20000") {
             for (let i = 0; i < res.data.data.length; i++) {
               let obj = {
                 time: res.data.data[i].log_time.timeFormat.split(" ")[0],
                 complete_work: res.data.data[i].log_info.complete_work,
-                ps: res.data.data[i].log_info.complete_work,
-                read_avatar: [],
+                ps: res.data.data[i].log_info.ps,
+                read_avatar: [],//已读人员头像
                 activeNames: ["1"],
+                choose_ids:res.data.data[i].choose_ids,//所有人
+                read_ids:res.data.data[i].read_ids,//已读人
+                type:res.data.data[i].type,//类型 day week month
               };
               if (res.data.data[i].read_data.length > 0) {
                 for (let j = 0; j < res.data.data[i].read_data.length; j++) {
@@ -438,6 +444,7 @@
               }
               this.worklogList.push(obj);
             }
+            console.log(this.worklogList);
           }
         })
       }
@@ -513,7 +520,15 @@
   }
 
 </style>
-
+<style lang="scss">
+  #work_log {
+    .el-collapse-item__header {
+      font-weight: bold;
+      font-size: 15px;
+      color: #686874;
+    }
+  }
+</style>
 
 <style scoped lang="scss">
   @import "../../../assets/scss/personalCenter/workLog/index";

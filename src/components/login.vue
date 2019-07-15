@@ -185,6 +185,10 @@
         if (res) {
           this.$http.get(`${this.url}api/auth/user`).then(async res2 => {
             if (res2.success === true) {
+              let city = res2.data.detail?.staff?.city||'南京市';
+              if(!city.endsWith('市')) {
+                city = `${city}市`;
+              }
               await this.$storage.set('user_info', {
                 id: res2.data.id,
                 name: res2.data.name,
@@ -193,6 +197,7 @@
                 avatar: res2.data.detail?.avatar,
                 position_level: res2.data.detail?.staff?.position_level||null,//职位等级
                 company_info: res2.data.detail?.company_info || {},//公司信息
+                city: city,//城市名
               });
               this.$bus.emit('photo-url',res2.data.detail?.avatar);
               let that = this;
