@@ -1648,20 +1648,20 @@
     <!-- 丢失创建任务 -->
     <lj-dialog
       :visible="loseMission_visible"
-      :size="{width: 1700 + 'px',height: 901 + 'px'}"
+      :size="{width: 1700 + 'px',height: 900 + 'px'}"
       @close="loseMission_visible = false"
-      class="handinModify"
+      class="receiveModify"
     >
       <div class="dialogContainer">
         <div class="dialogHeader">
-          <p>创建任务</p>
+          <p>丢失合同新增</p>
         </div>
         <div class="dialog_body scroll_bar">
-          <el-form :inline="true">
+          <el-form label-width="140px" :inline="true">
             <h4 align="left">基本信息</h4>
             <div class="form_header">
               <el-form-item label="任务类型">
-                <el-input v-model="loseBasiclInfo_create.misson_type" readonly></el-input>
+                <el-input readonly v-model="loseBasiclInfo_create.mission_type"></el-input>
               </el-form-item>
               <el-form-item label="城市">
                 <el-select v-model="loseBasiclInfo_create.city_code">
@@ -1673,17 +1673,7 @@
                   ></el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="合同类型">
-                <el-select v-model="loseBasiclInfo_create.contract_type">
-                  <el-option
-                    v-for="(ht,index) in contractTypeList"
-                    :key="index"
-                    :label="ht.dictionary_name"
-                    :value="ht.id"
-                  ></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item label="报备日期">
+              <el-form-item label="领取日期">
                 <el-date-picker
                   type="datetime"
                   placeholder="选择日期时间"
@@ -1691,63 +1681,43 @@
                   value-format="yyyy-MM-dd"
                 ></el-date-picker>
               </el-form-item>
-              <el-form-item label="报备人">
-                <UserChoose :num="1" v-model="loseBasiclInfo_create.staff_id"></UserChoose>
+              <el-form-item label="领用人">
+                <UserChoose v-model="loseBasiclInfo_create.staff_id" :num="1"></UserChoose>
               </el-form-item>
               <el-form-item label="所属部门">
-                <org-choose title="请选择部门" v-model="loseBasiclInfo_create.department_id"></org-choose>
+                <OrgChoose v-model="loseBasiclInfo_create.department_id" :num="1"></OrgChoose>
               </el-form-item>
             </div>
             <h4 align="left">操作信息</h4>
-            <div class="form_box">
-              <div class="sf">
-                <div class="title">
-                  <b>收房合同上缴</b>
+            <div class="form_body">
+              <el-form-item>
+                <template slot="label">
+                  <b>收房合同</b>
                   <span class="arrow"></span>
-                </div>
-                <div class="select_box">
-                  <div
-                    class="ht_box"
+                </template>
+                <el-checkbox-group v-model="loseBasiclInfo_create.checkList_sf">
+                  <el-checkbox
                     v-for="(val,key) in loseBasiclInfo_create.collects"
                     :key="key"
-                  >
-                    <el-form-item>
-                      <el-checkbox v-model="loseBasiclInfo_create.choosed[key]">{{val}}</el-checkbox>
-                    </el-form-item>
-                    <el-form-item label="地址" label-width="40">
-                      <el-input v-model="loseBasiclInfo_create.address[key]"></el-input>
-                    </el-form-item>
-                    <el-form-item>
-                      <el-checkbox v-model="loseBasiclInfo_create.handover[key]">交接单</el-checkbox>
-                      <el-checkbox v-model="loseBasiclInfo_create.receipt[key]">收据</el-checkbox>
-                      <el-checkbox v-model="loseBasiclInfo_create.key[key]">钥匙</el-checkbox>
-                    </el-form-item>
-                  </div>
-                </div>
-              </div>
-              <div class="zf">
-                <div class="title">
-                  <b>租房合同上缴</b>
+                    :label="val"
+                  ></el-checkbox>
+                </el-checkbox-group>
+              </el-form-item>
+              <el-form-item>
+                <template slot="label">
+                  <b>租房合同</b>
                   <span class="arrow"></span>
-                </div>
-                <div class="select_box">
-                  <div class="ht_box" v-for="(val,key) in loseBasiclInfo_create.rents" :key="key">
-                    <el-form-item>
-                      <el-checkbox v-model="loseBasiclInfo_create.choosed[key]">{{val}}</el-checkbox>
-                    </el-form-item>
-                    <el-form-item label="地址">
-                      <el-input v-model="loseBasiclInfo_create.address[key]"></el-input>
-                    </el-form-item>
-                    <el-form-item>
-                      <el-checkbox v-model="loseBasiclInfo_create.handover[key]">交接单</el-checkbox>
-                      <el-checkbox v-model="loseBasiclInfo_create.receipt[key]">收据</el-checkbox>
-                      <el-checkbox v-model="loseBasiclInfo_create.key[key]">钥匙</el-checkbox>
-                    </el-form-item>
-                  </div>
-                </div>
-              </div>
+                </template>
+                <el-checkbox-group v-model="loseBasiclInfo_create.checkList_zf">
+                  <el-checkbox
+                    v-for="(val,key) in loseBasiclInfo_create.rents"
+                    :key="key"
+                    :label="val"
+                  ></el-checkbox>
+                </el-checkbox-group>
+              </el-form-item>
             </div>
-            <h4 align="left">其他</h4>
+            <h4 align="left">剩余合同</h4>
             <div class="form_footer" align="left">
               <el-form-item label="截图">
                 <lj-upload v-model="loseBasiclInfo_create.screenshot"></lj-upload>
@@ -2246,22 +2216,18 @@ export default {
       },
       // 丢失新增
       loseBasiclInfo_create: {
-        misson_type: "丢失",
+        mission_type: "丢失",
         city_code: "",
-        contract_type: "",
         report_time: "",
-        staff_id: [],
+        staff_id: "",
         department_id: "",
-        remark: "",
-        screenshot: [],
-        noDataShow: true,
+        checkList_sf: [],
+        checkList_zf: [],
         collects: [],
         rents: [],
-        choosed: {},
-        address: {},
-        receipt: {},
-        handover: {},
-        key: {}
+        screenshot: [],
+        remark: "",
+        noDataShow: true
       },
       loseBasiclInfo: [], //丢失详情基本信息
       // 丢失信息修改
@@ -3396,100 +3362,42 @@ export default {
         }
       });
     },
-    // 丢失创建详情
+    // 丢失创建确认
     loseMission_submit() {
       let obj = this.loseBasiclInfo_create;
-      if (!obj.city_code) {
-        this.$LjNotify("error", {
-          title: "失败",
-          message: "请选择城市"
-        });
-        return;
-      }
-      if (!obj.report_time) {
-        this.$LjNotify("error", {
-          title: "失败",
-          message: "请选择时间"
-        });
-        return;
-      }
-      if (obj.staff_id.length == 0) {
-        this.$LjNotify("error", {
-          title: "失败",
-          message: "请选择报备人"
-        });
-        return;
-      }
-      if (obj.department_id.length == 0) {
-        this.$LjNotify("error", {
-          title: "失败",
-          message: "请选择部门"
-        });
-        return;
-      }
-      if (!obj.contract_type) {
-        this.$LjNotify("error", {
-          title: "失败",
-          message: "请选择合同类型"
-        });
-        return;
-      }
-      let candidate = {};
-      for (let key in obj.choosed) {
-        if (obj.choosed[key]) {
-          let num = 0;
-          // 只选了交接单
-          if (obj.handover[key] && !obj.receipt[key] && !obj.key[key]) {
-            num = 1;
+      // 遍历收租房选择数组,取得key
+      let candidate = [];
+      obj.checkList_sf.forEach(item => {
+        for (let key in obj.collects) {
+          if (obj.collects[key] == item) {
+            candidate.push(key);
           }
-          if (!obj.handover[key] && obj.receipt[key] && !obj.key[key]) {
-            num = 2;
-          }
-          if (!obj.handover[key] && !obj.receipt[key] && obj.key[key]) {
-            num = 3;
-          }
-          if (obj.handover[key] && obj.receipt[key] && !obj.key[key]) {
-            num = 4;
-          }
-          if (obj.handover[key] && !obj.receipt[key] && obj.key[key]) {
-            num = 5;
-          }
-          if (!obj.handover[key] && obj.receipt[key] && obj.key[key]) {
-            num = 6;
-          }
-          if (obj.handover[key] && obj.receipt[key] && obj.key[key]) {
-            num = 7;
-          }
-          candidate = Object.assign(
-            {},
-            {
-              [key]: {
-                address: obj.address[key],
-                proof: num
-              }
-            }
-          );
         }
-      }
+      });
+      obj.checkList_zf.forEach(item => {
+        for (let key in obj.rents) {
+          if (obj.rents[key] == item) {
+            candidate.push(key);
+          }
+        }
+      });
       let data = {
         city_code: obj.city_code,
-        report_time: obj.report_time,
-        staff_id: obj.staff_id[0],
         department_id: obj.department_id[0],
         remark: obj.remark,
+        report_time: obj.report_time,
         screenshot: obj.screenshot,
-        candidate: candidate,
-        contract_type: obj.contract_type
+        staff_id: obj.staff_id[0],
+        candidate: candidate
       };
-      // console.log(data);
-      this.$http.post(`${this.url}contract/loose`, data).then(res => {
+      // console.log(data)
+      this.$http.post(`${this.url}contract/loss`, data).then(res => {
         if (res.code === "20010") {
           this.$LjNotify("success", {
             title: "成功",
             message: "新增成功"
           });
           this.loseMission_visible = false;
-          this.getContractLoseList();
         } else {
           this.$LjNotify("error", {
             title: "失败",
@@ -3717,7 +3625,7 @@ export default {
         if (res.code === "20000") {
           this.$LjNotify("success", {
             title: "成功",
-            message: "修改成功"
+            message: "新增成功"
           });
           this.cancelMission_visible = false;
         } else {
@@ -4270,34 +4178,10 @@ export default {
     "loseBasiclInfo_create.staff_id"(val, oldVal) {
       let obj = this.loseBasiclInfo_create;
       this.$http.get(`${this.url}contract/staff/${val}?search=`).then(res => {
-        // console.log(res);
         if (res.code === "20000") {
           obj.noDataShow = false;
           obj.collects = res.data.collect;
           obj.rents = res.data.rent;
-          let collectsAndRents = Object.assign(
-            {},
-            res.data.collect,
-            res.data.rents
-          );
-          // 初始化选择的文件对象
-          let choosed = JSON.parse(JSON.stringify(collectsAndRents));
-          for (const key in choosed) {
-            choosed[key] = false;
-          }
-          // 初始化地址
-          let address = JSON.parse(JSON.stringify(collectsAndRents));
-          for (const key in address) {
-            address[key] = "";
-          }
-          // 初始化选择的文件/交接/收据/钥匙
-          let receipt = JSON.parse(JSON.stringify(choosed));
-          let key = JSON.parse(JSON.stringify(choosed));
-          // 添加到表单对象
-          this.$set(obj, "choosed", choosed);
-          this.$set(obj, "address", address);
-          this.$set(obj, "receipt", receipt);
-          this.$set(obj, "key", key);
         } else {
           obj.noDataShow = true;
           obj.collects = [];
