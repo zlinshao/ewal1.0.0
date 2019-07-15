@@ -712,9 +712,12 @@
           limit: 12,
           department_ids: '',
           export: '',
+        },
+        accountParams:{
+          page: 1,
+          limit: 12,
           cate: '',
         },
-
         delete_visible: false,//删除
         add_visible: false,//新增
         pay_visible: false,//应付金额
@@ -1261,8 +1264,8 @@
         this.out_form.account = [];
         this.transferForm.account_id = '';
         this.out_form.account_name = '';
-        this.params.cate = val;
-        this.$http.get(globalConfig.temporary_server + "account", this.params).then(res => {
+        this.accountParams.cate = val;
+        this.$http.get(globalConfig.temporary_server + "account", this.accountParams).then(res => {
           if (res.code === 200) {
             this.accountLists = res.data.data;
             this.is_disabled = false;

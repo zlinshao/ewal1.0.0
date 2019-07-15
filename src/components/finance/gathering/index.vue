@@ -1438,7 +1438,11 @@
           is_deposit: '',
           is_tail_fund: '',
           is_rank_rent: '',
-
+        },
+        accountParams:{
+          page: 1,
+          limit: 12,
+          cate: '',
         },
         btnData: [],
         current_address: '',
@@ -1806,8 +1810,8 @@
         this.out_form.account = [];
         this.receive_form.account_id = '';
         this.out_form.account_name = '';
-        this.params.cate = val;
-        this.$http.get(globalConfig.temporary_server + "account", this.params).then(res => {
+        this.accountParams.cate = val;
+        this.$http.get(globalConfig.temporary_server + "account", this.accountParams).then(res => {
           if (res.code === 200) {
             this.accountLists = res.data.data;
             this.is_disabled = false;
