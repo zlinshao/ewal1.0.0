@@ -236,7 +236,7 @@ export const companySearch = {
             dataType: []
         }]
     }
-    
+
 // 离职管理
 export const LeaveJobSearch = {
     status: 'LeaveJobSearch',
@@ -1443,7 +1443,15 @@ export const accountSearchList = {
 export const paySearchList = {
     status: 'paySearchList',
     keywords: 'search',
-    data: [{
+    data: [
+      {
+        keyType: 'dateRange',
+        title: '应付时间',
+        placeholder: '请选择日期',
+        keyName: 'gatherDate',
+        dataType: []
+      },
+      {
             keyType: 'radio',
             title: '入账状态',
             keyName: 'status',
@@ -2311,7 +2319,7 @@ export const contractNumberHighSearch={
             value: {
                 num: 1
             }
-        },        
+        },
         {
             keyType: 'depart',
             title: '部门',
@@ -2347,7 +2355,7 @@ export const contractNumberEditHighSearch={
             value: {
                 num: 1
             }
-        },        
+        },
         {
             keyType: 'depart',
             title: '操作对象部门',
