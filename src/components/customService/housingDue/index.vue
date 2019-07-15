@@ -523,7 +523,6 @@ export default {
       }
 
       if (this.tagType == 1) {
-        console.log('22')
         this.$http.post(this.market_server + `v1.0/market/contract/tag/${this.chooseTab}/${this.currentRow.contract_id}`, this.mark_form).then(res => {
           if (res.code === 200) {
             this.$LjNotify('success', {
