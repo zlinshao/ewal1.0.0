@@ -448,14 +448,14 @@
                           <li
                             v-for="sf_collect_allocated in item.collect_allocated"
                             :key="sf_collect_allocated"
-                          >sf_collect_allocated</li>
+                          >{{sf_collect_allocated}}</li>
                         </ul>
                         <ul v-if="remainingUnpaidChoosed == 2">
                           <li v-for="zf in item.rent" :key="zf">{{zf}}</li>
                           <li
                             v-for="zf_allocated in item.rent_allocated"
                             :key="zf_allocated"
-                          >zf_allocated</li>
+                          >{{zf_allocated}}</li>
                         </ul>
                       </div>
                     </div>
@@ -741,36 +741,49 @@
           <p>创建任务</p>
         </div>
         <div class="dialog_body scroll_bar">
-          <el-form label-width="140px" :model="distribute_form" :inline="true">
+          <el-form label-width="140px" :inline="true">
             <h4 align="left">基本信息</h4>
             <div class="form_header">
               <el-form-item label="任务类型">
-                <el-select>
-                  <el-option label value></el-option>
-                  <el-option label value></el-option>
-                </el-select>
+                <el-input v-model="receiveAdd_form.misson_type" readonly></el-input>
               </el-form-item>
               <el-form-item label="城市">
-                <el-select>
-                  <el-option label value></el-option>
-                  <el-option label value></el-option>
+                <el-select
+                  v-model="receiveAdd_form.city_code"
+                  @change="getReceiveAddInfo(receiveAdd_form)"
+                >
+                  <el-option
+                    v-for="(city,index) in cityList"
+                    :key="index"
+                    :label="city.dictionary_name"
+                    :value="city.variable.city_code"
+                  ></el-option>
                 </el-select>
               </el-form-item>
               <el-form-item label="领取日期">
-                <el-date-picker type="datetime" placeholder="选择日期时间"></el-date-picker>
+                <el-date-picker
+                  type="datetime"
+                  placeholder="选择日期时间"
+                  v-model="receiveAdd_form.report_time"
+                  value-format="yyyy-MM-dd"
+                ></el-date-picker>
               </el-form-item>
               <el-form-item label="领用人">
-                <UserChoose></UserChoose>
+                <UserChoose :num="1" v-model="receiveAdd_form.staff_id"></UserChoose>
               </el-form-item>
               <el-form-item label="所属部门">
-                <div
-                  style="background:rgba(240,240,240,1);width:350px;height:40px; padding:0 20px;"
-                >南京一区</div>
+                <OrgChoose v-model="receiveAdd_form.department_id"></OrgChoose>
               </el-form-item>
               <el-form-item label="版本号">
-                <el-radio-group>
-                  <el-radio label="5345435"></el-radio>
-                  <el-radio label="76575"></el-radio>
+                <el-radio-group
+                  v-model="receiveAdd_form.version"
+                  @change="getReceiveAddInfo(receiveAdd_form)"
+                >
+                  <el-radio label="1">1-LJ</el-radio>
+                  <el-radio label="2">2-LJGY</el-radio>
+                  <el-radio label="3">3-lC</el-radio>
+                  <el-radio label="4">4-LP</el-radio>
+                  <el-radio label="5">5-LQ</el-radio>
                 </el-radio-group>
               </el-form-item>
             </div>
@@ -778,54 +791,73 @@
             <div class="form_main">
               <div class="shou">
                 <el-form-item label="领取合同数（收）">
-                  <el-input type="input" placeholder="请输入"></el-input>
+                  <el-input type="input" placeholder="请输入" v-model="receiveAdd_form.collect_amount"></el-input>
                 </el-form-item>
                 <el-form-item label="合同编号">
-                  <el-input type="input" placeholder="请输入"></el-input>
+                  <el-input
+                    type="input"
+                    placeholder="请输入"
+                    v-model="receiveAdd_form.collect_start"
+                    @change="getReceiveAddInfo_end(receiveAdd_form)"
+                  ></el-input>
                 </el-form-item>
                 <el-form-item label="到">
-                  <el-input type="input"></el-input>
+                  <el-input type="input" v-model="receiveAdd_form.collect_end" readonly></el-input>
                 </el-form-item>
-                <el-form-item label="合同编号（自选）" v-for="(item,index) in collect_extra" :key="index">
+                <el-form-item
+                  label="合同编号（自选）"
+                  v-for="(item,index) in receiveAdd_form.collect_extra"
+                  :key="index"
+                >
                   <el-input type="input" v-model="item.value"></el-input>
                   <div class="reduceIcon el-icon-remove" @click="reduceCollect_extra(index)"></div>
                 </el-form-item>
-                <div class="addIcon" @click="collect_extra.push({value:''})"></div>
+                <div class="addIcon" @click="receiveAdd_form.collect_extra.push({value:''})"></div>
               </div>
               <div class="zu">
                 <el-form-item label="领取合同数（租）">
-                  <el-input type="input" placeholder="请输入"></el-input>
+                  <el-input type="input" placeholder="请输入" v-model="receiveAdd_form.rent_amount"></el-input>
                 </el-form-item>
                 <el-form-item label="合同编号">
-                  <el-input type="input" placeholder="请输入"></el-input>
+                  <el-input
+                    type="input"
+                    placeholder="请输入"
+                    v-model="receiveAdd_form.rent_start"
+                    @change="getReceiveAddInfo_end(receiveAdd_form)"
+                  ></el-input>
                 </el-form-item>
                 <el-form-item label="到">
-                  <el-input type="input"></el-input>
+                  <el-input type="input" v-model="receiveAdd_form.rent_end" readonly></el-input>
                 </el-form-item>
-                <el-form-item label="合同编号（自选）" v-for="(item,index) in rent_extra" :key="index">
+                <el-form-item
+                  label="合同编号（自选）"
+                  v-for="(item,index) in receiveAdd_form.rent_extra"
+                  :key="index"
+                >
                   <el-input type="input" v-model="item.value"></el-input>
                   <div class="reduceIcon el-icon-remove" @click="reduceRent_extra(index)"></div>
                 </el-form-item>
-                <div class="addIcon" @click="rent_extra.push({value:''})"></div>
+                <div class="addIcon" @click="receiveAdd_form.rent_extra.push({value:''})"></div>
               </div>
             </div>
             <h4 align="left">其他</h4>
             <div class="form_footer" align="left">
               <el-form-item label="截图">
-                <lj-upload></lj-upload>
+                <lj-upload v-model="receiveAdd_form.screenshot"></lj-upload>
               </el-form-item>
               <el-form-item label="备注">
-                <el-input type="textarea" :rows="2" v-model="modifyRemark"></el-input>
+                <el-input type="textarea" :rows="2" v-model="receiveAdd_form.remark"></el-input>
               </el-form-item>
             </div>
           </el-form>
         </div>
         <div class="dialog_footer">
-          <el-button type="danger">确定</el-button>
-          <el-button type="info">取消</el-button>
+          <el-button type="danger" @click="receiveAdd_submit">确定</el-button>
+          <el-button type="info" @click="receiveMission_visible=false">取消</el-button>
         </div>
       </div>
     </lj-dialog>
+
     <!-- 作废详情 -->
     <lj-dialog
       :visible="contractCancel_visible"
@@ -995,38 +1027,42 @@
       :visible="cancelMission_visible"
       :size="{width: 1700 + 'px',height: 900 + 'px'}"
       @close="cancelMission_visible = false"
-      class="cancelMission"
+      class="receiveModify"
     >
       <div class="dialogContainer">
         <div class="dialogHeader">
-          <p>创建任务</p>
+          <p>作废合同新增</p>
         </div>
         <div class="dialog_body scroll_bar">
-          <el-form label-width="140px" :model="distribute_form" :inline="true">
+          <el-form label-width="140px" :inline="true">
             <h4 align="left">基本信息</h4>
             <div class="form_header">
               <el-form-item label="任务类型">
-                <el-select>
-                  <el-option label value></el-option>
-                  <el-option label value></el-option>
-                </el-select>
+                <el-input readonly v-model="cancelBasiclInfo_add.mission_type"></el-input>
               </el-form-item>
               <el-form-item label="城市">
-                <el-select>
-                  <el-option label value></el-option>
-                  <el-option label value></el-option>
+                <el-select v-model="cancelBasiclInfo_add.city_code">
+                  <el-option
+                    v-for="(city,index) in cityList"
+                    :key="index"
+                    :label="city.dictionary_name"
+                    :value="city.variable.city_code"
+                  ></el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="报备日期">
-                <el-date-picker type="datetime" placeholder="选择日期时间"></el-date-picker>
+              <el-form-item label="领取日期">
+                <el-date-picker
+                  type="datetime"
+                  placeholder="选择日期时间"
+                  v-model="cancelBasiclInfo_add.report_time"
+                  value-format="yyyy-MM-dd"
+                ></el-date-picker>
               </el-form-item>
-              <el-form-item label="报备人">
-                <UserChoose></UserChoose>
+              <el-form-item label="领用人">
+                <UserChoose v-model="cancelBasiclInfo_add.staff_id" :num="1"></UserChoose>
               </el-form-item>
               <el-form-item label="所属部门">
-                <div
-                  style="background:rgba(240,240,240,1);width:350px;height:40px; padding:0 20px;"
-                >南京一区</div>
+                <OrgChoose v-model="cancelBasiclInfo_add.department_id" :num="1"></OrgChoose>
               </el-form-item>
             </div>
             <h4 align="left">操作信息</h4>
@@ -1036,9 +1072,12 @@
                   <b>收房合同</b>
                   <span class="arrow"></span>
                 </template>
-                <el-checkbox-group v-model="distribute_form.checkList_sf">
-                  <el-checkbox label="LJGYSF01001656"></el-checkbox>
-                  <el-checkbox label="LJGY6546545466"></el-checkbox>
+                <el-checkbox-group v-model="cancelBasiclInfo_add.checkList_sf">
+                  <el-checkbox
+                    v-for="(val,key) in cancelBasiclInfo_add.collects"
+                    :key="key"
+                    :label="val"
+                  ></el-checkbox>
                 </el-checkbox-group>
               </el-form-item>
               <el-form-item>
@@ -1046,25 +1085,29 @@
                   <b>租房合同</b>
                   <span class="arrow"></span>
                 </template>
-                <el-checkbox-group v-model="distribute_form.checkList_zf">
-                  <el-checkbox label="LJGYSF01001656"></el-checkbox>
+                <el-checkbox-group v-model="cancelBasiclInfo_add.checkList_zf">
+                  <el-checkbox
+                    v-for="(val,key) in cancelBasiclInfo_add.rents"
+                    :key="key"
+                    :label="val"
+                  ></el-checkbox>
                 </el-checkbox-group>
               </el-form-item>
             </div>
-            <h4 align="left">其他</h4>
+            <h4 align="left">剩余合同</h4>
             <div class="form_footer" align="left">
               <el-form-item label="截图">
-                <lj-upload></lj-upload>
+                <lj-upload v-model="cancelBasiclInfo_add.screenshot"></lj-upload>
               </el-form-item>
               <el-form-item label="备注">
-                <el-input type="textarea" :rows="2" v-model="modifyRemark"></el-input>
+                <el-input type="textarea" :rows="2" v-model="cancelBasiclInfo_add.remark"></el-input>
               </el-form-item>
             </div>
           </el-form>
         </div>
         <div class="dialog_footer">
-          <el-button type="danger">确定</el-button>
-          <el-button type="info">取消</el-button>
+          <el-button type="danger" @click="cancleAdd_submit">确定</el-button>
+          <el-button type="info" @click="cancelMission_visible=false">取消</el-button>
         </div>
       </div>
     </lj-dialog>
@@ -1346,7 +1389,7 @@
                 </el-select>
               </el-form-item>
               <el-form-item label="合同类型">
-                <el-select v-model="handinBasiclInfo_change.contract_type">
+                <el-select v-model="handinBasiclInfo_create.contract_type">
                   <el-option
                     v-for="(ht,index) in contractTypeList"
                     :key="index"
@@ -1371,7 +1414,7 @@
               </el-form-item>
             </div>
             <h4 align="left">操作信息</h4>
-            <div class="form_box" v-if="handinBasiclInfo_create.show">
+            <div class="form_box">
               <div class="sf">
                 <div class="title">
                   <b>收房合同上缴</b>
@@ -1422,10 +1465,10 @@
             <h4 align="left">其他</h4>
             <div class="form_footer" align="left">
               <el-form-item label="截图">
-                <lj-upload v-model="handinBasiclInfo_create.file_info"></lj-upload>
+                <lj-upload v-model="handinBasiclInfo_create.screenshot"></lj-upload>
               </el-form-item>
               <el-form-item label="备注">
-                <el-input type="textarea" :rows="2" v-model="handinBasiclInfo_create.remarks_new"></el-input>
+                <el-input type="textarea" :rows="2" v-model="handinBasiclInfo_create.remark"></el-input>
               </el-form-item>
             </div>
           </el-form>
@@ -1605,46 +1648,54 @@
     <!-- 丢失创建任务 -->
     <lj-dialog
       :visible="loseMission_visible"
-      :size="{width: 1700 + 'px',height: 900 + 'px'}"
+      :size="{width: 1700 + 'px',height: 901 + 'px'}"
       @close="loseMission_visible = false"
-      class="shangjiao_create"
+      class="handinModify"
     >
       <div class="dialogContainer">
         <div class="dialogHeader">
-          <p>丢失创建任务</p>
+          <p>创建任务</p>
         </div>
         <div class="dialog_body scroll_bar">
           <el-form :inline="true">
             <h4 align="left">基本信息</h4>
             <div class="form_header">
               <el-form-item label="任务类型">
-                <el-select>
-                  <el-option label value></el-option>
-                  <el-option label value></el-option>
-                </el-select>
+                <el-input v-model="loseBasiclInfo_create.misson_type" readonly></el-input>
               </el-form-item>
               <el-form-item label="城市">
-                <el-select>
-                  <el-option label value></el-option>
-                  <el-option label value></el-option>
+                <el-select v-model="loseBasiclInfo_create.city_code">
+                  <el-option
+                    v-for="(city,index) in cityList"
+                    :key="index"
+                    :label="city.dictionary_name"
+                    :value="city.variable.city_code"
+                  ></el-option>
                 </el-select>
               </el-form-item>
               <el-form-item label="合同类型">
-                <el-select>
-                  <el-option label value></el-option>
-                  <el-option label value></el-option>
+                <el-select v-model="loseBasiclInfo_create.contract_type">
+                  <el-option
+                    v-for="(ht,index) in contractTypeList"
+                    :key="index"
+                    :label="ht.dictionary_name"
+                    :value="ht.id"
+                  ></el-option>
                 </el-select>
               </el-form-item>
               <el-form-item label="报备日期">
-                <el-date-picker type="datetime" placeholder="选择日期时间"></el-date-picker>
+                <el-date-picker
+                  type="datetime"
+                  placeholder="选择日期时间"
+                  v-model="loseBasiclInfo_create.report_time"
+                  value-format="yyyy-MM-dd"
+                ></el-date-picker>
               </el-form-item>
               <el-form-item label="报备人">
-                <UserChoose></UserChoose>
+                <UserChoose :num="1" v-model="loseBasiclInfo_create.staff_id"></UserChoose>
               </el-form-item>
               <el-form-item label="所属部门">
-                <div
-                  style="background:rgba(240,240,240,1);width:350px;height:40px; padding:0 20px;"
-                >南京一区</div>
+                <org-choose title="请选择部门" v-model="loseBasiclInfo_create.department_id"></org-choose>
               </el-form-item>
             </div>
             <h4 align="left">操作信息</h4>
@@ -1655,19 +1706,21 @@
                   <span class="arrow"></span>
                 </div>
                 <div class="select_box">
-                  <div class="ht_box">
+                  <div
+                    class="ht_box"
+                    v-for="(val,key) in loseBasiclInfo_create.collects"
+                    :key="key"
+                  >
                     <el-form-item>
-                      <el-radio label>fsastg41432432</el-radio>
+                      <el-checkbox v-model="loseBasiclInfo_create.choosed[key]">{{val}}</el-checkbox>
                     </el-form-item>
                     <el-form-item label="地址" label-width="40">
-                      <el-input></el-input>
+                      <el-input v-model="loseBasiclInfo_create.address[key]"></el-input>
                     </el-form-item>
                     <el-form-item>
-                      <el-checkbox-group v-model="distribute_form.checkList_sf">
-                        <el-checkbox label="交接单"></el-checkbox>
-                        <el-checkbox label="收据"></el-checkbox>
-                        <el-checkbox label="钥匙"></el-checkbox>
-                      </el-checkbox-group>
+                      <el-checkbox v-model="loseBasiclInfo_create.handover[key]">交接单</el-checkbox>
+                      <el-checkbox v-model="loseBasiclInfo_create.receipt[key]">收据</el-checkbox>
+                      <el-checkbox v-model="loseBasiclInfo_create.key[key]">钥匙</el-checkbox>
                     </el-form-item>
                   </div>
                 </div>
@@ -1678,19 +1731,17 @@
                   <span class="arrow"></span>
                 </div>
                 <div class="select_box">
-                  <div class="ht_box">
+                  <div class="ht_box" v-for="(val,key) in loseBasiclInfo_create.rents" :key="key">
                     <el-form-item>
-                      <el-radio label="1">备选项</el-radio>
+                      <el-checkbox v-model="loseBasiclInfo_create.choosed[key]">{{val}}</el-checkbox>
                     </el-form-item>
                     <el-form-item label="地址">
-                      <el-input></el-input>
+                      <el-input v-model="loseBasiclInfo_create.address[key]"></el-input>
                     </el-form-item>
                     <el-form-item>
-                      <el-checkbox-group v-model="distribute_form.checkList_sf">
-                        <el-checkbox label="交接单"></el-checkbox>
-                        <el-checkbox label="收据"></el-checkbox>
-                        <el-checkbox label="钥匙"></el-checkbox>
-                      </el-checkbox-group>
+                      <el-checkbox v-model="loseBasiclInfo_create.handover[key]">交接单</el-checkbox>
+                      <el-checkbox v-model="loseBasiclInfo_create.receipt[key]">收据</el-checkbox>
+                      <el-checkbox v-model="loseBasiclInfo_create.key[key]">钥匙</el-checkbox>
                     </el-form-item>
                   </div>
                 </div>
@@ -1699,17 +1750,17 @@
             <h4 align="left">其他</h4>
             <div class="form_footer" align="left">
               <el-form-item label="截图">
-                <lj-upload></lj-upload>
+                <lj-upload v-model="loseBasiclInfo_create.screenshot"></lj-upload>
               </el-form-item>
               <el-form-item label="备注">
-                <el-input type="textarea" :rows="2" v-model="modifyRemark"></el-input>
+                <el-input type="textarea" :rows="2" v-model="loseBasiclInfo_create.remark"></el-input>
               </el-form-item>
             </div>
           </el-form>
         </div>
         <div class="dialog_footer">
-          <el-button type="danger">确定</el-button>
-          <el-button type="info">取消</el-button>
+          <el-button type="danger" @click="loseMission_submit">确定</el-button>
+          <el-button type="info" @click="loseMission_visible=false">取消</el-button>
         </div>
       </div>
     </lj-dialog>
@@ -2116,6 +2167,21 @@ export default {
       cancelBasiclInfo: [],
       // 作废信息修改
       cancelBasiclInfo_change: {},
+      // 作废合同新增
+      cancelBasiclInfo_add: {
+        mission_type: "作废",
+        city_code: "",
+        report_time: "",
+        staff_id: "",
+        department_id: "",
+        checkList_sf: [],
+        checkList_zf: [],
+        collects: [],
+        rents: [],
+        screenshot: [],
+        remark: "",
+        noDataShow: true
+      },
       distributeReceiveList: [{ name: "fdsfs" }], //分配收房合同列表
       distributeRentList: [], //分配租房合同列表
       // 上缴详情
@@ -2161,28 +2227,41 @@ export default {
       },
       // 上缴新增
       handinBasiclInfo_create: {
-        // simple_staff: "",
-        // department: "",
-        city_name: "",
+        misson_type: "上缴",
+        city_code: "",
+        contract_type: "",
         report_time: "",
-        operator: {},
+        staff_id: [],
+        department_id: "",
+        remark: "",
+        screenshot: [],
+        noDataShow: true,
+        collects: [],
+        rents: [],
+        choosed: {},
+        address: {},
         receipt: {},
         handover: {},
-        key: {},
-        address: {},
-        remarks_new: "",
-        screenshot: [],
-        passed: [],
-        choosed: [],
-        file_info: [],
-        contract_type: "",
-        contract_type_name: "",
-        misson_type: "上缴",
-        change_id: "",
+        key: {}
+      },
+      // 丢失新增
+      loseBasiclInfo_create: {
+        misson_type: "丢失",
         city_code: "",
-        staff_id: "",
+        contract_type: "",
+        report_time: "",
+        staff_id: [],
         department_id: "",
-        show: false
+        remark: "",
+        screenshot: [],
+        noDataShow: true,
+        collects: [],
+        rents: [],
+        choosed: {},
+        address: {},
+        receipt: {},
+        handover: {},
+        key: {}
       },
       loseBasiclInfo: [], //丢失详情基本信息
       // 丢失信息修改
@@ -2225,18 +2304,6 @@ export default {
       remainingUnpaidChoosed: 1,
       // 汇总分配的具体数据
       distribute_form: {},
-      // 自选的租房合同编号数组
-      rent_extra: [
-        {
-          value: ""
-        }
-      ],
-      // 自选的收房编号数组
-      collect_extra: [
-        {
-          value: ""
-        }
-      ],
       // 创建任务的收房合同上缴循环数据
       sf_create: [],
       numberManageAdd_form: {
@@ -2281,11 +2348,35 @@ export default {
       // 合同类型的列表
       contractTypeList: [],
       // 汇总详情
-      hz_detail: {
-        // all:{
-        //   collects:[],
-        //   rents:[]
-        // }
+      hz_detail: {},
+      // 合同编号领取添加的表单
+      receiveAdd_form: {
+        misson_type: "上缴",
+        version: "1",
+        city_code: "",
+        report_time: "",
+        staff_id: "",
+        department_id: "",
+        remark: "",
+        screenshot: [],
+        collect_amount: "", //领取合同数(收)
+        collect_start: "",
+        collect_end: "",
+        rent_amount: "", //领取合同数(租)
+        rent_start: "",
+        rent_end: "",
+        // 自选的租房合同编号数组
+        rent_extra: [
+          {
+            value: ""
+          }
+        ],
+        // 自选的收房编号数组
+        collect_extra: [
+          {
+            value: ""
+          }
+        ]
       }
     };
   },
@@ -2710,7 +2801,7 @@ export default {
     },
     //汇总详情
     showCollectDetail(row) {
-      this.hz_detail=[];
+      this.hz_detail = [];
       this.$http
         .get(`${this.url}contract/mission/${row.staff_id}`)
         .then(res => {
@@ -2792,7 +2883,8 @@ export default {
           this.handinBasiclInfo.passed = res.data.passed;
           // 如果有备注，就将备注的content赋给remarks_new
           if (this.handinBasiclInfo.remarks.length > 0) {
-            this.handinBasiclInfo.remarks_new = this.handinBasiclInfo.remarks[0].content;
+            this.handinBasiclInfo.remarks_new = this.handinBasiclInfo.remarks;
+            [0].content;
           }
           // console.log(this.handinBasiclInfo);
         }
@@ -3204,8 +3296,42 @@ export default {
     },
     // 上缴创建确定
     handinMission_submit() {
-      // console.log(this.handinBasiclInfo_change);
       let obj = this.handinBasiclInfo_create;
+      if (!obj.city_code) {
+        this.$LjNotify("error", {
+          title: "失败",
+          message: "请选择城市"
+        });
+        return;
+      }
+      if (!obj.report_time) {
+        this.$LjNotify("error", {
+          title: "失败",
+          message: "请选择时间"
+        });
+        return;
+      }
+      if (obj.staff_id.length == 0) {
+        this.$LjNotify("error", {
+          title: "失败",
+          message: "请选择报备人"
+        });
+        return;
+      }
+      if (obj.department_id.length == 0) {
+        this.$LjNotify("error", {
+          title: "失败",
+          message: "请选择部门"
+        });
+        return;
+      }
+      if (!obj.contract_type) {
+        this.$LjNotify("error", {
+          title: "失败",
+          message: "请选择合同类型"
+        });
+        return;
+      }
       let candidate = {};
       for (let key in obj.choosed) {
         if (obj.choosed[key]) {
@@ -3244,22 +3370,130 @@ export default {
         }
       }
       let data = {
-        id: obj.change_id,
         city_code: obj.city_code,
         report_time: obj.report_time,
-        staff_id: obj.staff_id,
-        department_id: obj.department_id,
-        remark: obj.remarks_new,
+        staff_id: obj.staff_id[0],
+        department_id: obj.department_id[0],
+        remark: obj.remark,
         screenshot: obj.screenshot,
         candidate: candidate,
         contract_type: obj.contract_type
       };
-      this.$http.post(`${this.url}contract/handin/`, data).then(res => {
+      // console.log(data);
+      this.$http.post(`${this.url}contract/handin`, data).then(res => {
         if (res.code === "20010") {
-          this.haninModify_visible = false;
           this.$LjNotify("success", {
             title: "成功",
             message: "新增成功"
+          });
+          this.handinMission_visible = false;
+          this.getContractHandinList();
+        } else {
+          this.$LjNotify("error", {
+            title: "失败",
+            message: res.msg
+          });
+        }
+      });
+    },
+    // 丢失创建详情
+    loseMission_submit() {
+      let obj = this.loseBasiclInfo_create;
+      if (!obj.city_code) {
+        this.$LjNotify("error", {
+          title: "失败",
+          message: "请选择城市"
+        });
+        return;
+      }
+      if (!obj.report_time) {
+        this.$LjNotify("error", {
+          title: "失败",
+          message: "请选择时间"
+        });
+        return;
+      }
+      if (obj.staff_id.length == 0) {
+        this.$LjNotify("error", {
+          title: "失败",
+          message: "请选择报备人"
+        });
+        return;
+      }
+      if (obj.department_id.length == 0) {
+        this.$LjNotify("error", {
+          title: "失败",
+          message: "请选择部门"
+        });
+        return;
+      }
+      if (!obj.contract_type) {
+        this.$LjNotify("error", {
+          title: "失败",
+          message: "请选择合同类型"
+        });
+        return;
+      }
+      let candidate = {};
+      for (let key in obj.choosed) {
+        if (obj.choosed[key]) {
+          let num = 0;
+          // 只选了交接单
+          if (obj.handover[key] && !obj.receipt[key] && !obj.key[key]) {
+            num = 1;
+          }
+          if (!obj.handover[key] && obj.receipt[key] && !obj.key[key]) {
+            num = 2;
+          }
+          if (!obj.handover[key] && !obj.receipt[key] && obj.key[key]) {
+            num = 3;
+          }
+          if (obj.handover[key] && obj.receipt[key] && !obj.key[key]) {
+            num = 4;
+          }
+          if (obj.handover[key] && !obj.receipt[key] && obj.key[key]) {
+            num = 5;
+          }
+          if (!obj.handover[key] && obj.receipt[key] && obj.key[key]) {
+            num = 6;
+          }
+          if (obj.handover[key] && obj.receipt[key] && obj.key[key]) {
+            num = 7;
+          }
+          candidate = Object.assign(
+            {},
+            {
+              [key]: {
+                address: obj.address[key],
+                proof: num
+              }
+            }
+          );
+        }
+      }
+      let data = {
+        city_code: obj.city_code,
+        report_time: obj.report_time,
+        staff_id: obj.staff_id[0],
+        department_id: obj.department_id[0],
+        remark: obj.remark,
+        screenshot: obj.screenshot,
+        candidate: candidate,
+        contract_type: obj.contract_type
+      };
+      // console.log(data);
+      this.$http.post(`${this.url}contract/loose`, data).then(res => {
+        if (res.code === "20010") {
+          this.$LjNotify("success", {
+            title: "成功",
+            message: "新增成功"
+          });
+          this.loseMission_visible = false;
+          this.getContractLoseList();
+        } else {
+          this.$LjNotify("error", {
+            title: "失败",
+            message: res.msg
           });
         }
       });
@@ -3357,7 +3591,7 @@ export default {
     // 合同编号领取删除
     deleteReceive(row) {
       this.$http
-        .delete(`${this.url}contract/apply/delete/${row.id}`)
+        .post(`${this.url}contract/apply/delete/${row.id}`)
         .then(res => {
           if (res.code == 20010) {
             this.$LjNotify("success", {
@@ -3365,13 +3599,135 @@ export default {
               message: "删除成功"
             });
             this.getContractReceiveList();
+          } else {
+            this.$LjNotify("error", {
+              title: "失败",
+              message: res.msg
+            });
           }
         });
     },
-    receiveAdd() {},
-    cancelAdd() {},
-    handinAdd() {},
-    loseAdd() {},
+    // 合同编号领取添加
+    receiveAdd_submit() {
+      // console.log(this.receiveAdd_form);
+      let obj = this.receiveAdd_form;
+      let collect_extra = obj.collect_extra.map(item => {
+        return item.value;
+      });
+      let rent_extra = obj.rent_extra.map(item => {
+        return item.value;
+      });
+      let data = {
+        city_code: obj.city_code,
+        report_time: obj.report_time,
+        staff_id: obj.staff_id[0],
+        collect_amount: obj.collect_amount,
+        collect_start: obj.collect_start,
+        collect_end: obj.collect_end,
+        collect_extra: collect_extra,
+        department_id: obj.department_id[0],
+        version: obj.version,
+        screenshot: obj.screenshot,
+        rent_start: obj.rent_start,
+        rent_end: obj.rent_end,
+        rent_amount: obj.rent_amount,
+        rent_extra: rent_extra,
+        remark: obj.remark
+      };
+      console.log(data);
+      this.$http.post(`${this.url}contract/apply`, data).then(res => {
+        if (res.code === "20010") {
+          this.$LjNotify("success", {
+            title: "成功",
+            message: res.msg
+          });
+          this.receiveMission_visible = false;
+          this.getContractReceiveList();
+        } else {
+          this.$LjNotify("error", {
+            title: "失败",
+            message: res.msg
+          });
+        }
+      });
+    },
+    // 根据城市和版本号获取合同编号
+    async getReceiveAddInfo(obj) {
+      if (obj.city_code != "") {
+        await this.$http
+          .get(
+            `${this.url}contract/max/${obj.city_code}?version=${obj.version}`
+          )
+          .then(res => {
+            if (res.code === "20000") {
+              obj.collect_start = res.data.collect;
+              obj.rent_start = res.data.rent;
+            }
+          });
+        this.getReceiveAddInfo_end(obj);
+      }
+    },
+    // 根据城市和版本号获取合同的结束编号
+    getReceiveAddInfo_end(obj) {
+      if (obj.collect_start != "") {
+        this.$http
+          .get(`${this.url}contract/end?start=${obj.collect_start}&count=`)
+          .then(res => {
+            obj.collect_end = res.data;
+          });
+      }
+      if (obj.rent_start != "") {
+        this.$http
+          .get(`${this.url}contract/end?start=${obj.rent_start}&count=`)
+          .then(res => {
+            obj.rent_end = res.data;
+          });
+      }
+    },
+    // 新增作废合同
+    cancleAdd_submit() {
+      let obj = this.cancelBasiclInfo_add;
+      // 遍历收租房选择数组,取得key
+      let candidate = [];
+      obj.checkList_sf.forEach(item => {
+        for (let key in obj.collects) {
+          if (obj.collects[key] == item) {
+            candidate.push(key);
+          }
+        }
+      });
+      obj.checkList_zf.forEach(item => {
+        for (let key in obj.rents) {
+          if (obj.rents[key] == item) {
+            candidate.push(key);
+          }
+        }
+      });
+      let data = {
+        city_code: obj.city_code,
+        department_id: obj.department_id[0],
+        remark: obj.remark,
+        report_time: obj.report_time,
+        screenshot: obj.screenshot,
+        staff_id: obj.staff_id[0],
+        candidate: candidate
+      };
+      // console.log(data)
+      this.$http.post(`${this.url}contract/invalidate`, data).then(res => {
+        if (res.code === "20000") {
+          this.$LjNotify("success", {
+            title: "成功",
+            message: "修改成功"
+          });
+          this.cancelMission_visible = false;
+        } else {
+          this.$LjNotify("error", {
+            title: "失败",
+            message: res.msg
+          });
+        }
+      });
+    },
     // 获取电子资料
     getPhotoList(row) {
       // console.log("获取row的电子资料", row);
@@ -3568,16 +3924,16 @@ export default {
     },
     // 删除租房合同编号（自选）事件
     reduceRent_extra(index) {
-      let len = this.rent_extra.length;
+      let len = this.receiveAdd_form.rent_extra.length;
       if (len > 0 && len != 1) {
-        this.rent_extra.splice(index, 1);
+        this.receiveAdd_form.rent_extra.splice(index, 1);
       }
     },
     // 删除收房合同编号（自选）事件
     reduceCollect_extra(index) {
-      let len = this.collect_extra.length;
+      let len = this.receiveAdd_form.collect_extra.length;
       if (len > 0 && len != 1) {
-        this.collect_extra.splice(index, 1);
+        this.receiveAdd_form.collect_extra.splice(index, 1);
       }
     },
     // 上缴合同详情审核
@@ -3871,19 +4227,96 @@ export default {
     }
   },
   watch: {
-    // 监听staff_id，因为上缴的合同根据选择的人调出
+    // 上缴创建任务,根据选择的人调出列表
     "handinBasiclInfo_create.staff_id"(val, oldVal) {
+      let obj = this.handinBasiclInfo_create;
       this.$http.get(`${this.url}contract/staff/${val}?search=`).then(res => {
-        if (res.code === "20001") {
-          this.handinBasiclInfo_create.show = false;
-        } else {
-          this.handinBasiclInfo_create.show = true;
-          this.$set(
-            this.handinBasiclInfo_create,
-            "collects",
-            res.data.collects
+        // console.log(res);
+        if (res.code === "20000") {
+          obj.noDataShow = false;
+          obj.collects = res.data.collect;
+          obj.rents = res.data.rent;
+          let collectsAndRents = Object.assign(
+            {},
+            res.data.collect,
+            res.data.rents
           );
-          this.$set(this.handinBasiclInfo_create, "rents", res.data.rents);
+          // 初始化选择的文件对象
+          let choosed = JSON.parse(JSON.stringify(collectsAndRents));
+          for (const key in choosed) {
+            choosed[key] = false;
+          }
+          // 初始化地址
+          let address = JSON.parse(JSON.stringify(collectsAndRents));
+          for (const key in address) {
+            address[key] = "";
+          }
+          // 初始化选择的文件/交接/收据/钥匙
+          let receipt = JSON.parse(JSON.stringify(choosed));
+          let key = JSON.parse(JSON.stringify(choosed));
+          // 添加到表单对象
+          this.$set(obj, "choosed", choosed);
+          this.$set(obj, "address", address);
+          this.$set(obj, "receipt", receipt);
+          this.$set(obj, "key", key);
+        } else {
+          obj.noDataShow = true;
+          obj.collects = [];
+          obj.rents = [];
+        }
+      });
+    },
+    // 丢失创建任务,根据选择的人调出列表
+    "loseBasiclInfo_create.staff_id"(val, oldVal) {
+      let obj = this.loseBasiclInfo_create;
+      this.$http.get(`${this.url}contract/staff/${val}?search=`).then(res => {
+        // console.log(res);
+        if (res.code === "20000") {
+          obj.noDataShow = false;
+          obj.collects = res.data.collect;
+          obj.rents = res.data.rent;
+          let collectsAndRents = Object.assign(
+            {},
+            res.data.collect,
+            res.data.rents
+          );
+          // 初始化选择的文件对象
+          let choosed = JSON.parse(JSON.stringify(collectsAndRents));
+          for (const key in choosed) {
+            choosed[key] = false;
+          }
+          // 初始化地址
+          let address = JSON.parse(JSON.stringify(collectsAndRents));
+          for (const key in address) {
+            address[key] = "";
+          }
+          // 初始化选择的文件/交接/收据/钥匙
+          let receipt = JSON.parse(JSON.stringify(choosed));
+          let key = JSON.parse(JSON.stringify(choosed));
+          // 添加到表单对象
+          this.$set(obj, "choosed", choosed);
+          this.$set(obj, "address", address);
+          this.$set(obj, "receipt", receipt);
+          this.$set(obj, "key", key);
+        } else {
+          obj.noDataShow = true;
+          obj.collects = [];
+          obj.rents = [];
+        }
+      });
+    },
+    // 作废创建任务,根据选择人调出合同列表
+    "cancelBasiclInfo_add.staff_id"(val, oldVal) {
+      let obj = this.cancelBasiclInfo_add;
+      this.$http.get(`${this.url}contract/staff/${val}?search=`).then(res => {
+        if (res.code === "20000") {
+          obj.noDataShow = false;
+          obj.collects = res.data.collect;
+          obj.rents = res.data.rent;
+        } else {
+          obj.noDataShow = true;
+          obj.collects = [];
+          obj.rents = [];
         }
       });
     }
