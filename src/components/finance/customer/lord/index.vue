@@ -42,12 +42,16 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column prop="create_time" label="生成时间" align="center" min-width="120"></el-table-column>
-      <el-table-column prop="address" label="房屋地址" align="left" min-width="150">
+      <el-table-column label="生成时间" prop="create_time" align="center">
+        <template slot-scope="scope">
+          <div v-for="item in scope.row.create_time">{{item}}</div>
+        </template>
+      </el-table-column>
+      <el-table-column prop="address" label="房屋地址" align="center" min-width="150">
         <template slot-scope="scope">
           <el-tooltip :content="scope.row.address" placement="bottom-start" :visible-arrow="false">
             <div class="house-address-contain-money">
-              <!--              {{substringPlugin(scope.row.address,14)}}-->
+              <!--{{substringPlugin(scope.row.address,14)}}-->
               {{scope.row.address}}
               <span v-if="scope.row.has_running==1" class="lord-money"></span>
             </div>
@@ -60,12 +64,19 @@
       <el-table-column prop="deal_date" label="待签约日期" align="center"></el-table-column>
       <el-table-column prop="first_pay_date" label="第一次打房租日期" align="center"></el-table-column>
       <el-table-column prop="account_type" label="客户汇款方式" align="center" show-overflow-tooltip></el-table-column>
-      <el-table-column label="付款方式/月单价" prop="prices" align="center" min-width="200">
+      <el-table-column label="付款方式/月单价" prop="month_price" align="center">
         <template slot-scope="scope">
-          <el-tooltip :content="scope.row.prices" placement="bottom-start" :visible-arrow="false">
-            <!--<div>{{substringPlugin(scope.row.prices,18)}}</div>-->
-            <div>{{scope.row.prices}}</div>
-          </el-tooltip>
+          <div class="month_price" style="cursor: pointer;">
+            <div v-if="monthPrice === scope.row.id">
+              <div v-for="item in scope.row.month_price" style="white-space: nowrap">{{item}}</div>
+            </div>
+            <span @click.prevent="monthPrice = scope.row.id" v-else style="white-space: nowrap">
+              {{scope.row.month_price[0]}}<span v-if="scope.row.month_price.length > 1">...</span>
+            </span>
+          </div>
+          <!--<el-tooltip :content="scope.row.prices" placement="bottom-start" :visible-arrow="false">-->
+          <!--<div>{{substringPlugin(scope.row.prices,18)}}</div>-->
+          <!--</el-tooltip>-->
         </template>
       </el-table-column>
       <el-table-column label="账号" prop="account_num" align="center" min-width="150"></el-table-column>
@@ -159,6 +170,7 @@
         lordDetailData: this.row,
         statusLists: [],
         chooseType: '',
+        monthPrice: '',
       }
     },
     mounted() {
@@ -230,6 +242,9 @@
             // this.lordLists = res.data.data.sort((a, b) => {
             //   return a.id - b.id;
             // });
+            for (let item of res.data.data) {
+              item.create_time = item.create_time.split(' ');
+            }
             this.lordLists = res.data.data;
             this.lordCount = res.data.count;
             this.lordIds = [];
@@ -400,6 +415,19 @@
 
       .lord-money {
         @include financeImg('jinrongqianbi.png', 'theme1');
+      }
+    }
+  }
+</style>
+<style lang="scss">
+  #theme_name {
+    .mainListTable.changeChoose {
+      .el-table__body {
+        .el-table__row {
+          .cell {
+            white-space: pre-wrap;
+          }
+        }
       }
     }
   }

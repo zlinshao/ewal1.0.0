@@ -67,6 +67,7 @@
 
                   <el-form-item required prop="now_position" label="晋升后岗位">
                     <post-choose width="220" num="1" :disabled="false" title="必填" :show-icon="false"
+                                 ref="postChoose"
                                  v-model="promotion_form.now_position">
                     </post-choose>
                   </el-form-item>
@@ -85,17 +86,17 @@
                 </el-col>
               </el-row>
 
-              <el-row>
-                <el-col :span="24">
-                  <el-form-item required prop="change_receipt" label="交接单">
-                    <el-input type="textarea"
-                              v-model="promotion_form.change_receipt"
-                              :autosize="{ minRows: 2, maxRows: 14}"
-                              placeholder="必填">
-                    </el-input>
-                  </el-form-item>
-                </el-col>
-              </el-row>
+              <!--              <el-row>-->
+              <!--                <el-col :span="24">-->
+              <!--                  <el-form-item required prop="change_receipt" label="交接单">-->
+              <!--                    <el-input type="textarea"-->
+              <!--                              v-model="promotion_form.change_receipt"-->
+              <!--                              :autosize="{ minRows: 2, maxRows: 14}"-->
+              <!--                              placeholder="必填">-->
+              <!--                    </el-input>-->
+              <!--                  </el-form-item>-->
+              <!--                </el-col>-->
+              <!--              </el-row>-->
 
 
               <el-row>
@@ -157,7 +158,7 @@
       // 晋升原因
       change_reason: null,
       // 交接单
-      change_receipt: null,
+      // change_receipt: null,
       // 原有薪资
       old_salary: null,
       // 晋升后薪资
@@ -191,10 +192,10 @@
             {required: true, message: '请输入晋升原因', trigger: ['blur', 'change']},
             {min: 1, max: 300, message: '长度在 1 到 300 个字符', trigger: 'blur'}
           ],
-          change_receipt: [
-            {required: true, message: '请输入交接单', trigger: ['blur', 'change']},
-            {min: 1, max: 300, message: '长度在 1 到 300 个字符', trigger: 'blur'}
-          ],
+          // change_receipt: [
+          //   {required: true, message: '请输入交接单', trigger: ['blur', 'change']},
+          //   {min: 1, max: 300, message: '长度在 1 到 300 个字符', trigger: 'blur'}
+          // ],
           old_salary: [
             {required: true, message: '请输入原有薪资', trigger: ['blur', 'change']}
           ],
@@ -235,19 +236,21 @@
             if (valid) {
               this.promotion_form.enroll = this.myUtils.formatDate(this.promotion_form.enroll, 'yyyy-MM-dd')
               let {name, enroll, org, position} = this.user_info
-              let {old_salary, now_salary, change_reason, change_receipt, attachment} = this.promotion_form
+              let {old_salary, now_salary, change_reason} = this.promotion_form
               let data = {
                 ...this.promotion_form,
+                enroll,
                 more_data: [
                   {key: '申请人', value: name},
                   {key: '入职时间', value: enroll},
                   {key: '所属部门', value: org},
-                  {key: '原有薪资', value: old_salary},
-                  {key: '晋升后部门', value: this.$refs.orgChoose.org_name.join(' ')},
-                  {key: '晋升后薪资', value: now_salary},
                   {key: '所属岗位', value: position},
+                  {key: '晋升后部门', value: this.$refs.orgChoose.org_name.join(' ')},
+                  {key: '晋升后岗位', value: this.$refs.postChoose.post_name.join(' ')},
+                  {key: '原有薪资', value: old_salary},
+                  {key: '晋升后薪资', value: now_salary},
                   {key: '晋升原因', value: change_reason},
-                  {key: '交接单', value: change_receipt}
+                  // {key: '交接单', value: change_receipt}
                 ]
               }
               this.showLoading2(true)

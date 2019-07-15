@@ -1,5 +1,5 @@
 import * as colorUtil from './color-util.js'
-function text(context, text, x, y,maxWidth, lineHeight, fontSize, fontColor) {
+function text(context, text = '', x, y,maxWidth, lineHeight, fontSize, fontColor) {
   context.font = 'bold 16px Arial'
   context.fillStyle = fontColor
   context.textAlign = 'center';
@@ -20,7 +20,7 @@ function text(context, text, x, y,maxWidth, lineHeight, fontSize, fontColor) {
   context.fillText(line, x, y)
 }
 
-function wrapText(context, text, x, y, maxWidth, lineHeight, fontColor) {
+function wrapText(context, text = '', x, y, maxWidth, lineHeight, fontColor) {
   context.font = '12px Arial'
   context.fillStyle = fontColor
   let words = text.split(' ')

@@ -5,7 +5,7 @@
     <!--列表-->
     <el-table
       :data="rentOrderLists"
-      :height="this.mainListHeight() + 'px'"
+      :height="mainListHeight(50) + 'px'"
       highlight-current-row
       header-row-class-name="tableHeader"
       :cell-class-name="tableCell"
@@ -16,8 +16,12 @@
           <span class="table_choose" :class="{'is_table_choose': scope.row.id === is_table_choose }"></span>
         </template>
       </el-table-column>
-      <el-table-column prop="create_time" label="生成时间" align="center" min-width="120"></el-table-column>
-      <el-table-column prop="address" label="房屋地址" align="center" min-width="150">
+      <el-table-column label="生成时间" prop="create_time" align="center">
+        <template slot-scope="scope">
+          <div v-for="item in scope.row.create_time">{{item}}</div>
+        </template>
+      </el-table-column>
+      <el-table-column prop="address" label="房屋地址" align="center">
         <template slot-scope="scope">
           <el-tooltip :content="scope.row.address" placement="bottom-start" :visible-arrow="false">
             <div class="house-address-contain-money">
@@ -33,11 +37,16 @@
       <el-table-column prop="months" label="租房月数" align="center"></el-table-column>
       <el-table-column prop="deal_date" label="待签约日期" align="center"></el-table-column>
       <el-table-column label="签约人" prop="operator.name" align="center"></el-table-column>
-      <el-table-column label="付款方式/月单价" prop="prices" align="center" min-width="200">
+      <el-table-column label="付款方式/月单价" prop="month_price" align="center">
         <template slot-scope="scope">
-          <el-tooltip :content="scope.row.prices" placement="bottom-start" :visible-arrow="false">
-            <div>{{scope.row.prices}}</div>
-          </el-tooltip>
+          <div class="month_price" style="cursor: pointer;">
+            <div v-if="monthPrice === scope.row.id">
+              <div v-for="item in scope.row.month_price" style="white-space: nowrap">{{item}}</div>
+            </div>
+            <span @click.prevent="monthPrice = scope.row.id" v-else style="white-space: nowrap">
+              {{scope.row.month_price[0]}}<span v-if="scope.row.month_price.length > 1">...</span>
+            </span>
+          </div>
         </template>
       </el-table-column>
       <el-table-column label="状态" prop="status" align="center" width="80"></el-table-column>
@@ -60,18 +69,17 @@
     </footer>
 
 
-
     <!--编辑-->
     <lj-dialog
       :visible="action_status.details_visible"
       :size="{width: 1200 + 'px',height: 800 + 'px' }"
       @close="action_status.details_visible = false">
       <rent-order-form :initData="rentOrderDetailData"
-                 :checkOrEdit="status"
-                 :del_visible="delete_visible"
-                 @editSuccess="updateData"
-                 @cancel="getCancelStatus">
-      </rent-order-form >
+                       :checkOrEdit="status"
+                       :del_visible="delete_visible"
+                       @editSuccess="updateData"
+                       @cancel="getCancelStatus">
+      </rent-order-form>
     </lj-dialog>
 
   </div>
@@ -115,6 +123,7 @@
         rentOrderDetailData: this.row,
         statusLists: [],
         chooseType: '',
+        monthPrice: '',//付款方式 月单价 显示多行
       }
     },
     mounted() {
@@ -145,8 +154,8 @@
 
     computed: {},
     methods: {
-      _substring(content,limit) {
-        return this.$substring(content,limit);
+      _substring(content, limit) {
+        return this.$substring(content, limit);
       },
 
       tableCell({row}) {
@@ -171,7 +180,7 @@
           });
         }
       },
-    
+
       //加载初始数据
       getRentOrderList() {
         this.showLoading(true);
@@ -181,6 +190,9 @@
             // this.rentOrderLists = res.data.data.sort((a, b) => {
             //   return a.id - b.id;
             // });
+            for (let item of res.data.data) {
+              item.create_time = item.create_time.split(' ');
+            }
             this.rentOrderLists = res.data.data;
             this.rentOrderCount = res.data.count;
             this.rentOrderIds = [];
@@ -190,19 +202,19 @@
 
             //当点击生成待处理项或取消待处理项时
             //处理成功后根据获取的列表刷新当前被点击的列表数据，从而更新待处理项的状态
-             this.rentOrderLists.forEach((item,index)=>{
-               if(item.id ==  this.is_table_choose){
-                   this.$emit('getMultipleSelection', item);
-               }
-             })
-           
+            this.rentOrderLists.forEach((item, index) => {
+              if (item.id == this.is_table_choose) {
+                this.$emit('getMultipleSelection', item);
+              }
+            })
+
           } else {
             this.rentOrderLists = [];
             this.rentOrderCount = 0;
           }
         })
       },
-        //分页
+      //分页
       handleChangePage(page) {
         this.params.page = page;
         this.getRentOrderList();
@@ -223,7 +235,7 @@
           this.params.startRange = val.gatherDate[0];
           this.params.endRange = val.gatherDate[1];
         }
-        Object.assign(this.params,val);
+        Object.assign(this.params, val);
         delete this.params.gatherDate;
         this.getRentOrderList();
       },
@@ -243,7 +255,6 @@
     },
   }
 </script>
-
 
 
 <style lang="scss" scoped>

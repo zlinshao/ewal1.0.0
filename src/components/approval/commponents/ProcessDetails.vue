@@ -127,6 +127,26 @@
                         </p>
                       </div>
 
+                      <!--                      交接单-->
+                      <p class="base-info-attachment" v-if="base_info.handover_info">
+                        <span class="base-info-text-left">交接单</span>：
+
+                        <span class="base-info-text-url">
+                          <a :href="base_info.handover_info.view_url" target="_blank">
+                            <i class="el-icon-s-comment"></i>
+                            <i>查看链接</i>
+                          </a>
+                        </span>
+
+                        <span class="base-info-text-url">
+                          <a :href="base_info.handover_info.download_url">
+                            <i class="el-icon-download"></i>
+                            <i>下载链接</i>
+                          </a>
+                        </span>
+
+                      </p>
+
                       <!--                      附件-->
                       <p class="base-info-attachment" v-if="base_info.attachment && base_info.attachment.length > 0">
                         <span class="base-info-text-left">附件</span>：
@@ -182,7 +202,7 @@
           <el-button size="small"
                      v-if="!row.endTime"
                      v-for="(outcome_btn,index) in row.outcome_options" :key="index"
-                     type="info"
+                     :type="outcome_btn.route === 'publish' ? 'danger' : 'info'"
                      @click="movePopoverClick(outcome_btn)">
             {{outcome_btn.title}}
           </el-button>

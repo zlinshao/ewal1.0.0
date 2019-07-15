@@ -1,1321 +1,441 @@
 <template>
-  <div id="president">
-    <!-- <div></div> -->
-    <p id="logo"></p>
-    <section class="time">
-      <section class="timeLeft">
-        <clock></clock>
-      </section>
-      <section class="timeRight">
-        <strong>{{this.time1}}</strong>
-        <p>{{this.time}}</p>
-      </section>
-    </section>
-    <section class="tab">
-      <section class="tabPage" v-for="(item, index) in tabPages" :key="index" @click="toPath(item)">
-        <img :src="item.imgUrl">
-        <span>{{item.name}}</span>
-      </section>
-    </section>
-    <div class="main">
-      <div class="start">
-        <div class="ranking">
-          <section class="top">
+  <div id="chairman">
+    <!-- 顶部部分-->
+    <div class="chairman_top">
+      <img src="../../assets/image/president/home/lejia_data.png" alt="">
+      <div class="clock_router">
+        <ClockTime></ClockTime>
+        <TabsRouter :isShow="1"></TabsRouter>
+      </div>
+    </div>
+    <!--图表内容-->
+    <div class="chairman_info">
+      <div class="chairman_left">
+        <div class="achieve">
+          <p class="achieve_title">
             <span>业绩排名</span>
-            <span id="more" @click="showMore">更多></span>
-          </section>
-          <!-- <section style="clear: both"></section> -->
-          <div class="box" style="display:flex">
-            <section class="bottom" v-for="(item, index) in cityData" :key="index">
-              <p
-                style="height: 19px;text-align: right;position:relative;right:10px;top:5px"
-                v-show="index === 0"
-              >
-                <img src="../../assets/image/crown.png" alt style="width:17px;height:17px">
-              </p>
-              <p
-                style="height: 19px;text-align: right;position:relative;right:10px;top:5px"
-                v-show="index !== 0"
-              ></p>
-              <div style="padding-left: 10px">
-                <p>{{item.num}}</p>
-                <p>{{item.city}}</p>
-              </div>
-              <div style="padding: 10px 0 0 10px">
-                <p>{{item.sale}}</p>
-                <el-progress :percentage="item.rate"></el-progress>
-              </div>
-            </section>
+            <span @click="goMoreInfo()"> 更多 </span>
+          </p>
+          <div class="achieve_list"  v-if="moreFalg">
+            <ul class="">
+              <li v-for="(item,index) in achievementList" :class="'achieve_li'+index">
+                <p class="label_num"><span>{{item[2]}}&nbsp; {{item[0]}}</span><span>{{item[1]}}</span></p>
+                <p class="progress">
+                  <span class="progress_bar_active" :class="'progress_bar_active' + index" :style="{width: numTotal == 0? 0: item[1]/numTotal*100+'%'}"></span>
+                </p>
+              </li>
+            </ul>
           </div>
         </div>
-        <div class="ranking">
-          <section>
-            <div style="height: 40%;width: 100%;position:relative">
-              <p style="color:#33C8FF;line-height:1rem;position:absolute;bottom:0px;left:28px">
-                今日收房量&nbsp;
-                <span style="font-size: 4px">(套)</span>
-              </p>
+        <!--业绩排名 -->
+        <div class="order_list ">
+          <div v-for="(item,index) in topThreeList" :class="['order_num','order_num'+index]">
+            <div class="order_icon" v-if="index===0">
+              <img src="../../assets/image/president/home/diyi.png">
             </div>
-            <div style="height: 60%;width: 100%;font-size: 25px;padding-left:30px">
-              <h1>{{num}}</h1>
-            </div>
-          </section>
-          <section>
-            <!-- <div id="ratio" style="display:flex;padding-top:10px">
-              <div style="width:50%;">
-                <p>
-                  日环比
-                  <img
-                    src="../../assets/image/down.png"
-                    alt
-                    style="width:21px;height:21px;position:relative;top:5px"
-                  >
-                </p>
-                <p style="color:#FFE46E">9.00%</p>
-              </div>
-              <div style="width:50%;">
-                <p>
-                  周环比
-                  <img
-                    src="../../assets/image/up.png"
-                    alt
-                    style="width:21px;height:21px;position:relative;top:5px"
-                  >
-                </p>
-                <p style="color:#FFE46E">9.00%</p>
-              </div>
-            </div> -->
-            <div id="statistics"></div>
-          </section>
-        </div>
-        <div class="ranking">
-          <section>
-            <div style="height: 40%;width: 100%;position:relative">
-              <p style="color:#33C8FF;line-height:1rem;position:absolute;bottom:0px;left:28px">
-                今日租房量&nbsp;
-                <span style="font-size: 4px">(套)</span>
-              </p>
-            </div>
-            <div style="height: 60%;width: 100%;font-size: 25px;padding-left:30px">
-              <h1>{{num13}}</h1>
-            </div>
-          </section>
-          <section>
-            <div id="statistics1"></div>
-          </section>
-        </div>
-        <div class="ranking">
-          <section style="color:#33C8FF;padding:14px 0 0 38px;height:15%">网络监控</section>
-          <section style="height:85%;width:100%;justify-content: flex-start;overflow:scroll;overflow-x:hidden">
-            <!-- <div style="width:50%;height:100%">
-              <p style="text-align:center">实例ID</p>
-            </div>
-            <div style="width:50%;height:100%">
-              <p style="text-align:center">状态</p>
-            </div> -->
-            <div style="height:15%;width:100%;display:flex">
-              <div style="height:100%;width:40%;text-align:center">实例ID</div>
-              <div style="height:100%;width:40%;text-align:center">状态</div>
-            </div>
-            <div style="height:80%;width:100%">
-              <div style="height:22%;width:100%;display:flex" v-for="(item,index) in hosts">
-                <div style="height:100%;width:45%;overflow:hidden;text-overflow:ellipsis;">{{item.InstanceId}}</div>
-                <div style="height:100%;width:45%;"></div>
-              </div>
-            </div>
-          </section>
-        </div>
-        <div class="more" v-if="flag">
-          <div class="citySale" v-for="(item, index) in cityDataAll" :key="index" :class="color + index">
-            <div>
-              <section>
-                <span>{{item.num}}</span>
-                <span>{{item.city}}</span>
-              </section>
-              <section>
-                <span>{{item.sale}}</span>
-              </section>
-            </div>
-            <div>
-              <el-progress :percentage="item.rate"></el-progress>
-            </div>
+            <ul>
+              <li class="label_order">{{item[2]}}</li>
+              <li class="label_city">{{item[0]}}</li>
+              <li class="label_num">{{item[1]}}</li>
+              <li class="label_progress">
+                <span class="progress"><span class="progress_bar" :style="{width: numTotal == 0? 0: item[1]/numTotal*100+'%'}"></span></span>
+              </li>
+            </ul>
           </div>
+        </div>
+        <!--  收房量 -->
+        <div class="collote_today border_bg">
+          <div class="today_left">
+            <p class="num_label"><span>今日收房量</span><span class="unit_blue">(套)</span></p>
+            <span class="num_val">{{recvTotal}}</span>
+          </div>
+          <div id="colletNumEcharts" class="num_echarts"></div>
+        </div>
+        <!--  租房量 -->
+        <div class="rent_today border_bg">
+          <div class="today_left">
+            <p class="num_label"><span>今日租房量</span><span class="unit_blue">(套)</span></p>
+            <span class="num_val">{{rentTotal}}</span>
+          </div>
+          <div id="rentNumEcharts" class="num_echarts"></div>
+        </div>
+       <!-- 网络监控-->
+        <div class="net_work border_bg">
+          <p class="net_work_label">网络监控</p>
+          <div class="net_work_info">
+            <p><span>实例ID</span><span>状态</span></p>
+            <ul>
+              <li v-for=" (item,index) in instancelist">
+                <span class="instance">{{item.InstanceId}}</span>
+                <span  class="status" >
+                  <!--状态为 Running，Starting时为波浪线， Stopping，Stopped为直线 -->
+                  <img class="running"  v-if="item.Status == 'Running'"  src="../../assets/image/president/home/running.png" alt="">
+                  <img  class="running" v-if="item.Status == 'Starting'"  src="../../assets/image/president/home/starting.png" alt="">
+                  <img  class="stopping" v-if="item.Status == 'Stopping'" src="../../assets/image/president/home/stopping.png" alt="">
+                  <img  class="stopping" v-if="item.Status == 'Stopped'" src="../../assets/image/president/home/stopped.png" alt="">
+                </span>
+              </li>
+            </ul>
+          </div>
+
         </div>
       </div>
-      <div class="middle">
-        <div id="topSale">
-          <div class="number" v-for="(n, index) in total" :key="index">{{n}}</div>
-        </div>
-        <div id="earth" style="width:100%;height:75%"></div>
+      <!-- 中间-->
+      <div class="chairman_middle">
+        <TotalNum  :numTotal="numTotal"></TotalNum>
+        <Earth></Earth>
       </div>
-      <div class="end">
-       <EntryLeaverComponent></EntryLeaverComponent>
-        <div id="entry" style="display:flex">
-          <section style="width:70%;height:100%;display:flex">
-            <div style="width:50%;height:100%" id="entryRate">
-              <el-progress type="circle" :percentage=this.entryRate :stroke-width="12">
-              </el-progress>
-              <span>入职占比</span>
-            </div>
-            <div style="width:50%;height:100%">
-              <div style="width:100%;height:40%;position:relative">
-                <p style="color:#33C8FF;line-height:1rem;position:absolute;bottom:0px;left:28px">
-                  今日入职&nbsp;
-                  <span style="font-size: 4px">(人)</span>
-                </p>
-              </div>
-              <div style="width:100%;height:60%;padding:15px 0 0 30px">
-                <span style="font-size: 35px;color: #FFFFFF">{{entryPerson}}</span>
-                <span>/{{activePerson}}</span>
-              </div>
-            </div>
-          </section>
-          <section style="width:0px;height:80%;border:1px #00fdff solid;margin-top:10px;"></section>
-          <section style="width:30%;height:100%">
-            <ul>
-              <li v-for="item in newPerson"><span>{{item.name}}-{{item.department}}</span></li>
-            </ul>
-          </section>
-        </div>
-        <div id="quit" style="display:flex">
-          <section style="width:70%;height:100%;display:flex">
-            <div style="width:50%;height:100%" id="quitRate">
-              <el-progress type="circle" :percentage=this.quitRate :stroke-width="12"></el-progress>
-              <span>离职占比</span>
-            </div>
-            <div style="width:50%;height:100%">
-              <div style="width:100%;height:40%;position:relative">
-                <p style="color:#33C8FF;line-height:1rem;position:absolute;bottom:0px;left:28px">
-                  今日离职&nbsp;
-                  <span style="font-size: 4px">(人)</span>
-                </p>
-              </div>
-              <div style="width:100%;height:60%;padding:15px 0 0 30px">
-                <span style="font-size: 35px;color: #FFFFFF">{{quitPerson}}</span>
-                <span>/{{activePerson}}</span>
-              </div>
-            </div>
-          </section>
-          <section style="width:0px;height:80%;border:1px #00fdff solid;margin-top:10px;">
-          </section>
-          <section style="width:30%;height:100%">
-            <ul>
-              <li v-for="item in leavePerson"><span>{{item.name}}-{{item.department}}</span></li>
-            </ul>
-          </section>
-        </div>
-        <!-- <div id="quit"></div> -->
-        <div id="loss">
-          <div style="width:100%;">
-            <div style="padding: 20px 20px;">
-              <h4>今日盈亏</h4>
-              <p style="font-size: 3rem;color:#FFFFFF">{{lossData}}</p>
-            </div>
+     <!-- 右s边-->
+      <div class="chairman_right">
+        <div class="entry_today border_bg">
+          <div id="entryRingEcharts"></div>
+          <div class="label_num">
+            <p><span>今日入职</span><span class="uint">(人)</span></p>
+            <p><span class="num">{{entryNum}}</span><span>/{{onJobNum}}</span></p>
           </div>
-          <div style="width:100%;height:30%" id="lossRate"></div>
-          <div style="width:100%;height:30%;">
-            <div style="width:52%;height:95%;display:inline-block">
-              <ul style="width:100%;height:100%;" class="progress">
-                <li>
-                  <div>超置空房源</div>
-                  <el-progress
-                    :text-inside="true"
-                    :stroke-width="18"
-                    :percentage="emptyRate"
-                    status="exception"
-                  ></el-progress>
-                  <span>{{emptyNum}}</span>
-                </li>
-                <li>
-                  <div>公司违约</div>
-                  <el-progress
-                    :text-inside="true"
-                    :stroke-width="18"
-                    :percentage="breakPreRate"
-                    status="exception"
-                  ></el-progress>
-                  <span>{{breakPre}}</span>
-                </li>
-                <li>
-                  <div>公司任责费用</div>
-                  <el-progress
-                    :text-inside="true"
-                    :stroke-width="18"
-                    :percentage="resPayRate"
-                    status="exception"
-                  ></el-progress>
-                  <span>{{resPay}}</span>
-                </li>
-              </ul>
-            </div>
-            <div style="width:46%;height:95%;display:inline-block;position:relative;bottom:20px;left:-35px;">
-              <ul style="width:100%;height:100%;" class="progress">
-                <li>
-                  <div>收租差价</div>
-                  <el-progress
-                    :text-inside="true"
-                    :stroke-width="18"
-                    :percentage="recv_rent_gap_rate"
-                    status="exception"
-                  ></el-progress>
-                  <span>{{recv_rent_gap}}</span>
-                </li>
-                <li>
-                  <div>中介费</div>
-                  <el-progress
-                    :text-inside="true"
-                    :stroke-width="18"
-                    :percentage="middleRate"
-                    status="exception"
-                  ></el-progress>
-                  <span>{{middleRate}}</span>
-                </li>
-              </ul>
-            </div>
-            <div style="width:48%;height:95%;"></div>
-            <!-- <div style="width:30%;height:30%">
-              <el-progress :text-inside="true" :stroke-width="18" :percentage="70"></el-progress>
-              <el-progress :text-inside="true" :stroke-width="18" :percentage="70"></el-progress>
-              <el-progress :text-inside="true" :stroke-width="18" :percentage="70"></el-progress>
-            </div>-->
+          <marquee scrollamount="3" direction="up" class="staff_info">
+            <li v-for="(item,index) in entryDetail">{{item.name}}-{{item.description}}</li>
+          </marquee>
+        </div>
+        <div class="leave_today border_bg">
+          <div id="leaveRingEcharts"></div>
+          <div class="label_num">
+            <p><span>今日离职</span><span class="uint">(人)</span></p>
+            <p><span class="num">{{quitNum}}</span><span>/{{onJobNum}}</span></p>
+          </div>
+          <marquee scrollamount="3" direction="up" class="staff_info">
+            <li v-for="(item,index) in exitDetail ">{{item.name}}-{{item.description}}</li>
+          </marquee>
+        </div>
+        <div class="loss_today border_bg">
+          <p class="label_num"><span class="label">今日亏损额度</span><span class="num">{{queryLastLosses}}</span></p>
+          <div id="amountlossEcharts"></div>
+          <div class="progress">
+            <p class="progress_list" v-for="(item,index) in progressList">
+              <span class="progress_label" :style="{color:item.color}">{{item.name}}</span>
+              <span class="progress_bar">
+                <span class="progress_bar_active" :class="'progress_bar_active' + index" :style="{width:item.value+'%'}"></span>
+              </span>
+              <span class="progress_value">{{item.value+'%'}}</span>
+            </p>
           </div>
         </div>
       </div>
     </div>
+
+
   </div>
 </template>
 
 <script>
-import Clock from "vue-clock2";
-import earthData  from '../../../static//earth/earthData';  //地球的echarts数据
-import EntryLeaverComponent from '../common//president-component/entry_leaver_staff'
-export default {
-  components: { Clock,EntryLeaverComponent },
-  name: "index",
-  data() {
-    return {
-      earth: {},
-      num: 0,
-      num1: 0,
-      num2: 0,
-      num3: 0,
-      num4: 0,
-      num5: 0,
-      num6: 0,
-      num7: 0,
-      num8: 0,
-      num9: 0,
-      num10: 0,
-      num11: 0,
-      num12: 0,
-      num13: 0,
-      color: 'color',
-      disburse: '', //支出
-      recv_rent_gap: '',
-      totalSale: '',
-      total: [],
-      middle: '',
-      resPay: '',
-      breakPre: '',
-      lossData: '',
-      quitRate: 0,
-      entryRate: 0,
-      emptyRate: 0,
-      recv_rent_gap_rate: 0,
-      breakPreRate: 0,
-      resPayRate: 0,
-      middleRate: 0,
-      emptyHome: '',
-      emptyNum: '',
-      default: '',
-      responsibe: '',
-      PriceDifference: '',
-      intermediary: '',
-      detailData: [],
-      cityDataAll: [],
-      newPerson: [],
-      leavePerson: [],
-      lossArr: [],
-      weekDate: [],
-      dateTime: '',
-      dateTime1: '',
-      entryPerson: '',
-      activePerson: '',
-      quitPerson: '',
-      todayHome: {},
-      todayRentHome: '',
-      todayRentHome: '',
-      rentDetailData: [],
-      hosts: [],
-      allUrl: globalConfig.president_sever,
-      netUrl: globalConfig.network_sever,
-      flag: false,
-      tabPages: [
-        {
-          name: "市场",
-          url: "president/markting",
-          imgUrl: require("../../assets/image/president/shichang_0.png")
-        },
-        {
-          name: "人事",
-          url: "president/humanbing",
-          imgUrl: require("../../assets/image/president/renshi_1.png")
-        },
-        {
-          name: "财务",
-          url: "president/fincene",
-          imgUrl: require("../../assets/image/president/caiwu_0.png")
-        },
-        {
-          name: "网络",
-          url: "president/network",
-          imgUrl: require("../../assets/image/president/wangluo_0.png")
-        }
-      ],
-      url: "../../assets/image/president/renshi_0.png",
-      time: "",
-      time1: "",
-      date: "",
-      cityData: [
-      ]
-    };
-  },
-  mounted() {
-    this.$store.dispatch('theme_name','2');
-    this.getLangDate()
-    this.drawLine();
-    this.drawEarth();
-    let d = new Date()
-    // 七天前时间
-    let date1 = new Date().getTime() - 7 * 24 * 3600 * 1000
-    let date3 = new Date().getTime() - 1 * 24 * 3600 * 1000
-    let date4 = new Date().getTime() - 2 * 24 * 3600 * 1000
-    let date5 = new Date().getTime() - 3 * 24 * 3600 * 1000
-    let date6 = new Date().getTime() - 4 * 24 * 3600 * 1000
-    let date7 = new Date().getTime() - 5 * 24 * 3600 * 1000
-    let date8 = new Date().getTime() - 6 * 24 * 3600 * 1000
-    // 转标准时间
-    let date2 = new Date(date1 + 8 * 3600 * 1000).toJSON().substr(0, 19).replace('T', ' ')
-    let day2 = new Date(date3 + 8 * 3600 * 1000).toJSON().substr(0, 19).replace('T', ' ')
-    let day3 = new Date(date4 + 8 * 3600 * 1000).toJSON().substr(0, 19).replace('T', ' ')
-    let day4 = new Date(date5 + 8 * 3600 * 1000).toJSON().substr(0, 19).replace('T', ' ')
-    let day5 = new Date(date6 + 8 * 3600 * 1000).toJSON().substr(0, 19).replace('T', ' ')
-    let day6 = new Date(date7 + 8 * 3600 * 1000).toJSON().substr(0, 19).replace('T', ' ')
-    let day7 = new Date(date8 + 8 * 3600 * 1000).toJSON().substr(0, 19).replace('T', ' ')
-    this.dateTime1 = date2.substr(0,10)
-    this.dateTime2 = day2.substr(0,10)
-    this.dateTime3 = day3.substr(0,10)
-    this.dateTime4 = day4.substr(0,10)
-    this.dateTime5 = day5.substr(0,10)
-    this.dateTime6 = day6.substr(0,10)
-    this.dateTime7 = day7.substr(0,10)
-    console.log(this.dateTime2,this.dateTime3)
-    let day= new Date().getDay()
-    let month = new Date().getMonth() + 1
-    let date = new Date().getDate()
-    if (month < 10) {
-      month = '0' + month.toString()
-    }
-    if (date < 10) {
-      date = '0' + date.toString()
-    }
-    let dateTime = d.getFullYear() + '-' + month + '-' + date; 
-    this.dateTime = dateTime
-    this.getLangDate();
-  },
-  activated() {
-    this.flag = false;
-    this.getDetail();
-    // this.getRentDetail();
-    this.getEntryData();
-    // this.getRate();
-    // this.getEmptyHome();
-    this.getLoss();
-    this.getHost();
-    this.getWin();
-    this.getAchieve();
-    
-  },
-  watch: {},
-  computed: {},
-  methods: {
+  import ClockTime from '../common/president-component/clock.vue';   //左边的时钟和时间
+  import TabsRouter from '../common/president-component/tabsRouter.vue';   //路由跳转
+  import TotalNum from '../common/president-component/totalNum.vue';       //总额
+  import Earth from '../common/president-component/earth';                  //地球
+  import echarts from 'echarts';
+  import './officeComponent/js/marketing.js';       //引入js
+  import './officeComponent/js/finance.js';       //引入js
 
-   
-     
-     
-   
+  export default {
+    components: {ClockTime, TabsRouter,TotalNum,Earth},
+    name: "index",
+    data() {
+      return {
+        moreFalg: false,     //更多
+        progressList: [                //进度条
+          {key:'vacancy_fee',name:'超置空房源',color: '#BA25DC', value: 0},
+          {key:'liquidated',name:'公司违约',color: '#8047CC', value: 0},
+          {key:'responsibility_fee',name:'公司认责费用',color: '#3262EC', value: 0},
+          {key:'recv_rent_gap',name:'收租差价',color: '#FF564F', value: 0},
+          {key:'agency_fee',name:'中介费',color: '#53C13B', value: 0}
+        ],
+        //传参
+        start:'',
+        end:'',
+        city:'',
+        //option
+        optionCollet:{},        //收房量
+        optionRent:{},         //租房量
+        optionRingEntry:{},     //入职占比
+        optionRingLeave:{},     //离职占比
+        optionAmountloss:{},    //亏损量
+        //详情
+        numTotal:'0',           //业绩总额
+        topThreeList:[],       //实际业绩前三
+        achievementList:[],    //当日实际业绩
+        recvTotal: '--',       //收房量总套数
+        rentTotal: '--',       //租房量总套数
+        recvRentDetail:{},     //收租房量详情
+        instancelist:[],       //网络监控
+        EntryExitDetail:{},       //入职、离职详情
+        entryDetail:{},          //入职详情
+        exitDetail:{},           //离职详情
+        entryNum:'--',           //入职员工数
+        quitNum:'--',           //离职员工数
+        onJobNum:'--',             //在职总人数
+        lossDetail:{},            //亏损量详情
+        queryLastLosses:'--',       //今日亏损额度
+      };
+    },
+    mounted() {
+      setInterval(()=>{
+        // this.changeDate(); //获取当前的一周时间
+        //调接口
+        this.getAchievementDetail();     //当日实际业绩
+        this.getRecvRentDetail();        //收租房量
+        this.getInstanceList();          //网络监控
+        this.getEntryExitDetail();       //入职，离职
+        this.getLossDetail();           //亏损额度
+      },60000)
 
-  // 获取服务器数据
-    getHost() {
-        this.$http.post(this.netUrl + "instance-list").then(res => {
-          this.hosts = res.data.InstanceStatuses.InstanceStatus
-      })
     },
-    // 获取总支出
-    getWin() {
-        this.$http.post(this.allUrl + "income_and_disburse_for_ceo").then(res => {
-          // this.hosts = res.data.InstanceStatuses.InstanceStatus
-          this.disburse = res.data[this.dateTime].乐伽.disburse
-      }).then(() => {
-        this.getRate()
-        this.getEmptyHome()
-      })
+    activated() {
+      this.changeDate(); //获取当前的一周时间
+      //调接口
+      this.getAchievementDetail();     //当日实际业绩
+      this.getRecvRentDetail();        //收租房量
+      this.getInstanceList();          //网络监控
+      this.getEntryExitDetail();       //入职，离职
+      this.getLossDetail();           //亏损额度
+
     },
-    // 业绩
-    getAchieve() {
-        this.$http.post(this.allUrl + "achievement_detail_for_ceo").then(res => {
-          this.totalSale = res.data[res.data.length - 1][1]
-          this.cityData = []
-          for(let i of res.data.reverse().slice(1,4)) {
-            this.cityData.push({city: i[0], sale: i[1],num: i[2]})
+    watch: {},
+    computed: {},
+    methods: {
+      //时间范围为一周
+      changeDate(){
+        let val=new Date();
+        let date=val.getTime() - 3600 * 1000 * 24 * 6;
+        this.start=this.dateToString(date);
+        this.end=this.dateToString(val);
+      },
+
+      //更多点击事件
+      goMoreInfo() {
+        this.moreFalg = !this.moreFalg;
+      },
+
+
+      //一.获取：当日实际业绩（市场）
+      getAchievementDetail(){
+        this.$http.post(globalConfig.president_sever + "/v1.0/market/achievement_detail ").then(res => {
+          if(res.code === 200){
+            let arr = res.data;
+            let newArr = JSON.parse(JSON.stringify(arr)).reverse();    //正序排列
+            this.numTotal =  newArr[0][1]+'';                        //业绩总额
+            this.topThreeList = newArr.slice(1,4);                   //实际业绩前三
+            this.achievementList = newArr.slice(1,newArr.length);    //当日实际业绩
           }
-          for(let i of res.data.reverse().slice(1,res.data.reverse().length - 1)) {
-            this.cityDataAll.push({city: i[0], sale: i[1],num: i[2]})
-          }
-          if (this.totalSale === 0) {
-            this.cityData.forEach((item) => {
-              item.rate = 0
-            })
-            this.cityDataAll.forEach((item) => {
-              item.rate = 0
-            })
-          } else {
-            let one = Math.round((((res.data[res.data.length - 2][1] / this.totalSale) *10000) / 100).toFixed(2))
-            let two = Math.round((((res.data[res.data.length - 3][1] / this.totalSale) *10000) / 100).toFixed(2))
-            let three = Math.round((((res.data[res.data.length - 4][1] / this.totalSale) *10000) / 100).toFixed(2))
-            let four = Math.round((((res.data[res.data.length - 5][1] / this.totalSale) *10000) / 100).toFixed(2))
-            let five = Math.round((((res.data[res.data.length - 6][1] / this.totalSale) *10000) / 100).toFixed(2))
-            let six = Math.round((((res.data[res.data.length - 7][1] / this.totalSale) *10000) / 100).toFixed(2))
-            let seven = Math.round((((res.data[res.data.length - 8][1] / this.totalSale) *10000) / 100).toFixed(2))
-            let eight = Math.round((((res.data[res.data.length - 9][1] / this.totalSale) *10000) / 100).toFixed(2))
-            let arr = [eight,seven,six,five,four,three,two,one]
-            console.log(arr)
-            // let arr = [1,2,3,4,5,6,7,8]
-            this.cityDataAll.forEach((item,index) => {
-              arr.forEach((item2, index2) => {
-                item.rate = arr[index]
-              })
-            })
-            this.cityData = this.cityDataAll.slice(0,3)
-            console.log(this.cityDataAll)
-          }
-          // console.log(this.total)
-          this.totalSale = this.payZero(this.totalSale, 8) + '00'
-          this.total = this.totalSale.split('')
-          console.log(this.totalSale)
-          console.log(this.cityData)
-      })
-    },
-    // 更多
-    showMore() {
-      this.flag = !this.flag;
-    },
-    // 补0
-    payZero(num, length) {
-      for(let len = (num + "").length; len < length; len = num.length) {
-            num = " " + num;            
-        }
-        return num;
-    },
-    // 获取违约金..
-    getRate() {
-      let params = {
-        level: '1',
-        mode: 'day',
-        start: this.dateTime1,
-        end: this.dateTime
-      }
-      this.$http.post(this.allUrl + "disburse", params).then(res => {
-        console.log(res)
-        this.breakPre = res.data[this.dateTime].break_pay.amount_paid
-        this.resPay = res.data[this.dateTime].mediation_pay.amount_paid
-        this.middle = res.data[this.dateTime].responsibility_pay.amount_paid
-        this.breakPreRate = Math.round(((this.breakPre / this.disburse)*10000) / 100)
-        this.resPayRate = Math.round(((this.resPay / this.disburse)*10000) / 100)
-        this.middleRate = Math.round(((this.middle / this.disburse)*10000) / 100)
-        let year = new Date().getFullYear() + '年';
-        let obj = res.data[year]
-        // this.emptyHome
-        // console.log(obj.房租.amount_paid)
-      })
-    },
-    // 收房量
-    getDetail() {
-      this.$http.post(this.allUrl + "recv_rent_detail_for_ceo").then(res => {
-        
-        this.todayHome = res.data[this.dateTime]
-        console.log(Object.keys(res.data))
-        Object.keys(this.todayHome).map(key => {
-          this.num += this.todayHome[key].recv
-        });
-        Object.keys(res.data[this.dateTime7]).map(key => {
-          this.num6 += res.data[this.dateTime7][key].recv
-        });
-        Object.keys(res.data[this.dateTime6]).map(key => {
-          this.num5 += res.data[this.dateTime6][key].recv
-        });
-        Object.keys(res.data[this.dateTime5]).map(key => {
-          this.num4 += res.data[this.dateTime5][key].recv
-        });
-        Object.keys(res.data[this.dateTime4]).map(key => {
-          this.num3 += res.data[this.dateTime4][key].recv
-        });
-        Object.keys(res.data[this.dateTime3]).map(key => {
-          this.num2 += res.data[this.dateTime3][key].recv
-        });
-        Object.keys(res.data[this.dateTime2]).map(key => {
-          this.num1 += res.data[this.dateTime2][key].recv
-        });
-        Object.keys(this.todayHome).map(key => {
-          this.num13 += this.todayHome[key].rent
-        });
-        Object.keys(res.data[this.dateTime7]).map(key => {
-          this.num7 += res.data[this.dateTime7][key].rent
-        });
-        Object.keys(res.data[this.dateTime6]).map(key => {
-          this.num8 += res.data[this.dateTime6][key].rent
-        });
-        Object.keys(res.data[this.dateTime5]).map(key => {
-          this.num9 += res.data[this.dateTime5][key].rent
-        });
-        Object.keys(res.data[this.dateTime4]).map(key => {
-          this.num10 += res.data[this.dateTime4][key].rent
-        });
-        Object.keys(res.data[this.dateTime3]).map(key => {
-          this.num11 += res.data[this.dateTime3][key].rent
-        });
-        Object.keys(res.data[this.dateTime2]).map(key => {
-          this.num12 += res.data[this.dateTime2][key].rent
-        });
-        this.detailData = [this.num6,this.num5,this.num4,this.num3,this.num2,this.num1,this.num]
-        this.rentDetailData = [this.num7,this.num8,this.num9,this.num10,this.num11,this.num12,this.num13]
-      }).then(()=> {
-         this.drawLine()
-      })
-    },
-    // 租房量
-    // getRentDetail() {
-    //   this.$http.post(this.allUrl + "rent_detail_by_time").then(res => {
-    //     this.todayRentHome = res.data[this.dateTime]
-    //     Object.keys(res.data).map(key => {
-    //       this.rentDetailData.push(res.data[key]);
-    //     });
-    //   }).then(()=> {
-    //      this.drawLine()
-    //   })
-    // },
-    // 亏损
-    getLoss() {
-      this.$http.post(this.allUrl + "loss_detail").then(res => {
-        let d = new Date()
-        console.log(res)
-        this.lossData = res.data[res.data.length - 1].income_and_disburse
-        res.data.forEach((item) => {
-          this.lossArr.push(item.income_and_disburse)
         })
-        console.log(this.lossArr)
-        
-      }).then(()=> {
-         this.drawLine()
-      })
-    },
-    // 空房源
-    getEmptyHome () {
-      let params = {
-        level: '1',
-        mode: 'day',
-        start: this.dateTime1,
-        end: this.dateTime
-      }
-      this.$http.post(this.allUrl + "rent_detail", params).then(res => {
-        this.emptyNum = res.data.vacancy_fee
-        this.emptyRate = Math.round(((this.emptyNum / this.disburse)*10000) / 100)
-        this.recv_rent_gap = res.data.recv_rent_gap
-        this.recv_rent_gap_rate = Math.round(((this.recv_rent_gap / 10000000)*10000) / 100)
-      })
-    },
-    // 今日入职
-    getEntryData() {
-      let params = {
-        // start: this.dateTime,
-        start: '2019-05-01',
-        end: '2019-05-08'
-        // end: this.dateTime
-      }
-      this.$http.post(this.allUrl + "dimission_rate", params).then(res => {
-        this.activePerson = res.data.active_staff_num
-        this.entryPerson = res.data.entry_staff_num
-        this.quitPerson = res.data.quit_staff_detail.length
-        this.newPerson = res.data.entry_staff_detail
-        this.leavePerson = res.data.quit_staff_detail
-        this.entryRate = Math.round(this.entryPerson/this.activePerson* 10000)/ 100
-        this.quitRate = Math.round(this.quitPerson/this.activePerson* 10000)/ 100
-        console.log(this.entryRate)
-      }).then(() => {
-        this.drawLine()
-      })
-    },
-    toPath(item) {
-      console.log(item);
-      this.$router.push({
-        path: item.url
-      });
-    },
-    drawLine() {
-        let d = new Date()
-        let day= new Date().getDay()
-        let month = new Date().getMonth() + 1
-        let date = new Date().getDate()
-        if (month < 10) {
-          month = '0' + month.toString()
-        }
-        if (date < 10) {
-          date = '0' + date.toString()
-        }
-        let dateTime = d.getFullYear() + '-' + month + '-' + date; 
-        console.log(dateTime)
-        this.dateTime = dateTime
-        let week = new Array(7)
-        let arr = [day+1,day+2,day+3,day+4,day+5,day+6,day] 
-        week[0] = '周日'
-        week[1] = '周一'
-        week[2] = '周二'
-        week[3] = '周三'
-        week[4] = '周四'
-        week[5] = '周五'
-        week[6] = '周六'
-        week[7] = '周日'
-        week[8] = '周一'
-        week[9] = '周二'
-        week[10] = '周三'
-        week[11] = '周四'
-        week[12] = '周五'
-        week[13] = '周六'
-        for (let i of arr) {
-          this.weekDate.push(week[i])
-        }
-        this.weekDate = this.weekDate.slice(0, 7)
-      let myChart = this.$echarts.init(document.getElementById("statistics"));
-      let myChart1 = this.$echarts.init(document.getElementById("statistics1"));
-      let myChart2 = this.$echarts.init(document.getElementById("earth"));
-      // let myChart3 = this.$echarts.init(document.getElementById("quitRate"));
-      let myChart4 = this.$echarts.init(document.getElementById("lossRate"));
-      // 绘制图表
-      myChart.setOption({
-        tooltip: {
-          trigger: "axis"
-        },
-        grid: {
-            top: 10,
-            bottom: 10
-        },
-        calculable: true,
-        xAxis: [
-          {
-            type: "category",
-            boundaryGap: false,
-            data: this.weekDate
-            // data: ['05-15','05-16','05-17','05-18','05-19','05-20']
+      },
+      //二.获取：收房量、租房量（市场）
+      getRecvRentDetail(){
+        let param={
+          start:this.start,
+          end:this.end,
+          city:'总公司'
+        };
+        this.$http.post(globalConfig.president_sever + "/v1.0/market/recv_rent_detail", param).then(res => {
+          if(res.code === 200){
+            this.recvRentDetail = res.data;
+            this.recvTotal = this.recvRentDetail.recv_total;           // 收房总数
+            this.rentTotal = this.recvRentDetail.rent_total;           //租房总数
+            this.drawEchartsRecvRent();
           }
-        ],
-        yAxis: [
-          {
-            show: false
-          },
-          {
-            splitLine: {
-              show: false
-            }
-          },
-          {
-            type: "value"
-          }
-        ],
-        series: [
-          {
-            name: "收房量",
-            type: "line",
-            smooth: true,
-            color: ['#68E29B'],
-            itemStyle: { normal: { areaStyle: { type: "default" } } },
-            // data:[30, 40, 430, 401, 390, 30, 10]
-            data: this.detailData
-          }
-        ]
-      });
-      myChart1.setOption({
-        tooltip : {
-            trigger: 'axis'
-        },
-        grid: {
-            top: 10,
-            bottom: 10
-        },
-        calculable: true,
-        xAxis: [
-          {
-            type: "category",
-            boundaryGap: false,
-            data : this.weekDate
-          }
-        ],
-        yAxis: [
-          {
-            show: false
-          },
-          {
-            splitLine: {
-              show: false
-            }
-          },
-          {
-            type: "value"
-          }
-        ],
-        series: [
-          {
-            name: "租房量",
-            type: "line",
-            smooth: true,
-            color: ['#FE6581'],
-            itemStyle: { normal: { areaStyle: { type: "default" } } },
-            data: this.rentDetailData
-          }
-        ]
-      });
-      myChart4.setOption({
-        tooltip : {
-            trigger: 'axis'
-        },
-        xAxis: {
-          type: "category",
-          data: this.weekDate,
-          axisLabel: {
-                show: true,
-                textStyle: {
-                    color: '#ffffff'
-                }
-            }
-        },
-        grid: {
-          top: 10,
-          bottom: 20,
-          // left:5,
-          // x2: 0,
-          // y2: 0,
-          // borderWidth: 1
-        },
-        yAxis: {
-          type: "value",
-          axisLabel : {
-              show: true,
-              textStyle: {
-                  color: '#ffffff'
-              }
-          }
-        },
-        series: [
-          {
-            name: "一周盈亏",
-            smooth: true,
-            data: this.lossArr,
-            type: "line"
-          }
-        ]
-      });
-    },
-    getLangDate() {
-      function dateFilter(date) {
-        //值小于10时，在前面补0
-        if (date < 10) {
-          return "0" + date;
-        }
-        return date;
-      }
-      var dateObj = new Date(); //表示当前系统时间的Date对象
-      var year = dateObj.getFullYear(); //当前系统时间的完整年份值
-      var month = dateObj.getMonth() + 1; //当前系统时间的月份值
-      var date = dateObj.getDate(); //当前系统时间的月份中的日
-      var day = dateObj.getDay(); //当前系统时间中的星期值
-      var hour = dateObj.getHours(); //当前系统时间的小时值
-      var minute = dateObj.getMinutes(); //当前系统时间的分钟值
-      var second = dateObj.getSeconds(); //当前系统时间的秒钟值
-      this.time =
-        dateFilter(year) +
-        "年" +
-        dateFilter(month) +
-        "月" +
-        dateFilter(date) +
-        "日";
-      this.time1 =
-        dateFilter(hour) +
-        ":" +
-        dateFilter(minute) +
-        ":" +
-        dateFilter(second);
-        setTimeout(() => {
-          this.getLangDate()
-        }, 1000)
-    },
-    // 地球绘制3d效果
-    drawEarth (){
-      let myChartEarth = this.$echarts.init(document.getElementById('earth'));
+        })
+      },
 
-      function getAirportCoord(idx) {
-        return [earthData.airports[idx][3], earthData.airports[idx][4]];
-      }
-      var routes = earthData.routes.map(function(airline) {
-          return [
-              getAirportCoord(airline[1]),
-              getAirportCoord(airline[2])
-          ];
-      });
+      //三、网络状态：获取实例列表（网络）
+      getInstanceList(){
+        let params = {
+          page:1,
+          limit:50
+        };
+        this.$http.post(globalConfig.network_sever + "instance-list", params).then(res => {
+          if(res){
+            this.instancelist = res.data.InstanceStatuses.InstanceStatus;
+          }
+        })
+      },
 
-      myChartEarth.setOption({
-        globe: {
-            baseTexture: require('../../assets/image/earthImage/world.jpg'),
-            heightTexture: require('../../assets/image/earthImage/bathymetry.jpg'),
-            shading: 'lambert',
-            light: {
-                ambient: {
-                    intensity: 0.4
-                },
-                main: {
-                    intensity: 0.4
-                }
-            },
-            viewControl: {
-                autoRotate: true
-            }
-        },
-        series: {
-            type: 'lines3D',
-            coordinateSystem: 'globe',
-            blendMode: 'lighter',
-            lineStyle: {
-                width: 1,
-                color: 'rgb(50, 50, 150)',
-                opacity: 0.1
-            },
-            data: routes
-        }
-      });
-    }
-  }
-};
+      //四.获取在职人数、入职人数、离职人数
+      getEntryExitDetail(){
+        let param={
+          start:this.start,
+          end:this.end,
+          key:'总公司'
+        };
+        this.$http.post(globalConfig.president_sever + "/v1.0/hr/entry_exit_staff_details", param).then(res => {
+          if(res.code === 200){
+            let detail = res.data;
+            this.entryDetail = detail.entry_detail;                      //入职详情
+            this.exitDetail = detail.exit_detail;                       //离职详情
+            this.EntryExitDetail = detail.entry_exit_detail;           //入职，离职占比
+            this.entryNum = this.EntryExitDetail.query_day_entry_num;    //入职员工数
+            this.quitNum = this.EntryExitDetail.query_day_quit_num;      //离职员工数
+            this.onJobNum = this.EntryExitDetail.query_staff_num;       //员工在职总数目
+            this.drawEchartsEntryExit();            //绘制图表
+          }
+        })
+      },
+
+      //五.获取:亏损额度（财务）
+      getLossDetail(){
+        let param={
+          start:this.start,
+          end:this.end,
+          city:'总公司'
+        };
+        this.$http.post(globalConfig.president_sever + "/v1.0/finance/income_and_disburse_detail  ",param).then(res => {
+          if(res) {
+            this.lossDetail = res.data;
+            this.queryLastLosses =  this.lossDetail.disbursement.query_last_losses;    //今日亏损额度
+            this.drawEchartsLossAmount();                                             //绘制亏损额度折现图
+            this.progressList.forEach((item,index)=>{                                //进度条数据处理
+              item.value=this.lossDetail.disbursement[item.key];
+            })
+          }
+        })
+      },
+
+
+      //1.绘制图表:收房量、租房量
+      drawEchartsRecvRent(){
+        //1.收房量
+        let param1 = {
+          type:'linearea',
+          color1:'#E5FF7D',
+          color2:'#30D5A9',
+          xData:this.recvRentDetail.x,
+          yData:this.recvRentDetail.recv,
+        };
+        this.optionCollet = JSON.parse(JSON.stringify(optionColletRent));
+        this.setOptionsFun(this.optionCollet, param1 ,'colletNumEcharts');
+
+        //2.租房量
+        let param2 = {
+          type:'linearea',
+          color1:'#FF9874',
+          color2:'#FE5785',
+          xData: this.recvRentDetail.x,
+          yData:this.recvRentDetail.rent,
+        };
+        this.optionRent = JSON.parse(JSON.stringify(optionColletRent));
+        this.setOptionsFun(this.optionRent, param2 ,'rentNumEcharts');
+      },
+
+
+      //2.绘制图表:在职人数、入职人数、离职人数
+      drawEchartsEntryExit(){
+        //3.入职占比
+        let param3 = {
+          type:'ring',
+          name:'入职占比',
+          color:['#30C0F2','#57C7AC'],
+          data:this.EntryExitDetail.entry_staff_ratio,
+        };
+        this.optionRingEntry = JSON.parse(JSON.stringify(optionRing));
+        this.setOptionsFun(this.optionRingEntry, param3 ,'entryRingEcharts');
+
+
+        //4.离职占比
+        let param4 = {
+          type:'ring',
+          name:'离职占比',
+          color:['#FD6F58','#FE5785'],
+          data:this.EntryExitDetail.quit_staff_ratio,
+        };
+        this.optionRingLeave = JSON.parse(JSON.stringify(optionRing));
+        this.setOptionsFun(this.optionRingLeave, param4 ,'leaveRingEcharts');
+      },
+
+
+      //3.绘制图表:亏损量
+      drawEchartsLossAmount(){
+        //5.亏损量
+        let param5 = {
+          type:'folder',
+          name:'亏损量',
+          color1:'rgba(0,255,255,0.5)',
+          color2:'rgba(0,255,255,0.1)',
+          top:'10',
+          bottom:'40',
+          xData:this.lossDetail.disbursement.x,
+          yData:this.lossDetail.disbursement.losses_sum,
+        };
+        this.optionAmountloss = JSON.parse(JSON.stringify(optionFolder));
+        this.setOptionsFun(this.optionAmountloss, param5 ,'amountlossEcharts');
+      },
+
+      //设置图表的属性
+      setOptionsFun(optionCurrent, param, id) {
+        //收房量,租房量
+        if(param.type === 'linearea'){
+          optionCurrent.series[0].color = new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+            offset: 0,
+            color:param.color1
+          }, {
+            offset: 1,
+            color:param.color2
+          }]);
+          optionCurrent.xAxis[0].data = param.xData;
+          optionCurrent.series[0].data =param.yData;
+        };
+
+        // 环形图
+        if(param.type === 'ring'){
+          optionCurrent.series[0].data[0].value = param.data;
+          optionCurrent.series[0].data[1].value = 100-param.data;
+          optionCurrent.series[0].data[0].name = param.name;
+          optionCurrent.series[0].label.normal.color = param.color[0];  //字体颜色
+          optionCurrent.series[0].color[0].colorStops[0].color = param.color[0];  //渐变色1
+          optionCurrent.series[0].color[0].colorStops[1].color = param.color[1];   //渐变色2
+        };
+
+        //亏损量
+        if(param.type === 'folder'){
+          optionCurrent.series[0].color = new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+            offset: 0,
+            color:param.color1
+          }, {
+            offset: 1,
+            color:param.color2
+          }]);
+          optionCurrent.xAxis[0].data = param.xData;
+          optionCurrent.series[0].data =param.yData;
+          optionCurrent.grid.top =param.top;
+          optionCurrent.grid.bottom =param.bottom;
+        };
+
+        //获取图表的dom元素
+        let myCharts = this.$echarts.init(document.getElementById(id));
+        myCharts.setOption(optionCurrent);
+        window.addEventListener("resize", () => {
+          myCharts.resize();
+        });
+      },
+
+      //转换时间格式
+      dateToString(date){
+        let week = new Date(date);
+        let y = week.getFullYear();
+        let m = week.getMonth() + 1;
+        let d = week.getDate();
+        m = m < 10 ? '0' + m : m;
+        d = d < 10 ? '0' + d : d;
+        return y + '-' + m+ '-' + d ;
+      },
+
+    },
+
+  };
 </script>
 
-<style lang="">
-.el-progress__text{
-  color: #00fdff;
-  top: 40%!important;
-}
-</style>
-<style lang="scss" scoped>
-@import "../../assets/scss/index/index.scss";
-#entryRate {
-  top:16px;
-  left: 16px;
-  position: relative;
-  span {
-    position: absolute;
-    left: 28px;
-    top: 64px;
-  }
-}
-#quitRate {
-  top:16px;
-  left: 16px;
-  position: relative;
-  span {
-    position: absolute;
-    left: 28px;
-    top: 64px;
-  }
-}
-#president1 {
-  div {
-    position: relative;
-    height: 300px;
-    padding: 0 100px;
-    justify-content: space-around;
-    p {
-      background-color: #cf2e33;
-      height: 100%;
-      color: #ffffff;
-      padding: 30px 20px;
-      opacity: 0;
-      transform: translateX(-1920px);
-      transition: all 0.3s;
-    }
-  }
-}
 
-.el-progress /deep/ path:first-child {
-    // stroke: #17cb7e;
-    // stroke: linear-gradient();
-}
-.el-progress /deep/ path:nth-child(2) {
-    stroke: #76FFF6;
-}
-#logo {
-  height: 115px;
-  background: url("../../assets/image/president/lejia_data.png") no-repeat;
-}
-#president {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  // background: url("../../assets/image/president/di.png") no-repeat 100% 100%;
-}
-.time {
-  display: flex;
-  position: absolute;
-  top: 39px;
-  left: 53px;
-  .clock {
-    width: 100px;
-    height: 100px;
+<style lang="scss" scoped>
+  @import "../../assets/scss/president/common.scss";
+  @import "../../assets/scss/president/index.scss";
+  #chairman {
+    @include bgImage("../../assets/image/president/home/di.png");
   }
-}
-.timeRight {
-  margin: 21px;
-  strong {
-    font-size: 30px;
-  }
-}
-.tab {
-  // width: 120px;
-  // height: 120px;
-  color: black;
-  display: flex;
-  justify-content: flex-start;
-  position: absolute;
-  // top: px;
-  right: 116px;
-  top: 90px;
-  section {
-    border-radius: 100%;
-    width: 75px;
-    height: 75px;
-    cursor: pointer;
-    img {
-      width: 75px;
-      height: 75px;
-    }
-  }
-  section:nth-of-type(1) {
-    position: relative;
-    span {
-      position: absolute;
-      z-index: 2;
-      top: 24px;
-      left: 20px;
-    }
-  }
-  section:nth-of-type(2) {
-    position: relative;
-    top: -45px;
-    left: 18px;
-    span {
-      position: absolute;
-      z-index: 2;
-      top: 25px;
-      left: 20px;
-    }
-  }
-  section:nth-of-type(3) {
-    position: relative;
-    left: 27px;
-    span {
-      position: absolute;
-      z-index: 2;
-      top: 24px;
-      left: 20px;
-    }
-  }
-  section:nth-of-type(4) {
-    position: relative;
-    top: -38px;
-    left: 36px;
-    span {
-      position: absolute;
-      z-index: 2;
-      top: 24px;
-      left: 20px;
-    }
-  }
-}
-.main {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  height: calc(100% - 115px);
-}
-.main > div:nth-of-type(1) {
-  // width: 30%;
-  height: 100%;
-}
-.main > div:nth-of-type(2) {
-  width: 46%;
-  height: 100%;
-  margin-left: 36px;
-}
-.main > div:nth-of-type(3) {
-  width: 30%;
-  height: 100%;
-  padding-top: 3%;
-  position: relative;
-  right: 35px;
-}
-.ranking :first-of-type {
-  // width: 100%;
-  // height: 23%
-}
-.start > div:nth-of-type(2) {
-  width: 100%;
-  height: 17%;
-  margin-top: 3px;
-}
-.start > div:nth-of-type(3) {
-  width: 100%;
-  height: 17%;
-  margin-top: 3px;
-}
-.start > div:nth-of-type(4) {
-  width: 100%;
-  height: 42%;
-  margin-top: 3px;
-}
-.start {
-  height: 100%;
-  color: white;
-  padding-top: 3%;
-  margin-left: 45px;
-  width: 24%;
-  position: relative;
-}
-.more {
-  padding-top: 20px;
-  position: absolute;
-  width: 258px;
-  height: 530px;
-  top: 60px;
-  right: -270px;
-  background: #060738;
-  // opacity: 0.5;
-}
-.citySale {
-  width: 100%;
-  height: 63px;
-  >div:nth-child(1) {
-    width: 100%;
-    height: 60%;
-    display: flex;
-    justify-content: space-between;
-    >section:nth-child(1){
-      width: 36%;
-      height: 100%;
-    }
-    >section:nth-child(2){
-      width: 28%;
-      height: 100%;
-    }
-  }
-  >div:nth-child(2) {
-    width: 100%;
-    height: 40%;
-  }
-}
-// .middle {
-//   width: 46%;
-// }
-// .end {
-//   width: 30%;
-// }
-.ranking:nth-of-type(2) {
-  display: flex;
-  background: url("../../assets/image/border/k_1.png") no-repeat;
-  background-size: 100% 100%;
-}
-.ranking:nth-of-type(2) > section:nth-of-type(1) {
-  display: inline-block;
-  width: 40%;
-  height: 100%;
-}
-.ranking:nth-of-type(2) > section:nth-of-type(2) {
-  display: inline-block;
-  width: 60%;
-  height: 100%;
-}
-.ranking:nth-of-type(3) {
-  display: flex;
-  background: url("../../assets/image/border/k_1.png") no-repeat;
-  background-size: 100% 100%;
-}
-.ranking:nth-of-type(3) > section:nth-of-type(1) {
-  display: inline-block;
-  width: 40%;
-  height: 100%;
-}
-.ranking:nth-of-type(3) > section:nth-of-type(2) {
-  display: inline-block;
-  width: 60%;
-  height: 100%;
-}
-.start > div:nth-of-type(3) {
-  background: url("../../assets/image/border/k_1.png") no-repeat;
-  background-size: 100% 100%;
-}
-.start > div:nth-of-type(4) {
-  background: url("../../assets/image/border/k_2.png") no-repeat;
-  background-size: 100% 100%;
-}
-.bottom {
-  height: 120px;
-  width: 156px !important;
-  border-radius: 3px;
-  display: inline-block;
-}
-.box {
-  width: 100%;
-  justify-content: space-around;
-}
-.box > section:nth-of-type(1) {
-  background: linear-gradient(to right, #fd6f58, #fe5785);
-  margin-right: 11px;
-}
-.box > section:nth-of-type(2) {
-  background: linear-gradient(to right, #ff9e1d, #ffde80);
-  margin-right: 11px;
-}
-.box > section:nth-of-type(3) {
-  background: linear-gradient(to left, #65e6dd, #298ac1);
-}
-.top {
-  color: #00fdff !important;
-  margin-bottom: 5px;
-  display: flex;
-  justify-content: space-between;
-  vertical-align: middle;
-}
-#more {
-  display: inline-block;
-  font-size: 5px;
-  width: 40px;
-}
-#topSale {
-  width: 100%;
-  height: 21%;
-  display: flex;
-  // margin-top: 14px;
-  background: url("../../assets/image/president/yeji.png") no-repeat;
-}
-#entry {
-  width: 100%;
-  height: 23%;
-  margin-top: 14px;
-  background: url("../../assets/image/border/k_3.png") no-repeat;
-  background-size: 100% 100%;
-}
-#quit {
-  width: 100%;
-  height: 23%;
-  margin-top: 14px;
-  background: url("../../assets/image/border/k_3.png") no-repeat;
-  background-size: 100% 100%;
-}
-#loss {
-  width: 100%;
-  height: 47%;
-  margin-top: 14px;
-  background: url("../../assets/image/border/k_4.png") no-repeat;
-  background-size: 100% 100%;
-}
-.number {
-  display: inline-block;
-  padding-left: 7px;
-  font-size: 70px;
-  width: 52px;
-  height: 91px;
-}
-.number:first-of-type {
-  margin-left: 24px;
-}
-.number:nth-of-type(2) {
-  margin-left: 12px;
-}
-.number:nth-of-type(3) {
-  margin-left: 41px;
-}
-.number:nth-of-type(4) {
-  margin-left: 15px;
-}
-.number:nth-of-type(5) {
-  margin-left: 15px;
-}
-.number:nth-of-type(6) {
-  margin-left: 41px;
-}
-.number:nth-of-type(7) {
-  margin-left: 15px;
-}
-.number:nth-of-type(8) {
-  margin-left: 15px;
-}
-.number:nth-of-type(9) {
-  margin-left: 41px;
-}
-.number:nth-of-type(10) {
-  margin-left: 15px;
-}
-#ratio {
-  height: 40%;
-  width: 100%;
-}
-#statistics {
-  height: 100%;
-  width: 100%;
-}
-#statistics1 {
-  height: 100%;
-  width: 100%;
-}
-.progress li {
-  width: 100%;
-  height: 30%;
-  display: flex;
-  div:nth-child(1) {
-    width: 35%;
-    height: 100%;
-    font-size: 5px;
-    text-align: right;
-    margin-right: 6px;
-  }
-  div:nth-child(2) {
-    width: 40%;
-    height: 100%;
-  }
-  span {
-    display: inline-block;
-    width: 25%;
-    margin-left: 10px;
-    height: 100%;
-  }
-}
-.color0 {
-  color: red;
-}
-.color1 {
-  color: #FF9E1D;
-}
-.color2 {
-  color: #76FFF6;
-}
-#earth {
-  // width: 100%;
-  // height: 79%;
-  padding-top:20px;
-}
 </style>

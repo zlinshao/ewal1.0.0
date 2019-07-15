@@ -435,7 +435,7 @@
       height: 100%;
 
       .play {
-        z-index: 100;
+        z-index: 15;
         position: absolute;
         width: 70px;
         height: 70px;

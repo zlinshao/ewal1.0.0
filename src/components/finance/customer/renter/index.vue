@@ -4,7 +4,7 @@
     <!--列表-->
     <el-table
       :data="renterLists"
-      :height="this.mainListHeight() + 'px'"
+      :height="mainListHeight(50) + 'px'"
       highlight-current-row
       header-row-class-name="tableHeader"
       :cell-class-name="tableCell"
@@ -40,14 +40,29 @@
           </div>
         </template>
       </el-table-column>
+      <el-table-column label="生成时间" prop="create_time" align="center">
+        <template slot-scope="scope">
+          <div v-for="item in scope.row.create_time">{{item}}</div>
+        </template>
+      </el-table-column>
       <el-table-column
         show-overflow-tooltip
         v-for="item in Object.keys(renterLabel)"
         :label="renterLabel[item]" :key="item"
         :prop="item"
-        :align="item=='address'?'left':'center'">
+        align="center">
       </el-table-column>
-      <el-table-column show-overflow-tooltip label="付款方式/月单价" prop="prices" align="center" width="180">
+      <el-table-column label="付款方式/月单价" prop="month_price" align="center">
+        <template slot-scope="scope">
+          <div class="month_price" style="cursor: pointer;">
+            <div v-if="monthPrice === scope.row.id">
+              <div v-for="item in scope.row.month_price" style="white-space: nowrap">{{item}}</div>
+            </div>
+            <span @click.prevent="monthPrice = scope.row.id" v-else style="white-space: nowrap">
+              {{scope.row.month_price[0]}}<span v-if="scope.row.month_price.length > 1">...</span>
+            </span>
+          </div>
+        </template>
       </el-table-column>
       <el-table-column label="状态" prop="" align="center">
         <template slot-scope="scope">
@@ -135,7 +150,6 @@
         },
         chooseRowIds: [],
         renterLabel: {//列表字段
-          "create_time": "生成时间",
           "address": "房屋地址",
           "customer_name": "客户姓名",
           "contact": "客户手机号",
@@ -159,6 +173,7 @@
         multipleSelection: [],//多选
         chooseType: '',
         action_status: '',
+        monthPrice: '',
       }
     },
     mounted() {
@@ -257,6 +272,9 @@
             //     return a.id - b.id
             //   }
             // );
+            for (let item of res.data.data) {
+              item.create_time = item.create_time.split(' ');
+            }
             this.renterLists = res.data.data;
             this.renterIds = [];
             for (let item of this.renterLists) {
