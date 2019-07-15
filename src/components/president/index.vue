@@ -431,6 +431,28 @@
   };
 </script>
 
+<style lang="scss">
+  #clockTime{
+    .clock{
+      .clock-circle{
+        width: 5px;
+        height: 5px;
+        background-color:#00FFFF;
+        border: 2px solid #00FFFF;
+      }
+      .clock-circle:before{
+        width: 2px;
+        height: 2px;
+        background-color:#00FFFF;
+      }
+      .clock-hour, .clock-minute, .clock-second{
+        background-color:#00FFFF;
+      }
+    }
+  }
+
+</style>
+
 
 <style lang="scss" scoped>
   @import "../../assets/scss/president/common.scss";
