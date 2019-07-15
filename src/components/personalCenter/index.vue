@@ -5,8 +5,8 @@
         <div class="container-left-up">
           <div class="personal-info">
             <div class="personal-info-photo">
-              <img
-                :src="photoUrl">
+              <img v-if="photoUrl" :src="photoUrl">
+              <img v-else src="../../assets/image/no_avatar.png">
             </div>
             <div class="personal-info-name">
               {{$storage.get('user_info').name}}
@@ -41,24 +41,13 @@
         </div>
         <div class="container-left-down">
           <ul>
-
             <li @click="routerRedirect(item)" v-for="item of navbarList" :class="{checked:item.id==checkedId}">
-              <!-- <router-link :to="'/personalCenter/'+item.router">
-                 <div class="li-item">
-                   <i class="li-item-icon" :class="[item.icon]"></i>
-                   <span class="li-item-content">
-                   {{item.name}}
-                 </span>
-                 </div>
-               </router-link>-->
-
               <div class="li-item">
                 <i class="li-item-icon" :class="[item.icon]"></i>
                 <span class="li-item-content">
                   {{item.name}}
                 </span>
               </div>
-
             </li>
           </ul>
         </div>
@@ -100,12 +89,12 @@
             name: '工作日志',
             router: 'workLog',
           },
-          {
+         /* {
             id: 4,
             icon: 'icon-kpi',
             name: '我的KPI',
             router: 'myKPI',
-          },
+          },*/
         ],
 
         position_level_name: _.find(this.DROPDOWN_CONSTANT.POSITION_LEVEL,{id:this.$storage.get('user_info').position_level})?.name||'P*',
@@ -139,12 +128,11 @@
     },
 
     mounted() {
-      //this.$router.push('/personalCenter/myAttendance');
       this.getWorkStatus();
     },
     computed: {
       photoUrl() {
-        return this.$storage.get('user_info').avatar||'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552912676050&di=fd46be51272d18ea8ffc89e2956a8d4c&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F8d64400852949b685670d52be88910a57e2e1542.jpg';
+        return this.$storage.get('user_info').avatar;
       },
     },
     methods: {

@@ -12,12 +12,14 @@
         </div>
       </div>
       <div class="response-table">
-        <div class="response-table-list" v-if="choosedTab ==0">
-          <div class="response-table-item" v-for="(item, index) in responseList" :key="index">
+        <div class="response-table-list">
+          <div class="response-table-item" v-for="(item, index) in messageList" :key="index">
             <div class="table-item-container">
               <div class="item-upper">
                 <div class="item-upper-left">
-                  <img :src="item.article.user_id.avatar" />
+                  <!-- <img :src="item.article.user_id.avatar" />-->
+                  <img v-if="item.article.user_id.avatar" :src="item.article.user_id.avatar">
+                  <img v-else src="../../../assets/image/no_avatar.png">
                 </div>
                 <div class="item-upper-right">
                   <div class="upper-right-info">
@@ -84,7 +86,7 @@ export default {
         limit: 5
       },
       counts: 0,
-      responseList: [],
+      messageList: [],//消息列表 包含收到的回复和发出的评论 choosedTab = 0 时为收到的回复 1为发出的评论
       commentList: []
     }
   },
@@ -93,52 +95,58 @@ export default {
   },
   watch: {
     currentPage () {
-      if (this.choosedTab == 0) {
-        this.getResponseList()
+      if (this.choosedTab === 0) {
+        this.getResponseList();
       } else {
-        this.getCommentList()
+        this.getCommentList();
       }
     }
   },
   methods: {
-    chooseTab: function (index) {
-      this.choosedTab = index
-      if (index == 0) {
-        this.getResponseList()
+    chooseTab (index) {
+      this.choosedTab = index;
+      if (index === 0) {
+        this.getResponseList();
       } else {
-        this.getCommentList()
+        this.getCommentList();
       }
     },
-    getResponseList: function () {
-      this.responseList = []
+    //获取收到的回复列表
+    getResponseList() {
+      this.messageList = [];
       let param = {
         type: "be_comment",
         offset: this.currentPage,
-        limit: 4
-      }
+        limit: 4,
+      };
+      this.$LjLoading({el:'.response-table',loading:true});
       this.$http.post(`${this.url}/api/article/comment/userComment`, param).then(res => {
+        this.$LjLoading({el:'.response-table',loading:false});
         if (res.status == 200) {
-          this.total = res.data.data.length
+          this.total = res.data.data.length;
           for (let i = 0; i < res.data.data.length; i++) {
-            let obj = res.data.data[i]
-            this.responseList.push(obj)
+            let obj = res.data.data[i];
+            this.messageList.push(obj)
           }
         }
       })
     },
-    getCommentList: function () {
-      this.commentList = []
+    //获取发出的评论列表
+    getCommentList () {
+      this.messageList = [];
       let param = {
         type: "comment",
         offset: this.currentPage,
-        limit: 4
-      }
+        limit: 4,
+      };
+      this.$LjLoading({el:'.response-table',loading:true});
       this.$http.post(`${this.url}/api/article/comment/userComment`, param).then(res => {
-        this.total = res.data.data.length
+        this.$LjLoading({el:'.response-table',loading:false});
+        this.total = res.data.data.length;
         if (res.status == 200) {
           for (let i = 0; i < res.data.data.length; i++) {
-            let obj = res.data.data[i]
-            this.commentList.push(obj)
+            let obj = res.data.data[i];
+            this.messageList.push(obj);
           }
         }
       })

@@ -8,7 +8,7 @@
           <span>小雪</span>
           <label>-1～1.5°C</label>&ndash;&gt;
         </span>-->
-        <span @click="routerLink('/')" title="主页" class="to-homepage"></span>
+        <span @click="redirectToHomePage" title="主页" class="to-homepage"></span>
 
         <span @click="showModules()" class="showButton">
           EWAL
@@ -268,29 +268,25 @@ export default {
       return this.$store.state.todo.todo_list_badge_count;
     },
     user_name() {
-      //let name  = this.$storage.get()
       return this.$storage.get('user_info').name||'乐伽';
     },
     computedPhotoUrl() {
-      //let url = this.$storage.get('user_info').avatar||'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552912676050&di=fd46be51272d18ea8ffc89e2956a8d4c&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F8d64400852949b685670d52be88910a57e2e1542.jpg';
       return this.$storage.get('user_info').avatar;
     }
   },
   created () {
     this.theme_name = '1';
-    //this.getPerson()
   },
   mounted() {
     this.listenPhotoUrl();
-    //this.getWeather();
   },
   methods: {
-    /*获取天气*/
-    /*getWeather() {
-      this.$http.get(`https://www.tianqiapi.com/api/?version=v1`).then(res=> {
-        debugger
-      });
-    },*/
+
+    //重定向到主页
+    redirectToHomePage() {
+      this.clearVisible();
+      this.routerLink('/');
+    },
 
     /*监听头像变动*/
     listenPhotoUrl() {
@@ -311,18 +307,8 @@ export default {
       }
       this.$router.push({path: url})
     },
-    getPerson () {
-      this.$http.get(`${this.market_server}v1.0/market/dictionary/parent_son`).then(res => {
-        if (res.success) {
-          let params = res.data
-          dicties.decorate = params[404] // 装修
-          dicties.property_type = params[410] // 房屋类型
-          dicties.card_type = params[409] //证件类型
-        }
-      })
-    },
+
     todoListHandler () {
-      //this.routerLink('/todoList');
       this.$store.dispatch('change_todo_list_visible');
       this.clearVisible('todo')
     },
@@ -330,10 +316,6 @@ export default {
     openMessage () {
       this.$store.dispatch('change_message_visible');
       this.clearVisible('approval')
-      // this.$LjMessage('warning', {
-      //   title: '警告',
-      //   msg: '审批失败！'
-      // });
     },
     showModules () {
       this.moduleList = !this.moduleList;
@@ -343,14 +325,6 @@ export default {
       val != 'approval' && this.$store.state.approval.approval_message_visible && this.$store.dispatch('change_message_visible');
       val != 'todo' && this.$store.state.todo.todo_list_visible && this.$store.dispatch('change_todo_list_visible');
       val != 'moduleList' && (this.moduleList = false)
-    },
-
-    openNotify () {
-      this.$LjNotify('success', {
-        title: '成功',
-        message: '请求成功了~',
-        subMessage: '这是一个子标题',
-      });
     },
     //关闭提示
     handleCloseNotify () {
@@ -368,8 +342,6 @@ export default {
         this.theme_name_Two=false;
       }
 
-
-      // this.$store.dispatch('theme_name',item.key);
       this.changeLoad = true;
       let that = this;
       setTimeout(function () {

@@ -16,7 +16,9 @@
           <div :key="index" v-for="(item,index) in favoriteList" class="favorite-table-item">
             <div class="item-upper">
               <div class="item-upper-photo">
-                <img :src="item.cover[0].uri">
+                <img v-if="item.cover && item.cover.length>0" :src="item.cover[0].uri">
+                <img v-else :src="favoriteImg[Math.ceil(Math.random()*3)]">
+<!--                <img :src="item.cover[0].uri">-->
               </div>
               <div class="item-upper-content">
                 <div>{{item.title}}</div>
@@ -38,7 +40,9 @@
             </div>
             <div class="item-lower">
               <div class="item-lower-left">
-                <img :src="item.user_id.avatar">
+                <img v-if="item.user_id.avatar" :src="item.user_id.avatar">
+                <img v-else src="../../../assets/image/no_avatar.png">
+                <span>{{item.user_id.name}}</span>
               </div>
               <div class="item-lower-right">
                 {{item.created_at.split(" ")[0]}}
@@ -62,6 +66,7 @@
 <script>
 import SearchBar from '@/components/common/lightweightComponents/SearchBar';
 
+
 export default {
   name: "myFavorite",
   components: {
@@ -72,8 +77,13 @@ export default {
       url: globalConfig.favorite,
       searchValue: '',
       currentPage: 1,
-      total: 20,
+      total: 0,
       favoriteList: [],
+      favoriteImg:{
+        1:require('./img/favorite1.png'),
+        2:require('./img/favorite2.png'),
+        3:require('./img/favorite3.png'),
+      },//我收藏的默认图片
     }
   },
   watch: {
@@ -85,12 +95,14 @@ export default {
     this.getFavoriteList();
   },
   methods: {
-    getFavoriteList: function () {
+    getFavoriteList () {
       let param = {
         offset: this.currentPage,
         limit: 10
       }
+      this.$LjLoading({el:'.favorite-table',loading:true});
       this.$http.post(`${this.url}api/article/collect/userCollect`, param).then(res => {
+        this.$LjLoading({el:'.favorite-table',loading:false});
         if (res.status === 200) {
           this.total = res.data.total
           for (let i = 0; i < res.data.data.length; i++) {
