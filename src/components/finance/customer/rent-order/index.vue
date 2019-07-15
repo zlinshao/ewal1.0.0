@@ -23,13 +23,11 @@
       </el-table-column>
       <el-table-column prop="address" label="房屋地址" align="center">
         <template slot-scope="scope">
-          <el-tooltip :content="scope.row.address" placement="bottom-start" :visible-arrow="false">
-            <div class="house-address-contain-money">
-              {{scope.row.address}}
-              <!-- has_running是否有流水，1有，2没有 -->
-              <span v-if="scope.row.has_running==1" class="lord-money"></span>
-            </div>
-          </el-tooltip>
+          <div class="house-address-contain-money">
+            {{scope.row.address}}
+            <!-- has_running是否有流水，1有，2没有 -->
+            <span v-if="scope.row.has_running==1" class="lord-money"></span>
+          </div>
         </template>
       </el-table-column>
       <el-table-column prop="customer_name" label="客户姓名" align="center"></el-table-column>
