@@ -14,7 +14,7 @@
         <div class="achieve">
           <p class="achieve_title">
             <span>业绩排名</span>
-            <span @click="goMoreInfo()"> 更多 </span>
+            <span @click="goMoreInfo()" class="more_info"> 更多 </span>
           </p>
           <div class="achieve_list"  v-if="moreFalg">
             <ul class="">

@@ -184,6 +184,7 @@
         align-items: center;
         justify-content: center;
         animation:circleBgRoate 8s infinite linear ;
+        cursor: pointer;
         .new_inner_circle, .first_inner_circle{
           width: 100%;
           height: 100%;
