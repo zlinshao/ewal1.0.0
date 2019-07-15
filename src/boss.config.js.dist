@@ -25,5 +25,4 @@ globalConfig = {
   url2:"http://test.ewal.lejias.cn/",//佛山
   url3:"http://test.ewal.lejias.cn/",//南京
   user_info: {}, //用户信息
-  // mcs.lejias.cn
 };
