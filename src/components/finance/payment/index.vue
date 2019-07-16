@@ -6,10 +6,16 @@
           <b>...</b>
         </p>
         <h1>付款</h1>
+        <h2 class="items-center">
+          <span v-for="item in selects" @click="changeTabs(item.id)" class="items-column"
+                :class="{'chooseTab': chooseTab === item.id}">
+            {{item.title}}<i></i>
+          </span>
+        </h2>
       </div>
       <div class="items-center listTopRight" v-show="!action_visible">
         <!--<div class="icons upLoad"></div>-->
-         <el-tooltip content="批量打款" placement="bottom" :visible-arrow="false">
+        <el-tooltip content="批量打款" placement="bottom" :visible-arrow="false">
           <div class="icons allInsert" @click="openPaymentBulk"></div>
         </el-tooltip>
         <el-tooltip content="批量入账" placement="bottom" :visible-arrow="false">
@@ -68,13 +74,22 @@
           </template>
         </el-table-column>
         <el-table-column
+          v-if="item !== 'subject'"
           show-overflow-tooltip
           v-for="item in Object.keys(paymentLabels)"
           :label="paymentLabels[item]" :key="item"
           :prop="item"
           :width="(item=='description.description'||item=='remark')?180:null"
-          :align="(item=='description.description'||item=='remark')?'left':'center'"
-        >
+          :align="(item=='description.description'||item=='remark')?'left':'center'">
+        </el-table-column>
+        <el-table-column
+          v-else
+          :label="paymentLabels[item]" :key="item"
+          :width="(item=='description.description'||item=='remark')?180:null"
+          :align="(item=='description.description'||item=='remark')?'left':'center'">
+          <template slot-scope="scope">
+            <div>{{scope.row.subject.parent_subject.title}}->{{scope.row.subject.title}}</div>
+          </template>
         </el-table-column>
         <el-table-column
           key="remarks"
@@ -471,11 +486,11 @@
       </div>
     </lj-dialog>
   <!-- 批量打款 -->
-<lj-dialog :visible="paymentbulk_visible" :size="{width: 900 + 'px',height: 560 + 'px'}"
-               @close="paymentbulk_visible = false;paymentData=[];paymentDataCount=0;">
+  <lj-dialog :visible="paymentbulk_visible" :size="{width: 900 + 'px',height: 800 + 'px'}"
+               @close="paymentbulk_visible = false;paymentData=[];paymentDataCount=0;paymentRemoveData=[];paymentRemoveDataId=[];paymentRemoveDataCount=0;">
       <div class="dialog_container">
         <div class="dialog_header justify-bet">
-          <h3>批量打款</h3>
+          <h3>应付款项</h3>
           <!-- <h3 class="batchEntry-icon">
             <i class="" v-if="$storage.get('VALIDATE_PERMISSION')['Batch-Payable-Export']"
                @click="out_account_visible = true"></i>
@@ -505,12 +520,41 @@
             </el-table-column>
             <el-table-column align="center" label="地址 " prop="customer.address"></el-table-column>
             <el-table-column align="center" label="剩余款项" prop="balance"></el-table-column>
+            <el-table-column align="center" label="操作" prop="balance"><template slot-scope="scope"><a style="color:#0c66ff" @click="removePaymentData(scope.row)">暂不支付</a></template></el-table-column>
+          </el-table>
+        </div>
+        <div class="dialog_header justify-bet" v-if="paymentRemoveDataCount>0">
+          <h3>暂不支付</h3>
+          <h4 style="float:right">共{{paymentRemoveDataCount}}条记录</h4>
+        </div>
+        <div class="dialog_main changeChoose" v-if="paymentRemoveDataCount>0">
+           <el-table
+            :data="paymentRemoveData"
+            v-loading="paymenttableLoading"
+            element-loading-text="拼命加载中"
+            element-loading-spinner="el-icon-loading"
+            element-loading-background="rgba(255, 255, 255, 0)"
+            header-row-class-name="tableHeader"
+          >
+            <el-table-column align="center" label="付款账户" prop="customer_account_num"></el-table-column>
+            <el-table-column align="center" label="付款账户开户行" prop="customer_account_bank"></el-table-column>
+            <el-table-column align="center" label="付款账户开户人" prop="customer_account_owner"></el-table-column>
+            <el-table-column align="center" label="科目信息" prop="subject.title">
+              <template slot-scope="scope">
+                <span>{{(scope.row.subject && scope.row.subject.parent_subject && scope.row.subject.parent_subject.title) ?
+                  scope.row.subject.parent_subject.title+'-'+scope.row.subject.title : scope.row.subject && scope.row.subject.title ?
+                  scope.row.subject.title : ""}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column align="center" label="地址 " prop="customer.address"></el-table-column>
+            <el-table-column align="center" label="剩余款项" prop="balance"></el-table-column>
+            <el-table-column align="center" label="操作" prop="balance"><template slot-scope="scope"><a style="color:#0c66ff" @click="addPaymentData(scope.row)">立即支付</a></template></el-table-column>
           </el-table>
         </div>
         <div class="dialog_footer">
           <el-button size="mini" type="danger" @click="paymentSubmit">提交</el-button>
           <!-- <el-button size="mini"  @click="outAccountCtrl">提交</el-button> -->
-          <el-button size="mini" type="info" @click="paymentbulk_visible=false;paymentData=[];paymentDataCount=0;">取消</el-button>
+          <el-button size="mini" type="info" @click="paymentbulk_visible=false;paymentData=[];paymentDataCount=0;paymentRemoveData=[];paymentRemoveDataId=[];paymentRemoveDataCount=0;">取消</el-button>
         </div>
       </div>
     </lj-dialog>
@@ -601,7 +645,25 @@
         payableSum: '',
         paidSum: '',
         balanceSum: '',
-
+        chooseTab: 1,
+        selects: [
+          {
+            id: 1,
+            title: '全部',
+          },
+          {
+            id: 2,
+            title: '押金',
+          },
+          {
+            id: 3,
+            title: '房租',
+          },
+          {
+            id: 4,
+            title: '渠道费',
+          },
+        ],
         import_account_visible: false,
         out_account_visible: false,
         out_form: {
@@ -650,9 +712,12 @@
           limit: 12,
           department_ids: '',
           export: '',
+        },
+        accountParams:{
+          page: 1,
+          limit: 12,
           cate: '',
         },
-
         delete_visible: false,//删除
         add_visible: false,//新增
         pay_visible: false,//应付金额
@@ -716,7 +781,7 @@
           "pay_date": "付款时间",
           "customer.customer_name": "客户姓名",
           "customer.address": "地址",
-          "subject.title": "支出科目",
+          "subject": "支出科目",
           "amount_payable": "应付金额",
           "amount_paid": "实付金额",
           "balance": "剩余款项",
@@ -853,6 +918,9 @@
         batchEntryData: [],
         batchEntryCount: 0,
         paymentData: [],
+        paymentRemoveData: [],// 移除的批量打款
+        paymentRemoveDataId: [],// 移除的批量打款 id
+        paymentRemoveDataCount: 0,
         paymentDataCount:0,
         paymentRequest_id: '',
         batchEntryParams: {
@@ -877,6 +945,34 @@
     },
     computed: {},
     methods: {
+      changeTabs(id) {
+        this.chooseTab = id;
+        // let arr = ['page', 'limit', 'subject_id'];
+        // for (let item of Object.keys(this.params)) {
+        //   if (!arr.includes(item)) {
+        //     this.params[item] = '';
+        //   }
+        // }
+        switch (id) {
+          case 1:
+            this.params.subject_id = '';
+            break;
+          case 2:
+            this.params.subject_id = 2;
+            break;
+          case 3:
+            this.params.subject_id = 3;
+            break;
+          case 4:
+            this.params.subject_id = 6;
+            break;
+        }
+        this.tableData = [];
+        this.tableLists = [];
+        this.is_table_choose = '';
+        this.action_visible = false;
+        this.getPaymentList();
+      },
       hiddenModules() {
         this.action_visible = false;
         this.is_table_choose = '';
@@ -914,10 +1010,25 @@
           }
         })
       },
+      //移动到暂不支付列表
+      removePaymentData(row){
+        this.paymentData=this.paymentData.filter((item)=> item.id !=row.id);
+        this.paymentRemoveData.push(row);
+        this.paymentRemoveDataId.push(row.id);
+        this.paymentRemoveDataCount +=1;
+        this.paymentDataCount -=1;
+      },
+      //从暂不支付列表移动到支付列表
+      addPaymentData(row){
+        this.paymentRemoveData=this.paymentRemoveData.filter((item)=> item.id !=row.id);
+        this.paymentData.push(row);
+        this.paymentRemoveDataId=this.paymentRemoveDataId.filter((item)=> row.id !=item);
+        this.paymentDataCount +=1;
+        this.paymentRemoveDataCount -=1;
+      },
       //批量打款提交
       paymentSubmit() {
-
-        this.$http.post(globalConfig.temporary_server + 'account_payable/batchPayFund', {request_id: this.paymentRequest_id}).then(res => {
+        this.$http.post(globalConfig.temporary_server + 'account_payable/batchPayFund', {request_id: this.paymentRequest_id,exclude: this.paymentRemoveDataId}).then(res => {
           if (res.code === 200) {
             this.$LjNotify('success', {
               title: '成功',
@@ -927,6 +1038,9 @@
             this.paymentData=[];
             this.paymentDataCount=0;
             this.paymentbulk_visible=false;
+            this.paymentRemoveData=[];
+            this.paymentRemoveDataId=[];
+            this.paymentRemoveDataCount=0;
           } else {
             this.$LjNotify('warning', {
               title: '失败',
@@ -1150,8 +1264,8 @@
         this.out_form.account = [];
         this.transferForm.account_id = '';
         this.out_form.account_name = '';
-        this.params.cate = val;
-        this.$http.get(globalConfig.temporary_server + "account", this.params).then(res => {
+        this.accountParams.cate = val;
+        this.$http.get(globalConfig.temporary_server + "account", this.accountParams).then(res => {
           if (res.code === 200) {
             this.accountLists = res.data.data;
             this.is_disabled = false;
@@ -1297,6 +1411,9 @@
             );
 
             let resultData = res.data.data;
+            if (!resultData.length) {
+              this.tableStatus = '暂无相关数据';
+            }
             let fund_id = _.map(resultData, 'id');
             let params = {
               fund_id,
@@ -1395,8 +1512,10 @@
       hiddenModule(val) {// 确认搜索
         this.showSearch = false;
         if (val !== 'close') {
-          for (let item of Object.keys(this.params)) {
-            this.params[item] = val[item];
+          for (let item of Object.keys(val)) {
+            if (item !== 'gatherDate') {
+              this.params[item] = val[item];
+            }
           }
           if (val.gatherDate) {
             this.params.date_min = val.gatherDate[0];

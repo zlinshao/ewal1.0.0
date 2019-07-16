@@ -249,16 +249,14 @@
             if (type === 1) {
               this.$http.put(this.url + '/api/video/study/' + this.current_item.id, paramsForm).then(res => {
                 this.callbackSuccess(res);
-                this.visible = false;
-                this.current_item = '';
               })
             } else if (type === 2) {
               this.$http.post(this.url + '/api/video/study', paramsForm).then(res => {
                 this.callbackSuccess(res);
-                this.visible = false;
-                this.current_item = '';
               })
             }
+            this.visible = false;
+            this.current_item = '';
           }
         });
       },
@@ -267,13 +265,16 @@
       del(row) {
         this.$LjConfirm({icon: 'delete', content: '确定删除该视频吗？'}).then(() => {
           this.$http.delete(this.url + '/api/video/study/' + row.id,).then(res => {
-            this.$LjNotifyEasy(res);
+            this.$LjNotifyEasy(res,()=> {
+              this.getDataList();
+            });
           })
         });
       },
 
       //获取视频列表
       getDataList() {
+        this.dataList = [];
         this.showLoading(true);
         this.$http.get(this.url + '/api/video/study', this.params).then(res => {
           this.showLoading(false);

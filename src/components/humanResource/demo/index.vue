@@ -1,15 +1,16 @@
 <template>
   <div class="demo-container">
-    <div id="demo_demo"  style="width: 800px;height: 400px;background-color: #ccc"></div>
+<!--    <lj-white-dialog :visible="lj_white_dialog"></lj-white-dialog>-->
+    <!--<div id="demo_demo"  style="width: 800px;height: 400px;background-color: #ccc"></div>
     <div @click="demo">测试</div>
-    <div @click="demo2">测试2</div>
-<!--  <app-index-more :visible.sync="more_visible"></app-index-more>-->
+    <div @click="demo2">测试2</div>-->
+    <!--  <app-index-more :visible.sync="more_visible"></app-index-more>-->
 
-<!--    <el-button @click="demo">清空</el-button>-->
-    <!--    <lj-upload v-model="list" :limit="['png']"></lj-upload>-->
-<!--        <post-choose v-model="post_list" num="1"></post-choose>-->
-<!--        <user-choose ref="user" v-model="user_list"></user-choose>-->
-<!--        <org-choose v-model="org_list"></org-choose>-->
+    <!--    <el-button @click="demo">清空</el-button>-->
+        <lj-upload v-model="list"></lj-upload>
+    <!--        <post-choose v-model="post_list" num="1"></post-choose>-->
+    <!--        <user-choose ref="user" v-model="user_list"></user-choose>-->
+    <!--        <org-choose v-model="org_list"></org-choose>-->
     <!--<el-button>测试</el-button>
     <search-high></search-high>-->
     <!--    <button-upload></button-upload>-->
@@ -32,19 +33,14 @@
       </div>
     </calendar>-->
     <!--    <img-slider :size="{width:'100%',height:'100%'}" :arr="sliders"></img-slider>-->
-<!--    <lj-upload ref="ljUpload" :limit-easy="['image']" v-model="list" :download="false" :disabled="true"></lj-upload>-->
+    <!--    <lj-upload ref="ljUpload" :limit-easy="['image']" v-model="list" :download="false" :disabled="true"></lj-upload>-->
     <!--<dropdown-list
                    :json-arr="DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.RECEIVE_RETURN_STATUS"
                    v-model="demo"></dropdown-list>-->
-<!--    <coming-soon></coming-soon>-->
-
-
-
+    <!--    <coming-soon></coming-soon>-->
 
 
   </div>
-
-
 
 
   <!--<div id="org-chart-container">
@@ -57,10 +53,9 @@
 </template>
 
 <script>
+  import LjWhiteDialog from '@/components/common/lightweightComponents/LjWhiteDialog.vue';
   import OrgChart from './org-chart'
-  import { generateOrgChartData, Data } from './base/data-generator'
-
-
+  import {generateOrgChartData, Data} from './base/data-generator'
 
 
   import AppIndexMore from '../../../components/index/components/AppIndexMore';
@@ -80,6 +75,7 @@
     name: "index",
     mixins: [mixins],
     components: {
+      LjWhiteDialog,
       Calendar,
       ImgSlider,
       UserList,
@@ -92,6 +88,7 @@
     },
     data() {
       return {
+        lj_white_dialog: true,
         data: {
           name: '总裁办',
           title: '',
@@ -99,9 +96,9 @@
         },
         orgChart: null,
 
-        count:0,
+        count: 0,
 
-        url:globalConfig.humanResource_server,
+        url: globalConfig.humanResource_server,
 
 
         more_visible: false,
@@ -122,11 +119,11 @@
           },
         ],
         //list: [4228777],
-        list: ["4228777",628,631],
+        list: ["4228777", 628, 631],
         //user_list: [211, 289, 3604, 3623, 3590, 3589],
         user_list: [3604, 3335, 3338, 3337],
         org_list: [411, 418, 419],
-        post_list: [139,140,141],
+        post_list: [139, 140, 141],
         paper_params: {
           paper_name: '新建问卷',
           title: '入职考试',
@@ -158,23 +155,23 @@
     methods: {
 
       demo() {
-        this.$LjLoading({el:'#demo_demo',loading:true});
+        this.$LjLoading({el: '#demo_demo', loading: true});
       },
       demo2() {
-        this.$LjLoading({el:'#demo_demo',loading:false});
+        this.$LjLoading({el: '#demo_demo', loading: false});
       },
 
       async getTopPosition() {
-        await this.$http.get(this.url+'organization/position',{
+        await this.$http.get(this.url + 'organization/position', {
           page: 1,
           limit: 999,
           is_top: 1
         }).then(res => {
           if (res.code === '20000') {
             //this.top_position = res.data.data;
-            _.forEach(res.data.data,(o,index) => {
+            _.forEach(res.data.data, (o, index) => {
               //this.data.children[index] = {name:o.users[0]?.name||'无名',user:o.name};
-              this.data.children[index] = {name:o.name,user:o.users[0]?.name||'无名'};
+              this.data.children[index] = {name: o.name, user: o.users[0]?.name || '无名'};
             });
             /*for (let i = 0;i<this.top_position.length;i++) {
               this.handleTopGetDepart(this.top_position[i],i);
@@ -190,16 +187,16 @@
         this.count++;
         let temp = currentData;
         let params = {
-          page:1,
-          limit:100,
+          page: 1,
+          limit: 100,
           parent_id,
           is_enable: 1,
         };
-        await this.$http.get(`${this.url}organization/organization`,params).then(async res=> {
-          if(res.code.toString().endsWith('0')) {
-            _.forEach(res.data.data,async (o,index) => {
-              temp.children[index] = {name:o.name,user:o.leader?.name||'无名',children: []};
-              await this.getOrganizationData(o.id,temp.children[index]);
+        await this.$http.get(`${this.url}organization/organization`, params).then(async res => {
+          if (res.code.toString().endsWith('0')) {
+            _.forEach(res.data.data, async (o, index) => {
+              temp.children[index] = {name: o.name, user: o.leader?.name || '无名', children: []};
+              await this.getOrganizationData(o.id, temp.children[index]);
             });
           }
         });
@@ -207,8 +204,8 @@
 
       //通过统一接口一次获取组织架构图所有数据
       async getOrgDataOnce() {
-        await this.$http.get(`${this.url}organization/org`).then(res=> {
-          if(res.code.toString().endsWith('0')) {
+        await this.$http.get(`${this.url}organization/org`).then(res => {
+          if (res.code.toString().endsWith('0')) {
             this.data = res.data;
             this.data.user = '姜千';
             this.recursionHandleData(this.data);
@@ -218,22 +215,23 @@
 
       //递归处理数据
       recursionHandleData(tempdata) {
-        if(tempdata.users) {
+        if (tempdata.users) {
           tempdata.user = tempdata.users[0]?.name;
         }
-        if(tempdata.leader) {
+        if (tempdata.leader) {
           tempdata.user = tempdata.leader.name;
         }
-        tempdata.user = tempdata.user||'无名';
+        tempdata.user = tempdata.user || '无名';
         if (tempdata.name) {
-          if(tempdata.name.length>=8) {
-            tempdata.name = insertStr(tempdata.name,8);
+          if (tempdata.name.length >= 8) {
+            tempdata.name = insertStr(tempdata.name, 8);
+
             function insertStr(str, start) {//往字符串指定位置增加空格
               return str.slice(0, start) + ' ' + str.slice(start);
             }
           }
         }
-        tempdata.children = tempdata.child||[];
+        tempdata.children = tempdata.child || [];
         //删除无用数据
         delete tempdata.child;
         delete tempdata.users;
@@ -242,20 +240,20 @@
         delete tempdata.leader_id;
         delete tempdata.position_id;
         let temp = tempdata;
-        if(!temp.children) {
+        if (!temp.children) {
           temp.children = [];
         }
-        _(temp.children).forEach((o,index)=> {
+        _(temp.children).forEach((o, index) => {
           this.recursionHandleData(o);
         });
       },
 
       bigger() {
         this.orgChart.bigger();
-/*        let result = this.data;
-        let strResult = JSON.stringify(result);
-        debugger
-        console.log(JSON.stringify(result));*/
+        /*        let result = this.data;
+                let strResult = JSON.stringify(result);
+                debugger
+                console.log(JSON.stringify(result));*/
       },
       smaller() {
         this.orgChart.smaller()
@@ -348,18 +346,6 @@
 
 <style scoped lang="scss">
   @import "../../../assets/scss/common";
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   #slider {

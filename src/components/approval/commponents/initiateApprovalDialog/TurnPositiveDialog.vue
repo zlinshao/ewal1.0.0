@@ -25,7 +25,7 @@
                   </el-form-item>
 
                   <el-form-item required prop="forward_time" label="实际转正日期">
-                    <div class="items-center iconInput" style="width: 220px">
+                    <div class="items-center" style="width: 220px">
                       <el-date-picker v-model="turn_positive_form.forward_time" type="date"
                                       placeholder="必填">
                       </el-date-picker>
@@ -34,7 +34,7 @@
                 </el-col>
                 <el-col :span="8">
                   <el-form-item prop="enroll" label="入职时间">
-                    <div class="items-center iconInput">
+                    <div class="items-center">
                       <el-date-picker disabled v-model="user_info.enroll" type="date"
                                       placeholder="自动获取"></el-date-picker>
                     </div>
@@ -47,7 +47,7 @@
                 </el-col>
                 <el-col :span="8">
                   <el-form-item required prop="expect_forward_time" label="预期转正日期">
-                    <div class="items-center iconInput" style="width: 220px">
+                    <div class="items-center" style="width: 220px">
                       <el-date-picker v-model="turn_positive_form.expect_forward_time" type="date"
                                       placeholder="必填">
                       </el-date-picker>

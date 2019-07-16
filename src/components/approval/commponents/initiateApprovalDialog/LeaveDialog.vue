@@ -25,14 +25,14 @@
                   </el-form-item>
 
                   <el-form-item prop="enroll" label="入职时间">
-                    <div class="items-center iconInput" style="width: 220px">
+                    <div class="items-center" style="width: 220px">
                       <el-date-picker disabled v-model="user_info.enroll" type="date"
                                       placeholder="自动获取"></el-date-picker>
                     </div>
                   </el-form-item>
 
                   <el-form-item required prop="handover_id" label="工作交接人">
-                    <div class="items-center iconInput">
+                    <div class="items-center">
                       <user-choose width="220" num="1" :disabled="false" title="必填" :show-icon="false"
                                    v-model="leave_form.handover_id"
                                    ref="userChoose">
@@ -59,7 +59,7 @@
                   </el-form-item>
 
                   <el-form-item prop="change_date" label="离职日期">
-                    <div class="items-center iconInput" style="width: 220px">
+                    <div class="items-center" style="width: 220px">
                       <el-date-picker v-model="leave_form.change_date"
                                       value-format="yyyy-MM-dd"
                                       type="date"

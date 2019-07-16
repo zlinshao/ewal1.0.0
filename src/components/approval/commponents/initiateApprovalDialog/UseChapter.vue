@@ -42,7 +42,7 @@
 
                 <el-col :span="8">
                   <el-form-item required prop="date" label="申请日期">
-                    <div class="items-center iconInput" style="width: 220px">
+                    <div class="items-center" style="width: 220px">
                       <el-date-picker v-model="use_chapter_form.date" type="date"
                                       value-format="yyyy-MM-dd"
                                       placeholder="请选择">

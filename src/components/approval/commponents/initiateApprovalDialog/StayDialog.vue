@@ -40,7 +40,7 @@
 
                 <el-col :span="8">
                   <el-form-item required prop="date" label="入住日期">
-                    <div class="items-center iconInput" style="width: 220px">
+                    <div class="items-center" style="width: 220px">
                       <el-date-picker v-model="stay_form.date" type="date"
                                       placeholder="请选择">
                       </el-date-picker>

@@ -45,6 +45,33 @@
         height: 15%;
       }
     }
+
+    .sub-log-dialog-container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      color: #686874;
+
+      >div {
+        margin: 12px 0;
+      }
+
+      .sub-log-bold {
+        font-weight: bold;
+        font-size: 15px;
+        user-select: none;
+      }
+
+      .sub-log-top {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        .sub-log-bold {
+          padding-right: 15px;
+        }
+      }
+    }
   }
 }
 

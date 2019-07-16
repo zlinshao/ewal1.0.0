@@ -8,9 +8,11 @@
         <h1 @click="myUtils.emptyPic(photo)">人资规划</h1>
         <h2 class="items-center">
           <span v-for="item in selects" @click="changeTabs(item.id)" class="items-column"
-                :class="{'chooseTab': chooseTab === item.id}">
-            <span v-show="item.id!==6">{{item.title}}<i></i></span>
-            <span v-show="$storage.get('VALIDATE_PERMISSION')['Company-Management'] && item.id===6">{{item.title}}<i></i></span>
+                :class="{'chooseTab': chooseTab === item.id}" v-if="item.id!==6">
+            {{item.title}}<i></i>
+          </span>
+          <span v-else-if="$storage.get('VALIDATE_PERMISSION')['Company-Management'] && item.id===6">
+            {{item.title}}<i></i>
           </span>
         </h2>
       </div>

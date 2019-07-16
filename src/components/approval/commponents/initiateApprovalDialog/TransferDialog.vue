@@ -39,8 +39,8 @@
                 <!--              第二列-->
                 <el-col :span="8">
                   <el-form-item prop="enroll" label="入职时间">
-                    <div class="items-center iconInput">
-                      <el-date-picker disabled v-model="user_info.enroll" type="date"
+                    <div class="items-center">
+                      <el-date-picker disabled v-model="user_info.enroll" type="date" style="width: 220px"
                                       placeholder="自动获取">
                       </el-date-picker>
                     </div>
@@ -239,9 +239,25 @@
             if (valid) {
               this.transfer_form.enroll = this.myUtils.formatDate(this.transfer_form.enroll, 'yyyy-MM-dd')
               let {name, enroll, org} = this.user_info
-              let {change_reason, change_receipt} = this.transfer_form
+
+              let cloneForm = _.cloneDeep(this.transfer_form)
+              let {change_reason, now_org, now_position} = cloneForm
+
+              cloneForm.now_org = [
+                {
+                  id: now_org[0],
+                  name: this.$refs.orgChoose.org_name[0]
+                }
+              ]
+
+              cloneForm.now_position = [
+                {
+                  id: now_position[0],
+                  name: this.$refs.postChoose.post_name[0]
+                }
+              ]
               let data = {
-                ...this.transfer_form,
+                ...cloneForm,
                 more_data: [
                   {key: '申请人', value: name},
                   {key: '入职时间', value: enroll},

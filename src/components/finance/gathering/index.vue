@@ -74,11 +74,22 @@
           </template>
         </el-table-column>-->
         <el-table-column
+          v-if="item !== 'subject'"
           show-overflow-tooltip
-          v-for="item in Object.keys(showData)" :key="item"
-          :align="(item=='customer.address'||item=='description.description')?'left':'center'"
+          v-for="item in Object.keys(showData)"
+          :label="showData[item]" :key="item"
           :prop="item"
-          :label="showData[item]">
+          :width="(item=='description.description'||item=='remark')?180:null"
+          :align="(item=='description.description'||item=='remark')?'left':'center'">
+        </el-table-column>
+        <el-table-column
+          v-else
+          :label="showData[item]" :key="item"
+          :width="(item=='description.description'||item=='remark')?180:null"
+          :align="(item=='description.description'||item=='remark')?'left':'center'">
+          <template slot-scope="scope">
+            <div>{{scope.row.subject.parent_subject.title}}->{{scope.row.subject.title}}</div>
+          </template>
         </el-table-column>
         <el-table-column
           key="remarks"
@@ -1427,7 +1438,11 @@
           is_deposit: '',
           is_tail_fund: '',
           is_rank_rent: '',
-
+        },
+        accountParams:{
+          page: 1,
+          limit: 12,
+          cate: '',
         },
         btnData: [],
         current_address: '',
@@ -1606,7 +1621,7 @@
 
         showData: {
           "pay_date": '收款时间',
-          "subject.title": '应收科目',
+          "subject": '应收科目',
           "customer.address": "地址",
           "amount_receivable": '应收金额',
           "amount_received": '实收金额',
@@ -1795,8 +1810,8 @@
         this.out_form.account = [];
         this.receive_form.account_id = '';
         this.out_form.account_name = '';
-        this.params.cate = val;
-        this.$http.get(globalConfig.temporary_server + "account", this.params).then(res => {
+        this.accountParams.cate = val;
+        this.$http.get(globalConfig.temporary_server + "account", this.accountParams).then(res => {
           if (res.code === 200) {
             this.accountLists = res.data.data;
             this.is_disabled = false;
@@ -2003,21 +2018,21 @@
           case 2:
             this.params.is_deposit = 2;
             this.params.is_tail_fund = '';
-            this.params.is_rank_rent = '';//房租
+            this.params.is_rank_rent = '';
             this.tableData = [];
             this.getReceiveList();
             break;
           case 3:
             this.params.is_deposit = '';
             this.params.is_tail_fund = 2;
-            this.params.is_rank_rent = '';//房租
+            this.params.is_rank_rent = '';
             this.tableData = [];
             this.getReceiveList();
             break;
           case 4:
             this.params.is_deposit = '';
-            this.params.is_tail_fund = 2;
-            this.params.is_rank_rent = '';//房租
+            this.params.is_tail_fund = '';
+            this.params.is_rank_rent = 2;
             this.tableData = [];
             this.getReceiveList();
             break;
@@ -2029,7 +2044,6 @@
             break;
         }
       },
-
 
       registrate() {// 新增登记收款
         let paramsForm = {

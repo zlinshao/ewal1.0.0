@@ -29,7 +29,7 @@
                   </el-form-item>
 
                   <el-form-item required prop="enroll" label="之前入职日期">
-                    <div class="items-center iconInput" style="width: 220px">
+                    <div class="items-center" style="width: 220px">
                       <el-date-picker v-model="second_entry_form.enroll" type="date"
                                       placeholder="请选择日期">
                       </el-date-picker>
@@ -37,7 +37,7 @@
                   </el-form-item>
 
                   <el-form-item required prop="change_date" label="二次入职日期">
-                    <div class="items-center iconInput" style="width: 220px">
+                    <div class="items-center" style="width: 220px">
                       <el-date-picker v-model="second_entry_form.change_date" type="date"
                                       placeholder="请选择日期">
                       </el-date-picker>

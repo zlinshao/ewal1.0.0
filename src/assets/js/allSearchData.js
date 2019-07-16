@@ -236,7 +236,7 @@ export const companySearch = {
             dataType: []
         }]
     }
-    
+
 // 离职管理
 export const LeaveJobSearch = {
     status: 'LeaveJobSearch',
@@ -1443,7 +1443,15 @@ export const accountSearchList = {
 export const paySearchList = {
     status: 'paySearchList',
     keywords: 'search',
-    data: [{
+    data: [
+      {
+        keyType: 'dateRange',
+        title: '应付时间',
+        placeholder: '请选择日期',
+        keyName: 'gatherDate',
+        dataType: []
+      },
+      {
             keyType: 'radio',
             title: '入账状态',
             keyName: 'status',
@@ -2259,14 +2267,14 @@ export const dormitoryHightSearch={
 // 片区异动交接单的高级搜索
 export const areaChangeOrderHighSearch={
     status: 'areaChangeOrderHighSearch',
-    keywords: 'keyWord',
-    placeholder: '人员部门资料名称',
+    keywords: 'search',
+    placeholder: '搜索人员',
     data: [
         {
             keyType: 'depart',
             title: '部门',
             placeholder: '请选择部门',
-            keyName: 'depart_id',
+            keyName: 'org_id',
             dataType: [],
             value: {
                 num: 1,
@@ -2277,7 +2285,7 @@ export const areaChangeOrderHighSearch={
             keyType: 'date',
             title: '日期',
             placeholder: '请选择上传时间',
-            keyName: 'start_at',
+            keyName: 'date',
             dataType: "",
         },
         {
@@ -2286,11 +2294,11 @@ export const areaChangeOrderHighSearch={
             keyName: 'type',
             dataType: '',
             value: [
-                { id: 1, title: '异动工作交接清单' },
-                { id: 2, title: '房屋交接单' },
-                { id: 3, title: '合同交接单' },
-                { id: 4, title: '片区固定资产盘点表' },
-                { id: 5, title: '采购合同' },
+                { id: 1, title: '个人异动',type:'personal_change'},
+                { id: 2, title: '离职',type:'dimission' },
+                // { id: 3, title: '合同交接单' },
+                // { id: 4, title: '片区固定资产盘点表' },
+                // { id: 5, title: '采购合同' },
             ]
         },
     ]
@@ -2311,7 +2319,7 @@ export const contractNumberHighSearch={
             value: {
                 num: 1
             }
-        },        
+        },
         {
             keyType: 'depart',
             title: '部门',
@@ -2347,7 +2355,7 @@ export const contractNumberEditHighSearch={
             value: {
                 num: 1
             }
-        },        
+        },
         {
             keyType: 'depart',
             title: '操作对象部门',

@@ -46,13 +46,13 @@
 
                 <el-col :span="8">
                   <el-form-item prop="enroll" label="入职日期">
-                    <div class="items-center iconInput" style="width: 220px">
+                    <div class="items-center" style="width: 220px">
                       <el-date-picker disabled v-model="user_info.enroll" type="date" placeholder="必填"></el-date-picker>
                     </div>
                   </el-form-item>
 
                   <el-form-item required prop="date" label="实施日期">
-                    <div class="items-center iconInput" style="width: 220px">
+                    <div class="items-center" style="width: 220px">
                       <el-date-picker v-model="salary_form.date" type="date" placeholder="必填"></el-date-picker>
                     </div>
                   </el-form-item>
