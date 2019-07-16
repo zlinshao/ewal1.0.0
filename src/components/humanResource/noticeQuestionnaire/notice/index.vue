@@ -649,8 +649,6 @@
               }
               if (index != 0) {
                 if (o.user_id && o.sanction_type && o.money) {
-                  // debugger
-                  //o.user_id = parseInt(o.user_id.join());
                 } else {
                   isReturn = true;
                 }
@@ -739,11 +737,6 @@
         this.$refs['publishNoticeForm'].validate(valid => {
           if (valid) {
             let newForm = this.publish_notice_form;
-            /*newForm.sanction_info = _.forEach(newForm.sanction_info, (o) => {
-              if (o.user_id.constructor == Array) {
-                o.user_id = parseInt(o.user_id.join());
-              }
-            });*/
             _.forEach(newForm.sanction_info, (o) => {
               if (o.user_id.constructor === Array) {
                 o.user_id = o.user_id.join();
@@ -757,7 +750,7 @@
               }
               if (index != 0) {
                 if (o.user_id && o.sanction_type && o.money) {
-                  o.user_id = parseInt(o.user_id.join());
+                  o.user_id = parseInt(Array.isArray(o.user_id)?o.user_id.join():o.user_id);
                 } else {
                   isReturn = true;
                 }
@@ -795,7 +788,9 @@
             let params = {
               ...newForm
             };
+            this.showLoading2(true);
             this.$http.post(`${this.url}announcement/announcement/update`, params).then(res => {
+              this.showLoading2(false);
               if (res.code.endsWith('0')) {
                 this.$LjNotify('success', {
                   title: '成功',

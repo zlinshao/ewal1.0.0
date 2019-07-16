@@ -69,7 +69,7 @@
                 </div>
               </div>
               <div class="msg-show-box-body">
-                {{msg_show_box.content.detail}}
+                <div v-html="msg_show_box.content.detail"></div>
               </div>
             </div>
           </div>
@@ -216,16 +216,15 @@ export default {
     },
     // 点击表格每一行的事件
     rowClick(row, column, event){
-      // 赋值给右边的展示框
-      this.msg_show_box=row;
       // 将选中的信息设置为已读
       this.isRead(row);
+      this.showDetail(row);
     },
     // 将消息设置为已读
     isRead(infoObj){
       // 如果是未读
-      debugger
       if(infoObj.is_read===0){
+        this.changeRead(infoObj);
         let data={
           uid:this.$storage.get("user_info").id,
           type:infoObj.type,
@@ -240,7 +239,52 @@ export default {
           }
         })
       }
+
+
     },
+
+    //显示右侧栏详情
+    showDetail(row) {
+      // 赋值给右边的展示框
+      this.msg_show_box=row;
+
+      switch (row.type) {
+        case 'announcement':
+          this.msg_show_box.content.detail = '';
+          this.$http.get(row.url).then(res=> {
+            let usefulData = res.data.sanction_info;
+            let htmlDom = '';
+            _.forEach(usefulData,(o)=> {
+              let htmlDomItem = '';
+              let userName = o.user_info.name;
+              let money = o.money;
+              let type = o.sanction_type==1?'奖赏':'处罚';
+              let payName = o.pay_status==1?'未缴纳':'已缴纳';
+              htmlDomItem = `员工姓名: ${userName}</br>奖惩类型: ${type}</br>金额:${money}</br>缴纳状态:${payName}</br></br></br>`;
+              htmlDom += htmlDomItem;
+            })
+            this.msg_show_box.content.detail = htmlDom;
+          });
+          break;
+        default:
+          break;
+
+      }
+    },
+
+    //根据type不同 调用不同的已读未读接口
+    changeRead(obj) {
+      if(obj.is_read) {return};
+      switch (obj.type) {
+        case "announcement":
+          let announcementParams = {
+            id:obj.url.split('/')[obj.url.split('/').length-1],
+          };
+          this.$http.post(`${globalConfig.humanResource_server}announcement/Announcement/reading`,announcementParams).then(res=> {});
+          break;
+      }
+    },
+
     isReadArr(){
       if(this.unreadArr.length>0){
         this.unreadArr.forEach(item=>{
