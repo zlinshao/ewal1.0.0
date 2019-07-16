@@ -27,7 +27,7 @@
                   </el-form-item>
 
                   <el-form-item prop="enroll" label="入职时间">
-                    <div class="items-center iconInput">
+                    <div class="items-center">
                       <el-date-picker disabled v-model="user_info.enroll" type="date"
                                       placeholder="自动获取">
                       </el-date-picker>

@@ -47,7 +47,7 @@
               <el-row>
                 <el-col :span="8">
                   <el-form-item required prop="date" label="公告日期">
-                    <div class="items-center iconInput" style="width: 220px">
+                    <div class="items-center" style="width: 220px">
                       <el-date-picker v-model="notice_form.date" type="date" placeholder="选择日期"></el-date-picker>
                     </div>
                   </el-form-item>

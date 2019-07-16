@@ -26,7 +26,7 @@
                   </el-form-item>
 
                   <el-form-item required prop="date" label="调岗日期">
-                    <div class="items-center iconInput" style="width: 220px">
+                    <div class="items-center" style="width: 220px">
                       <el-date-picker v-model="group_change_form.date" type="date" placeholder="必填"></el-date-picker>
                     </div>
                   </el-form-item>
@@ -218,9 +218,25 @@
             if (valid) {
               this.group_change_form.date = this.myUtils.formatDate(this.group_change_form.date, 'yyyy-MM-dd')
               let {name} = this.user_info
-              let {date, change_reason, change_receipt} = this.group_change_form
+              let cloneForm = _.cloneDeep(this.group_change_form)
+              let {date, now_org, old_org, change_reason} = cloneForm
+
+              cloneForm.now_org = [
+                {
+                  id: now_org[0],
+                  name: this.$refs.orgChoose.org_name[0]
+                }
+              ]
+
+              cloneForm.old_org = [
+                {
+                  id: old_org[0],
+                  name: this.$refs.oldOrgChoose.org_name[0]
+                }
+              ]
+
               let data = {
-                ...this.group_change_form,
+                ...cloneForm,
                 more_data: [
                   {key: '申请人', value: name},
                   // {key: '转入岗位', value: this.$refs.applyPost.post_name.join(' ')},

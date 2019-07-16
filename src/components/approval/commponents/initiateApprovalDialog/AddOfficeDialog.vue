@@ -52,6 +52,7 @@
 
                   <el-form-item label="申请地址">
                     <house-community :style="{width:220+'px'}"
+                                     title="请选择地址"
                                      @getHouseIdName="getHouseInfo">
                     </house-community>
                   </el-form-item>
@@ -66,7 +67,7 @@
 
                 <el-col :span="8">
                   <el-form-item required prop="date" label="申请日期">
-                    <div class="items-center iconInput" style="width: 220px">
+                    <div class="items-center" style="width: 220px">
                       <el-date-picker v-model="add_office_form.date" type="date"
                                       placeholder="请选择">
                       </el-date-picker>

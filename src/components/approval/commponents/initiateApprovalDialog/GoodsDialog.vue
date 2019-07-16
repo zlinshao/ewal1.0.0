@@ -33,7 +33,7 @@
               </el-form-item>
 
               <el-form-item required prop="date" label="申请日期">
-                <div class="items-center iconInput" style="width: 650px">
+                <div class="items-center" style="width: 650px">
                   <el-date-picker v-model="goods_form.date" type="date"
                                   placeholder="请选择日期">
                   </el-date-picker>
