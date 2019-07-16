@@ -8,7 +8,7 @@
           </div>
         </div>
         <div class="toolbar-right">
-          <search-bar placeholder="搜索姓名/岗位/时间" v-model="searchValue"></search-bar>
+          <search-bar placeholder="搜索姓名/岗位" v-model="searchValue"></search-bar>
         </div>
       </div>
       <div class="response-table">
@@ -17,7 +17,6 @@
             <div class="table-item-container">
               <div class="item-upper">
                 <div class="item-upper-left">
-                  <!-- <img :src="item.article.user_id.avatar" />-->
                   <img v-if="item.article.user_id.avatar" :src="item.article.user_id.avatar">
                   <img v-else src="../../../assets/image/no_avatar.png">
                 </div>

@@ -224,6 +224,7 @@ export default {
     // 将消息设置为已读
     isRead(infoObj){
       // 如果是未读
+      debugger
       if(infoObj.is_read===0){
         let data={
           uid:this.$storage.get("user_info").id,
