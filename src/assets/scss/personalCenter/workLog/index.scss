@@ -76,6 +76,7 @@
                 padding-bottom: 30px;
               }
               .footer-upload {
+                position: relative;
                 @include flex('flex-center');
               }
               .footer-user-choose {

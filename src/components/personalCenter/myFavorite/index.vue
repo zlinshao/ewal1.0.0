@@ -7,7 +7,7 @@
           <span class="toolbar-left-dynamic">共{{total}}个内容</span>
         </div>
         <div class="toolbar-right">
-          <search-bar placeholder="搜索姓名/岗位/时间" v-model="searchValue"></search-bar>
+          <search-bar placeholder="搜索姓名/岗位" v-model="searchValue"></search-bar>
         </div>
       </div>
       <div class="favorite-table">
@@ -15,10 +15,9 @@
         <div class="favorite-table-list">
           <div :key="index" v-for="(item,index) in favoriteList" class="favorite-table-item">
             <div class="item-upper">
-              <div class="item-upper-photo">
+              <div title="详情" @click="routerLink('/newsDetail',{id:item.id})" class="item-upper-photo">
                 <img v-if="item.cover && item.cover.length>0" :src="item.cover[0].uri">
                 <img v-else :src="favoriteImg[Math.ceil(Math.random()*3)]">
-<!--                <img :src="item.cover[0].uri">-->
               </div>
               <div class="item-upper-content">
                 <div>{{item.title}}</div>

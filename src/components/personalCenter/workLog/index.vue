@@ -26,7 +26,7 @@
             <div class="work-log-input-list-item-footer">
               <div class="footer-upload">
                 上传附件:
-                <lj-upload class="upload-offset" ref="workLogUploadRef" size="50" v-model="file_info"></lj-upload>
+                <lj-upload style="display: inline-block;margin-left: 30px" ref="workLogUploadRef" size="50" v-model="file_info"></lj-upload>
               </div>
               <div class="footer-user-choose">
                 通知人:
@@ -434,7 +434,7 @@
                 read_avatar: [],//已读人员头像
                 activeNames: ["1"],
                 choose_ids:res.data.data[i].choose_ids,//所有人
-                read_ids:res.data.data[i].read_ids,//已读人
+                read_ids:res.data.data[i].read_ids||[],//已读人
                 type:res.data.data[i].type,//类型 day week month
               };
               if (res.data.data[i].read_data.length > 0) {
@@ -444,7 +444,6 @@
               }
               this.worklogList.push(obj);
             }
-            console.log(this.worklogList);
           }
         })
       }

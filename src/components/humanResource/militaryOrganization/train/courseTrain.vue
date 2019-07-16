@@ -101,9 +101,8 @@
               <user-choose num="1" title="必选" v-model="new_train_form.presenter_id"></user-choose>
               <!--              <el-select v-model="new_train_form.train_lecturer" style="width: 320px"></el-select>-->
             </el-form-item>
-            <el-form-item required prop="participants" label="参会人员">
+            <el-form-item required prop="participants" label="参训人员">
               <user-choose title="必选" v-model="new_train_form.participants"></user-choose>
-              <!--              <el-input v-model="new_train_form.train_people" placeholder="请选择参会人员" style="width: 320px"></el-input>-->
             </el-form-item>
             <el-form-item label="培训提醒">
               <div class="form-item-content">
@@ -120,11 +119,11 @@
               <lj-upload style="position: absolute;top: -12px;" size="40" :max-size="5"
                          v-model="new_train_form.attachment"></lj-upload>
             </el-form-item>
-            <el-form-item prop="exam_id" required label="添加试卷">
+            <!--<el-form-item prop="exam_id" required label="添加试卷">
               <el-select v-model="new_train_form.exam_id">
                 <el-option label="试卷1" value="208"></el-option>
               </el-select>
-            </el-form-item>
+            </el-form-item>-->
           </el-form>
         </div>
         <div class="dialog_footer">
@@ -275,9 +274,9 @@
             <el-form-item label="查看附件">
               <lj-upload :disabled="true" :data="train_detail_form.attachment"></lj-upload>
             </el-form-item>
-            <el-form-item label="查看试卷">
+            <!--<el-form-item label="查看试卷">
               <span></span>
-            </el-form-item>
+            </el-form-item>-->
           </el-form>
         </div>
         <div class="dialog_footer">
@@ -291,20 +290,11 @@
 </template>
 
 <script>
-  import _ from 'lodash';
-  import UserChoose from '../../../common/lightweightComponents/UserChoose';
-  import LjUpload from '../../../common/lightweightComponents/lj-upload';
-  import LjDialog from '../../../common/lj-dialog.vue';
-  import DropdownList from '../../../common/lightweightComponents/dropdown-list';
   import UserList from '../../../common/lightweightComponents/UserList';
 
   export default {
     name: "courseTrain",
     components: {
-      LjDialog,
-      DropdownList,
-      UserChoose,
-      LjUpload,
       UserList,
     },
     data() {
@@ -334,7 +324,7 @@
               //{min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
             ],
             participants: [
-              {required: true, message: '请选择参会人员', trigger: 'blur'},
+              {required: true, message: '请选择参训人员', trigger: 'blur'},
               //{min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
             ],
             exam_id: [
@@ -388,10 +378,7 @@
         ],
         isGuidance: 1,
 
-        left_guide: [
-          /*{id: 1, name: '入职培训'},
-          {id: 2, name: '技能培训'},*/
-        ],
+        left_guide: [],
         left_guide_all_list: [],//所有培训类型列表
         left_guide_choose: 1,
         left_guide_index: 0,
@@ -410,7 +397,6 @@
 
         //当前培训类型名称
         current_type_name:'',
-
 
         //新建培训
         new_train_dialog_visible: false,
@@ -531,12 +517,18 @@
       submitAddTrain() {
         this.$refs['addTrainFormRef'].validate((valid) => {
           if (valid) {
-
             let params = {
               ...this.new_train_form,
               start_time: this.myUtils.formatDate(this.new_train_form.train_time[0], 'yyyy-MM-dd hh:mm:ss'),
               end_time: this.myUtils.formatDate(this.new_train_form.train_time[1], 'yyyy-MM-dd hh:mm:ss'),
             };
+            if (new Date().getTime() > new Date(params.start_time).getTime()) {
+              this.$LjMessage('warning', {
+                title: '警告',
+                msg: '不允许创建过时培训',
+              });
+              return;
+            }
             this.$http.post(`${this.url}meeting/meeting`, params).then(res => {
               this.$LjMessageEasy(res, () => {
                 this.new_train_dialog_visible = false;
