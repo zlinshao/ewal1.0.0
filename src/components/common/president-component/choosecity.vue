@@ -2,12 +2,13 @@
   <div id="choosecityComponent">
     <div id="choosecity">
       <div class="outCircle" :style="outCircleStyle">
+       <!--中间的大圆-->
         <div class="centerCircle" :style="centerCircleStyle" >
           <div class="centerCircle2">
             <span class="nameCircle">{{cityName}}</span>
           </div>
         </div>
-
+        <!--外面的一圈小圆 -->
         <div class="innerCircle"
              v-for="(item,index) in outerCityList"
              :style="[{ top: (Math.sin(angle*(index+1)) * r +x0)+'px',left:(Math.cos(angle*(index+1)) * r +x0)+'px'},innerCircleStyle]"
@@ -49,11 +50,11 @@
 
     },
     mounted() {
+    },
+    activated(){
       window.addEventListener("resize", () => {
         this.dealWithStyle();
       });
-    },
-    activated(){
     },
     watch:{
       citylist(val,oldVal) {
@@ -107,7 +108,6 @@
           height:imgWidth+'px',
         }
       },
-
     }
 
   }
@@ -137,7 +137,7 @@
           display: flex;
           justify-content: center;
           align-items: center;
-          animation:circleOutRoate 8s infinite linear ;
+          animation:circleOutRoate 8s infinite 2.5s linear;
           .centerCircle2, .innerCircle2{
             width: 100%;
             height: 100%;
@@ -145,15 +145,15 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            animation:circleInnerRoate 4s infinite linear ;
+            animation:circleInnerRoate 4s infinite 2.5s linear;
            .nameCircle{
              display: block;
-             animation:circleNameRoate 8s infinite linear ;
+             animation:circleNameRoate 8s infinite 2.5s linear ;
            }
           }
         }
       }
-     //外面一圈小圆
+     //外面一圈小圆样式
       .innerCircle{
         background: url('../../../assets/image/president/finance/y_out_2.png') no-repeat;
         background-size: cover;
@@ -163,7 +163,7 @@
           background-size: 100% 100%;
         }
       }
-      //中心圆
+      //中心圆样式
       .centerCircle{
         background: url('../../../assets/image/president/finance/y_center_2.png') no-repeat;
         background-size: cover;
@@ -175,21 +175,52 @@
           background-size: cover;
         }
       }
+      //页面进入时整个的动画，只执行一次
       .outCircle{
         transform-origin:50% 50%;
-        animation:circleOutScale 2.5s infinite linear ;
+        animation:circleOutScale 2.5s 1 linear ;
         animation-fill-mode: none;
-        animation-iteration-count:1;
+      }
+      //鼠标移上去时的动画
+      .centerCircle:hover, .innerCircle:hover{
+        animation:circleOutScale 1s 1 ease-in-out ;
+        animation-fill-mode: none;
+        .centerCircle2, .innerCircle2{
+          animation:circleOutScale 0.5s 1 ease-in-out ;
+          animation-fill-mode: none;
+          .nameCircle{
+            animation:circleOutScale 1s 1 ease-in-out ;
+            animation-fill-mode: none;
+          }
+        }
       }
 
       @keyframes circleOutScale{
-        from{transform:scale(0.5); }
-        to{transform:scale(1.0);}
+        0% {
+          transform: scale(0.5);
+          opacity: 0.2;
+        }
+        25% {
+          transform: scale(0.6);
+          opacity: 0.4;
+        }
+        50% {
+          transform: scale(0.8);
+          opacity: 0.6;
+        }
+        75% {
+          transform: scale(0.9);
+          opacity: 0.8;
+        }
+        100% {
+          transform: scale(1.0);
+          opacity: 1.0;
+        }
       }
 
       @keyframes circleOutRoate{
-        from{transform: rotate(0deg)}
-        to{transform: rotate(360deg)}
+        from{transform: rotate(0deg);}
+        to{transform: rotate(360deg); }
       }
       @keyframes circleInnerRoate{
         from{transform: rotate(0deg);}
@@ -199,9 +230,6 @@
         from{transform: rotate(0deg);}
         to{transform: rotate(360deg);}
       }
-  }
-
-
-
+    }
   }
 </style>
