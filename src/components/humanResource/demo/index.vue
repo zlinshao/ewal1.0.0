@@ -1,13 +1,13 @@
 <template>
   <div class="demo-container">
-    <lj-white-dialog :visible="lj_white_dialog"></lj-white-dialog>
+<!--    <lj-white-dialog :visible="lj_white_dialog"></lj-white-dialog>-->
     <!--<div id="demo_demo"  style="width: 800px;height: 400px;background-color: #ccc"></div>
     <div @click="demo">测试</div>
     <div @click="demo2">测试2</div>-->
     <!--  <app-index-more :visible.sync="more_visible"></app-index-more>-->
 
     <!--    <el-button @click="demo">清空</el-button>-->
-    <!--    <lj-upload v-model="list" :limit="['png']"></lj-upload>-->
+        <lj-upload v-model="list"></lj-upload>
     <!--        <post-choose v-model="post_list" num="1"></post-choose>-->
     <!--        <user-choose ref="user" v-model="user_list"></user-choose>-->
     <!--        <org-choose v-model="org_list"></org-choose>-->

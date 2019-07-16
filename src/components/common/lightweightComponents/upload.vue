@@ -121,13 +121,13 @@
         }
       },
       limitEasy: {
-        type:Array,
+        type: Array,
         default() {
           return [];
         }
       },
       num: {//上传个数
-        type:Number,
+        type: Number,
       },
       maxSize: {
         type: [Number],
@@ -279,7 +279,7 @@
         let that = this;
         let files = document.getElementById(that.file.keyName).files;
         let length = files.length + that.showFile.length;
-        if(length > that.num) {
+        if (length > that.num) {
           this.$LjMessage('warning', {
             title: '警告',
             msg: `超过最大上传个数:${this.num}`,
@@ -293,18 +293,18 @@
           let fileSize = file.size;
           let ext = file.name.split('.')[file.name.split('.').length - 1];
           if (this.limit.constructor === Array && this.limit.length > 0) {
-            if(this.limitEasy.length>0) {
+            if (this.limitEasy.length > 0) {
               let msg = [];
-              _.forEach(this.limitEasy,(o)=> {
-                if(o=='video') {
+              _.forEach(this.limitEasy, (o) => {
+                if (o == 'video') {
                   msg.push('视频');
-                }else if(o=='image') {
+                } else if (o == 'image') {
                   msg.push('图片');
-                }else if (o=='text') {
+                } else if (o == 'text') {
                   msg.push('文本');
                 }
               });
-             if (!_.includes(this.limit, ext)) {
+              if (!_.includes(this.limit, ext)) {
                 this.$LjMessage('warning', {
                   title: '警告',
                   msg: `仅支持上传${msg.join(',')}的类型`,
@@ -312,7 +312,7 @@
                 document.getElementById(that.file.keyName).value = null;
                 return;
               }
-            }else {
+            } else {
               if (!_.includes(this.limit, ext)) {
                 this.$LjMessage('warning', {
                   title: '警告',
@@ -365,7 +365,8 @@
           let putExtra = {
             fname: fileName,
             params: {},
-            mimeType: [] || null
+            //mimeType: [] || null
+            mimeType: null
           };
           let config = {
             useCdnDomain: true,
@@ -376,12 +377,7 @@
           let observable = qiniu.upload(file, key, that.token, putExtra, config);
           let subscription = observable.subscribe({
             next(res) {
-              /*let docElement = document.getElementById(pro);
-              if(!docElement&&!docElement.innerText) {
-                docElement.innerText = Math.floor(res.total.percent) + '%';
-              }*/
               document.getElementById(pro).innerText = Math.floor(res.total.percent) + '%';
-
             },
             error(err) {
               console.log(err);
