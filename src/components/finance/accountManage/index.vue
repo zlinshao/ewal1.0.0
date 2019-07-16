@@ -131,10 +131,10 @@
         <div class="dialog_footer">
           <div class="page">
             <el-pagination
-              :total="info_count"
-              :current-page="info_params.page"
-              :page-size="info_params.limit"
-              layout="total,jumper,prev,pager,next"
+            :current-page="info_params.page"
+            :page-size="info_params.limit"
+            :total="info_count"
+              layout="total,prev,pager,next"
               @current-change="handleChangePage_infoData"
             ></el-pagination>
           </div>
@@ -216,7 +216,7 @@
         </div>
         <div class="dialog_footer">
           <el-button type="danger" size="small" @click="handleDelAccount">确定</el-button>
-          <el-button size="small" @click="del_account_visible = false;current_row = ''">取消</el-button>
+          <el-button size="small" @click="del_account_visible = false;current_row = {}">取消</el-button>
         </div>
       </div>
     </lj-dialog>
@@ -241,7 +241,7 @@
         <div class="dialog_footer">
           <el-button size="small" type="danger" @click="handleOkRecharge">确定</el-button>
           <el-button size="small"
-                     @click="account_recharge_visible = false;current_row = '';recharge.amount = ''">取消
+                     @click="account_recharge_visible = false;recharge.amount = ''">取消
           </el-button>
         </div>
       </div>
@@ -370,7 +370,7 @@
         cate: {},
         banks: [],
         account_count: 0,
-        current_row: '',
+        current_row: {},
 
         //充值dialog
         account_recharge_visible: false,
@@ -393,12 +393,14 @@
       hiddenModules() {
         this.action_visible = false;
         this.is_table_choose = '';
-        this.current_row = '';
+        this.current_row = {};
         this.getInfoList();
       },
       handleCloseInfo() {
         this.info_params.operation = '';
         this.info_params.account_id = '';
+        this.infoData=[];
+        this.info_count=0;
         this.info_visible = false;
       },
       handleChangePage_infoData(page) {
@@ -407,8 +409,8 @@
       },
 
       getInfoList() {
-        this.infoData = [];
-        this.info_count = 0;
+        // this.infoData = [];
+        // this.info_count = 0;
         this.$http.get(globalConfig.temporary_server + 'account_change/log', this.info_params).then(res => {
           if (res.code === 200) {
             this.infoData = res.data.data;
@@ -441,15 +443,23 @@
         })
       },
       handleOkRecharge() {//确认充值
-        this.recharge.amount = parseFloat(this.recharge.amount).toFixed(2);
-        this.$http.put(globalConfig.temporary_server + `account/recharge/${this.current_row.id}`, this.recharge).then(res => {
-          this.$LjMessageEasy(res, () => {
-            this.account_recharge_visible = false;
-            this.getAccountList();
+        if(!this.recharge.amount){
+          this.$LjNotify('warning', {
+            title: '提醒',
+            message: '请填写充值金额',
           });
-        }).catch(err => {
-          console.log(err);
-        })
+        }else {
+          this.recharge.amount = parseFloat(this.recharge.amount).toFixed(2);
+          this.$http.put(globalConfig.temporary_server + `account/recharge/${this.current_row.id}`, this.recharge).then(res => {
+            this.$LjMessageEasy(res, () => {
+              this.account_recharge_visible = false;
+              this.recharge.amount='';
+              this.getAccountList();
+            });
+          }).catch(err => {
+            console.log(err);
+          })
+        }
       },
       handleOpenRecharge(row) {
         this.current_row = row;

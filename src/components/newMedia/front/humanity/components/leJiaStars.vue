@@ -313,9 +313,7 @@
                                 </div>
                                 <div class="item_content changeChoose">
                                     <el-checkbox-group v-model="comment_type" class="flex-center justify-start">
-                                        <el-checkbox label="低俗色情"></el-checkbox>
-                                        <el-checkbox label="辱骂攻击"></el-checkbox>
-                                        <el-checkbox label="违法信息"></el-checkbox>
+                                       <el-checkbox v-for="item in report_type" :label="item.id" :key="item.id" :value="item.id">{{item.name}}</el-checkbox>
                                     </el-checkbox-group>
                                 </div>
                             </div>
@@ -431,6 +429,7 @@
                 detailData: {},
                 comment_type:[],
                 reportcomment: '',
+                report_type:'',
                 selects: [
                     {id: 1, title: "乐伽之星"}, {id: 2, title: "优秀员工"}, {id: 3, title: "寿星墙"}
                 ],
@@ -494,7 +493,7 @@
             },
              //举报
             reportOk(){
-                this.$http.post(globalConfig.newMedia_sever + '/api/article/report',{content:this.reportcomment,comment_id:this.currentComment.id, type_id:this.comment_type}).then(res => {
+                this.$http.post(globalConfig.newMedia_sever + '/api/article/report',{content:this.reportcomment,comment_id:this.currentComment.id, type_id:this.comment_type&&this.comment_type.length?this.comment_type[0]:''}).then(res => {
                     if(res.status===200){
                         this.$notify({
                             title: '成功',
@@ -636,9 +635,21 @@
 
                      }
                  });
+                 this.$http.get(globalConfig.newMedia_sever + '/api/article/report_type').then(res => {
+                     if(res.status===200){
+                        this.report_type=res.data;
+                     }
+                 });
             },
             //评论
             postcomment_tag(){
+                if(!this.newcomment){
+                        this.$notify({
+                            title: '警告',
+                            message: '评论内容不能为空',
+                            type: 'warning'
+                        });
+                }else{
                 this.$http.post(globalConfig.newMedia_sever + '/api/article/comment',{content:this.newcomment,article_id:this.detailData.id}).then(res => {
                     if(res.status===200){
                         this.$notify({
@@ -658,6 +669,7 @@
                         });
                     }
                 });
+                }
             },
             //回复评论
             replyOk(){

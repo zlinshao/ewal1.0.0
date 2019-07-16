@@ -53,7 +53,7 @@
         <div class="dialog_main borderNone">
           <el-form v-model="form" label-width="80px">
             <el-form-item label="姓名">
-              <user-choose width='1060' v-model="form.userid"></user-choose>
+              <user-choose width='1060' :num="1" v-model="form.userid"></user-choose>
             </el-form-item>
              <!-- <el-form-item label="标题">
               <el-input width='700' v-model="form.title"></el-input>
@@ -172,18 +172,26 @@ export default {
     showDetail(){
        this.currentRecord=null;
       if(this.form.userid && this.form.content){
-      this.$http.get(globalConfig.humanResource_server + 'staff/user/'+this.form.userid).then(res => {
-          if (res.code === '20020') {
-            this.starInfo = res.data;
-            this.starInfo.content =this.form.content;
-          }
-        });
-       this.detail_visible=true;
-      }else {
-         this.$LjNotify('warning', {
-            title: '提示',
-            message: '有条目未填写',
+        this.$http.get(globalConfig.humanResource_server + 'staff/user/'+this.form.userid).then(res => {
+            if (res.code === '20020') {
+              this.starInfo = res.data;
+              this.starInfo.content =this.form.content;
+            }
           });
+        this.detail_visible=true;
+      }else {
+        if(!this.form.userid){
+          this.$LjNotify('warning', {
+            title: '提示',
+            message: '姓名未选择',
+          });
+        }else {
+          this.$LjNotify('warning', {
+            title: '提示',
+            message: '内容未填写',
+          });
+        }
+         
       }
     },
     //获取乐伽之星

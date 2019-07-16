@@ -15,7 +15,7 @@
               </div>
             </div>
             <div v-if="subject_list.length > 0" class="subject_detail scroll_bar">
-              <div v-for="(item,key) in subject_list" class="flex">
+              <div v-for="(item,key) in subject_list" class="flex">{{item}}
                 <div>
                   <el-radio
                     v-model="current_choose"
@@ -83,7 +83,6 @@
               return false;
             }
           },
-
           //面包屑定位
           handleLocation(item,key) {
             this.choose_subject.splice(key + 1);
@@ -91,6 +90,7 @@
             this.current_id = item.id;
             if (this.current_tier > 1) {
               this.getSubjectList('children');
+              this.current_tier=key+2;
             } else {
               this.getSubjectList('all');
             }
@@ -122,7 +122,7 @@
             this.current_id = 0;
             this.current_choose = 0;
             this.current_tier = 1;
-            if (!type) {
+            if (type!='no') {
               this.getSubjectList();
             }
           },

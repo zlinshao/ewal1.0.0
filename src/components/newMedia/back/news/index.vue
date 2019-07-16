@@ -31,7 +31,7 @@
           </el-table-column>
           <el-table-column label="发布人" prop="user_id.name" align="center">
           </el-table-column>
-          <el-table-column label="发布时间" prop="created_at" align="center">
+          <el-table-column label="发布时间" prop="open_time" align="center">
           </el-table-column>
           <el-table-column label="已读" align="center">
             <template slot-scope="scope">
@@ -376,13 +376,11 @@ export default {
     },
     //显示编辑
      showEdite (row) {
-       console.log('row---------------',row);
        this.form.id=row.id;
        this.form.content=row.content;
        this.form.file_info=[row.cover[0].id];
        this.form.title=row.title;
        this.form.type_id=row.type_id?row.type_id.toString():'';
-       console.log(' this.form.type_id--', row.type_id+'');
        this.publish_visible=true;
       //  type_id: this.form.type_id,
       // this.form.content = val;
@@ -539,8 +537,6 @@ export default {
         if (res.status === 200) {
           this.$LjNotify('success', {
             title: '成功',
-            message: res.message,
-            subMessage: '',
           });
           this.withdraw_visible = false;
           this.showLoading(false);
@@ -549,7 +545,6 @@ export default {
           this.$LjNotify('error', {
             title: '失败',
             message: res.message,
-            subMessage: '',
           });
         }
       })

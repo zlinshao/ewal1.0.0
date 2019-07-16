@@ -160,10 +160,10 @@
               this.getDataLists();
             },
             getDataLists() {//列表
-                this.showLoading(true);
+                // this.showLoading(true);
                 this.$http.get(globalConfig.temporary_server + this.url, this.params).then(res => {
                     if (res.code === 200) {
-                        this.showLoading(false);
+                        // this.showLoading(false);
                         this.tableData = res.data.data.sort(
                             function (a, b) {
                                 return a.id - b.id

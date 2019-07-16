@@ -2,7 +2,7 @@
     <div id="hotNewsDetail">
         <div class="listTopCss items-bet">
             <div class="items-center listTopLeft">
-                <h1>{{this.$route.query.type ===1 ? '热门导读详情':this.$route.query.type ===2 ? '乐伽新闻详情':this.$route.query.type ===3?'公告详情':''}}</h1>
+                <h1>{{this.$route.query.type ==1 ? '热门导读详情':this.$route.query.type ==2 ? '乐伽新闻详情':this.$route.query.type ==3?'公告详情':''}}</h1>
             </div>
         </div>
         <div class="mainList scroll_bar" :style="{'height': this.mainListHeight() + 'px'}">
@@ -16,7 +16,7 @@
                     <div class="outer-container">
                         <div class="inner-container">
                             <div class="element">
-                                <div class="detail-box" v-for="(item,index) in detailDataList">
+                                <div class="detail-box" v-for="(item,index) in detailDataList" @click="getPath(item.id)">
                                     <div class="detail-box-top">
                                         <h3>{{item.title}}</h3>
                                         <div class="top-icons justify-start">
@@ -244,7 +244,7 @@
                     <h3>举报</h3>
                 </div>
                 <div class="dialog_main">
-                    <el-form  size="mini">
+                    <el-form size="mini">
                         <el-form-item>
                             <div class="form_item_container">
                                 <div class="item_label">
@@ -254,10 +254,8 @@
                                     <span>类型</span>
                                 </div>
                                 <div class="item_content changeChoose">
-                                    <el-checkbox-group v-model="comment_type" class="flex-center justify-start">
-                                        <el-checkbox label="低俗色情"></el-checkbox>
-                                        <el-checkbox label="辱骂攻击"></el-checkbox>
-                                        <el-checkbox label="违法信息"></el-checkbox>
+                                    <el-checkbox-group v-model="comment_type"  class="flex-center justify-start">
+                                        <el-checkbox v-for="item in report_type" :label="item.id" :key="item.id" >{{item.name}}</el-checkbox>
                                     </el-checkbox-group>
                                 </div>
                             </div>
@@ -326,6 +324,7 @@
                 replyComment: '',// 回复
                 newcomment: '',//写评论
                 comment:'',
+                type:'',
                 comment_type:[],
                 reportcomment: '',
                 currentCommentPage: 1,
@@ -368,7 +367,7 @@
                 ],
                 parent_id: '',
                 chooseTabType:'',
-
+                report_type: [],
             }
         },
         watch:{
@@ -388,11 +387,14 @@
                     });
             },
             //获取路由参数
-            getPath(){
+            getPath(id){
+                console.log('id-------',id)
                 if(this.$route.query.id !==undefined){  
+                    // this.type=this.$route.query.type;
                      this.getOrder();  
                     let path = this.$route.query.type===2? 'news' : this.$route.query.type===3 ? 'announcement' : 'hot';
-                    this.$http.get(globalConfig.newMedia_sever + '/api/article/'+path+'/'+this.$route.query.id).then(res => {
+                    let aid = id ||this.$route.query.id;
+                    this.$http.get(globalConfig.newMedia_sever + '/api/article/'+path+'/'+aid).then(res => {
                         if(res.status===200){
                             this.detailData={
                                 title:res.data.title,
@@ -455,6 +457,11 @@
                          }
                      }else {
 
+                     }
+                 });
+                 this.$http.get(globalConfig.newMedia_sever + '/api/article/report_type').then(res => {
+                     if(res.status===200){
+                        this.report_type=res.data;
                      }
                  });
             },
@@ -528,7 +535,7 @@
             },
              //举报
             reportOk(){
-                this.$http.post(globalConfig.newMedia_sever + '/api/article/report',{content:this.reportcomment,comment_id:this.currentComment.id, type_id:this.comment_type}).then(res => {
+                this.$http.post(globalConfig.newMedia_sever + '/api/article/report',{content:this.reportcomment,comment_id:this.currentComment.id, type_id:this.comment_type&&this.comment_type.length?this.comment_type[0]:''}).then(res => {
                     if(res.status===200){
                         this.$notify({
                             title: '成功',

@@ -50,7 +50,7 @@
         <el-table-column label="结算费用组成" prop="fee_merge" align="center" min-width="150"></el-table-column>
         <el-table-column label="账户信息" align="center" min-width="150">
           <template slot-scope="scope">
-            <span>{{scope.row.account_bank}} {{scope.row.account_num}}</span>
+            <span>{{scope.row.account_num ? scope.row.account_bank : ''}} {{scope.row.account_num}}</span>
           </template>
         </el-table-column>
         <el-table-column

@@ -139,7 +139,7 @@
               <el-input disabled v-model="move_subject.initial"></el-input>
             </el-form-item>
             <el-form-item label="现科目">
-              <el-input @focus="handleOpenSubject('move_subject')"
+              <el-input @focus="handleOpenSubject('move_subject')" placeholder="请填写现科目"
                         v-model="move_subject.title"></el-input>
             </el-form-item>
           </el-form>
@@ -429,6 +429,7 @@
       },
       //科目确定
       handleConfirmSubject(val) {
+        // console.log('val', val);
         if (this.which_subject === 'move_subject') {
           this.move_subject.parent_id = val.id;
           this.move_subject.title = val.title;
