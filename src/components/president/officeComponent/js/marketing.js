@@ -90,8 +90,6 @@ optionRing = {
     {
       type: "pie",
       radius: ["85%", "100%"],
-      // avoidLabelOverlap: true,
-      // legendHoverLink:true,
       hoverAnimation: false,
       color: [{
         colorStops: [{
@@ -101,7 +99,6 @@ optionRing = {
           offset: 1,
           color: ""   // 100% 处的颜色
         }],
-        // globalCoord: false // 缺省为 false
       },'rgba(255,255,255,0.2)'],
       label: {
         normal: {
@@ -290,13 +287,6 @@ optionHouseAchieve = {
     data: [],
     type: 'scatter',
     symbolSize:15,
-    // symbolSize: function (data) {
-    //   // return Math.sqrt(data[2]) / 5e2;
-    //   // return Math.ceil(data[2] / 10);
-    //   // return data[2] ;
-    //   return data[2] / 10;
-    //   // alert(data)
-    // },
     itemStyle: {
       normal: {
         shadowBlur: 50,
@@ -384,13 +374,13 @@ optionEntryLeave = {
     link: {xAxisIndex: 'all'}
   },
   grid: [{
-    left: 0,
-    right: 0,
+    left: 35,
+    right: 35,
     top:0,
-    height: '45%'
+    height: '45%',
   }, {
-    left: 0,
-    right: 0,
+    left: 35,
+    right: 35,
     bottom:0,
     top: '55%',
     height: '45%'
@@ -410,7 +400,7 @@ optionEntryLeave = {
       },
       axisLabel: {
         color:"#6B7298",
-        fontSize:12
+        fontSize:12,
       },
       data: []
     },
@@ -442,7 +432,10 @@ optionEntryLeave = {
         show: false
       },
       axisLine: {
-        show: false
+        show: false,
+      },
+      axisLabel: {
+        show: false,
       },
       splitLine: {
         show: true,
@@ -461,7 +454,10 @@ optionEntryLeave = {
         show: false
       },
       axisLine: {
-        show: false
+        show: false,
+      },
+      axisLabel: {
+        show: false,
       },
       splitLine: {
         show: true,

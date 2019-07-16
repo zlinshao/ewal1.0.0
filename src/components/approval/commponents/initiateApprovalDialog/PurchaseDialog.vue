@@ -21,7 +21,7 @@
             <el-form ref="purchaseForm1" :rules="purchase_form_rule" :model="purchase_form"
                      style="text-align: left" size="small" label-width="100px">
               <el-form-item required prop="date" label="采购日期">
-                <div class="items-center iconInput" style="width: 650px">
+                <div class="items-center" style="width: 650px">
                   <el-date-picker v-model="purchase_form.date" type="date"
                                   placeholder="请选择日期">
                   </el-date-picker>

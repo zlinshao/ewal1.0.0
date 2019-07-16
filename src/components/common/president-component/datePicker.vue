@@ -74,6 +74,7 @@
         color: #FFF;
         padding: 0px;
         font-size: 14px;
+        cursor: pointer;
       }
     //隐藏左边日历图标和删除图标
     .el-input__icon {

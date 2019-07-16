@@ -48,7 +48,7 @@
                   </el-form-item>
 
                   <el-form-item required prop="expect_date" label="期望到岗日期">
-                    <div class="items-center iconInput" style="width: 220px">
+                    <div class="items-center" style="width: 220px">
                       <el-date-picker v-model="demand_form.expect_date" type="date"
                                       placeholder="选择日期"></el-date-picker>
                     </div>

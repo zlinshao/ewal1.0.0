@@ -57,16 +57,35 @@
   }
 </script>
 
+<style lang="scss">
+  #clockTime{
+    .clock{
+      width: 100px;
+      height: 100px;
+      margin:auto 28px auto 0;
+      .clock-circle{
+        width: 5px;
+        height: 5px;
+        background-color:#00FFFF;
+        border: 2px solid #00FFFF;
+      }
+      .clock-circle:before{
+        width: 2px;
+        height: 2px;
+        background-color:#00FFFF;
+      }
+      .clock-hour, .clock-minute, .clock-second{
+        background-color:#00FFFF;
+      }
+    }
+  }
+</style>
+
 <style scoped lang="scss">
   @import "../../../assets/scss/president/common.scss";
   #clockTime{
     display: flex;
     justify-content: flex-start;
-    .clock{
-      width: 76px;
-      height: 76px;
-      margin:auto 28px auto 0;
-    }
     .date_time{
       color:#00FFFF;
       margin: auto 0;

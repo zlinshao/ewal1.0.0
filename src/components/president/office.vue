@@ -54,10 +54,20 @@
   };
 </script>
 
-
+<style lang="scss">
+  #department{
+    #clockTime{
+      .clock{
+        width: 80px;
+        height: 80px;
+      }
+    }
+  }
+</style>
 
 <style lang="scss" scoped>
   @import "../../assets/scss/president/common.scss";
+  @import "../../assets/scss/president/index.scss";
   #department{
     padding-top: 80px;
     color: #00FFFF;

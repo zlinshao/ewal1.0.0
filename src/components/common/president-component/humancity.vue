@@ -3,17 +3,21 @@
   <div id="humancity" >
     <div id="choosecity">
       <!--中间最上面的大圆      -->
-      <span class="first_out_circle" :style="{width:selectObj.r*2+'px',height:selectObj.r*2+'px', bottom:(selectObj.y-selectObj.r)+'px',left:(selectObj.x-selectObj.r)+'px'}">
-        <span class="first_inner_circle">
-          <span class="first_name_circle">{{selectObj.name ||'--'}}</span>
+      <div class="first_bg_circle" :style="{bottom:(selectObj.y-selectObj.r)+'px',left:(selectObj.x-selectObj.r)+'px'}">
+        <span class="first_out_circle" :style="{width:selectObj.r*2+'px',height:selectObj.r*2+'px'}">
+          <span class="first_inner_circle">
+            <span class="first_name_circle">{{selectObj.name ||'--'}}</span>
+          </span>
         </span>
-       </span>
+      </div>
       <!--小圆的集合-->
-      <span :class="['new_out_circle',{newCircle1:item.r >= 50,newCircle2:item.r <50 }]" :style="{width:item.r*2+'px',height:item.r*2+'px',bottom:(item.y-item.r)+'px',left:(item.x-item.r)+'px'}" v-for="(item,index) in newCityList" @click="chooseCityClick(item,index)">
-        <span class="new_inner_circle">
-          <span class="new_name_circle">{{item.name||'--'}}</span>
+      <div class="new_bg_circle" v-for="(item,index) in newCityList" :style="{bottom:(item.y-item.r)+'px',left:(item.x-item.r)+'px'}" >
+        <span :style="{width:item.r*2+'px',height:item.r*2+'px'}"   :class="['new_out_circle',{newCircle1:item.r >= 50,newCircle2:item.r <50 }]" @click="chooseCityClick(item,index)">
+          <span class="new_inner_circle">
+            <span class="new_name_circle">{{item.name||'--'}}</span>
+          </span>
         </span>
-       </span>
+      </div>
     </div>
   </div>
 </template>
@@ -33,17 +37,12 @@
         minMargin:20,        //圆与圆之间最短的间距
         maxRadius:60,        //设置圆的最大半径
         minRadius:40,       //设置圆的最小半径
-        radiuArr:[50,40,30],
         circleArray:[],      //已生成的圆的集合
         total:'',          //圆的个数
         selectObj:{},        //被选的最大的圆数据
         newCityList:[],     //除最上面剩余的圆数据
         cityName:'--',     //被选择的城市
-        oneThirdlength:'',   //将数组长度分成三部分
       }
-    },
-    beforecreated(){
-
     },
     created(){
 
@@ -77,7 +76,6 @@
         this.dWidth = this.c.offsetWidth;
         this.dHeight = this.height - this.MR;
         this.total =  this.citylist.length;
-        this.oneThirdlength  = Math.ceil(this.citylist.length/2);
         //自定义总公司的圆，固定在顶部中间位置
         this.circleArray=[];
         this.circleArray[0] = {x:(this.dWidth/2),y:this.height-this.MR,r:this.MR,name:''};
@@ -88,7 +86,6 @@
         });
         this.selectObj =  this.circleArray[0];  //默认选择数组的一个城市
         this.newCityList =  JSON.parse(JSON.stringify(this.circleArray)).slice(1);
-        console.log(this.circleArray )
       },
 
       //2.判断新圆是否超出画布
@@ -134,7 +131,7 @@
         this.check(x, y, r) && this.circleArray.push(obj);
       },
 
-      // 如果生成100种方案都没有合适可用的话，终止进程。
+      // 5.如果生成100种方案都没有合适可用的话，终止进程。
       getCircle() {
         let i = 0;
         while (this.circleArray.length < this.total) {
@@ -145,7 +142,6 @@
           }
         }
       },
-
 
       //点击城市
       chooseCityClick(item,index){
@@ -176,75 +172,84 @@
       align-items: center;
       position: relative;
       //公共样式
-      .new_out_circle, .first_out_circle{
+      .first_bg_circle, .new_bg_circle{
+        padding: 20px;
         position: absolute;
-        border-radius: 50%;
-        text-align: center;
         display: flex;
         align-items: center;
         justify-content: center;
-        animation:circleBgRoate 8s infinite linear ;
-        .new_inner_circle, .first_inner_circle{
-          width: 100%;
-          height: 100%;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 0 20px;
-          animation:circleInnerRoate 4s infinite linear ;
-          .new_name_circle, .first_name_circle{
-            display: block;
-            animation:circleRouterName 8s infinite linear ;
+        .first_out_circle, .new_out_circle{
+          animation:circleBgRoate 6s infinite linear ;
+          cursor: pointer;
+          padding: 5%;
+          .first_inner_circle, .new_inner_circle{
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0 20px;
+            animation:circleInnerRoate 3s infinite linear ;
+            .first_name_circle, .new_name_circle{
+              color: #FFFFFF;
+              animation:circleRouterName 6s infinite linear ;
+            }
+            .new_name_circle{
+              font-size:12px;
+            }
+            .first_name_circle{
+              font-size:28px ;
+              font-weight: bold;
+            }
           }
         }
       }
-      //除最大圆以外的圆
-      .new_out_circle{
-        background: url("../../../assets/image/president/hr/pic_1.png") no-repeat;
+      //小圆的图片
+      .newCircle1{
+        background: url("../../../assets/image/president/hr/y_1.png") no-repeat;
         background-size: 100% 100%;
         .new_inner_circle{
-          background: url("../../../assets/image/president/hr/pic_1.png") no-repeat;
-          background-size: 100% 100%;
-          .new_name_circle{
-            font-size:12px;
-            color: #FFFFFF;
-          }
-        }
-      }
-      //最大的圆
-      .first_out_circle{
-        background: url("../../../assets/image/president/hr/pic_0.png") no-repeat;
-        background-size: 100% 100%;
-        .first_inner_circle{
-          background: url("../../../assets/image/president/hr/pic_0.png") no-repeat;
-          background-size: 100% 100%;
-          .first_name_circle{
-            font-size:28px ;
-            font-weight: bold;
-            color:#FFF;
-          }
-        }
-      }
-
-      .newCircle1{
-        background: url("../../../assets/image/president/hr/pic_1.png") no-repeat;
-        background-size: 100% 100%;
-        .innerCircle1{
           background: url("../../../assets/image/president/hr/pic_1.png") no-repeat;
           background-size: 100% 100%;
         }
       }
       .newCircle2{
-        background: url("../../../assets/image/president/hr/pic_2.png") no-repeat;
+        background: url("../../../assets/image/president/hr/y_2.png") no-repeat;
         background-size: 100% 100%;
-
-        .innerCircle2{
+        .new_inner_circle{
           background: url("../../../assets/image/president/hr/pic_2.png") no-repeat;
           background-size: 100% 100%;
         }
       }
 
+      //最大圆的图片
+      .first_out_circle{
+        .first_inner_circle{
+          background: url("../../../assets/image/president/hr/pic_0.png") no-repeat;
+          background-size: 100% 100%;
+        }
+      }
+
+      //小圆的鼠标移上去后的效果
+      .new_bg_circle:hover{
+        background: url("../../../assets/image/president/hr/shape.png") no-repeat;
+        background-size: 100% 100%;
+        animation:circleOutScale 1s 1 linear ;
+      }
+      //大圆的鼠标移上去效果
+      .first_bg_circle:hover{
+        background: url("../../../assets/image/president/hr/shape.png") no-repeat;
+        background-size: 100% 100%;
+        animation:circleOutScale 1s 1 linear ;
+      }
+
+      //动画
+      @keyframes circleOutScale{
+        from{transform: scale(0.7);}
+        to{transform: scale(1.0);}
+      }
       @keyframes circleBgRoate{
         from{transform: rotate(0deg);}
         to{transform: rotate(360deg);}
@@ -257,7 +262,6 @@
         from{transform: rotate(0deg);}
         to{transform: rotate(360deg);}
       }
-
     }
   }
 </style>

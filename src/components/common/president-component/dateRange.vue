@@ -58,15 +58,14 @@
         d = d < 10 ? '0' + d : d;
         return y + '-' + m+ '-' + d ;
       }
-
     }
-
   }
 </script>
 
 <style lang="scss">
   #dateRange {
     text-align: right;
+    cursor: pointer;
     .el-input__inner{
       background:url("../../../assets/image/president/rili.png") no-repeat;
       background-position: right;
@@ -75,23 +74,10 @@
       color: #FFF;
       padding: 0px;
       font-size: 14px;
-
-
+      cursor: pointer;
     }
     .el-range-editor {
       display: inline;
-     /* .el-range-input:nth-child(2){*/
-     /*     text-align: right;*/
-     /*   }*/
-     /* .el-range-input input:nth-child(2){*/
-     /*   text-align: left;*/
-     /* }*/
-     /*input:nth-child(1){*/
-     /*   text-align: right;*/
-     /* }*/
-     /*input:nth-child(2){*/
-     /*   text-align: left;*/
-     /* }*/
       .el-range-input , .el-range-separator{
         color: #FFF;
         padding: 0px;
@@ -103,13 +89,6 @@
     .el-input__icon {
       display: none;
     }
-    /*.el-range-input , .el-range-separator{*/
-    /* */
-    /*}*/
-    /*.el-range-separator{*/
-    /*  margin: auto;*/
-
-    /*}*/
   }
 </style>
 

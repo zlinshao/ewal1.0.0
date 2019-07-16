@@ -183,7 +183,8 @@
         bottom:0%;
       }
       .circle_router_bg5{
-        bottom:37%;
+        left: 400px !important; //最后一个运维太靠左，鼠标悬浮时会超出范围，使整个页面产生滚动条
+        bottom:35%;
       }
       //鼠标悬浮效果
       .circle_router_bg1:hover{
@@ -212,6 +213,7 @@
       img{
         width: 43px;
         height: 43px;
+        cursor: pointer;
       }
       .tabs{
         flex: 1;
@@ -220,6 +222,7 @@
         .tab{
           display: flex;
           justify-content: flex-start;
+          cursor: pointer;
           .tab_label{
             padding: 0 30px;
             text-align: center;

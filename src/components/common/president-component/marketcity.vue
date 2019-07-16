@@ -150,7 +150,6 @@
         }
       },
 
-
       //点击城市
       chooseCityClick(item,index){
         let name1 = item.name;
@@ -189,6 +188,7 @@
         justify-content: center;
         padding: 10px;
         animation:circleBgRoate 16s infinite linear ;
+        cursor: pointer;
         .innerCircle{
           width: 100%;
           height: 100%;
@@ -196,7 +196,6 @@
           display: flex;
           align-items: center;
           justify-content: center;
-          padding: 0 20px;
           animation:circleInnerRoate 8s infinite linear ;
           .nameCircle{
             display: block;
@@ -217,6 +216,7 @@
           }
         }
       }
+
       //最大圆的样式
       .first_circle{
         background: url("../../../assets/image/president/marketing/y_max_2.png") no-repeat;
@@ -244,10 +244,6 @@
         from{transform: rotate(0deg);}
         to{transform: rotate(360deg);}
       }
-
-
-
-
     }
   }
 </style>

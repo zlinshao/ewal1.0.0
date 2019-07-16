@@ -60,9 +60,7 @@
         }else{
           this.newNum = newNumTotal;
         }
-
         let newIndex = this.newNum.indexOf('.');
-        console.log(this.newNum);
         //substring不包含最后一位
         this.decimal = this.newNum.substring(newIndex+1,newIndex+3);       //截取小数点后的两位数
         this.num3 = this.newNum.substring(newIndex-3,newIndex);           //截取个，十，百位的数字
