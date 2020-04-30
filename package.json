@@ -20,7 +20,7 @@
     "echarts": "^4.2.0-rc.2",
     "echarts-gl": "^1.1.1",
     "element-ui": "^2.10.0",
-    "jquery": "^3.3.1",
+    "jquery": "^3.5.0",
     "lodash": "^4.17.11",
     "npm": "^6.9.0",
     "qiniu-js": "^2.5.4",
