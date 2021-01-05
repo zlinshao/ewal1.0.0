@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "async-validator": "^1.11.3",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "d3": "^5.9.2",
     "d3-array": "^2.2.0",
     "echarts": "^4.2.0-rc.2",
